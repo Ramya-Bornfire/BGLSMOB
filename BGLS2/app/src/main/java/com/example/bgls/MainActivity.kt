@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bgls.DataModels.Transaction
 import com.example.bgls.databinding.ActivityMainBinding
-
+import android.widget.TextView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -15,12 +15,27 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val txtLoginTime = findViewById<TextView>(R.id.txtLoginTime)
+
+        val currentTime = java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss", java.util.Locale.getDefault())
+            .format(java.util.Date())
+
+        txtLoginTime.text = "$currentTime"
 
         val list = listOf(
-            Transaction("Ramya"),
-            Transaction("John"),
-            Transaction("Priya"),
-            Transaction("Arun")
+            Transaction("Admin"),
+            Transaction("Migration"),
+            Transaction("Customer Maintenance"),
+            Transaction("Loan Maintenance"),
+            Transaction("Loan Operation"),
+            Transaction("Transaction Maintanance"),
+            Transaction("Reversal Transactions"),
+            Transaction("Day End Operation"),
+            Transaction("Collection Process"),
+            Transaction("Batch Job Execution"),
+            Transaction("Transaction Reports"),
+            Transaction("Transaction Inquiries")
+
         )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
