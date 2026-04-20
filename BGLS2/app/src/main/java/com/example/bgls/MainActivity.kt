@@ -6,6 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bgls.DataModels.Transaction
 import com.example.bgls.databinding.ActivityMainBinding
 import android.widget.TextView
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import android.widget.ImageView
+import android.view.Gravity
+import android.widget.Toast
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -15,6 +21,34 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
+        val menuIcon = findViewById<ImageView>(R.id.menuIcon)
+        val navigationView = findViewById<NavigationView>(R.id.navigationView)
+
+// 🔥 CLICK MENU ICON → OPEN DRAWER
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(Gravity.LEFT)
+        }
+        navigationView.setNavigationItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_home -> {
+                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+                }
+
+                R.id.nav_profile -> {
+                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
+                }
+
+                R.id.nav_logout -> {
+                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            drawerLayout.closeDrawer(Gravity.LEFT)
+            true
+        }
         val txtLoginTime = findViewById<TextView>(R.id.txtLoginTime)
 
         val currentTime = java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss", java.util.Locale.getDefault())

@@ -6,29 +6,67 @@
     android:padding="16dp"
     android:background="@drawable/card_item_bg"
     android:elevation="4dp"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <!-- Icon -->
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@android:drawable/ic_menu_info_details"/>
-
-    <!-- Text Section -->
+    <!-- TOP ROW -->
     <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp">
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_menu_info_details"/>
 
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             android:id="@+id/tvName"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center"
             android:text="User Name"
             android:textStyle="bold"
-            android:textColor="@color/textColorPrimary"/>
+            android:textSize="16sp"
+            android:textColor="@color/textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!-- DROPDOWN SECTION -->
+    <LinearLayout
+        android:id="@+id/layoutDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Organization Details"
+            android:padding="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Control"
+            android:padding="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Parameters"
+            android:padding="8dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Audit Trail"
+            android:padding="8dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notification and Logs"
+            android:padding="8dp"/>
     </LinearLayout>
 
 </LinearLayout>
