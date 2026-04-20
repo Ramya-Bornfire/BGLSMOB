@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cyanblue">#38A9CB</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+
+    <color name="colorBackground">#F8F9FA</color>
+    <color name="colorSurface">#FFFFFF</color>
+
+    <color name="textColorPrimary">#1A1D1E</color>
+    <color name="textColorSecondary">#8E949A</color>
+
+    <color name="colorNegativeAmount">#F06565</color>
+    <color name="colorPositiveAmount">#1A1D1E</color>
+
+    <color name="iconTint">#B0C3CC</color>
+</resources>
