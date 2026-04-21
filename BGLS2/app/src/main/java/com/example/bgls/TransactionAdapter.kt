@@ -12,7 +12,7 @@ import android.widget.TextView
 
 import com.example.bgls.databinding.ItemTransactionBinding
 
-class TransactionAdapter(private val list: List<Transaction>) :
+class TransactionAdapter(private val list: List<Transaction>, private val onSubItemClick: (String) -> Unit) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private var expandedPosition = -1   // track opened item
@@ -54,7 +54,7 @@ class TransactionAdapter(private val list: List<Transaction>) :
 
                 // 👉 Click action
                 textView.setOnClickListener {
-                    Toast.makeText(context, "$subItem Clicked", Toast.LENGTH_SHORT).show()
+                    onSubItemClick(subItem)   // 👈 forward click to activity
                 }
 
                 holder.binding.layoutDropdown.addView(textView)

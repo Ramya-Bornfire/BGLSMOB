@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- Row 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <!-- Left side -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Organization Name"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etOrganizationName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Enter name"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <!-- Right side -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Organization Type"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etOrganizationType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="e.g. NGO, Pvt Ltd"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Date of Registration"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etDateOfRegistration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="YYYY-MM-DD"
+                android:inputType="date"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Certificate and Registration"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etCertificateReg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Reg. number"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 3 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Business Registration Card"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etBusinessRegCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Card number"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="VAT Reference"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etVatReference"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="VAT number"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 4 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="No of Employees"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etNoOfEmployees"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="Number"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="As On"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etAsOn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Date"
+                android:inputType="date"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 5 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Registered Office Address 1"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etRegOfficeAddr1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Address line 1"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Registered Office Address 2"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etRegOfficeAddr2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Address line 2"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 6 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="14dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Corporate Office Address 1"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etCorpOfficeAddr1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Address line 1"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Corporate Office Address 2"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etCorpOfficeAddr2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Address line 2"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Row 7 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginEnd="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Website"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etWebsite"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textUri"
+                android:hint="https://"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+            <TextView
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="12dp" />
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textEmailAddress"
+                android:hint="name@example.com"
+                android:textSize="14sp"
+                android:padding="12dp"
+                android:background="@drawable/edittext_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

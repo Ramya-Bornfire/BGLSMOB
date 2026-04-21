@@ -1,5 +1,6 @@
 package com.example.bgls
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -108,6 +109,11 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = TransactionAdapter(list)
+        binding.recyclerView.adapter = TransactionAdapter(list) { subItem ->
+            if (subItem == "Organization Details") {
+                val intent = Intent(this, OrganizationDetialsActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

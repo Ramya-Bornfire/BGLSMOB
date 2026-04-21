@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tvSrl" type="id" />
+    <item name="tvCode" type="id" />
+    <item name="tvSwift" type="id" />
+    <item name="tvHead" type="id" />
+    <item name="spinnerAction" type="id" />
+</resources>

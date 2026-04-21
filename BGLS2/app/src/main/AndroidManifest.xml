@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BGLS">
         <activity
+            android:name=".OrganizationDetialsActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
