@@ -57,18 +57,53 @@ class MainActivity : AppCompatActivity() {
         txtLoginTime.text = "$currentTime"
 
         val list = listOf(
-            Transaction("Admin"),
-            Transaction("Migration"),
+            Transaction(
+                "Admin",
+                listOf("Organization Details", "User Control", "Parameters", "Audit Trail")
+            ),
+            Transaction(
+                "Migration",
+                listOf("Customer Master", "Loan Master", "Loan Schedule", "Transaction")
+            ),
+            Transaction("Customer Onboarding",
+                listOf("Minimal Data",
+                    "Approval",
+                    "Disbursement",
+                    "KYC Compliance",
+                    "Compliance Department",
+                    "Hold and Reject")),
             Transaction("Customer Maintenance"),
             Transaction("Loan Maintenance"),
-            Transaction("Loan Operation"),
-            Transaction("Transaction Maintanance"),
-            Transaction("Reversal Transactions"),
-            Transaction("Day End Operation"),
-            Transaction("Collection Process"),
+            Transaction("Loan Operation",
+                listOf("Loan Operation","Loan Closure")),
+            Transaction("Deposit Accounts",
+                listOf("Account Opening","Account Maintenace")),
+            Transaction("Transaction Maintanance",
+                listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
+            Transaction("Reversal Transactions",
+                listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
+            Transaction("Collection Process",
+                listOf("Loan Collection","Recovery Path")),
             Transaction("Batch Job Execution"),
-            Transaction("Transaction Reports"),
-            Transaction("Transaction Inquiries")
+            Transaction("Transaction Reports",
+                listOf("Credit Facility Report",
+                        "End Of Month Report",
+                        "DAB Reports",
+                        "Consolidated Loan Reports",
+                        "Transaction Reports",
+                        "Recovery Report",
+                        "Demand generation Report",
+                        "Interest Accrual Report",
+                        "Penalty Accrual Report")),
+            Transaction("Transaction Inquiries",
+                listOf("Account Balances",
+                    "Interest Summary",
+                    "Journal Book",
+                    "Account Ledger",
+                    "Trial Balance",
+                    "Profile and Loss Account",
+                    "Balance Sheet",
+                    "Balancing Report"))
 
         )
 

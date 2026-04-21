@@ -113,7 +113,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="User Name"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -144,7 +145,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Login Time"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -185,6 +187,7 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@menu/drawer_menu"
+        android:background="@color/lite"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

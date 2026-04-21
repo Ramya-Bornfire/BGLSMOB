@@ -113,7 +113,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="User Name"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -144,7 +145,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Login Time"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"/>
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
