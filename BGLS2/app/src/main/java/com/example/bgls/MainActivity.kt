@@ -12,7 +12,6 @@ import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.view.Gravity
 import android.widget.Toast
-import com.example.bgls.Adapter.TransactionAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -111,9 +110,20 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = TransactionAdapter(list) { subItem ->
-            if (subItem == "Organization Details") {
-                val intent = Intent(this, OrganizationDetialsActivity::class.java)
-                startActivity(intent)
+
+            when (subItem) {
+
+                "Organization Details" -> {
+                    startActivity(Intent(this, OrganizationDetialsActivity::class.java))
+                }
+
+                "User Control" -> {
+                    startActivity(Intent(this, UserControlActivity::class.java))
+                }
+
+                else -> {
+                    Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
