@@ -1,15 +1,11 @@
-package com.example.bgls
+package com.example.bgls.Adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.Transaction
-import android.view.View
-import android.widget.Toast
-import android.content.Intent
-import android.widget.TextView
-
-
 import com.example.bgls.databinding.ItemTransactionBinding
 
 class TransactionAdapter(private val list: List<Transaction>, private val onSubItemClick: (String) -> Unit) :
@@ -79,4 +75,3 @@ class TransactionAdapter(private val list: List<Transaction>, private val onSubI
 
     override fun getItemCount() = list.size
 }
-

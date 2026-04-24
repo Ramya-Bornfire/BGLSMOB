@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txtsYear"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="2026"/>
+
+    <TextView
+        android:id="@+id/txtsMonth"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="JAN"/>
+
+    <TextView
+        android:id="@+id/txtsDate"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="01-01-2026"/>
+
+    <TextView
+        android:id="@+id/txtHoliday"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="NEW YEAR"/>
+
+    <TextView
+        android:id="@+id/txtRemarks"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="Leave"/>
+
+</LinearLayout>

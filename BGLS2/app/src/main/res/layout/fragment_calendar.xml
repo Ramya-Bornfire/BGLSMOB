@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutHeader"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- HEADER -->
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="15dp"
+        android:gravity="center_vertical">
+
+        <!-- TAB 1 -->
+        <TextView
+            android:layout_margin="10dp"
+            android:id="@+id/tabCalendar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Calendar Master"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="@drawable/tab_unselected"/>
+
+        <!-- TAB 2 -->
+        <TextView
+            android:id="@+id/tabHoliday"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="Holiday Master"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="@drawable/tab_unselected"
+            android:layout_marginStart="8dp"/>
+
+        <!-- FILTER BUTTON -->
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="Filter"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutTableHeader"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="Year"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:text="Month"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Select"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutHolidayHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Year"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Month"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Holiday"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Remarks"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <!-- LIST -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/layoutHoliday"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <!-- Left side -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginEnd="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Organization"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etOrganizationName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Enter name"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+
+            <!-- Right side -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etOrganizationType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Location"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Row 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginEnd="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Calendar"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etDateOfRegistration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="YYYY-MM-DD"
+                    android:inputType="date"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etCertificateReg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Month"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Row 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginEnd="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Record No"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etBusinessRegCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Card number"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etVatReference"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="YYYY-MM-DD"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Row 4 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginEnd="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etNoOfEmployees"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:hint="Description"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Remarks"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etAsOn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Remarks"
+                    android:inputType="date"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Row 5 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="14dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginEnd="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Holiday Flag"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etRegOfficeAddr1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Holiday Flag"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp">
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="Record status"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="12dp" />
+                <EditText
+                    android:id="@+id/etRegOfficeAddr2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Record status"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@drawable/edittext_bg"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.view.Gravity
 import android.widget.Toast
+import com.example.bgls.Adapter.TransactionAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -117,3 +118,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+

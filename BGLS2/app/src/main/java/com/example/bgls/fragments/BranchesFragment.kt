@@ -1,4 +1,4 @@
-package com.example.bgls
+package com.example.bgls.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import Adapter.BranchAdapter
+import com.example.bgls.Adapter.BranchAdapter
 import com.example.bgls.DataModels.Branch
+import com.example.bgls.R
 
 class BranchesFragment : Fragment() {
 

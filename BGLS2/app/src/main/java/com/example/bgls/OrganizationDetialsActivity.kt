@@ -1,17 +1,14 @@
 package com.example.bgls
 
-import Adapter.ViewPagerAdapter
+import com.example.bgls.Adapter.ViewPagerAdapter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.navigation.NavigationView
@@ -41,7 +38,7 @@ class OrganizationDetialsActivity : AppCompatActivity() {
             "Head Office",
             "Branches",
             "Calendar Maintenance",
-            "Exceptions"
+
         )
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
