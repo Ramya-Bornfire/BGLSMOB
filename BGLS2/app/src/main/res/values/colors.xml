@@ -14,6 +14,6 @@
 
     <color name="colorNegativeAmount">#F06565</color>
     <color name="colorPositiveAmount">#1A1D1E</color>
-
+    <color name="gray_light">#E0E0E0</color>
     <color name="iconTint">#B0C3CC</color>
 </resources>

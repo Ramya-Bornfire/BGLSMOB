@@ -32,6 +32,11 @@
     <style name="tableCell">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="MenuButtonStyle">
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:backgroundTint">#3F7AE0</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 
 
 
