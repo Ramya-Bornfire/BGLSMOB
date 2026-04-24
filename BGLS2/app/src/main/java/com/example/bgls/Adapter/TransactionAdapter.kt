@@ -12,8 +12,10 @@ import android.widget.TextView
 
 import com.example.bgls.databinding.ItemTransactionBinding
 
-class TransactionAdapter(private val list: List<Transaction>) :
-    RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
+class TransactionAdapter(
+    private val list: List<Transaction>,
+    private val onSubItemClick: (String) -> Unit
+) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private var expandedPosition = -1   // track opened item
 
@@ -54,34 +56,37 @@ class TransactionAdapter(private val list: List<Transaction>) :
 
                 // 👉 Click action
                 textView.setOnClickListener {
-
-                    when (subItem) {
-
-                        "User Control" -> {
-                            val intent = Intent(context, UserControlActivity::class.java)
-                            context.startActivity(intent)
-                        }
-
-                        "Organization Details" -> {
-                            // val intent = Intent(context, OrgDetailsActivity::class.java)
-                            //context.startActivity(intent)
-                        }
-
-                        "Parameters" -> {
-                            //val intent = Intent(context, ParametersActivity::class.java)
-                            // context.startActivity(intent)
-                        }
-
-                        "Audit Trail" -> {
-                            //val intent = Intent(context, AuditTrailActivity::class.java)
-                            //context.startActivity(intent)
-                        }
-
-                        else -> {
-                            Toast.makeText(context, "$subItem Clicked", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                    onSubItemClick(subItem)
                 }
+//                textView.setOnClickListener {
+//
+//                    when (subItem) {
+//
+//                        "User Control" -> {
+//                            val intent = Intent(context, UserControlActivity::class.java)
+//                            context.startActivity(intent)
+//                        }
+//
+//                        "Organization Details" -> {
+//                             val intent = Intent(context, OrganizationDetialsActivity::class.java)
+//                            context.startActivity(intent)
+//                        }
+//
+//                        "Parameters" -> {
+//                            //val intent = Intent(context, ParametersActivity::class.java)
+//                            // context.startActivity(intent)
+//                        }
+//
+//                        "Audit Trail" -> {
+//                            //val intent = Intent(context, AuditTrailActivity::class.java)
+//                            //context.startActivity(intent)
+//                        }
+//
+//                        else -> {
+//                            Toast.makeText(context, "$subItem Clicked", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//                }
 
                 holder.binding.layoutDropdown.addView(textView)
             }
