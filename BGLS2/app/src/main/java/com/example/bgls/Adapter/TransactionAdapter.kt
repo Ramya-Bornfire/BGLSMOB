@@ -1,14 +1,18 @@
-package com.example.bgls.Adapter
+package com.example.bgls
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.Transaction
+import android.view.View
+import android.widget.Toast
+import android.content.Intent
+import android.widget.TextView
+
+
 import com.example.bgls.databinding.ItemTransactionBinding
 
-class TransactionAdapter(private val list: List<Transaction>, private val onSubItemClick: (String) -> Unit) :
+class TransactionAdapter(private val list: List<Transaction>) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private var expandedPosition = -1   // track opened item
@@ -50,7 +54,33 @@ class TransactionAdapter(private val list: List<Transaction>, private val onSubI
 
                 // 👉 Click action
                 textView.setOnClickListener {
-                    onSubItemClick(subItem)   // 👈 forward click to activity
+
+                    when (subItem) {
+
+                        "User Control" -> {
+                            val intent = Intent(context, UserControlActivity::class.java)
+                            context.startActivity(intent)
+                        }
+
+                        "Organization Details" -> {
+                            // val intent = Intent(context, OrgDetailsActivity::class.java)
+                            //context.startActivity(intent)
+                        }
+
+                        "Parameters" -> {
+                            //val intent = Intent(context, ParametersActivity::class.java)
+                            // context.startActivity(intent)
+                        }
+
+                        "Audit Trail" -> {
+                            //val intent = Intent(context, AuditTrailActivity::class.java)
+                            //context.startActivity(intent)
+                        }
+
+                        else -> {
+                            Toast.makeText(context, "$subItem Clicked", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
 
                 holder.binding.layoutDropdown.addView(textView)
@@ -75,3 +105,14 @@ class TransactionAdapter(private val list: List<Transaction>, private val onSubI
 
     override fun getItemCount() = list.size
 }
+
+
+
+
+
+
+
+
+
+
+

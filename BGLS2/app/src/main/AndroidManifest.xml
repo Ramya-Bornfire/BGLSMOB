@@ -30,6 +30,15 @@
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.BGLS.NoActionBar" />
+        <activity
+            android:name=".EmployeProfileAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserControlActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
