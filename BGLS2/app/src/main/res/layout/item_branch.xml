@@ -13,6 +13,7 @@
         android:text="1"
         android:textSize="12sp"/>
 
+    <!-- CODE -->
     <TextView
         android:id="@+id/tvCode"
         android:layout_width="0dp"
@@ -21,6 +22,16 @@
         android:text="CODE"
         android:textSize="12sp"/>
 
+    <EditText
+        android:id="@+id/etCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:hint="Enter Code"/>
+
+    <!-- NAME -->
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
@@ -29,6 +40,16 @@
         android:text="NAME"
         android:textSize="12sp"/>
 
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:hint="Enter Name"/>
+
+    <!-- SWIFT -->
     <TextView
         android:id="@+id/tvSwift"
         android:layout_width="0dp"
@@ -37,6 +58,16 @@
         android:text="SWIFT"
         android:textSize="12sp"/>
 
+    <EditText
+        android:id="@+id/etSwift"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:hint="Enter Swift"/>
+
+    <!-- HEAD -->
     <TextView
         android:id="@+id/tvHead"
         android:layout_width="0dp"
@@ -45,11 +76,20 @@
         android:text="HEAD"
         android:textSize="12sp"/>
 
+    <EditText
+        android:id="@+id/etHead"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:visibility="gone"
+        android:textSize="12sp"
+        android:hint="Enter Head"/>
+
+    <!-- ACTION -->
     <Spinner
         android:id="@+id/spinnerAction"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"/>
-
 
 </LinearLayout>
