@@ -120,6 +120,9 @@ class MainActivity : AppCompatActivity() {
                 "User Control" -> {
                     startActivity(Intent(this, UserControlActivity::class.java))
                 }
+                "Parameters" -> {
+                    startActivity(Intent(this, ParameterActivity::class.java))
+                }
 
                 else -> {
                     Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()
