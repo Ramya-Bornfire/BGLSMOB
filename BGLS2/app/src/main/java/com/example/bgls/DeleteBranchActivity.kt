@@ -1,10 +1,13 @@
 package com.example.bgls
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+
 
 class DeleteBranchActivity : AppCompatActivity() {
 
@@ -17,6 +20,15 @@ class DeleteBranchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_branch)
+
+        // Back Arrow show panna
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Delete Branch"
 
         etBranchCode = findViewById(R.id.etBranchCode)
         etBranchName = findViewById(R.id.etBranchName)
@@ -49,5 +61,16 @@ class DeleteBranchActivity : AppCompatActivity() {
 
             finish()
         }
+    }
+
+    // Back Arrow click handle
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -37,6 +37,7 @@ class BranchAdapter(private val list: MutableList<Branch>) :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_branch, parent, false)
         return ViewHolder(view)
+        
     }
 
     override fun getItemCount() = list.size

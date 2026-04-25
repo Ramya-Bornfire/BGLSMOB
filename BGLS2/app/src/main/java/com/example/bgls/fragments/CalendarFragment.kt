@@ -3,8 +3,10 @@ package com.example.bgls.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val btnFilter = view.findViewById<Button>(R.id.btnFilter)
+        val btnAdd = view.findViewById<Button>(R.id.btnAdd)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        val layoutHoliday = view.findViewById<LinearLayout>(R.id.layoutHoliday)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recyclerCalendar)
         val tabCalendar = view.findViewById<TextView>(R.id.tabCalendar)
@@ -56,13 +62,18 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         )
 
         // 🔥 Calendar TAB CLICK
+        // 🔥 Calendar TAB CLICK → Filter show
         tabCalendar.setOnClickListener {
 
-            // UI selection
             tabCalendar.setBackgroundResource(R.drawable.tab_selected)
             tabHoliday.setBackgroundResource(R.drawable.tab_unselected)
 
-            // Show recycler
+            // ⭐ Filter show
+            btnFilter.visibility = View.VISIBLE
+
+            // ⭐ Add hide
+            btnAdd.visibility = View.GONE
+
             recycler.visibility = View.VISIBLE
             holidayLayout.visibility = View.GONE
             header.visibility = View.VISIBLE
@@ -73,7 +84,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 val filteredList = holidaylist.filter {
                     it.month == selectedMonth
                 }
+
                 recycler.visibility = View.VISIBLE
+                holidayLayout.visibility = View.GONE
                 header.visibility = View.GONE
                 holidayHeader.visibility = View.VISIBLE
 
@@ -81,20 +94,77 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             }
         }
 
-        // 🔥 Holiday TAB CLICK
+
+// 🔥 Holiday TAB CLICK → Add show
         tabHoliday.setOnClickListener {
 
             tabHoliday.setBackgroundResource(R.drawable.tab_selected)
             tabCalendar.setBackgroundResource(R.drawable.tab_unselected)
 
-            recycler.visibility = View.GONE   // 🔥 list hide
-            holidayLayout.visibility = View.VISIBLE   // 🔥 form show
+            // ⭐ Filter hide
+            btnFilter.visibility = View.GONE
 
+            // ⭐ Add show
+            btnAdd.visibility = View.VISIBLE
+
+            recycler.visibility = View.VISIBLE
+            holidayLayout.visibility = View.GONE
+            header.visibility = View.GONE
+            holidayHeader.visibility = View.VISIBLE
+
+            // ⭐ Show all holidays
+            recycler.adapter = HolidayAdapter(holidaylist)
+        }
+        btnAdd.setOnClickListener {
+
+            // form show
+            holidayLayout.visibility = View.VISIBLE
+
+            // recycler hide
+            recycler.visibility = View.GONE
+
+            // headers hide
             header.visibility = View.GONE
             holidayHeader.visibility = View.GONE
-            // 🔥 Show ALL holidays or default month
 
+            // optional: button hide after click
+            btnAdd.visibility = View.GONE
         }
+        btnSubmit.setOnClickListener {
+
+            val organization = view.findViewById<EditText>(R.id.etOrganizationName).text.toString()
+            val location = view.findViewById<EditText>(R.id.etOrganizationType).text.toString()
+            val calendar = view.findViewById<EditText>(R.id.etDateOfRegistration).text.toString()
+            val month = view.findViewById<EditText>(R.id.etCertificateReg).text.toString()
+            val recordNo = view.findViewById<EditText>(R.id.etBusinessRegCard).text.toString()
+            val date = view.findViewById<EditText>(R.id.etVatReference).text.toString()
+            val description = view.findViewById<EditText>(R.id.etNoOfEmployees).text.toString()
+            val remarks = view.findViewById<EditText>(R.id.etAsOn).text.toString()
+            val holidayFlag = view.findViewById<EditText>(R.id.etRegOfficeAddr1).text.toString()
+            val recordStatus = view.findViewById<EditText>(R.id.etRegOfficeAddr2).text.toString()
+
+            if (
+                organization.isEmpty() ||
+                location.isEmpty() ||
+                calendar.isEmpty() ||
+                month.isEmpty() ||
+                recordNo.isEmpty() ||
+                date.isEmpty() ||
+                description.isEmpty() ||
+                remarks.isEmpty() ||
+                holidayFlag.isEmpty() ||
+                recordStatus.isEmpty()
+            ) {
+                Toast.makeText(requireContext(), "Enter all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Holiday Added Successfully", Toast.LENGTH_SHORT).show()
+
+                layoutHoliday.visibility = View.GONE
+                recycler.visibility = View.VISIBLE
+                holidayHeader.visibility = View.VISIBLE
+            }
+        }
+
 
         // ✅ Default
         tabCalendar.performClick()

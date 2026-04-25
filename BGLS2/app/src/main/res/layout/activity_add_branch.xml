@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -11,31 +12,25 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- TITLE -->
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <!-- TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/cyanblue"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <TextView
+                android:id="@+id/toolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/cyanblue"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                android:text="BRANCH - ADD"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+        </androidx.appcompat.widget.Toolbar>
 
-                <TextView
-                    android:id="@+id/toolbarTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="BRANCH - DELETE"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:gravity="center"/>
-            </androidx.appcompat.widget.Toolbar>
         <!-- FORM BOX -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +47,6 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="12dp">
 
-                <!-- LEFT -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -71,10 +65,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
                         android:padding="8dp"
-                        android:text="MOMBASA OFFICE" />
+                        android:hint="Enter Branch Code"/>
                 </LinearLayout>
 
-                <!-- RIGHT -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -94,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
                         android:padding="8dp"
-                        android:text="MOMBASA" />
+                        android:hint="Enter Branch Name"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -119,10 +112,11 @@
 
                     <EditText
                         android:id="@+id/etBranchHead"
-                        android:background="@drawable/edittext_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"/>
+                        android:background="@drawable/edittext_bg"
+                        android:padding="8dp"
+                        android:hint="Enter Branch Head"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -140,9 +134,10 @@
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:background="@drawable/edittext_bg"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"/>
+                        android:background="@drawable/edittext_bg"
+                        android:padding="8dp"
+                        android:hint="Enter Designation"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -167,10 +162,11 @@
 
                     <EditText
                         android:id="@+id/etSwiftCode"
-                        android:background="@drawable/edittext_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"/>
+                        android:background="@drawable/edittext_bg"
+                        android:padding="8dp"
+                        android:hint="Enter Swift Code"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,7 +186,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
-                        android:text="ACTIVE"
+                        android:hint="Enter Remarks"
                         android:padding="8dp"/>
                 </LinearLayout>
             </LinearLayout>
@@ -218,8 +214,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
-                        android:padding="8dp"
-                        android:text="MOMBASA" />
+                        android:hint="Enter City"
+                        android:padding="8dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -239,7 +235,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
-                        android:text="KENYA"
+                        android:hint="Enter State"
                         android:padding="8dp"/>
                 </LinearLayout>
             </LinearLayout>
@@ -266,7 +262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
-                        android:text="KENYA"
+                        android:hint="Enter Country"
                         android:padding="8dp"/>
                 </LinearLayout>
 
@@ -284,36 +280,24 @@
                         android:textSize="15sp" />
 
                     <EditText
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_bg"
+                        android:hint="Enter Zip Code"
                         android:padding="8dp"/>
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- BUTTONS -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- SAVE BUTTON -->
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="20dp">
-
-
-
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"
-                android:layout_marginStart="10dp"/>
-
-        </LinearLayout>
-        </LinearLayout>
-
+            android:text="SAVE"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 </ScrollView>
