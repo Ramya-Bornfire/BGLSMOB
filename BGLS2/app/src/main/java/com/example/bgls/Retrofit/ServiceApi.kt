@@ -13,11 +13,7 @@ interface ServiceApi {
 
     @GET("api/organizationDetails")
     suspend fun getOrganizationDetails(
-        @Query("formmode") formmode: String? = "add",
-        @Query("branch_code") branchCode: String? = null,
-        @Query("record_srl") recordSrl: Long? = null,
-        @Query("month") month: String? = null,
-        @Query("year") year: String? = null
+        @Query("formmode") formmode: String? = "add"
     ): Response<OrganizationResponse>
 
 }

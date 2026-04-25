@@ -65,6 +65,7 @@ class BranchesFragment : Fragment() {
                         )
                     }
 
+
                     branchAdapter.notifyDataSetChanged()
 
                 } else {

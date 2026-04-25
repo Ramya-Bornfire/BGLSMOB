@@ -18,3 +18,17 @@ data class Branch(
     val branchHead: String?
 )
 
+data class BranchDto(
+
+    @SerializedName("branch_code")
+    val branchCode: String?,
+
+    @SerializedName("branch_name")
+    val branchName: String?,
+
+    @SerializedName("swift_code")
+    val swiftCode: String?,
+
+    @SerializedName("branch_head")
+    val branchHead: String?
+)

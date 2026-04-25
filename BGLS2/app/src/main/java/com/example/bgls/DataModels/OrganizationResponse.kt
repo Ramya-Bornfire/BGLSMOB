@@ -1,12 +1,14 @@
 package com.example.bgls.DataModels
 
+import com.google.gson.annotations.SerializedName
 
-data class OrganizationResponse(
-    val formmode: String?,
-    val OrgBranch: List<Branch>?
-)
 
 data class Organization(
     val orgName: String?,
     val address: String?
+)
+data class OrganizationResponse(
+
+    @SerializedName("OrgBranch")
+    val OrgBranch: List<BranchDto> = emptyList()
 )
