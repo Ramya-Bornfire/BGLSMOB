@@ -60,7 +60,7 @@ class EmployeProfileAddActivity : AppCompatActivity() {
     private lateinit var btnHome: Button
     private lateinit var btnSubmit: Button
     //
-    // private lateinit var btnBack: Button
+     private lateinit var btnBack: ImageView
 
     // ─── Photo picker launcher ───
     private val photoPickerLauncher = registerForActivityResult(
@@ -127,9 +127,9 @@ class EmployeProfileAddActivity : AppCompatActivity() {
         ivPhotoPreview = findViewById(R.id.ivPhotoPreview)
 
         btnList = findViewById(R.id.btnList)
-        btnHome = findViewById(R.id.btnHome)
+       // btnHome = findViewById(R.id.btnBack)
         btnSubmit = findViewById(R.id.btnSubmit)
-       // btnBack = findViewById(R.id.btnBack)
+        btnBack = findViewById(R.id.btnBack)
     }
 
     private fun setupSpinners() {
@@ -210,14 +210,14 @@ class EmployeProfileAddActivity : AppCompatActivity() {
             finish() // Go back to list
         }
 
-//        btnBack.setOnClickListener {
-//            onBackPressedDispatcher.onBackPressed()
-//        }
-
-        btnHome.setOnClickListener {
-            Toast.makeText(this, "Navigate to Home", Toast.LENGTH_SHORT).show()
-            // TODO: startActivity(Intent(this, HomeActivity::class.java))
+        btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
+
+//        btnHome.setOnClickListener {
+//            Toast.makeText(this, "Navigate to Home", Toast.LENGTH_SHORT).show()
+//            // TODO: startActivity(Intent(this, HomeActivity::class.java))
+//        }
 
         btnSubmit.setOnClickListener {
             if (validateForm()) {

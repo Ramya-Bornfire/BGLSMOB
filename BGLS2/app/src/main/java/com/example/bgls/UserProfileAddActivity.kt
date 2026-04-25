@@ -46,7 +46,7 @@ class UserProfileAddActivity : AppCompatActivity() {
     // ─── Buttons ───
     private lateinit var btnHome: Button
     private lateinit var btnSubmit: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnBack: ImageView
 
     // ─── Audit footer ───
     private lateinit var tvEntryUser: TextView

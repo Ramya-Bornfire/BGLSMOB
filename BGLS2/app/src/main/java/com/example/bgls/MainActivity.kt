@@ -123,6 +123,9 @@ class MainActivity : AppCompatActivity() {
                 "Parameters" -> {
                     startActivity(Intent(this, ParameterActivity::class.java))
                 }
+                "Audit Trail" -> {
+                    startActivity(Intent(this, AuditTrailDetailsActivity::class.java))
+                }
 
                 else -> {
                     Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()

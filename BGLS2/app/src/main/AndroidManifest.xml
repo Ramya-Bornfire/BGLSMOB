@@ -51,6 +51,19 @@
         <activity
             android:name=".UserControlActivity"
             android:exported="false" />
+
+<!--        <activity-->
+<!--            android:name=".NotificationAndLogsActivity"-->
+<!--            android:exported="true" />-->
+        <activity
+            android:name=".BusinessActivityDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserActivityDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AuditTrailDetailsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
