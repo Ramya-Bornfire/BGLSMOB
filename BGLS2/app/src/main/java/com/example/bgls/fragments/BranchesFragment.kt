@@ -2,17 +2,16 @@ package com.example.bgls.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.*
+import com.example.bgls.*
 import com.example.bgls.Adapter.BranchAdapter
-import com.example.bgls.AddBranchActivity
 import com.example.bgls.DataModels.Branch
-import com.example.bgls.R
+import kotlinx.coroutines.launch
+
 
 class BranchesFragment : Fragment() {
 
@@ -22,16 +21,11 @@ class BranchesFragment : Fragment() {
 
     private val branchList = mutableListOf<Branch>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_branches, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         btnAdd = view.findViewById(R.id.btnAdd)
@@ -42,22 +36,44 @@ class BranchesFragment : Fragment() {
 
         loadBranches()
 
-        // ✅ FIXED ADD BUTTON CLICK
         btnAdd.setOnClickListener {
-            val intent = Intent(requireContext(), AddBranchActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), AddBranchActivity::class.java))
         }
     }
 
     private fun loadBranches() {
-        branchList.clear()
-        branchList.addAll(
-            listOf(
-                Branch(1, "BR001", "Head Office", "HDFCINBB", "John Doe"),
-                Branch(2, "BR002", "Downtown Branch", "HDFCINBB002", "Jane Smith"),
-                Branch(3, "BR003", "North Branch", "HDFCINBB003", "Bob Johnson")
-            )
-        )
-        branchAdapter.notifyDataSetChanged()
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getOrganizationDetails()
+
+                if (response.isSuccessful) {
+
+                    val branches = response.body()?.OrgBranch ?: emptyList()
+
+                    branchList.clear()
+
+                    branches.forEachIndexed { index, b ->
+                        branchList.add(
+                            Branch(
+                                srlNo = index + 1,
+                                branchCode = b.branchCode ?: "",
+                                branchName = b.branchName ?: "",
+                                swiftCode = b.swiftCode ?: "",
+                                branchHead = b.branchHead ?: ""
+                            )
+                        )
+                    }
+
+                    branchAdapter.notifyDataSetChanged()
+
+                } else {
+                    Toast.makeText(requireContext(), "API Error", Toast.LENGTH_SHORT).show()
+                }
+
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
