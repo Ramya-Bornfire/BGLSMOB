@@ -13,7 +13,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import com.example.bgls.DataModels.RefResponse
+
 import com.example.bgls.databinding.ActivityParameterBinding
+import retrofit2.Call
+import retrofit2.Response
+
 class ParameterActivity : AppCompatActivity() {
 
     private lateinit var binding:  ActivityParameterBinding
@@ -156,6 +161,9 @@ class ParameterActivity : AppCompatActivity() {
         tvTitle.text = moduleName
 
         when (moduleName) {
+            "Reference Code Maintenance" -> {
+                loadReferenceCodesFromAPI()   // ✅ CALL API HERE
+            }
             "GL Structure" -> {
                 populateGLTable(getGLTableData())
             }
@@ -615,5 +623,65 @@ class ParameterActivity : AppCompatActivity() {
             )
         )
     }
+    private fun loadReferenceCodesFromAPI() {
+
+        RetrofitClient.api.getRefList("list")
+            .enqueue(object : retrofit2.Callback<RefResponse> {
+
+                override fun onResponse(
+                    call: Call<RefResponse>,
+                    response: Response<RefResponse>
+                ) {
+                    if (response.isSuccessful) {
+
+                        val body = response.body()
+
+                        if (body != null && body.refList != null) {
+
+                            val list = body.refList.map {
+                                ReferenceItem(
+                                    refType = it.ref_type,
+                                    typeDesc = it.ref_type_desc,
+                                    refId = it.ref_id,
+                                    refDesc = it.ref_id_desc,
+                                    moduleId = it.module_id
+                                )
+                            }
+
+                            populateTable(list)
+
+                        } else {
+                            Toast.makeText(
+                                this@ParameterActivity,
+                                "Response empty or null",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                    } else {
+                        // 🔥 THIS IS THE REAL ERROR
+                        Toast.makeText(
+                            this@ParameterActivity,
+                            "Error Code: ${response.code()} \n${response.errorBody()?.string()}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+
+                override fun onFailure(
+                    call: retrofit2.Call<RefResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(
+                        this@ParameterActivity,
+                        "Error: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+    }
+
+
 
 }
