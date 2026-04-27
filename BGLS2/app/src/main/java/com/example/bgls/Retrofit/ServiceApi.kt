@@ -17,60 +17,67 @@ interface ServiceApi {
         @Query("formmode") formmode: String? = "add"
     ): Response<OrganizationResponse>
 
-    @GET("organizationDetails")
+    @GET("api/organizationDetails")
     suspend fun getCalendar(
         @Query("formmode") formmode: String,
-        @Query("year") year: String?,
+        @Query("year") year: String,
         @Query("month") month: String?
     ): Response<CalendarResponse>
-    @GET("employeeProfile")
+
+    @GET("api/employeeProfile")
     fun getEmployeeProfile(
         @Query("formmode") formmode: String?,
         @Query("employee_id") employeeId: String?
     ): Call<Map<String, Any>>
-    @GET("glcode")
+    @GET("api/glcode")
     fun getGLCode(
         @Query("formmode") formmode: String?,
         @Query("glcode") glcode: String?,
         @Query("glsh_Code") glshCode: String?
     ): Call<Map<String, Any>>
-    @GET("parameters")
+    @GET("api/parameters")
     fun getParameters(
         @Query("formmode") formmode: String?
     ): Call<Map<String, Any>>
 
-    @GET("parameters/view")
+    @GET("api/parameters/view")
     fun viewParameter(
         @Query("id") id: String
     ): Call<Map<String, Any>>
 
-    @GET("parameters/add")
+    @GET("api/parameters/add")
     fun addParameter(): Call<Map<String, Any>>
 
-    @GET("parameters/update")
+    @GET("api/parameters/update")
     fun updateParameter(
         @Query("id") id: String
     ): Call<Map<String, Any>>
 
-    @GET("parameters/delete")
+    @GET("api/parameters/delete")
     fun deleteParameter(
         @Query("id") id: String
     ): Call<Map<String, Any>>
 
-    @GET("chartOfAccounts")
+    @GET("api/chartOfAccounts")
     fun getChartOfAccounts(
         @Query("formmode") formmode: String?,
         @Query("acct_num") acctNum: String?
     ): Call<Map<String, Any>>
-    @GET("accountLedger")
+    @GET("api/accountLedger")
     fun getAccountLedger(
         @Query("formmode") formmode: String?,
         @Query("acct_num") acctNum: String?
     ): Call<Map<String, Any>>
-    @GET("transactionsAccounts")
+    @GET("api/transactionsAccounts")
     fun getTransactionsAccounts(
         @Query("formmode") formmode: String?,
         @Query("id") id: Long?
+    ): Call<Map<String, Any>>
+    @GET("api/serviceactivities")
+    fun getServiceActivities(
+        @Query("formmode") formmode: String?,
+        @Query("Fromdate") fromDate: String?,
+        @Query("ListFlg") listFlg: String?
     ): Call<Map<String, Any>>
 
 }

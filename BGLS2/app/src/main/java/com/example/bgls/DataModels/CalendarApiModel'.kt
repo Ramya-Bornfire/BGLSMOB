@@ -1,7 +1,7 @@
 package com.example.bgls.DataModels
 
 data class CalendarApiModel(
-    val year: String?,
+    val year: Int?,
     val month: String?
 )
 
@@ -17,3 +17,4 @@ data class CalendarResponse(
     val calender_list: List<CalendarApiModel> = emptyList(),
     val holidays_list: List<HolidayApiModel> = emptyList()
 )
+

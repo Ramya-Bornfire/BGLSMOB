@@ -13,6 +13,9 @@ import com.example.bgls.DataModels.CalendarModel
 import com.example.bgls.DataModels.HolidayModel
 import com.example.bgls.R
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
@@ -65,7 +68,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             header.visibility = View.GONE
             holidayHeader.visibility = View.VISIBLE
 
+//            loadHolidays("")
+            val currentMonth = SimpleDateFormat("MMM", Locale.ENGLISH)
+                .format(Date())
+                .uppercase()
+
             loadHolidays(null)
+
         }
 
         // 🔥 ADD BUTTON
@@ -100,18 +109,22 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     val calList = response.body()?.calender_list ?: emptyList()
 
                     val mappedList = calList.map {
-                        CalendarModel(it.year ?: "", it.month ?: "")
+                        CalendarModel(it.year?.toString() ?: "", it.month ?: "")
+
                     }
 
                     recycler.adapter = CalendarAdapter(mappedList) { selectedMonth ->
                         loadHolidays(selectedMonth)
                     }
-
+                    println("CALENDAR RESPONSE = ${response.body()}")
                 } else {
+                    println(response.body())
+                    println("CALENDAR RESPONSE = ${response.body()}")
                     Toast.makeText(requireContext(), "API Error", Toast.LENGTH_SHORT).show()
                 }
 
             } catch (e: Exception) {
+
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
@@ -121,7 +134,11 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun loadHolidays(month: String?) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getCalendar("calender", "2026", month)
+                val response = RetrofitClient.api.getCalendar(
+                    "calender",
+                    "2026",
+                    month   // 🔥 null means ALL months
+                )
 
                 if (response.isSuccessful) {
 
@@ -148,4 +165,5 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             }
         }
     }
+
 }
