@@ -146,20 +146,9 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <HorizontalScrollView
+        <!-- HEADER -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:scrollbars="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <!-- HEADER -->
-                <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="#E8E8E8"
@@ -288,16 +277,13 @@
                         android:singleLine="true"/>
                 </LinearLayout>
 
-                <!-- LIST -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewEmployees"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:background="#FFFFFF"/>
-
-            </LinearLayout>
-        </HorizontalScrollView>
+        <!-- LIST -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEmployees"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"/>
 
     </LinearLayout>
 
