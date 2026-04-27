@@ -4,6 +4,6 @@ data class HolidayModel(
     val year: String,
     val month: String,
     val date: String,
-    val holidayName: String,
+    val description: String,
     val remarks: String
 )

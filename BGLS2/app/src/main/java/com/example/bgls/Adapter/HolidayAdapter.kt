@@ -31,7 +31,7 @@ class HolidayAdapter(private val list: List<HolidayModel>) :
         holder.year.text = item.year
         holder.month.text = item.month
         holder.date.text = item.date
-        holder.holiday.text = item.holidayName
+        holder.holiday.text = item.description
         holder.remarks.text = item.remarks
     }
 

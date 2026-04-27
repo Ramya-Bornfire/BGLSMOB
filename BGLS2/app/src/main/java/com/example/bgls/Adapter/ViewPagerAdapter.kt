@@ -6,6 +6,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bgls.R
 import com.example.bgls.fragments.BranchesFragment
 import com.example.bgls.fragments.CalendarFragment
+import com.example.bgls.fragments.HeadOfficeFragment
+
 class ViewPagerAdapter(activity: AppCompatActivity) :
     FragmentStateAdapter(activity) {
 
@@ -20,7 +22,7 @@ class ViewPagerAdapter(activity: AppCompatActivity) :
             else -> HeadOfficeFragment()
         }
     }
-    class HeadOfficeFragment : Fragment(R.layout.fragment_head_office)
+
 
 //    class com.example.bgls.CalendarFragment : Fragment(R.layout.fragment_empty)
 //    class ExceptionsFragment : Fragment(R.layout.fragment_empty)

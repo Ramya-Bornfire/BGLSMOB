@@ -11,8 +11,8 @@ import com.example.bgls.R
 
 class CalendarAdapter(
     private val list: List<CalendarModel>,
-    private val onClick: (String) -> Unit) :
-    RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
+    private val onClick: (String) -> Unit
+) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     var selectedPosition = -1
 
@@ -23,34 +23,31 @@ class CalendarAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_calendar, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_calendar, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val item = list[position]
 
-        holder.year.text = item.year
-        holder.month.text = item.month
+        holder.year.text = item.year ?: ""
+        holder.month.text = item.month ?: ""
 
         holder.radio.isChecked = position == selectedPosition
 
         holder.radio.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()
-
-            // 🔥 MAIN LOGIC
-            onClick(item.month)
+            onClick(item.month ?: "")
         }
 
-        // 👉 optional (row click)
         holder.itemView.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()
-
-            onClick(item.month)
+            onClick(item.month ?: "")
         }
     }
 

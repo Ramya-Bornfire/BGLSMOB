@@ -1,4 +1,5 @@
 package com.example.bgls.Retrofit
+import com.example.bgls.DataModels.CalendarResponse
 import com.example.bgls.DataModels.OrganizationResponse
 import com.example.bgls.DataModels.RefResponse
 import retrofit2.Call
@@ -15,5 +16,61 @@ interface ServiceApi {
     suspend fun getOrganizationDetails(
         @Query("formmode") formmode: String? = "add"
     ): Response<OrganizationResponse>
+
+    @GET("organizationDetails")
+    suspend fun getCalendar(
+        @Query("formmode") formmode: String,
+        @Query("year") year: String?,
+        @Query("month") month: String?
+    ): Response<CalendarResponse>
+    @GET("employeeProfile")
+    fun getEmployeeProfile(
+        @Query("formmode") formmode: String?,
+        @Query("employee_id") employeeId: String?
+    ): Call<Map<String, Any>>
+    @GET("glcode")
+    fun getGLCode(
+        @Query("formmode") formmode: String?,
+        @Query("glcode") glcode: String?,
+        @Query("glsh_Code") glshCode: String?
+    ): Call<Map<String, Any>>
+    @GET("parameters")
+    fun getParameters(
+        @Query("formmode") formmode: String?
+    ): Call<Map<String, Any>>
+
+    @GET("parameters/view")
+    fun viewParameter(
+        @Query("id") id: String
+    ): Call<Map<String, Any>>
+
+    @GET("parameters/add")
+    fun addParameter(): Call<Map<String, Any>>
+
+    @GET("parameters/update")
+    fun updateParameter(
+        @Query("id") id: String
+    ): Call<Map<String, Any>>
+
+    @GET("parameters/delete")
+    fun deleteParameter(
+        @Query("id") id: String
+    ): Call<Map<String, Any>>
+
+    @GET("chartOfAccounts")
+    fun getChartOfAccounts(
+        @Query("formmode") formmode: String?,
+        @Query("acct_num") acctNum: String?
+    ): Call<Map<String, Any>>
+    @GET("accountLedger")
+    fun getAccountLedger(
+        @Query("formmode") formmode: String?,
+        @Query("acct_num") acctNum: String?
+    ): Call<Map<String, Any>>
+    @GET("transactionsAccounts")
+    fun getTransactionsAccounts(
+        @Query("formmode") formmode: String?,
+        @Query("id") id: Long?
+    ): Call<Map<String, Any>>
 
 }
