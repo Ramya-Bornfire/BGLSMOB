@@ -1,5 +1,6 @@
 package com.example.bgls
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -500,23 +501,53 @@ class ParameterActivity : AppCompatActivity() {
                 "Action"
             )
 
+//            rowData.forEachIndexed { colIndex, value ->
+//                val isActionColumn = colIndex == 5
+//                val textView = createTextView(value, false, weights[colIndex])
+//
+//                if (isActionColumn) {
+//                    textView.setTextColor(Color.BLUE)
+//                    textView.paint.isUnderlineText = true
+//                    textView.setOnClickListener {
+//                        Toast.makeText(
+//                            this,
+//                            "Action clicked for ${item.refType} - ${item.typeDesc}",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//
+//                // Alternate row colors
+//                if (rowIndex % 2 == 0) {
+//                    textView.setBackgroundColor(Color.parseColor("#F5F5F5"))
+//                } else {
+//                    textView.setBackgroundColor(Color.WHITE)
+//                }
+//
+//                row.addView(textView)
+//            }
             rowData.forEachIndexed { colIndex, value ->
-                val isActionColumn = colIndex == 5
+
                 val textView = createTextView(value, false, weights[colIndex])
 
-                if (isActionColumn) {
+                // ✅ REF ID column (index 2)
+                if (colIndex == 2) {
+
                     textView.setTextColor(Color.BLUE)
                     textView.paint.isUnderlineText = true
+
                     textView.setOnClickListener {
-                        Toast.makeText(
-                            this,
-                            "Action clicked for ${item.refType} - ${item.typeDesc}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                       // val intent = Intent(this, ReferenceDetailActivity::class.java)
+                        intent.putExtra("REF_ID", item.refId)
+                        intent.putExtra("REF_DESC", item.refDesc)
+                        intent.putExtra("TYPE_DESC", item.typeDesc)
+                    // ✅ Toast message
+                        Toast.makeText(this, "Clicked Ref ID: ${item.refId}",Toast.LENGTH_SHORT).show()                      //  startActivity(intent)
                     }
                 }
 
-                // Alternate row colors
+                // alternate row color (keep existing logic)
                 if (rowIndex % 2 == 0) {
                     textView.setBackgroundColor(Color.parseColor("#F5F5F5"))
                 } else {
