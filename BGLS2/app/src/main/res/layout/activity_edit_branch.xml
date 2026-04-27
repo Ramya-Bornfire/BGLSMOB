@@ -9,94 +9,105 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-        <!-- TITLE -->
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        <!-- TOP HEADER -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cyanblue"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:background="@drawable/header_bg"
+            android:padding="12dp">
 
-            <TextView
-                android:id="@+id/toolbarTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BRANCH - MODIFY"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/arrow_back"
+                    android:contentDescription="Back"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="BRANCH - MODIFY"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#2196F3" />
+
+            </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- FORM BOX -->
+        <!-- MAIN CARD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="16dp"
-            android:padding="20dp"
-            android:background="#FFFFFF">
+            android:background="@drawable/card_background"
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <!-- ROW 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
-                <!-- LEFT -->
-                <LinearLayout
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Branch Code"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
+
+                <EditText
+                    android:id="@+id/etBranchCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="MOMBASA OFFICE" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Branch Code"
-                        android:textSize="15sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="1dp" />
 
-                    <EditText
-                        android:id="@+id/etBranchCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:padding="8dp"
-                        android:text="MOMBASA OFFICE" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Branch Name"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
 
-                <!-- RIGHT -->
-                <LinearLayout
+                <EditText
+                    android:id="@+id/etBranchName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Branch Name"
-                        android:textSize="15sp" />
-
-                    <EditText
-                        android:id="@+id/etBranchName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:padding="8dp"
-                        android:text="MOMBASA" />
-                </LinearLayout>
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="MOMBASA" />
             </LinearLayout>
 
             <!-- ROW 2 -->
@@ -104,47 +115,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Branch Head"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
+
+                <EditText
+                    android:id="@+id/etBranchHead"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Branch Head"
-                        android:textSize="15sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="1dp" />
 
-                    <EditText
-                        android:id="@+id/etBranchHead"
-                        android:background="@drawable/edittext_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Designation"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
 
-                <LinearLayout
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Designation"
-                        android:textSize="15sp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:background="@drawable/edittext_bg"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp" />
             </LinearLayout>
 
             <!-- ROW 3 -->
@@ -152,48 +157,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Swift Code"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
+
+                <EditText
+                    android:id="@+id/etSwiftCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Swift Code"
-                        android:textSize="15sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="1dp" />
 
-                    <EditText
-                        android:id="@+id/etSwiftCode"
-                        android:background="@drawable/edittext_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Remarks"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
 
-                <LinearLayout
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Remarks"
-                        android:textSize="15sp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:text="ACTIVE"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="ACTIVE" />
             </LinearLayout>
 
             <!-- ROW 4 -->
@@ -201,118 +200,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="City"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
+
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="MOMBASA" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="City"
-                        android:textSize="15sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="1dp" />
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:padding="8dp"
-                        android:text="MOMBASA" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="State"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
 
-                <LinearLayout
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="State"
-                        android:textSize="15sp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:text="KENYA"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="KENYA" />
             </LinearLayout>
 
             <!-- ROW 5 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Country"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
+
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp"
+                    android:text="KENYA" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Country"
-                        android:textSize="15sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="1dp" />
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:text="KENYA"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Zip Code"
+                    android:textSize="13sp"
+                    android:textColor="#555555" />
 
-                <LinearLayout
+                <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Zip Code"
-                        android:textSize="15sp" />
-
-                    <EditText
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_bg"
-                        android:padding="8dp"/>
-                </LinearLayout>
+                    android:background="@drawable/edittext_background"
+                    android:padding="8dp" />
             </LinearLayout>
 
-        </LinearLayout>
-
-        <!-- BUTTONS -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="20dp">
-
-
-
-            <Button
-                android:id="@+id/btnUpdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Submit"
-                android:layout_marginStart="10dp" />
-
-        </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -20,6 +20,7 @@
         android:background="@color/cyanblue"
         android:textAlignment="center"/>
 
+
     <!-- ✅ FIXED MENU (NO SCROLL) -->
     <HorizontalScrollView
         android:layout_width="match_parent"

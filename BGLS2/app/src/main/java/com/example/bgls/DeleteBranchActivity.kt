@@ -1,13 +1,11 @@
 package com.example.bgls
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-
 
 class DeleteBranchActivity : AppCompatActivity() {
 
@@ -16,19 +14,14 @@ class DeleteBranchActivity : AppCompatActivity() {
     private lateinit var etSwiftCode: EditText
     private lateinit var etBranchHead: EditText
     private lateinit var btnDelete: Button
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_branch)
 
-        // Back Arrow show panna
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = "Delete Branch"
+        // XML la Toolbar illa, btnBack use pannrom
+        btnBack = findViewById(R.id.btnBack)
 
         etBranchCode = findViewById(R.id.etBranchCode)
         etBranchName = findViewById(R.id.etBranchName)
@@ -52,6 +45,12 @@ class DeleteBranchActivity : AppCompatActivity() {
         etSwiftCode.isEnabled = false
         etBranchHead.isEnabled = false
 
+        // Back button click
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        // Delete button click
         btnDelete.setOnClickListener {
             Toast.makeText(
                 this,
@@ -61,16 +60,5 @@ class DeleteBranchActivity : AppCompatActivity() {
 
             finish()
         }
-    }
-
-    // Back Arrow click handle
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

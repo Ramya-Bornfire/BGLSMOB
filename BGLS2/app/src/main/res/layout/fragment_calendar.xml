@@ -56,6 +56,67 @@
             android:visibility="gone"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layoutFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <!-- Year Filter -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etFilterYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:background="@drawable/edittext_bg"
+                android:hint="Enter Year"
+                android:padding="2dp"/>
+        </LinearLayout>
+
+        <!-- Month Filter -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Month"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="6dp"/>
+
+            <EditText
+                android:id="@+id/etFilterMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_bg"
+                 android:padding="2dp"
+                android:hint="Enter Month"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/layoutTableHeader"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+//import androidx.appcompat.widget.Toolbar
 
 class AddBranchActivity : AppCompatActivity() {
 
@@ -17,12 +17,12 @@ class AddBranchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_branch)
 
         // Toolbar setup
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        //val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        //setSupportActionBar(toolbar)
 
-        toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Add Branch"
+        //toolbar.setTitleTextColor(resources.getColor(android.R.color.white))
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.title = "Add Branch"
 
         // Views
         val etBranchCode = findViewById<EditText>(R.id.etBranchCode)
@@ -30,7 +30,7 @@ class AddBranchActivity : AppCompatActivity() {
         val etSwiftCode = findViewById<EditText>(R.id.etSwiftCode)
         val etBranchHead = findViewById<EditText>(R.id.etBranchHead)
         val btnSave = findViewById<Button>(R.id.btnSave)
-
+        val btnBack = findViewById<android.widget.ImageView>(R.id.btnBack)
         // Save click
         btnSave.setOnClickListener {
 
@@ -53,14 +53,17 @@ class AddBranchActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
+        btnBack.setOnClickListener {
+            finish()
+        }
     }
 
     // Back button in toolbar
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == android.R.id.home) {
+//            finish()
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }

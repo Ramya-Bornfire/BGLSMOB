@@ -8,9 +8,9 @@ import android.view.View
 import android.widget.Toast
 import android.content.Intent
 import android.widget.TextView
-
-
 import com.example.bgls.databinding.ItemTransactionBinding
+
+//import com.example.bgls.databinding.ItemTransactionBinding
 
 class TransactionAdapter(
     private val list: List<Transaction>,
