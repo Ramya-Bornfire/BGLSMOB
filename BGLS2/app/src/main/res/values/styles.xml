@@ -161,4 +161,41 @@
     </style>
 
 
+
+
+    <!-- ADD THESE INSIDE your existing <resources> tag in res/values/styles.xml -->
+
+    <!--
+        LoanLabel  : fixed 130dp width, right-padded, text label
+        LoanField  : weight=1, bordered EditText, disabled (read display)
+        ColGap     : 12dp horizontal spacer between columns
+    -->
+
+    <style name="LoanLabel">
+        <item name="android:layout_width">130dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#444444</item>
+        <item name="android:paddingEnd">4dp</item>
+    </style>
+
+    <style name="LoanField">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:enabled">false</item>
+    </style>
+
+    <style name="ColGap">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
 </resources>
