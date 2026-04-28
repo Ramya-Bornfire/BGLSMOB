@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#F5F5F5">
+
+    <!-- TITLE BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="@drawable/header_bg"
+        android:padding="12dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="LOAN SCHEDULE -VIEW" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/white"
+            android:gravity="center"/>
+        <Button android:id="@+id/btnAccount" android:layout_width="wrap_content" android:layout_height="36dp" android:text="ACCOUNT" android:textColor="#FFFFFF" android:backgroundTint="#2196F3" android:paddingStart="12dp" android:paddingEnd="12dp" android:layout_marginEnd="8dp" android:textSize="12sp"/>
+        <Button android:id="@+id/btnLedger" android:layout_width="wrap_content" android:layout_height="36dp" android:text="LEDGER" android:textColor="#FFFFFF" android:backgroundTint="#2196F3" android:paddingStart="12dp" android:paddingEnd="12dp" android:textSize="12sp"/>
+    </LinearLayout>
+
+    <!-- FORM BOX -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#FFFFFF" android:padding="16dp" android:layout_margin="16dp">
+        
+        <!-- ROW 1 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Id" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="22187093"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="BEATRICE KEMUNTO OBWOCHA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Date of Loan" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="19-06-2023"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 2 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Id" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="CCN78a879844c515110a41a"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Consumer Credit New Client"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Amount" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="127,285.00"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 3 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Currency" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="KES"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Outstanding Balance" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="-324,711.70"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Arrears Age" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="875"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 4 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Demand" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="245,832.00"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Collection" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="96,966.00"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Arrears" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="148,866.00"/></LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- TABLE HEADER TITLE -->
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#F5F5F5" android:text="DEMAND-COLLECTION-OVERDUE" android:textStyle="bold" android:textColor="#111111" android:gravity="center" android:padding="8dp"/>
+
+    <!-- TABLE SECTION -->
+    <HorizontalScrollView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:scrollbars="horizontal">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <!-- HEADER ROW -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Due Date" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Expenses" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Expenses" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Expenses" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Expenses" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Repaid Date" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Paid" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Paid" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Paid" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Paid" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Total Dues" android:gravity="center_vertical|end"/>
+            </LinearLayout>
+
+            <!-- RECYCLER VIEW -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLoanSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

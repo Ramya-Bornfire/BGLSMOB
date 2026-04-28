@@ -127,6 +127,10 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, AuditTrailDetailsActivity::class.java))
                 }
 
+                "Customer Master"->{
+                    startActivity(Intent(this,CustomerMasterActivity::class.java))
+                }
+
                 else -> {
                     Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()
                 }

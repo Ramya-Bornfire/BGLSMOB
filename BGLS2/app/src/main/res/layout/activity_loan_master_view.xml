@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- TITLE BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="30dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOAN MASTER - VIEW"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/btnSchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="SCHEDULE"
+            android:textColor="@color/white"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"/>
+        <Button
+            android:id="@+id/btnLedger"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="LEDGER"
+            android:textColor="@color/white"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"/>
+        <Button
+            android:id="@+id/btnWallet"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="WALLET"
+            android:textColor="@color/white"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOAN DETAILS"
+                android:textStyle="bold"
+                android:textColor="#111111"
+                android:layout_marginBottom="16dp"
+                android:textSize="14sp"/>
+
+            <!-- ROW 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:text="Customer Id"
+                        android:textSize="12sp"
+                        android:textColor="#444444"/>
+
+                    <EditText android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="6dp"
+                        android:textSize="12sp"
+                        android:textColor="#333333"
+                        android:enabled="false"
+                        android:text="22187093"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:text="Customer Name"
+                        android:textSize="12sp"
+                        android:textColor="#444444"/>
+                    <EditText android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="6dp"
+                        android:textSize="12sp"
+                        android:textColor="#333333"
+                        android:enabled="false"
+                        android:text="BEATRICE KEMUNTO OBWOCHA"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Status" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="ACTIVE_IN_ARREARS"/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+                <LinearLayout
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Type" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="CLIENT"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan No" android:textSize="12sp" android:textColor="#444444"/><EditText android:id="@+id/etLoanNo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="CCN78a879844c515110a41"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Consumer Credit New Clien"/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 3 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Assigned Branch" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Open Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="19-06-2023"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Approval Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="10-10-2025"/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 4 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Last Modified Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="02-10-2025"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Last Review Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Status" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="ACTIVE_IN_ARREARS"/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 5 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Currency Code" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="KES"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Amount" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="127,285.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Sub Status" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 6 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Payment Method" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="HORIZONTAL"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Rate" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="0.25"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Rate of Interest" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="5.5"/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 7 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Disbursement Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="19-06-2023"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="First Payment Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="19-06-2023"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks 1" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 8 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Repayment Method" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="FIXED"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Repayment Instalments" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="12"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Wallet Account" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+            </LinearLayout>
+
+            <!-- RED/ORANGE ROWS -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Principal Due" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="74,250.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Principal Paid" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="53,035.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Principal Balance" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="74,250.00"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Interest Due" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="49,003.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Interest Paid" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="35,005.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Interest Balance" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="49,003.00"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Fee Due" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="21,954.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Fee Paid" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="12,585.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Fee Balance" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="21,954.00"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="24dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Due" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="179,504.70"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Paid" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="29,261.30"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Balance" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text="179,504.70"/></LinearLayout>
+            </LinearLayout>
+
+
+            <!-- ADDITIONAL DETAILS -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ADDITIONAL DETAILS" android:textStyle="bold" android:textColor="#111111" android:layout_marginBottom="16dp" android:textSize="14sp"/>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Sales Processed By" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="frank_34966067"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Sales Processed For" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="phelix_32352211"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Sales Referred By" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="11238483-0703232920"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Employment Status" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Permanently Employed"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Job Title" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Employed"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Employer Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Global Alliance of Road Saf"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="TU Core" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="727"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="TU Probability" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="0"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="TU Full Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="TU Reasons" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Tureason 1" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Tureason 2" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Disposable Income" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="69,241.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Manual Override Amt" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="350,000.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Manual Override Exp" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="13-05-2023"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="CP Fees" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="6,420.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Deposit Amount" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="0.00"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Total Product Price" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="127,285.00"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Retailer Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Naivas Limited"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Retailer Branch" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Westside Mall"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="VG Application Id" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="DB20230619359100"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Contract Signed" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Yes"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Date of First Call" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="20-06-2023"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Last Call Outcome" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Concluded No Issue"/></LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Days in Arrears" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="875"/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks 1" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text=""/></LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Balance Outstanding" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="-324,711.70"/></LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

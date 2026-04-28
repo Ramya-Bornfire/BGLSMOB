@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#F5F5F5">
+
+    <!-- TITLE BAR -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="#ECECEC"
+        android:padding="12dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="ACCOUNT LEDGER" android:textSize="16sp" android:textStyle="bold" android:textColor="#111111"/>
+        <Button android:id="@+id/btnDownload" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Download" android:textColor="#FFFFFF" android:backgroundTint="#2196F3" android:paddingStart="12dp" android:paddingEnd="12dp" android:textSize="12sp" android:drawableEnd="@android:drawable/arrow_down_float"/>
+    </LinearLayout>
+
+    <!-- FORM BOX -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="#FFFFFF" android:padding="16dp" android:layout_margin="16dp">
+        
+        <!-- ROW 1 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct ID" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="CCN78a879844c515110a41a" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct Name" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="BEATRICE KEMUNTO OBWOCHA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct CCY" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="KES" android:backgroundTint="#EAEAEA"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 2 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct Bal" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="-324,711.70" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Gen Led" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="12" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GL Des" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Asset" android:backgroundTint="#EAEAEA"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 3 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GL Sub Head" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="129010" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GLSH Des" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="Consumer Credit New Client" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Currency" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="MUR" android:backgroundTint="#EAEAEA"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 4 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Home Currency Bal" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="-324,711.70" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct Open Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="" android:backgroundTint="#EAEAEA"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct Close Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="" android:backgroundTint="#EAEAEA"/></LinearLayout>
+        </LinearLayout>
+
+        <!-- ROW 5 -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="From Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="19-06-2023"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="To Date" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="27-04-2026"/></LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Acct Status" android:textSize="12sp" android:textColor="#444444"/><EditText android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@drawable/edittext_background" android:padding="6dp" android:textSize="12sp" android:textColor="#333333" android:enabled="false" android:text="INACTIVE" android:backgroundTint="#EAEAEA"/></LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- TABLE SECTION -->
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true" android:scrollbars="horizontal">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#FFFFFF">
+            <!-- HEADER ROW -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#E8EAED">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="100dp" android:text="Tran Date" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:text="Tran Id" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="Tran Particulars" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="100dp" android:text="Currency" android:gravity="center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Credits" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Debits" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Balance" android:gravity="center_vertical|end"/>
+            </LinearLayout>
+
+            <!-- RECYCLER VIEW -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAccountLedger"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>
