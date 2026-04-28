@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
+import com.example.bgls.LoanSchedule.LoanScheduleActivity
 import com.example.bgls.UserControl.UserControlActivity
 
 class MainActivity : AppCompatActivity() {
@@ -136,6 +137,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Loan Master"->{
                     startActivity(Intent(this, LoanMasterActivity::class.java))
+                }
+                "Loan Schedule"->{
+                    startActivity(Intent(this, LoanScheduleActivity::class.java))
                 }
 
                 else -> {
