@@ -1,10 +1,12 @@
 package com.example.bgls.CustomerMaster
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.LoanSchedule.LoanScheduleActivity
 import com.example.bgls.R
 
 class LoanScheduleViewActivity : AppCompatActivity() {
@@ -12,13 +14,31 @@ class LoanScheduleViewActivity : AppCompatActivity() {
     private lateinit var recyclerViewLoanSchedule: RecyclerView
     private lateinit var adapter: LoanScheduleAdapter
     private lateinit var btnAccount: Button
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_schedule_view)
-        btnAccount=findViewById<Button>(R.id.btnAccount)
+        
+        btnAccount = findViewById(R.id.btnAccount)
         recyclerViewLoanSchedule = findViewById(R.id.recyclerViewLoanSchedule)
 
         setupTable()
+        setupButtons()
+    }
+
+    private fun setupButtons() {
+        val fromLoanSchedule = intent.getBooleanExtra("is_from_loan_schedule", false)
+        
+        btnAccount.setOnClickListener {
+            if (fromLoanSchedule) {
+                // Navigate to next screen (LoanScheduleActivity)
+                val intent = Intent(this, LoanMasterViewActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Acts as back button
+                finish()
+            }
+        }
     }
 
     private fun setupTable() {
@@ -36,8 +56,5 @@ class LoanScheduleViewActivity : AppCompatActivity() {
         recyclerViewLoanSchedule.layoutManager = LinearLayoutManager(this)
         adapter = LoanScheduleAdapter(this, dummyData)
         recyclerViewLoanSchedule.adapter = adapter
-        btnAccount.setOnClickListener {
-            finish()
-        }
     }
 }
