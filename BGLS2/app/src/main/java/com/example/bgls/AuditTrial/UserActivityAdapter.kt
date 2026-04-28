@@ -1,5 +1,4 @@
-package com.example.bgls.Adapter
-
+package com.example.bgls.AuditTrial
 
 import android.content.Context
 import android.view.LayoutInflater

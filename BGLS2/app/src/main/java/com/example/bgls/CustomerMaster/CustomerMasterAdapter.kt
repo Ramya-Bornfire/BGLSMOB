@@ -1,4 +1,4 @@
-package com.example.bgls.Adapter
+package com.example.bgls.CustomerMaster
 
 import android.content.Context
 import android.graphics.Color
@@ -17,14 +17,14 @@ class CustomerMasterAdapter(
 ) : RecyclerView.Adapter<CustomerMasterAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvSno: TextView          = itemView.findViewById(R.id.tvSno)
-        val tvCustomerId: TextView   = itemView.findViewById(R.id.tvCustomerId)
+        val tvSno: TextView = itemView.findViewById(R.id.tvSno)
+        val tvCustomerId: TextView = itemView.findViewById(R.id.tvCustomerId)
         val tvCustomerName: TextView = itemView.findViewById(R.id.tvCustomerName)
-        val tvDob: TextView          = itemView.findViewById(R.id.tvDob)
-        val tvBranchName: TextView   = itemView.findViewById(R.id.tvBranchName)
-        val tvMobileNo: TextView     = itemView.findViewById(R.id.tvMobileNo)
-        val tvEmail: TextView        = itemView.findViewById(R.id.tvEmail)
-        val tvStatus: TextView       = itemView.findViewById(R.id.tvStatus)
+        val tvDob: TextView = itemView.findViewById(R.id.tvDob)
+        val tvBranchName: TextView = itemView.findViewById(R.id.tvBranchName)
+        val tvMobileNo: TextView = itemView.findViewById(R.id.tvMobileNo)
+        val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

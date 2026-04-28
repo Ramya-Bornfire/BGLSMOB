@@ -1,4 +1,4 @@
-package com.example.bgls.Adapter
+package com.example.bgls.CustomerMaster
 
 import android.content.Context
 import android.view.LayoutInflater

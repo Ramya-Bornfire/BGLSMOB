@@ -1,12 +1,11 @@
-package com.example.bgls
+package com.example.bgls.CustomerMaster
 
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Adapter.LoanScheduleAdapter
-import com.example.bgls.Adapter.LoanScheduleItem
+import com.example.bgls.R
 
 class LoanScheduleViewActivity : AppCompatActivity() {
 

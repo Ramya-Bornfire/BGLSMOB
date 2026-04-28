@@ -1,14 +1,13 @@
-package com.example.bgls
+package com.example.bgls.AuditTrial
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.Adapter.BusinessActivityAdapter
+import com.example.bgls.R
 import com.example.bgls.data.model.BusinessActivity
 import java.text.SimpleDateFormat
 import java.util.Date

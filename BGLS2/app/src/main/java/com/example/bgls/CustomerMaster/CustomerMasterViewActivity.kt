@@ -1,4 +1,4 @@
-package com.example.bgls
+package com.example.bgls.CustomerMaster
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Adapter.AccountDetail
-import com.example.bgls.Adapter.AccountDetailAdapter
+import com.example.bgls.CustomerMaster.LoanMasterViewActivity
+import com.example.bgls.R
 
 class CustomerMasterViewActivity : AppCompatActivity() {
 
@@ -116,10 +115,34 @@ class CustomerMasterViewActivity : AppCompatActivity() {
     private fun setupButtons() {
         // Setup Account Details Table
         val dummyAccounts = listOf(
-            AccountDetail("CCN60aeed68fb1843c0ec57", "Consumer Credit New Client", "14-12-2022", "36,620.00", "-124,289.00"),
-            AccountDetail("CCN3851754328850517ca23", "Consumer Credit New Client", "18-11-2022", "92,985.00", "-272,359.00"),
-            AccountDetail("CCN1ab32cd3b745999db7ea", "Consumer Credit New Client", "19-11-2022", "147,390.00", "-493,673.90"),
-            AccountDetail("CCNa73a323563f3537360c5", "Consumer Credit New Client", "23-11-2022", "86,985.00", "-288,240.00")
+            AccountDetail(
+                "CCN60aeed68fb1843c0ec57",
+                "Consumer Credit New Client",
+                "14-12-2022",
+                "36,620.00",
+                "-124,289.00"
+            ),
+            AccountDetail(
+                "CCN3851754328850517ca23",
+                "Consumer Credit New Client",
+                "18-11-2022",
+                "92,985.00",
+                "-272,359.00"
+            ),
+            AccountDetail(
+                "CCN1ab32cd3b745999db7ea",
+                "Consumer Credit New Client",
+                "19-11-2022",
+                "147,390.00",
+                "-493,673.90"
+            ),
+            AccountDetail(
+                "CCNa73a323563f3537360c5",
+                "Consumer Credit New Client",
+                "23-11-2022",
+                "86,985.00",
+                "-288,240.00"
+            )
         )
         recyclerViewAccountDetails.layoutManager = LinearLayoutManager(this)
         recyclerViewAccountDetails.adapter = AccountDetailAdapter(this, dummyAccounts) { account ->

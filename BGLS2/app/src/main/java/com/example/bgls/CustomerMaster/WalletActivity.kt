@@ -1,4 +1,4 @@
-package com.example.bgls
+package com.example.bgls.CustomerMaster
 
 import android.os.Bundle
 import android.view.View
@@ -6,8 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Adapter.AccountLedgerAdapter
-import com.example.bgls.Adapter.LedgerItem
+import com.example.bgls.R
 
 class WalletActivity : AppCompatActivity() {
 
@@ -18,7 +17,7 @@ class WalletActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wallet)
-        
+
         tvNoRecords = findViewById(R.id.tvNoRecords)
         recyclerViewWallet = findViewById(R.id.recyclerViewWallet)
 
@@ -27,7 +26,7 @@ class WalletActivity : AppCompatActivity() {
         val apiData = emptyList<LedgerItem>()
         // To test with data, you could pass something like:
         // val apiData = listOf(LedgerItem("27-04-2026", "TR001", "Wallet Deposit", "KES", "1000", "0", "1000"))
-        
+
         updateTableData(apiData)
     }
 
@@ -39,7 +38,7 @@ class WalletActivity : AppCompatActivity() {
         } else {
             tvNoRecords.visibility = View.GONE
             recyclerViewWallet.visibility = View.VISIBLE
-            
+
             recyclerViewWallet.layoutManager = LinearLayoutManager(this)
             adapter = AccountLedgerAdapter(this, dataList)
             recyclerViewWallet.adapter = adapter

@@ -1,4 +1,4 @@
-package com.example.bgls
+package com.example.bgls.CustomerMaster
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.CustomerMaster.CustomerMasterListActivity
+import com.example.bgls.R
 import java.util.Calendar
 
 class CustomerMasterActivity : AppCompatActivity() {

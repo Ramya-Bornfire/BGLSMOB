@@ -16,16 +16,19 @@
         android:theme="@style/Theme.BGLS"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".LoanMasterActivity"
+            android:name=".LoanMaster.LoanMasterListActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomerMasterViewActivity"
+            android:name=".LoanMaster.LoanMasterActivity"
             android:exported="false" />
         <activity
-            android:name=".CustomerMasterListActivity"
+            android:name=".CustomerMaster.CustomerMasterViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerMaster.CustomerMasterListActivity"
             android:exported="true" />
         <activity
-            android:name=".CustomerMasterActivity"
+            android:name=".CustomerMaster.CustomerMasterActivity"
             android:exported="false" />
         <activity
             android:name=".AddBranchActivity"
@@ -70,25 +73,25 @@
         <!-- android:name=".NotificationAndLogsActivity" -->
         <!-- android:exported="true" /> -->
         <activity
-            android:name=".BusinessActivityDetailsActivity"
+            android:name=".AuditTrial.BusinessActivityDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivityDetailsActivity"
+            android:name=".AuditTrial.UserActivityDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".AuditTrailDetailsActivity"
+            android:name=".AuditTrial.AuditTrailDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".LoanMasterViewActivity"
+            android:name=".CustomerMaster.LoanMasterViewActivity"
             android:exported="false" />
         <activity
-            android:name=".LoanScheduleViewActivity"
+            android:name=".CustomerMaster.LoanScheduleViewActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountLedgerActivity"
+            android:name=".CustomerMaster.AccountLedgerActivity"
             android:exported="false" />
         <activity
-            android:name=".WalletActivity"
+            android:name=".CustomerMaster.WalletActivity"
             android:exported="false" />
     </application>
 

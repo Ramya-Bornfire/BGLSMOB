@@ -1,11 +1,10 @@
-package com.example.bgls
+package com.example.bgls.CustomerMaster
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Adapter.AccountLedgerAdapter
-import com.example.bgls.Adapter.LedgerItem
+import com.example.bgls.R
 
 class AccountLedgerActivity : AppCompatActivity() {
 
