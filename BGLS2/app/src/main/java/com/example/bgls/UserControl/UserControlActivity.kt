@@ -1,6 +1,7 @@
-package com.example.bgls
+package com.example.bgls.UserControl
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -13,6 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.EmployeeProfile
 import com.example.bgls.DataModels.UserProfile
+import com.example.bgls.UserControl.EmployeProfileAddActivity
+import com.example.bgls.UserControl.EmployeeProfileAdapter
+import com.example.bgls.R
+import com.example.bgls.UserControl.UserProfileAdapter
+import com.example.bgls.UserControl.UserProfileAddActivity
 
 class UserControlActivity : AppCompatActivity(),
     UserProfileAdapter.OnActionClickListener,
@@ -66,13 +72,13 @@ class UserControlActivity : AppCompatActivity(),
         if (result.resultCode == RESULT_OK) {
             val data = result.data
             val newEmployee = EmployeeProfile(
-                srlNo     = data?.getStringExtra("newSrlNo") ?: "",
+                srlNo = data?.getStringExtra("newSrlNo") ?: "",
                 employeeId = data?.getStringExtra("newEmployeeId") ?: "",
-                name       = data?.getStringExtra("newName") ?: "",
+                name = data?.getStringExtra("newName") ?: "",
                 designation = data?.getStringExtra("newDesignation") ?: "",
-                category   = data?.getStringExtra("newCategory") ?: "",
-                mobile     = data?.getStringExtra("newMobile") ?: "",
-                email      = data?.getStringExtra("newEmail") ?: "",
+                category = data?.getStringExtra("newCategory") ?: "",
+                mobile = data?.getStringExtra("newMobile") ?: "",
+                email = data?.getStringExtra("newEmail") ?: "",
                 profileStatus = data?.getStringExtra("newProfileStatus") ?: "Verified"
             )
             employeeProfileList.add(newEmployee)
@@ -97,16 +103,106 @@ class UserControlActivity : AppCompatActivity(),
     )
 
     private val employeeProfileList = mutableListOf(
-        EmployeeProfile("1","EMP01","SIDHAIYAN SIR","CEO","Full Time","+230 5000 0001","sidhaiyan@cim.mu","Verified"),
-        EmployeeProfile("2","EMP02","KALIDASS SIR","CTO","Full Time","+230 5000 0002","dylan@cim.mu","Verified"),
-        EmployeeProfile("3","EMP03","Tejas Babbea","Analyst","Part Time","+230 5000 0003","tejas@cim.mu","Verified"),
-        EmployeeProfile("4","EMP04","MANIVANAN","HR Executive","Full Time","+230 5000 0004","mani@cim.mu","Verified"),
-        EmployeeProfile("5","EMP05","Suchindra Devalam","Accountant","Full Time","+230 5000 0005","suchi@cim.mu","Pending"),
-        EmployeeProfile("6","EMP06","Sonam Jhugdamby","Tester","Contract","+230 5000 0006","sonam@cim.mu","Verified"),
-        EmployeeProfile("7","EMP07","Anthony Kithaka","Team Lead","Full Time","+230 5000 0007","anthony@cim.mu","Verified"),
-        EmployeeProfile("8","EMP08","Marie-Christine John Chuan","Designer","Full Time","+230 5000 0008","marie@cim.mu","Verified"),
-        EmployeeProfile("9","EMP09","Pooja Reedye","Support","Part Time","+230 5000 0009","pooja@cim.mu","Pending"),
-        EmployeeProfile("10","EMP10","Anishta Gungadin","Finance","Full Time","+230 5000 0010","anishta@cim.mu","Verified")
+        EmployeeProfile(
+            "1",
+            "EMP01",
+            "SIDHAIYAN SIR",
+            "CEO",
+            "Full Time",
+            "+230 5000 0001",
+            "sidhaiyan@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "2",
+            "EMP02",
+            "KALIDASS SIR",
+            "CTO",
+            "Full Time",
+            "+230 5000 0002",
+            "dylan@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "3",
+            "EMP03",
+            "Tejas Babbea",
+            "Analyst",
+            "Part Time",
+            "+230 5000 0003",
+            "tejas@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "4",
+            "EMP04",
+            "MANIVANAN",
+            "HR Executive",
+            "Full Time",
+            "+230 5000 0004",
+            "mani@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "5",
+            "EMP05",
+            "Suchindra Devalam",
+            "Accountant",
+            "Full Time",
+            "+230 5000 0005",
+            "suchi@cim.mu",
+            "Pending"
+        ),
+        EmployeeProfile(
+            "6",
+            "EMP06",
+            "Sonam Jhugdamby",
+            "Tester",
+            "Contract",
+            "+230 5000 0006",
+            "sonam@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "7",
+            "EMP07",
+            "Anthony Kithaka",
+            "Team Lead",
+            "Full Time",
+            "+230 5000 0007",
+            "anthony@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "8",
+            "EMP08",
+            "Marie-Christine John Chuan",
+            "Designer",
+            "Full Time",
+            "+230 5000 0008",
+            "marie@cim.mu",
+            "Verified"
+        ),
+        EmployeeProfile(
+            "9",
+            "EMP09",
+            "Pooja Reedye",
+            "Support",
+            "Part Time",
+            "+230 5000 0009",
+            "pooja@cim.mu",
+            "Pending"
+        ),
+        EmployeeProfile(
+            "10",
+            "EMP10",
+            "Anishta Gungadin",
+            "Finance",
+            "Full Time",
+            "+230 5000 0010",
+            "anishta@cim.mu",
+            "Verified"
+        )
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,10 +247,10 @@ class UserControlActivity : AppCompatActivity(),
 
         if (isUserProfile) {
             btnUserProfile.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(getColor(android.R.color.holo_blue_light))
+                ColorStateList.valueOf(getColor(android.R.color.holo_blue_light))
             btnUserProfile.setTextColor(getColor(android.R.color.white))
             btnEmployeeProfile.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(getColor(android.R.color.white))
+                ColorStateList.valueOf(getColor(android.R.color.white))
             btnEmployeeProfile.setTextColor(getColor(android.R.color.black))
 
             layoutUserProfile.visibility = View.VISIBLE
@@ -163,10 +259,10 @@ class UserControlActivity : AppCompatActivity(),
 
         } else {
             btnEmployeeProfile.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(getColor(android.R.color.holo_blue_light))
+                ColorStateList.valueOf(getColor(android.R.color.holo_blue_light))
             btnEmployeeProfile.setTextColor(getColor(android.R.color.white))
             btnUserProfile.backgroundTintList =
-                android.content.res.ColorStateList.valueOf(getColor(android.R.color.white))
+                ColorStateList.valueOf(getColor(android.R.color.white))
             btnUserProfile.setTextColor(getColor(android.R.color.black))
 
             layoutUserProfile.visibility = View.GONE
@@ -184,7 +280,8 @@ class UserControlActivity : AppCompatActivity(),
                 )
             } else {
                 createEmployeeLauncher.launch(
-                    Intent(this, EmployeProfileAddActivity::class.java))
+                    Intent(this, EmployeProfileAddActivity::class.java)
+                )
             }
         }
     }

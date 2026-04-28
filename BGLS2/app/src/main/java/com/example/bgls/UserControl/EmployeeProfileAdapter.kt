@@ -1,4 +1,5 @@
-package com.example.bgls
+package com.example.bgls.UserControl
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.EmployeeProfile
+import com.example.bgls.R
 
 class EmployeeProfileAdapter(
     private val context: Context,

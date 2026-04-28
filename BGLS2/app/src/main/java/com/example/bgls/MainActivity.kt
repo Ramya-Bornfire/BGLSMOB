@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import android.widget.ImageView
 import android.view.Gravity
 import android.widget.Toast
+import com.example.bgls.UserControl.UserControlActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -129,6 +130,9 @@ class MainActivity : AppCompatActivity() {
 
                 "Customer Master"->{
                     startActivity(Intent(this,CustomerMasterActivity::class.java))
+                }
+                "Loan Master"->{
+                    startActivity(Intent(this,LoanMasterActivity::class.java))
                 }
 
                 else -> {

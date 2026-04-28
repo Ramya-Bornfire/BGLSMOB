@@ -1,16 +1,25 @@
-package com.example.bgls
+package com.example.bgls.UserControl
 
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.*
+import android.provider.OpenableColumns
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.DataModels.EmployeeProfile
-import java.util.*
+import com.example.bgls.R
+import java.util.Calendar
 
 class EmployeProfileAddActivity : AppCompatActivity() {
 
@@ -66,13 +75,13 @@ class EmployeProfileAddActivity : AppCompatActivity() {
     private val photoPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             selectedPhotoUri = result.data?.data
             selectedPhotoUri?.let { uri ->
                 val fileName = getFileName(uri)
                 tvPhotoName.text = fileName
                 ivPhotoPreview.setImageURI(uri)
-                ivPhotoPreview.visibility = android.view.View.VISIBLE
+                ivPhotoPreview.visibility = View.VISIBLE
             }
         }
     }
@@ -136,7 +145,7 @@ class EmployeProfileAddActivity : AppCompatActivity() {
         // Branch Id → auto fill Branch Name
         setSpinner(spinnerBranchId, listOf("Select", "BR001", "BR002", "BR003"))
         spinnerBranchId.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val branchNameMap = mapOf(
                     "BR001" to "Head Office",
                     "BR002" to "North Branch",
@@ -197,7 +206,7 @@ class EmployeProfileAddActivity : AppCompatActivity() {
     private fun getFileName(uri: Uri): String {
         var name = "photo_selected"
         contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             if (cursor.moveToFirst() && nameIndex >= 0) {
                 name = cursor.getString(nameIndex)
             }

@@ -1,15 +1,23 @@
-package com.example.bgls
+package com.example.bgls.UserControl
+
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.DataModels.UserProfile
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.bgls.R
+import java.util.Calendar
 
 class UserProfileAddActivity : AppCompatActivity() {
 

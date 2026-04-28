@@ -16,6 +16,9 @@
         android:theme="@style/Theme.BGLS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".LoanMasterActivity"
+            android:exported="false" />
+        <activity
             android:name=".CustomerMasterViewActivity"
             android:exported="false" />
         <activity
@@ -56,13 +59,13 @@
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.BGLS.NoActionBar" />
         <activity
-            android:name=".EmployeProfileAddActivity"
+            android:name=".UserControl.EmployeProfileAddActivity"
             android:exported="false" />
         <activity
-            android:name=".UserProfileAddActivity"
+            android:name=".UserControl.UserProfileAddActivity"
             android:exported="false" />
         <activity
-            android:name=".UserControlActivity"
+            android:name=".UserControl.UserControlActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".NotificationAndLogsActivity" -->
         <!-- android:exported="true" /> -->
