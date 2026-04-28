@@ -1,10 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoanMasterActivity">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- ─── TITLE BAR ─── -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOAN MASTER"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:layout_marginEnd="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+
+        <Button
+            android:id="@+id/btnList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+    </LinearLayout>
+
+    <!-- ─── SCROLLABLE FORM ─── -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:padding="12dp">
+
+            <!-- ══════════════════════════════════════ -->
+            <!-- LOAN DETAILS SECTION                   -->
+            <!-- ══════════════════════════════════════ -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LOAN DETAILS"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#111111"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- Each row has: [label][field][gap][label][field][gap][label][field] -->
+
+            <!-- ROW 1: Customer Id | Customer Name | Customer Status -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Customer Id"/>
+                <EditText android:id="@+id/etCustomerId" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Customer Name"/>
+                <EditText android:id="@+id/etCustomerName" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Customer Status"/>
+                <EditText android:id="@+id/etCustomerStatus" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 2: Account Type | Loan No | Loan Name -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Account Type"/>
+                <EditText android:id="@+id/etAccountType" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Loan No"/>
+                <EditText android:id="@+id/etLoanNo" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Loan Name"/>
+                <EditText android:id="@+id/etLoanName" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 3: Assigned Branch | Open Date | Approval Date -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Assigned Branch"/>
+                <EditText android:id="@+id/etAssignedBranch" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Open Date"/>
+                <EditText android:id="@+id/etOpenDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Approval Date"/>
+                <EditText android:id="@+id/etApprovalDate" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 4: Last Modified Date | Last Review Date | Account Status -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Last Modified Date"/>
+                <EditText android:id="@+id/etLastModifiedDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Last Review Date"/>
+                <EditText android:id="@+id/etLastReviewDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Account Status"/>
+                <EditText android:id="@+id/etAccountStatus" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 5: Currency Code | Loan Amount | Sub Status -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Currency Code"/>
+                <EditText android:id="@+id/etCurrencyCode" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Loan Amount"/>
+                <EditText android:id="@+id/etLoanAmount" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Sub Status"/>
+                <EditText android:id="@+id/etSubStatus" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 6: Payment Method | Penalty Rate | Rate of Interest -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Payment Method"/>
+                <EditText android:id="@+id/etPaymentMethod" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Penalty Rate"/>
+                <EditText android:id="@+id/etPenaltyRate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Rate of Interest"/>
+                <EditText android:id="@+id/etRateOfInterest" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 7: Disbursement Date | First Payment Date | Remarks 1 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Disbursement Date"/>
+                <EditText android:id="@+id/etDisbursementDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="First Payment Date"/>
+                <EditText android:id="@+id/etFirstPaymentDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Remarks 1"/>
+                <EditText android:id="@+id/etRemarks1" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 8: Repayment Method | Repayment Instalments(Months) | Wallet Account -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Repayment Method"/>
+                <EditText android:id="@+id/etRepaymentMethod" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Repayment Instalments(Months)"/>
+                <EditText android:id="@+id/etRepaymentInstalments" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Wallet Account"/>
+                <EditText android:id="@+id/etWalletAccount" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 9: Principal Due | Principal Paid | Principal Balance -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Principal Due"/>
+                <EditText android:id="@+id/etPrincipalDue" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Principal Paid"/>
+                <EditText android:id="@+id/etPrincipalPaid" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Principal Balance"/>
+                <EditText android:id="@+id/etPrincipalBalance" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 10: Interest Due | Interest Paid | Interest Balance -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Interest Due"/>
+                <EditText android:id="@+id/etInterestDue" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Interest Paid"/>
+                <EditText android:id="@+id/etInterestPaid" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Interest Balance"/>
+                <EditText android:id="@+id/etInterestBalance" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 11: Fee Due | Fee Paid | Fee Balance -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Fee Due"/>
+                <EditText android:id="@+id/etFeeDue" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Fee Paid"/>
+                <EditText android:id="@+id/etFeePaid" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Fee Balance"/>
+                <EditText android:id="@+id/etFeeBalance" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 12: Penalty Due | Penalty Paid | Penalty Balance -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="16dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Penalty Due"/>
+                <EditText android:id="@+id/etPenaltyDue" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Penalty Paid"/>
+                <EditText android:id="@+id/etPenaltyPaid" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Penalty Balance"/>
+                <EditText android:id="@+id/etPenaltyBalance" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ══════════════════════════════════════ -->
+            <!-- ADDITIONAL DETAILS SECTION             -->
+            <!-- ══════════════════════════════════════ -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ADDITIONAL DETAILS"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#111111"
+                android:layout_marginBottom="10dp"/>
+
+            <!-- ROW 1: Sales Processed By VGID | Sales Processed For | Sales Referred By -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Sales Processed By VGID"/>
+                <EditText android:id="@+id/etSalesProcessedByVGID" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Sales Processed For"/>
+                <EditText android:id="@+id/etSalesProcessedFor" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Sales Referred By"/>
+                <EditText android:id="@+id/etSalesReferredBy" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 2: Employment Status | Job Title | Employer Name -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Employment Status"/>
+                <EditText android:id="@+id/etEmploymentStatus" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Job Title"/>
+                <EditText android:id="@+id/etJobTitle" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Employer Name"/>
+                <EditText android:id="@+id/etEmployerName" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 3: TU Core | TU Probability | TU Full Name -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="TU Core"/>
+                <EditText android:id="@+id/etTuCore" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="TU Probability"/>
+                <EditText android:id="@+id/etTuProbability" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="TU Full Name"/>
+                <EditText android:id="@+id/etTuFullName" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 4: TU Reasons | Tureason 1 | Tureason 2 -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="TU Reasons"/>
+                <EditText android:id="@+id/etTuReasons" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Tureason 1"/>
+                <EditText android:id="@+id/etTureason1" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Tureason 2"/>
+                <EditText android:id="@+id/etTureason2" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 5: Disposable Income | Manual Override Amount | Manual Override Expiry Date -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Disposable Income"/>
+                <EditText android:id="@+id/etDisposableIncome" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Manual Override Amount"/>
+                <EditText android:id="@+id/etManualOverrideAmount" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Manual Override Expiry Date"/>
+                <EditText android:id="@+id/etManualOverrideExpiryDate" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 6: CP Fees | Deposit Amount | Total Product Price -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="CP Fees"/>
+                <EditText android:id="@+id/etCpFees" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Deposit Amount"/>
+                <EditText android:id="@+id/etDepositAmount" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Total Product Price"/>
+                <EditText android:id="@+id/etTotalProductPrice" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 7: Retailer Name | Retailer Branch | VG Application Id -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Retailer Name"/>
+                <EditText android:id="@+id/etRetailerName" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Retailer Branch"/>
+                <EditText android:id="@+id/etRetailerBranch" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="VG Application Id"/>
+                <EditText android:id="@+id/etVgApplicationId" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 8: Contract Signed | Date of First Call | Last Call Outcome -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="8dp"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="Contract Signed"/>
+                <EditText android:id="@+id/etContractSigned" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Date of First Call"/>
+                <EditText android:id="@+id/etDateOfFirstCall" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Last Call Outcome"/>
+                <EditText android:id="@+id/etLastCallOutcome" style="@style/LoanField"/>
+            </LinearLayout>
+
+            <!-- ROW 9: As On Date | Remarks 1 | Wallet Account -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView style="@style/LoanLabel" android:text="As On Date"/>
+                <EditText android:id="@+id/etAsOnDate" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Remarks 1"/>
+                <EditText android:id="@+id/etRemarksAdditional" style="@style/LoanField"/>
+                <View style="@style/ColGap"/>
+                <TextView style="@style/LoanLabel" android:text="Wallet Account"/>
+                <EditText android:id="@+id/etWalletAccountAdditional" style="@style/LoanField"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
