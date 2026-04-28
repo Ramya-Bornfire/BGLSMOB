@@ -137,6 +137,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etDesignation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -179,6 +180,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etRemarks"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -186,6 +188,8 @@
                     android:padding="8dp"
                     android:text="ACTIVE" />
             </LinearLayout>
+
+            <!-- ROW 4 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -220,12 +224,15 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etFax"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/edittext_background"
                     android:padding="8dp" />
             </LinearLayout>
+
+            <!-- ROW 5 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -260,12 +267,14 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etContactPerson"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/edittext_background"
                     android:padding="8dp" />
             </LinearLayout>
+
             <!-- ROW 6 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -301,12 +310,14 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etMailId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/edittext_background"
                     android:padding="8dp" />
             </LinearLayout>
+
             <!-- ROW 7 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -342,6 +353,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etAddress2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -349,8 +361,7 @@
                     android:padding="8dp" />
             </LinearLayout>
 
-
-            <!-- ROW 4 -->
+            <!-- ROW 8 (City & State) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -366,6 +377,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etCity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -385,6 +397,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etState"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -393,7 +406,7 @@
                     android:text="KENYA" />
             </LinearLayout>
 
-            <!-- ROW 5 -->
+            <!-- ROW 9 (Country & Zip Code) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -408,6 +421,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etCountry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -427,6 +441,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etZipCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

@@ -65,7 +65,7 @@ class HeadOfficeFragment : Fragment(R.layout.fragment_head_office) {
                         etDate.setText(it.date_of_regn ?: "")
                         etCert.setText(it.reg_no ?: "")
                         etBusiness.setText(it.pan_card ?: "")
-                        etVat.setText(it.gst_ref ?: "")
+                        etVat.setText(it.tan_card ?: "")
                         etEmp.setText(it.no_of_emp ?: "")
                         etAsOn.setText(it.as_on ?: "")
                         etReg1.setText(it.reg_addr_1 ?: "")

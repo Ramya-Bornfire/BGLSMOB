@@ -136,6 +136,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etDesignation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -178,6 +179,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etRemarks"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -220,6 +222,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etFax"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -262,6 +265,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etContactPerson"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -304,6 +308,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etMailId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -346,6 +351,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etAddress2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -369,6 +375,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etCity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -387,6 +394,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etState"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -409,6 +417,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etCountry"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -427,6 +436,7 @@
                     android:textColor="#555555" />
 
                 <EditText
+                    android:id="@+id/etZipCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
