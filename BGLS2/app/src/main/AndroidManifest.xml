@@ -37,20 +37,22 @@
         <activity
             android:name=".CustomerMaster.CustomerMasterActivity"
             android:exported="false" />
+        <activity android:name=".OrganizationDetails.ViewBranchActivity"
+            android:exported="false" />
         <activity
-            android:name=".AddBranchActivity"
+            android:name=".OrganizationDetails.AddBranchActivity"
             android:exported="false" />
         <activity
             android:name=".ParameterActivity"
             android:exported="false" />
         <activity
-            android:name=".DeleteBranchActivity"
+            android:name=".OrganizationDetails.DeleteBranchActivity"
             android:exported="false" />
         <activity
-            android:name=".EditBranchActivity"
+            android:name=".OrganizationDetails.EditBranchActivity"
             android:exported="false" />
         <activity
-            android:name=".OrganizationDetialsActivity"
+            android:name=".OrganizationDetails.OrganizationDetialsActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

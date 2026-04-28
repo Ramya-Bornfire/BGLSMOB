@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.LoanSchedule.LoanScheduleActivityAdapter
 import com.example.bgls.DataModels.LoanSchedule
+import com.example.bgls.LoanSchedule.LoanScheduleActivityAdapter
 import com.example.bgls.R
 
 class LoanScheduleActivity : AppCompatActivity() {
@@ -86,7 +86,19 @@ class LoanScheduleActivity : AppCompatActivity() {
         etLoanDate.setText("19-06-2023")
 
         val dummyList = listOf(
-            LoanSchedule("19-07-2023", "5,000.00", "1,200.00", "200.00", "0.00", "20-07-2023", "5,000.00", "1,200.00", "200.00", "0.00", "0.00"),
+            LoanSchedule(
+                "19-07-2023",
+                "5,000.00",
+                "1,200.00",
+                "200.00",
+                "0.00",
+                "20-07-2023",
+                "5,000.00",
+                "1,200.00",
+                "200.00",
+                "0.00",
+                "0.00"
+            ),
             LoanSchedule("19-08-2023", "5,000.00", "1,150.00", "200.00", "0.00", "21-08-2023", "5,000.00", "1,150.00", "200.00", "0.00", "0.00"),
             LoanSchedule("19-09-2023", "5,000.00", "1,100.00", "200.00", "50.00", "25-09-2023", "5,000.00", "1,100.00", "200.00", "50.00", "0.00"),
             LoanSchedule("19-10-2023", "5,000.00", "1,050.00", "200.00", "0.00", "19-10-2023", "5,000.00", "1,050.00", "200.00", "0.00", "0.00"),

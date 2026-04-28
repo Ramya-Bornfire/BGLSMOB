@@ -12,41 +12,41 @@
         android:padding="16dp">
 
         <!-- TOP HEADER -->
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@drawable/header_bg"
-            android:padding="12dp"
-            android:gravity="center_vertical">
+            android:padding="12dp">
 
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/arrow_back"
-                android:contentDescription="Back"
-                android:scaleType="centerInside" />
-
-            <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="BRANCH - DELETE"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"
-                android:textColor="#FFFFFF"
-                android:backgroundTint="@color/cyanblue" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/arrow_back"
+                    android:contentDescription="Back"
+                    android:scaleType="centerInside" />
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="BRANCH - VIEW"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <!-- MAIN CARD -->
         <LinearLayout
@@ -348,6 +348,7 @@
                     android:background="@drawable/edittext_background"
                     android:padding="8dp" />
             </LinearLayout>
+
 
             <!-- ROW 4 -->
             <LinearLayout

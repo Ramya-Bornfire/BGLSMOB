@@ -16,6 +16,7 @@ import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
+import com.example.bgls.OrganizationDetails.OrganizationDetialsActivity
 import com.example.bgls.UserControl.UserControlActivity
 
 class MainActivity : AppCompatActivity() {

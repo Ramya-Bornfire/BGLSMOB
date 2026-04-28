@@ -6,6 +6,9 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.*
 import com.example.bgls.DataModels.Branch
+import com.example.bgls.OrganizationDetails.DeleteBranchActivity
+import com.example.bgls.OrganizationDetails.EditBranchActivity
+import com.example.bgls.OrganizationDetails.ViewBranchActivity
 
 class BranchAdapter(private val list: MutableList<Branch>) :
     RecyclerView.Adapter<BranchAdapter.ViewHolder>() {
@@ -37,7 +40,7 @@ class BranchAdapter(private val list: MutableList<Branch>) :
         holder.tvSwift.text = item.swiftCode ?: ""
         holder.tvHead.text = item.branchHead ?: ""
 
-        val actions = listOf("Action", "Edit", "Delete")
+        val actions = listOf("Action","View","Edit", "Delete")
 
         val adapter = ArrayAdapter(
             holder.itemView.context,
@@ -53,7 +56,16 @@ class BranchAdapter(private val list: MutableList<Branch>) :
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
 
                     when (actions[pos]) {
+                        "View" -> {
+                            val intent = Intent(holder.itemView.context, ViewBranchActivity::class.java)
 
+                            intent.putExtra("code", item.branchCode)
+                            intent.putExtra("name", item.branchName)
+                            intent.putExtra("swift", item.swiftCode)
+                            intent.putExtra("head", item.branchHead)
+
+                            holder.itemView.context.startActivity(intent)
+                        }
                         "Edit" -> {
                             val intent = Intent(holder.itemView.context, EditBranchActivity::class.java)
 

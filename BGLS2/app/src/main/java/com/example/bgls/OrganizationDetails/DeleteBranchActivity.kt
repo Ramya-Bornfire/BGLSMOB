@@ -1,4 +1,4 @@
-package com.example.bgls
+package com.example.bgls.OrganizationDetails
 
 import android.os.Bundle
 import android.widget.Button
@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.R
 
 class DeleteBranchActivity : AppCompatActivity() {
 

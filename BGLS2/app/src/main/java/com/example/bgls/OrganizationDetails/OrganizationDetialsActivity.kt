@@ -1,6 +1,5 @@
-package com.example.bgls
+package com.example.bgls.OrganizationDetails
 
-import com.example.bgls.Adapter.ViewPagerAdapter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.ViewPager2
+import com.example.bgls.Adapter.ViewPagerAdapter
+import com.example.bgls.MainActivity
+import com.example.bgls.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
