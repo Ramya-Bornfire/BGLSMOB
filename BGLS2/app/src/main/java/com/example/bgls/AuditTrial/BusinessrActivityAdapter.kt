@@ -2,19 +2,19 @@ package com.example.bgls.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.BusinessActivityItem
 import com.example.bgls.R
-import com.example.bgls.data.model.BusinessActivity
+
 
 class BusinessActivityAdapter(
     private val context: Context,
-    private val activityList: List<BusinessActivity>
+    private val activityList: List<BusinessActivityItem>
 ) : RecyclerView.Adapter<BusinessActivityAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
         val tvAuditDate: TextView = itemView.findViewById(R.id.tvAuditDate)
         val tvTableName: TextView = itemView.findViewById(R.id.tvTableName)
         val tvFunction: TextView = itemView.findViewById(R.id.tvFunction)
@@ -22,26 +22,25 @@ class BusinessActivityAdapter(
         val tvEntryTime: TextView = itemView.findViewById(R.id.tvEntryTime)
         val tvAuthorizer: TextView = itemView.findViewById(R.id.tvAuthorizer)
         val tvAuthorizerTime: TextView = itemView.findViewById(R.id.tvAuthorizerTime)
+        // You may also have fields for old/new values, etc.
         val tvRemarks: TextView = itemView.findViewById(R.id.tvRemarks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context)
-            .inflate(R.layout.item_business_activity, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_business_activity, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = activityList[position]
-
-        holder.tvAuditDate.text = item.auditDate
-        holder.tvTableName.text = item.tableName
-        holder.tvFunction.text = item.function
-        holder.tvEntryUser.text = item.entryUser
-        holder.tvEntryTime.text = item.entryTime
-        holder.tvAuthorizer.text = item.authorizer
-        holder.tvAuthorizerTime.text = item.authorizerTime
-        holder.tvRemarks.text = item.remarks
+        holder.tvAuditDate.text = item.audit_date ?: ""
+        holder.tvTableName.text = item.audit_table ?: ""
+        holder.tvFunction.text = item.func_code ?: ""
+        holder.tvEntryUser.text = item.entry_user ?: ""
+        holder.tvEntryTime.text = item.entry_time ?: ""
+        holder.tvAuthorizer.text = item.auth_user ?: ""
+        holder.tvAuthorizerTime.text = item.auth_time?: ""
+        holder.tvRemarks.text = item.remarks ?: ""
     }
 
     override fun getItemCount(): Int = activityList.size

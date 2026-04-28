@@ -1,8 +1,10 @@
+package com.example.bgls.Retrofit
+
 import com.example.bgls.Retrofit.ServiceApi
 import okhttp3.OkHttpClient
 import okhttp3.Credentials
 import okhttp3.Interceptor
-
+import okhttp3.logging.HttpLoggingInterceptor
 object RetrofitClient {
 
     // private const val BASE_URL = "http://10.0.2.2:8080/ASPIRA/"
@@ -14,8 +16,11 @@ object RetrofitClient {
         val password = "Bornfire@123"
 
         val authHeader = Credentials.basic(username, password)
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
 
         OkHttpClient.Builder()
+            .addInterceptor(logging)   // 👈 ADD THIS
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", authHeader)
