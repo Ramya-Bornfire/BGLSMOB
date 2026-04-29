@@ -14,13 +14,11 @@ import com.example.bgls.OrganizationDetails.AddBranchActivity
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 
-
 class BranchesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var branchAdapter: BranchAdapter
     private lateinit var btnAdd: Button
-
     private val branchList = mutableListOf<Branch>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,7 +26,6 @@ class BranchesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         recyclerView = view.findViewById(R.id.recyclerView)
         btnAdd = view.findViewById(R.id.btnAdd)
 
@@ -44,17 +41,12 @@ class BranchesFragment : Fragment() {
     }
 
     private fun loadBranches() {
-
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.api.getOrganizationDetails()
-
                 if (response.isSuccessful) {
-
                     val branches = response.body()?.OrgBranch ?: emptyList()
-
                     branchList.clear()
-
                     branches.forEachIndexed { index, b ->
                         branchList.add(
                             Branch(
@@ -62,21 +54,36 @@ class BranchesFragment : Fragment() {
                                 branchCode = b.branchCode ?: "",
                                 branchName = b.branchName ?: "",
                                 swiftCode = b.swiftCode ?: "",
-                                branchHead = b.branchHead ?: ""
+                                branchHead = b.branchHead ?: "",
+                                designation = b.designation,
+                                remarks = b.remarks,
+                                landline = b.landline,          // ✅ fixed
+                                fax = b.fax,
+                                mobile = b.mobile,
+                                contactPerson = b.contactPerson, // ✅ fixed
+                                website = b.website,
+                                email = b.email,                // ✅ fixed
+                                address1 = b.address1,          // ✅ fixed
+                                address2 = b.address2,          // ✅ fixed
+                                city = b.city,
+                                state = b.state,
+                                country = b.country,
+                                zipCode = b.zip
                             )
                         )
                     }
-
-
                     branchAdapter.notifyDataSetChanged()
-
                 } else {
                     Toast.makeText(requireContext(), "API Error", Toast.LENGTH_SHORT).show()
                 }
-
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadBranches()
     }
 }

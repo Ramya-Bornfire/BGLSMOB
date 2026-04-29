@@ -33,3 +33,7 @@ data class Organization(
     val email: String?
 )
 
+data class OrganizationViewResponse(
+    @SerializedName("formmode") val formmode: String?,
+    @SerializedName("OrgBranch") val branch: BranchDto?   // single object, not a list
+)

@@ -56,35 +56,38 @@ class BranchAdapter(private val list: MutableList<Branch>) :
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
 
                     when (actions[pos]) {
+                        // Inside BranchAdapter, for "View" action:
                         "View" -> {
                             val intent = Intent(holder.itemView.context, ViewBranchActivity::class.java)
-
-                            intent.putExtra("code", item.branchCode)
-                            intent.putExtra("name", item.branchName)
-                            intent.putExtra("swift", item.swiftCode)
-                            intent.putExtra("head", item.branchHead)
-
+                            intent.putExtra("branch_code", item.branchCode)
                             holder.itemView.context.startActivity(intent)
                         }
                         "Edit" -> {
                             val intent = Intent(holder.itemView.context, EditBranchActivity::class.java)
-
-                            intent.putExtra("code", item.branchCode)
-                            intent.putExtra("name", item.branchName)
-                            intent.putExtra("swift", item.swiftCode)
-                            intent.putExtra("head", item.branchHead)
-
+                            intent.putExtra("branch_code", item.branchCode)
                             holder.itemView.context.startActivity(intent)
                         }
 
                         "Delete" -> {
                             val intent = Intent(holder.itemView.context, DeleteBranchActivity::class.java)
-
                             intent.putExtra("code", item.branchCode)
                             intent.putExtra("name", item.branchName)
-                            intent.putExtra("swift", item.swiftCode)
                             intent.putExtra("head", item.branchHead)
-
+                            intent.putExtra("swift", item.swiftCode)
+                            intent.putExtra("designation", item.designation)
+                            intent.putExtra("remarks", item.remarks)
+                            intent.putExtra("landline", item.landline)
+                            intent.putExtra("fax", item.fax)
+                            intent.putExtra("mobile", item.mobile)
+                            intent.putExtra("contact", item.contactPerson)
+                            intent.putExtra("website", item.website)
+                            intent.putExtra("email", item.email)
+                            intent.putExtra("address1", item.address1)
+                            intent.putExtra("address2", item.address2)
+                            intent.putExtra("city", item.city)
+                            intent.putExtra("state", item.state)
+                            intent.putExtra("country", item.country)
+                            intent.putExtra("zip", item.zipCode)
                             holder.itemView.context.startActivity(intent)
                         }
                     }

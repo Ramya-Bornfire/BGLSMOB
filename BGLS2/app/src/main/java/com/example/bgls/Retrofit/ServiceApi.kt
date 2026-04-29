@@ -5,11 +5,14 @@ import com.example.bgls.DataModels.CalendarResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
 import com.example.bgls.DataModels.OrganizationResponse
+import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
 import com.example.bgls.DataModels.SingleEmployeeResponse
 import com.example.bgls.DataModels.SingleUserResponse
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -24,7 +27,19 @@ interface ServiceApi {
     suspend fun getOrganizationDetails(
         @Query("formmode") formmode: String? = "add"
     ): Response<OrganizationResponse>
-
+    @GET("api/organizationDetails")
+    suspend fun getBranchDetailsView(
+        @Query("formmode") formmode: String = "view",
+        @Query("branch_code") branchCode: String
+    ): Response<OrganizationViewResponse>
+    @POST("tab2modify")
+    suspend fun updateBranch(@Body body: RequestBody): Response<ResponseBody>
+    @FormUrlEncoded
+    @POST("tab2Del")
+    suspend fun deleteBranch(@Field("branch_code") branchCode: String): Response<ResponseBody>
+    @FormUrlEncoded
+    @POST("OrgBranchAdd")
+    suspend fun addBranch(@FieldMap params: Map<String, String>): Response<ResponseBody>
     @GET("api/userProfile")
     fun getUserProfiles(@Query("formmode") formmode: String = "list"): Call<UserProfileResponse>
 
