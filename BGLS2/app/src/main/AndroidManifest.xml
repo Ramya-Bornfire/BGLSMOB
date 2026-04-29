@@ -16,9 +16,26 @@
         android:theme="@style/Theme.BGLS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ChartOfAccounts.TransactionAccountAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChartOfAccounts.TransactionAccountViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChartOfAccounts.TransactionAccountModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChartOfAccounts.ChartOfAccountsAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChartOfAccounts.ChartOfAccountsDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChartOfAccounts.ChartOfAccountsActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoanSchedule.LoanScheduleListActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoanSchedule.LoanScheduleActivity"
             android:exported="false" />
@@ -37,7 +54,8 @@
         <activity
             android:name=".CustomerMaster.CustomerMasterActivity"
             android:exported="false" />
-        <activity android:name=".OrganizationDetails.ViewBranchActivity"
+        <activity
+            android:name=".OrganizationDetails.ViewBranchActivity"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.AddBranchActivity"
@@ -102,7 +120,6 @@
         <activity
             android:name=".CustomerMaster.WalletActivity"
             android:exported="false" />
-
         <activity
             android:name=".Transaction.TransactionActivity"
             android:exported="false" />

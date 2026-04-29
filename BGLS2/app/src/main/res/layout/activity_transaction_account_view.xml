@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Title Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/tvTransactionTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="TRANSACTION ACCOUNT - VIEW"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/table_cell_bg"
+            android:padding="16dp">
+
+            <!-- LEFT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="16dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Id" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etId" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="1"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GL Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="571"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Scheme Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etSchemeCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="customer_loan"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GLSH Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLSHCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="571250"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Interest Income" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etInterestIncome" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="5061100001"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Fees Income" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etFeesIncome" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="5712500001"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Collection Account" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etCollectionAccount" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="1704120001"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- RIGHT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Product Key" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etProductKey" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="Credit Facility"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GL Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="Income"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Scheme Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etSchemeDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="Uncategorized"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GLSH Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLSHDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="Other Income-Credit Facilities"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Interest receivable" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etInterestReceivable" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Penalty Income" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etPenaltyIncome" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="1701310001"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Loan parking Account" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etLoanParkingAccount" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="#E9ECEF" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333" android:enabled="false" android:text="1704120001"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

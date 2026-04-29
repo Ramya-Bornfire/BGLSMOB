@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Title Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="16dp"
+        android:layout_marginTop="24dp">
+        <TextView
+            android:id="@+id/tvDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHART OF ACCOUNTS - VIEW"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/table_cell_bg"
+            android:padding="16dp">
+
+            <!-- LEFT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="16dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Classification" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinClassification" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="General Ledger" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGeneralLedger" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GL Sub Head" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLSubHead" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Scheme Type" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinSchemeType" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account ID" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountID" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Additional Details Required" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinAdditionalDetails" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Currency" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountCurrency" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Ref Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etRefCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Report Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etReportCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Ownership" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinOwnership" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Total Credit Balance" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etTotalCreditBalance" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Balance" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountBalance" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- RIGHT COLUMN -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Type" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinAccountType" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GL Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="GL Sub Head Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etGLSubHeadDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Scheme Code" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etSchemeCode" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Name" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountName" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Partitioning" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinAccountPartitioning" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Home Currency" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etHomeCurrency" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Ref Description" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etRefDescription" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Account Status" android:textSize="13sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spinAccountStatus" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Remarks" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etRemarks" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Total Debit Balance" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etTotalDebitBalance" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Ref Currency Balance" android:textSize="13sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etRefCurrencyBalance" android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="36dp" android:background="@drawable/table_cell_bg" android:paddingStart="8dp" android:textSize="13sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

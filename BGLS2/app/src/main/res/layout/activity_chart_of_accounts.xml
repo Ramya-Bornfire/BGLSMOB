@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/main"
+    android:background="#F5F5F5">
+
+    <!-- TITLE BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        
+        <TextView
+            android:id="@+id/tvMainTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="CHART OF ACCOUNTS"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"/>
+
+        <Spinner
+            android:id="@+id/spinnerOffice"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+    <!-- TABS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#FFFFFF">
+        
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnTabChart"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Chart of Accounts"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:background="@drawable/tab_selected"
+            android:layout_marginEnd="16dp"/>
+            
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnTabLedger"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Account Ledger"
+            android:textColor="@color/cyanblue"
+            android:textAllCaps="false"
+            android:background="@drawable/tab_unselected"
+            android:layout_marginEnd="16dp"/>
+            
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnTabTransaction"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Transaction Accounts"
+            android:textColor="@color/cyanblue"
+            android:textAllCaps="false"
+            android:background="@drawable/tab_unselected"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF">
+        
+        <!-- Tab 1: Chart of Accounts -->
+        <HorizontalScrollView
+            android:id="@+id/scrollTabChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal"
+            android:visibility="visible">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="HEAD"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="60dp" android:text="GL"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="SCHEME CODE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="ACCT ID"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="CURRENCY"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="CREDITS"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DEBITS"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="STATUS"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="ACTION"/>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTabChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+        
+        <!-- Tab 2: Account Ledger -->
+        <HorizontalScrollView
+            android:id="@+id/scrollTabLedger"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal"
+            android:visibility="gone">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="HEAD"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="ACCT ID"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="CURRENCY"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="CREDITS"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DEBITS"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="STATUS"/>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTabLedger"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+        
+        <!-- Tab 3: Transaction Accounts -->
+        <HorizontalScrollView
+            android:id="@+id/scrollTabTransaction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal"
+            android:visibility="gone">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="60dp" android:text="ID"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="EVENT"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="DEBIT ACCOUNT NUMBER"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="150dp" android:text="DEBIT ACCOUNT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="CREDIT ACCOUNT NUMBER"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="150dp" android:text="CREDIT ACCOUNT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="150dp" android:text="TRAN PARTICULAR"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="60dp" android:text="TYPE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="ACTIONS"/>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTabTransaction"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFFFF"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </FrameLayout>
+</LinearLayout>

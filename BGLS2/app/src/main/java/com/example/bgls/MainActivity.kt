@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.view.Gravity
 import android.widget.Toast
 import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
+import com.example.bgls.ChartOfAccounts.ChartOfAccountsActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
@@ -73,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                 "Migration",
                 listOf("Customer Master", "Loan Master", "Loan Schedule", "Transaction")
             ),
+            Transaction("Chart of Accounts", listOf("Chart of Accounts")),
+
             Transaction("Customer Onboarding",
                 listOf("Minimal Data",
                     "Approval",
@@ -145,6 +148,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Transaction"->{
                     startActivity(Intent(this, TransactionActivity::class.java))
+                }
+                "Chart of Accounts"->{
+                    startActivity(Intent(this, ChartOfAccountsActivity::class.java))
                 }
 
                 else -> {
