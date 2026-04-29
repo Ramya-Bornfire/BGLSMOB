@@ -1,5 +1,6 @@
 package com.example.bgls.LoanSchedule
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
@@ -8,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Adapter.LoanScheduleListActivityAdapter
+import com.example.bgls.LoanSchedule.LoanScheduleListActivityAdapter
 import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
 import com.example.bgls.DataModels.LoanScheduleListModel
 import com.example.bgls.R
@@ -55,7 +56,7 @@ class LoanScheduleListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = LoanScheduleListActivityAdapter(this, emptyList()) { item ->
-            val intent = android.content.Intent(this,LoanScheduleViewActivity::class.java)
+            val intent = Intent(this,LoanScheduleViewActivity::class.java)
             intent.putExtra("loanId", item.loanId)
             intent.putExtra("is_from_loan_schedule", true)
             startActivity(intent)

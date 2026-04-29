@@ -1,4 +1,4 @@
-package com.example.bgls.Adapter
+package com.example.bgls.LoanSchedule
 
 import android.content.Context
 import android.graphics.Color
@@ -17,12 +17,12 @@ class LoanScheduleListActivityAdapter(
 ) : RecyclerView.Adapter<LoanScheduleListActivityAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvSno: TextView              = itemView.findViewById(R.id.tvSno)
-        val tvLoanName: TextView         = itemView.findViewById(R.id.tvLoanName)
-        val tvLoanId: TextView           = itemView.findViewById(R.id.tvLoanId)
-        val tvRetailerName: TextView     = itemView.findViewById(R.id.tvRetailerName)
+        val tvSno: TextView = itemView.findViewById(R.id.tvSno)
+        val tvLoanName: TextView = itemView.findViewById(R.id.tvLoanName)
+        val tvLoanId: TextView = itemView.findViewById(R.id.tvLoanId)
+        val tvRetailerName: TextView = itemView.findViewById(R.id.tvRetailerName)
         val tvRetailerBranchId: TextView = itemView.findViewById(R.id.tvRetailerBranchId)
-        val tvStatus: TextView           = itemView.findViewById(R.id.tvStatus)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

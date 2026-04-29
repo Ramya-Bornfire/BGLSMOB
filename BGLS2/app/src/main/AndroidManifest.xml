@@ -102,6 +102,10 @@
         <activity
             android:name=".CustomerMaster.WalletActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".Transaction.TransactionActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
