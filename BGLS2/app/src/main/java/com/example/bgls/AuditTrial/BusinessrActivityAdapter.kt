@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.BusinessActivityItem
 import com.example.bgls.R
+import formatAuditDateFromIso
+import formatEntryTimeFromIso
 
 
 class BusinessActivityAdapter(
@@ -33,11 +35,11 @@ class BusinessActivityAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = activityList[position]
-        holder.tvAuditDate.text = item.audit_date ?: ""
+        holder.tvAuditDate.text = formatAuditDateFromIso(item.audit_date)
         holder.tvTableName.text = item.audit_table ?: ""
         holder.tvFunction.text = item.func_code ?: ""
         holder.tvEntryUser.text = item.entry_user ?: ""
-        holder.tvEntryTime.text = item.entry_time ?: ""
+        holder.tvEntryTime.text = formatEntryTimeFromIso(item.entry_time)
         holder.tvAuthorizer.text = item.auth_user ?: ""
         holder.tvAuthorizerTime.text = item.auth_time?: ""
         holder.tvRemarks.text = item.remarks ?: ""
