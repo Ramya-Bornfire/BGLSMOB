@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="#F2F2F2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- TOP HEADER -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/header_bg"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/btnBack"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/arrow_back"
+                        android:contentDescription="Back"
+                        android:scaleType="centerInside" />
+
+                    <TextView
+                        android:id="@+id/toolbarTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=" GL STRUCTURE- VIEW"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <!-- MAIN CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/card_background"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- ROW 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/branchid"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch Id"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etbranchid"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/branchdes"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch Des"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etbranchdes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"/>
+                </LinearLayout>
+
+                <!-- ROW 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/glcode"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="GL CODE"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etglcode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/gldes"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="GL Description"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etgldes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <!-- ROW 3 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/glsub"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="GL Sub Head Code"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etglsub"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/glsh"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="GLSH Description"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etglsh"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/currentcode"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Currency Code"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etcurrentcode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/bal"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Balance Sheet Group"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etbal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/seq"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Sequence Order"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etseq"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/tol"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="Total Balance"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/ettol"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+                </LinearLayout>
+                <!-- ROW 6 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/actopen"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="No of Account Opened"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etactopen"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+
+                    <View
+                        android:layout_width="16dp"
+                        android:layout_height="1dp" />
+
+                    <TextView
+                        android:id="@+id/actclose"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:text="No of Account Closed"
+                        android:textSize="13sp"
+                        android:textColor="#555555" />
+
+                    <EditText
+                        android:id="@+id/etactclose"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp" />
+                </LinearLayout>
+                <!-- ROW 7 -->
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>

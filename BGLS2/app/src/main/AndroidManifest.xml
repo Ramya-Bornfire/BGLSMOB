@@ -123,6 +123,34 @@
         <activity
             android:name=".Transaction.TransactionActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".GLStructureDeleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GLStructureModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GLStructureViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReferenceDetailDeleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReferenceDetailModifyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReferenceDetailViewActivity"
+            android:exported="false" />
+
+        <activity android:name=".ReferenceDetailActivity" />
+
+        <activity
+            android:name=".OrganizationDetails.ViewBranchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SchemeCodeViewActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

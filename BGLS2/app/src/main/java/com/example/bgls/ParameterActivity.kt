@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.example.bgls.DataModels.RefResponse
 import com.example.bgls.Retrofit.RetrofitClient
+import androidx.appcompat.widget.PopupMenu
 
 import com.example.bgls.databinding.ActivityParameterBinding
 import retrofit2.Call
@@ -109,6 +110,7 @@ class ParameterActivity : AppCompatActivity() {
 
         createModuleButtons()
         loadModuleData("Reference Code Maintenance")
+
     }
 
     private fun createModuleButtons() {
@@ -182,8 +184,11 @@ class ParameterActivity : AppCompatActivity() {
                 populateTransactionAccountsTable(getTransactionAccountsTableData())
             }
             else -> {
-                val data = moduleDataMap[moduleName] ?: emptyList()
-                populateTable(data as List<ReferenceItem>)
+                Toast.makeText(
+                    this,
+                    "No handler for $moduleName",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -220,22 +225,53 @@ class ParameterActivity : AppCompatActivity() {
                 item.creditAccName,
                 item.tranParticular,
                 item.type,
-                "Action"
+                "Action ▼"
             )
 
             values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
 
-                // ACTION column
-                if (index == values.lastIndex) {
-                    tv.setTextColor(Color.BLUE)
+                if (index == 1) { // EVENT
+                    tv.setTextColor(Color.parseColor("#2196F3"))
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener {
-                        Toast.makeText(
-                            this,
-                            "Action clicked for ${item.id}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.TransactionAccountViewActivity::class.java)
+                        intent.putExtra("MODE", "VIEW")
+                        startActivity(intent)
+                    }
+                }
+
+                // ACTION column
+                if (index == values.lastIndex) {
+                    tv.setTextColor(Color.parseColor("#2196F3"))
+                    tv.paint.isUnderlineText = true
+
+                    tv.setOnClickListener { view ->
+                        val popup = PopupMenu(this@ParameterActivity, view)
+                        popup.menu.add("Edit")
+                        popup.menu.add("Delete")
+
+                        popup.setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.title) {
+                                "Edit" -> {
+                                    val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.TransactionAccountModifyActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                "Delete" -> {
+                                    android.app.AlertDialog.Builder(this@ParameterActivity)
+                                        .setTitle("Delete Account")
+                                        .setMessage("Are you sure you want to delete this Transaction Account?")
+                                        .setPositiveButton("Yes") { _, _ ->
+                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .setNegativeButton("No", null)
+                                        .show()
+                                }
+                            }
+                            true
+                        }
+
+                        popup.show()
                     }
                 }
 
@@ -286,8 +322,25 @@ class ParameterActivity : AppCompatActivity() {
                 item.status
             )
 
-            values.forEach { value ->
+            values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
+
+                if (index == 1) { // ACCT ID
+                    tv.setTextColor(Color.parseColor("#2196F3"))
+                    tv.paint.isUnderlineText = true
+                    tv.setOnClickListener {
+                        val intent = Intent(this@ParameterActivity, com.example.bgls.CustomerMaster.AccountLedgerActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                if (index == 7) { // STATUS
+                    if (value.equals("Active", ignoreCase = true)) {
+                        tv.setTextColor(Color.parseColor("#4CAF50"))
+                    } else {
+                        tv.setTextColor(Color.RED)
+                    }
+                }
 
                 // alternate row color
                 if (rowIndex % 2 == 0) {
@@ -336,22 +389,64 @@ class ParameterActivity : AppCompatActivity() {
                 item.debits,
                 item.balance,
                 item.status,
-                "Action"
+                "Action ▼"
             )
 
             values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
 
-                // ACTION column
-                if (index == values.lastIndex) {
-                    tv.setTextColor(Color.BLUE)
+                if (index == 3) { // ACCT ID
+                    tv.setTextColor(Color.parseColor("#2196F3"))
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener {
-                        Toast.makeText(
-                            this,
-                            "Action clicked for ${item.acctName}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity::class.java)
+                        intent.putExtra("MODE", "VIEW")
+                        startActivity(intent)
+                    }
+                }
+
+                if (index == 9) { // STATUS
+                    if (value.equals("Active", ignoreCase = true)) {
+                        tv.setTextColor(Color.parseColor("#4CAF50"))
+                    } else {
+                        tv.setTextColor(Color.RED)
+                    }
+                }
+
+                // ACTION column
+                if (index == values.lastIndex) {
+                    tv.setTextColor(Color.parseColor("#2196F3"))
+                    tv.paint.isUnderlineText = true
+                    tv.setOnClickListener { view ->
+                        val popup = PopupMenu(this@ParameterActivity, view)
+                        popup.menu.add("Modify")
+                        popup.menu.add("Verify")
+                        popup.menu.add("Delete")
+                        popup.menu.add("View")
+                        
+                        popup.setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.title.toString()) {
+                                "Modify", "Verify", "View" -> {
+                                    val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity::class.java)
+                                    intent.putExtra("MODE", menuItem.title.toString().uppercase())
+                                    startActivity(intent)
+                                    true
+                                }
+                                "Delete" -> {
+                                    android.app.AlertDialog.Builder(this@ParameterActivity)
+                                        .setTitle("Delete Account")
+                                        .setMessage("Are you sure you want to delete this Account?")
+                                        .setPositiveButton("Yes") { _, _ ->
+                                            Toast.makeText(this@ParameterActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
+                                        }
+                                        .setNegativeButton("No", null)
+                                        .show()
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
+                        popup.show()
                     }
                 }
 
@@ -399,8 +494,24 @@ class ParameterActivity : AppCompatActivity() {
                 item.status
             )
 
-            values.forEach { value ->
+            values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
+
+                if (index == 1) { // "ID" column
+                    tv.setTextColor(Color.BLUE)
+                    tv.paint.isUnderlineText = true
+                    tv.setOnClickListener {
+                        val intent = Intent(this@ParameterActivity, SchemeCodeViewActivity::class.java).apply {
+                            putExtra("PRODUCT", item.product)
+                            putExtra("ID", item.id)
+                            putExtra("CATEGORY", item.category)
+                            putExtra("TYPE", item.type)
+                            putExtra("DESCRIPTION", item.description)
+                            putExtra("STATUS", item.status)
+                        }
+                        startActivity(intent)
+                    }
+                }
 
                 // alternate row color
                 if (rowIndex % 2 == 0) {
@@ -435,7 +546,8 @@ class ParameterActivity : AppCompatActivity() {
 
         tableLayout.addView(headerRow)
 
-        data.forEach { item ->
+        // Use forEachIndexed instead of forEach to get rowIndex
+        data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
 
             val values = listOf(
@@ -458,9 +570,101 @@ class ParameterActivity : AppCompatActivity() {
                 if (index == values.lastIndex) {
                     tv.setTextColor(Color.BLUE)
                     tv.paint.isUnderlineText = true
-                    tv.setOnClickListener {
-                        Toast.makeText(this, "Selected ${item.glCode}", Toast.LENGTH_SHORT).show()
+
+                    // Add popup menu on click
+                    tv.setOnClickListener { view ->
+                        val popupMenu = PopupMenu(this@ParameterActivity, view)
+                        popupMenu.menu.add("View")
+                        popupMenu.menu.add("Modify")
+                        popupMenu.menu.add("Delete")
+
+                        popupMenu.setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.title.toString()) {
+                                "View" -> {
+                                    Toast.makeText(
+                                        this@ParameterActivity,
+                                        "View clicked for GL: ${item.glCode}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    val intent = Intent(
+                                        this@ParameterActivity,
+                                        GLStructureViewActivity::class.java
+                                    )
+
+                                    intent.putExtra("branchId", item.branchId)
+                                    intent.putExtra("branchDesc", item.branchDesc)
+                                    intent.putExtra("glCode", item.glCode)
+                                    intent.putExtra("glDesc", item.glDesc)
+                                    intent.putExtra("glshCode", item.glshCode)
+                                    intent.putExtra("glshDesc", item.glshDesc)
+                                    intent.putExtra("currencyCode", item.crncyCode)
+                                    intent.putExtra("creditBal", item.creditBal)
+                                    intent.putExtra("debitBal", item.debitBal)
+
+                                    startActivity(intent)
+                                }
+                                "Modify" ->  {
+                                    Toast.makeText(
+                                        this@ParameterActivity,
+                                        "View clicked for GL: ${item.glCode}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    val intent = Intent(
+                                        this@ParameterActivity,
+                                        GLStructureModifyActivity::class.java
+                                    )
+
+                                    intent.putExtra("branchId", item.branchId)
+                                    intent.putExtra("branchDesc", item.branchDesc)
+                                    intent.putExtra("glCode", item.glCode)
+                                    intent.putExtra("glDesc", item.glDesc)
+                                    intent.putExtra("glshCode", item.glshCode)
+                                    intent.putExtra("glshDesc", item.glshDesc)
+                                    intent.putExtra("currencyCode", item.crncyCode)
+                                    intent.putExtra("creditBal", item.creditBal)
+                                    intent.putExtra("debitBal", item.debitBal)
+
+                                    startActivity(intent)
+                                }
+                                "Delete" -> {
+                                    Toast.makeText(
+                                        this@ParameterActivity,
+                                        "View clicked for GL: ${item.glCode}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    val intent = Intent(
+                                        this@ParameterActivity,
+                                        GLStructureDeleteActivity::class.java
+                                    )
+
+                                    intent.putExtra("branchId", item.branchId)
+                                    intent.putExtra("branchDesc", item.branchDesc)
+                                    intent.putExtra("glCode", item.glCode)
+                                    intent.putExtra("glDesc", item.glDesc)
+                                    intent.putExtra("glshCode", item.glshCode)
+                                    intent.putExtra("glshDesc", item.glshDesc)
+                                    intent.putExtra("currencyCode", item.crncyCode)
+                                    intent.putExtra("creditBal", item.creditBal)
+                                    intent.putExtra("debitBal", item.debitBal)
+
+                                    startActivity(intent)
+                                }
+                            }
+                            true
+                        }
+
+                        popupMenu.show()
                     }
+                }
+
+                // Alternate row colors - now rowIndex is available
+                if (rowIndex % 2 == 0) {
+                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
+                } else {
+                    tv.setBackgroundColor(Color.WHITE)
                 }
 
                 row.addView(tv)
@@ -475,63 +679,75 @@ class ParameterActivity : AppCompatActivity() {
 
         // Header row
         val headerRow = TableRow(this).apply {
-            // FIXED: use a color that exists, e.g., gray_light or colorPrimary
-            setBackgroundColor(ContextCompat.getColor(this@ParameterActivity, R.color.gray_light))
+            setBackgroundColor(
+                ContextCompat.getColor(
+                    this@ParameterActivity,
+                    R.color.gray_light
+                )
+            )
         }
 
-        val headers = listOf("REF TYPE", "TYPE DESC", "REF ID", "REF DESC", "MODULE ID", "ACTION")
-        val weights = floatArrayOf(1.0f, 1.5f, 1.5f, 2.0f, 1.5f, 0.8f)
+        val headers = listOf(
+            "REF TYPE",
+            "TYPE DESC",
+            "REF ID",
+            "REF DESC",
+            "MODULE ID",
+            "ACTION"
+        )
 
+        val weights = floatArrayOf(
+            1.0f,
+            1.5f,
+            1.5f,
+            2.0f,
+            1.5f,
+            1.0f
+        )
+
+        // Header create
         headers.forEachIndexed { index, header ->
-            val textView = createTextView(header, true, weights[index])
-            textView.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
+            val textView = createTextView(
+                header,
+                true,
+                weights[index]
+            )
+
+            textView.setBackgroundColor(
+                ContextCompat.getColor(this, R.color.cyanblue)
+            )
             textView.setTextColor(Color.WHITE)
+
             headerRow.addView(textView)
         }
+
         tableLayout.addView(headerRow)
 
         // Data rows
         data.forEachIndexed { rowIndex, item ->
+
             val row = TableRow(this)
+
             val rowData = listOf(
                 item.refType,
                 item.typeDesc,
                 item.refId,
                 item.refDesc,
-                item.moduleId,
-                "Action"
+                item.moduleId
             )
 
-//            rowData.forEachIndexed { colIndex, value ->
-//                val isActionColumn = colIndex == 5
-//                val textView = createTextView(value, false, weights[colIndex])
-//
-//                if (isActionColumn) {
-//                    textView.setTextColor(Color.BLUE)
-//                    textView.paint.isUnderlineText = true
-//                    textView.setOnClickListener {
-//                        Toast.makeText(
-//                            this,
-//                            "Action clicked for ${item.refType} - ${item.typeDesc}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//
-//                // Alternate row colors
-//                if (rowIndex % 2 == 0) {
-//                    textView.setBackgroundColor(Color.parseColor("#F5F5F5"))
-//                } else {
-//                    textView.setBackgroundColor(Color.WHITE)
-//                }
-//
-//                row.addView(textView)
-//            }
-            rowData.forEachIndexed { colIndex, value ->
+            // First 5 columns
+            for (colIndex in 0 until 5) {
 
-                val textView = createTextView(value, false, weights[colIndex])
+                val value = rowData[colIndex]
 
-                // ✅ REF ID column (index 2)
+                val textView = createTextView(
+                    value,
+                    false,
+                    weights[colIndex]
+                )
+
+                // REF ID clickable (column index = 2)
                 if (colIndex == 2) {
 
                     textView.setTextColor(Color.BLUE)
@@ -539,28 +755,123 @@ class ParameterActivity : AppCompatActivity() {
 
                     textView.setOnClickListener {
 
-                       // val intent = Intent(this, ReferenceDetailActivity::class.java)
+                        val intent = Intent(
+                            this,
+                            ReferenceDetailActivity::class.java
+                        )
+
                         intent.putExtra("REF_ID", item.refId)
                         intent.putExtra("REF_DESC", item.refDesc)
                         intent.putExtra("TYPE_DESC", item.typeDesc)
-                    // ✅ Toast message
-                        Toast.makeText(this, "Clicked Ref ID: ${item.refId}",Toast.LENGTH_SHORT).show()                      //  startActivity(intent)
+
+                        Toast.makeText(
+                            this,
+                            "Clicked Ref ID: ${item.refId}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        startActivity(intent)
                     }
                 }
 
-                // alternate row color (keep existing logic)
+                // Alternate row colors
                 if (rowIndex % 2 == 0) {
-                    textView.setBackgroundColor(Color.parseColor("#F5F5F5"))
+                    textView.setBackgroundColor(
+                        Color.parseColor("#F5F5F5")
+                    )
                 } else {
                     textView.setBackgroundColor(Color.WHITE)
                 }
 
                 row.addView(textView)
             }
+
+            // ACTION column
+            val actionText = createTextView(
+                "Action",
+                false,
+                weights[5]
+            )
+
+            actionText.setTextColor(Color.BLUE)
+            actionText.paint.isUnderlineText = true
+
+            actionText.setOnClickListener { view ->
+                // Create popup menu
+                val popupMenu = PopupMenu(this@ParameterActivity, view)
+                popupMenu.menu.add("View")
+                popupMenu.menu.add("Modify")
+                popupMenu.menu.add("Delete")
+
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+
+                    when (menuItem.title.toString()) {
+
+                        "View" -> {
+                            val intent = Intent(
+                                this@ParameterActivity,
+                                ReferenceDetailViewActivity::class.java
+                            )
+
+                            intent.putExtra("refId", item.refId)
+                            intent.putExtra("refType", item.refType)
+                            intent.putExtra("typeDesc", item.typeDesc)
+                            intent.putExtra("refDes", item.refDesc)
+                            intent.putExtra("moduleId", item.moduleId)
+
+                            startActivity(intent)
+                        }
+
+                        "Modify" -> {
+                            val intent = Intent(
+                                this@ParameterActivity,
+                                ReferenceDetailModifyActivity::class.java
+                            )
+
+                            intent.putExtra("refId", item.refId)
+                            intent.putExtra("refType", item.refType)
+                            intent.putExtra("typeDesc", item.typeDesc)
+                            intent.putExtra("refDes", item.refDesc)
+                            intent.putExtra("moduleId", item.moduleId)
+
+                            startActivity(intent)
+                        }
+
+                        "Delete" -> {
+                            val intent = Intent(
+                                this@ParameterActivity,
+                                ReferenceDetailDeleteActivity::class.java
+                            )
+
+                            intent.putExtra("refId", item.refId)
+                            intent.putExtra("refType", item.refType)
+                            intent.putExtra("typeDesc", item.typeDesc)
+                            intent.putExtra("refDes", item.refDesc)
+                            intent.putExtra("moduleId", item.moduleId)
+
+                            startActivity(intent)
+                        }
+                    }
+
+                    true
+                }
+
+                popupMenu.show()
+            }
+
+            if (rowIndex % 2 == 0) {
+                actionText.setBackgroundColor(
+                    Color.parseColor("#F5F5F5")
+                )
+            } else {
+                actionText.setBackgroundColor(Color.WHITE)
+            }
+
+            row.addView(actionText)
+
             tableLayout.addView(row)
         }
     }
-
     private fun createTextView(text: String, isHeader: Boolean, weight: Float): TextView {
         return TextView(this).apply {
             this.text = text
@@ -668,9 +979,9 @@ class ParameterActivity : AppCompatActivity() {
 
                         val body = response.body()
 
-                        if (body != null && body.refList != null) {
+                        if (body != null) {
 
-                            val list = body.refList.map {
+                            val list = body.refList?.map {
                                 ReferenceItem(
                                     refType = it.ref_type,
                                     typeDesc = it.ref_type_desc,
@@ -678,7 +989,7 @@ class ParameterActivity : AppCompatActivity() {
                                     refDesc = it.ref_id_desc,
                                     moduleId = it.module_id
                                 )
-                            }
+                            } ?: emptyList()
 
                             populateTable(list)
 
