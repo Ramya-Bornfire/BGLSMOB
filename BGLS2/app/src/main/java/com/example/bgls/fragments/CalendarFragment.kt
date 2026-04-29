@@ -106,26 +106,33 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 val response = RetrofitClient.api.getCalendar("calender", "2026", null)
 
                 if (response.isSuccessful) {
-
                     val calList = response.body()?.calender_list ?: emptyList()
-
                     val mappedList = calList.map {
                         CalendarModel(it.year?.toString() ?: "", it.month ?: "")
-
                     }
+
+                    // Get UI references (make them accessible inside the lambda)
+                    val btnFilter = requireView().findViewById<Button>(R.id.btnFilter)
+                    val btnAdd = requireView().findViewById<Button>(R.id.btnAdd)
+                    val header = requireView().findViewById<LinearLayout>(R.id.layoutTableHeader)
+                    val holidayHeader = requireView().findViewById<LinearLayout>(R.id.layoutHolidayHeader)
 
                     recycler.adapter = CalendarAdapter(mappedList) { selectedMonth ->
+                        // 1. Load holidays
                         loadHolidays(selectedMonth)
+
+                        // 2. Switch to holiday header
+                        header.visibility = View.GONE
+                        holidayHeader.visibility = View.VISIBLE
+
+                        // 3. Adjust buttons (like the Holiday tab)
+                        btnFilter.visibility = View.GONE
+                        btnAdd.visibility = View.VISIBLE
                     }
-                    println("CALENDAR RESPONSE = ${response.body()}")
                 } else {
-                    println(response.body())
-                    println("CALENDAR RESPONSE = ${response.body()}")
                     Toast.makeText(requireContext(), "API Error", Toast.LENGTH_SHORT).show()
                 }
-
             } catch (e: Exception) {
-
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
