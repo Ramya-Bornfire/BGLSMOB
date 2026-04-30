@@ -251,6 +251,7 @@ class CustomerMasterViewActivity : AppCompatActivity() {
                     // [0]=holderKey, [1]=accountId, [2]=accountName, [3]=dateOfLoan, [4]=loanAmount, [5]=loanBalance
                     val accounts: List<AccountDetail> = rawRows.map { row ->
                         AccountDetail(
+                            holderKey   = row.getOrNull(0)?.toString() ?: "",
                             accountId   = row.getOrNull(1)?.toString() ?: "",
                             accountName = row.getOrNull(2)?.toString() ?: "",
                             dateOfLoan  = row.getOrNull(3)?.toString() ?: "",
@@ -262,7 +263,9 @@ class CustomerMasterViewActivity : AppCompatActivity() {
                         AccountDetailAdapter(this@CustomerMasterViewActivity, accounts) { account ->
                             val intent = Intent(this@CustomerMasterViewActivity,
                                 LoanMasterViewActivity::class.java)
-                            intent.putExtra("loanNo", account.accountId)
+                            intent.putExtra("loanId", account.accountId)
+                            intent.putExtra("holderKey", account.holderKey)
+                            intent.putExtra("branchKey", this@CustomerMasterViewActivity.intent.getStringExtra("branchKey") ?: "")
                             startActivity(intent)
                         }
                 } else {

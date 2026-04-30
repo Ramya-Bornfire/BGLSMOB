@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
 
 data class AccountDetail(
+    val holderKey: String,
     val accountId: String,
     val accountName: String,
     val dateOfLoan: String,

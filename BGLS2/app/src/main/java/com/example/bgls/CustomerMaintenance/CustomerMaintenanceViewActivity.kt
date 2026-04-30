@@ -103,10 +103,10 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
         val recyclerViewAccountDetails = findViewById<RecyclerView>(R.id.recyclerViewAccountDetails)
 
         val dummyAccounts = listOf(
-            AccountDetail("CCN60aeed68fb1843c0ec57", "Consumer Credit New Client", "14-12-2022", "36,620.00", "-124,289.00"),
-            AccountDetail("CCN3851754328850517ca23", "Consumer Credit New Client", "18-11-2022", "92,985.00", "-272,359.00"),
-            AccountDetail("CCN1ab32cd3b745999db7ea", "Consumer Credit New Client", "19-11-2022", "147,390.00", "-493,673.90"),
-            AccountDetail("CCNa73a323563f3537360c5", "Consumer Credit New Client", "23-11-2022", "86,985.00", "-288,240.00")
+            AccountDetail("CCN60aeed68fb1843c0ec57", "CCN60aeed68fb1843c0ec57", "Consumer Credit New Client", "14-12-2022", "36,620.00", "-124,289.00"),
+            AccountDetail("CCN3851754328850517ca23", "CCN3851754328850517ca23", "Consumer Credit New Client", "18-11-2022", "92,985.00", "-272,359.00"),
+            AccountDetail("CCN1ab32cd3b745999db7ea", "CCN1ab32cd3b745999db7ea", "Consumer Credit New Client", "19-11-2022", "147,390.00", "-493,673.90"),
+            AccountDetail("CCNa73a323563f3537360c5", "CCNa73a323563f3537360c5", "Consumer Credit New Client", "23-11-2022", "86,985.00", "-288,240.00")
         )
         recyclerViewAccountDetails.layoutManager = LinearLayoutManager(this)
         recyclerViewAccountDetails.adapter = AccountDetailAdapter(this, dummyAccounts) { account ->
