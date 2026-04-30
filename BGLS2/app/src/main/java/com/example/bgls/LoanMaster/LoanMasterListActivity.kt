@@ -2,17 +2,21 @@ package com.example.bgls.LoanMaster
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.LoanMaster.LoanMasterAdapter
-import com.example.bgls.DataModels.LoanMaster
 import com.example.bgls.CustomerMaster.LoanMasterViewActivity
+import com.example.bgls.DataModels.LoanMaster
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
 
 class LoanMasterListActivity : AppCompatActivity() {
 
@@ -24,41 +28,21 @@ class LoanMasterListActivity : AppCompatActivity() {
     private lateinit var tvPageInfo: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoanMasterAdapter
+    private lateinit var etSearchFilter: EditText
+    private lateinit var progressBar: ProgressBar
 
     // ─── Pagination ───
-    private val pageSize = 16
+    private val pageSize = 200
     private var currentPage = 1
     private var totalPages = 1
 
-    // ─── Full dummy data — replace with API later ───
-    private val allLoans = mutableListOf(
-        LoanMaster("1",  "LN000001", "PERSONAL LOAN", "JOHN DOE",       "254700000001", "BR001", "ACTIVE"),
-        LoanMaster("2",  "LN000002", "BUSINESS LOAN", "JANE DOE",       "254700000002", "BR001", "ACTIVE"),
-        LoanMaster("3",  "LN000003", "PERSONAL LOAN", "MERCY MACHUKA",  "254725661248", "BR002", "ACTIVE"),
-        LoanMaster("4",  "LN000004", "EDUCATION LOAN", "BEATRICE OBWOCHA","254721169780", "BR002", "INACTIVE"),
-        LoanMaster("5",  "LN000005", "PERSONAL LOAN", "JACKLYNE OBEGI", "254726678050", "BR001", "PENDING"),
-        LoanMaster("6",  "LN000006", "BUSINESS LOAN", "NJOGU YUNA",     "254722663889", "BR003", "ACTIVE"),
-        LoanMaster("7",  "LN000007", "PERSONAL LOAN", "HARISH KALYAN",  "3684308",      "BR004", "ACTIVE"),
-        LoanMaster("8",  "LN000008", "PERSONAL LOAN", "SUNIL KUMAR",    "5887958",      "BR004", "ACTIVE"),
-        LoanMaster("9",  "LN000009", "PERSONAL LOAN", "RAJILAKSHMI",    "5744541",      "BR001", "ACTIVE"),
-        LoanMaster("10", "LN000010", "BUSINESS LOAN", "PON PRASANTH",   "5659769",      "BR002", "ACTIVE"),
-        LoanMaster("11", "LN000011", "PERSONAL LOAN", "ELIZABETH NYAMBURA","254721480542", "BR001", "ACTIVE"),
-        LoanMaster("12", "LN000012", "PERSONAL LOAN", "NDIWA PAUL",     "254703815518", "BR003", "ACTIVE"),
-        LoanMaster("13", "LN000013", "BUSINESS LOAN", "CHERUIYOT ISAAC","254727938049", "BR001", "ACTIVE"),
-        LoanMaster("14", "LN000014", "PERSONAL LOAN", "HESBON MUSILI",  "254703321017", "BR002", "ACTIVE"),
-        LoanMaster("15", "LN000015", "PERSONAL LOAN", "SIMOTWO TOM",    "254728724194", "BR001", "ACTIVE"),
-        LoanMaster("16", "LN000016", "EDUCATION LOAN", "HILLARY LUSENO", "254797828762", "BR003", "ACTIVE"),
-        LoanMaster("17", "LN000017", "PERSONAL LOAN", "TEST USER 1",    "254711111111", "BR001", "ACTIVE"),
-        LoanMaster("18", "LN000018", "BUSINESS LOAN", "TEST USER 2",    "254722222222", "BR002", "INACTIVE")
-    )
-
-    private var filteredLoans = allLoans.toMutableList()
+    private val TAG = "LoanMasterList"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_master_list)
-        
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -70,7 +54,8 @@ class LoanMasterListActivity : AppCompatActivity() {
         setupRecyclerView()
         setupPagination()
         setupDownload()
-        loadPage(1)
+        setupSearch()
+        loadLoansFromApi(1)
     }
 
     private fun initViews() {
@@ -81,63 +66,205 @@ class LoanMasterListActivity : AppCompatActivity() {
         btnNext        = findViewById(R.id.btnNext)
         tvPageInfo     = findViewById(R.id.tvPageInfo)
         recyclerView   = findViewById(R.id.recyclerViewLoansList)
+        etSearchFilter = findViewById(R.id.etSearchFilter)
+        progressBar    = findViewById(R.id.progressBar)
     }
 
     private fun setupSpinners() {
         // Filter spinner
-        val filterOptions = listOf("Select Filter", "Loan Id", "Loan Name", "Mobile No")
+        val filterOptions = listOf("Select Filter", "Loan Id", "Loan Type", "Mobile No")
         val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerFilter.adapter = filterAdapter
 
-        // Status spinner
-        val statusOptions = listOf("Select Status", "ACTIVE", "INACTIVE", "PENDING")
+        // Status spinner – matches web's status options
+        val statusOptions = listOf("Select Status", "ACTIVE", "ACTIVE_IN_ARREARS", "APPROVED")
         val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerStatus.adapter = statusAdapter
 
+        // When a filter is selected, show/hide the search box
+        spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                if (pos == 0) {
+                    etSearchFilter.visibility = View.GONE
+                    etSearchFilter.setText("")
+                    loadLoansFromApi(1)
+                } else {
+                    etSearchFilter.visibility = View.VISIBLE
+                    etSearchFilter.hint = filterOptions[pos]
+                    etSearchFilter.setText("")
+                    etSearchFilter.requestFocus()
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
         // Filter by status when changed
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val selected = statusOptions[pos]
-                filteredLoans = if (selected == "Select Status") {
-                    allLoans.toMutableList()
+                if (selected == "Select Status") {
+                    loadLoansFromApi(1)
                 } else {
-                    allLoans.filter { it.status == selected }.toMutableList()
+                    searchByStatus(selected)
                 }
-                loadPage(1)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
+    private fun setupSearch() {
+        etSearchFilter.setOnEditorActionListener { _, _, _ ->
+            val query = etSearchFilter.text.toString().trim()
+            if (query.isEmpty()) {
+                loadLoansFromApi(1)
+                return@setOnEditorActionListener true
+            }
+
+            when (spinnerFilter.selectedItemPosition) {
+                1 -> searchByLoanId(query)      // Loan Id
+                2 -> searchByLoanType(query)    // Loan Type
+                3 -> searchByMobile(query)      // Mobile No
+            }
+            true
+        }
+    }
+
     private fun setupRecyclerView() {
         adapter = LoanMasterAdapter(this, emptyList()) { loan ->
-            // Navigate to Loan Detail screen (LoanMasterViewActivity)
+            // Navigate to Loan Detail View
             val intent = Intent(this, LoanMasterViewActivity::class.java)
-            intent.putExtra("loanId", loan.loanId)
-            intent.putExtra("loanName", loan.loanName)
-            intent.putExtra("mobile", loan.mobileNo)
+            intent.putExtra("loanId", loan.id ?: "")
+            intent.putExtra("holderKey", loan.accountHolderKey ?: "")
+            intent.putExtra("branchKey", loan.assignedBranchKey ?: "")
             startActivity(intent)
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
 
-    private fun loadPage(page: Int) {
-        totalPages = Math.max(1, Math.ceil(filteredLoans.size.toDouble() / pageSize).toInt())
-        currentPage = page.coerceIn(1, totalPages)
+    // ─── API CALLS ───
 
-        val fromIndex = (currentPage - 1) * pageSize
-        val toIndex = minOf(fromIndex + pageSize, filteredLoans.size)
-        val pageData = if (fromIndex < filteredLoans.size) {
-            filteredLoans.subList(fromIndex, toIndex)
-        } else emptyList()
+    private fun loadLoansFromApi(page: Int) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getLoans(page = page, limit = pageSize)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        currentPage = body.currentPage
+                        totalPages  = body.totalPages
+                        adapter.updateList(body.data)
+                        updatePaginationUI()
+                    } else {
+                        showNoData()
+                    }
+                } else {
+                    Log.e(TAG, "API error: ${response.code()}")
+                    showNoData()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Network error", e)
+                showNoData()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
 
-        adapter.updateList(pageData)
+    private fun searchByLoanId(loanId: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.searchLoanById(loanId)
+                handleSearchResponse(response)
+            } catch (e: Exception) {
+                Log.e(TAG, "Search error", e)
+                showNoData()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun searchByLoanType(loanType: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.searchLoanByType(loanType)
+                handleSearchResponse(response)
+            } catch (e: Exception) {
+                Log.e(TAG, "Search error", e)
+                showNoData()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun searchByMobile(mobileNumber: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.searchLoanByMobile(mobileNumber)
+                handleSearchResponse(response)
+            } catch (e: Exception) {
+                Log.e(TAG, "Search error", e)
+                showNoData()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun searchByStatus(status: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.searchLoanByStatus(status)
+                handleSearchResponse(response)
+            } catch (e: Exception) {
+                Log.e(TAG, "Status search error", e)
+                showNoData()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun handleSearchResponse(response: retrofit2.Response<List<LoanMaster>>) {
+        if (response.isSuccessful) {
+            val list = response.body()
+            if (!list.isNullOrEmpty()) {
+                adapter.updateList(list)
+                // Hide pagination for search results
+                totalPages = 1
+                currentPage = 1
+                updatePaginationUI()
+            } else {
+                showNoData()
+            }
+        } else {
+            Log.e(TAG, "Search API error: ${response.code()}")
+            showNoData()
+        }
+    }
+
+    // ─── UI HELPERS ───
+
+    private fun showNoData() {
+        adapter.updateList(emptyList())
+        Toast.makeText(this, "No data available", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun updatePaginationUI() {
         tvPageInfo.text = "Page $currentPage of $totalPages"
-
-        // Disable Prev on first page, Next on last page
         btnPrev.isEnabled = currentPage > 1
         btnPrev.alpha = if (currentPage > 1) 1f else 0.5f
         btnNext.isEnabled = currentPage < totalPages
@@ -146,10 +273,10 @@ class LoanMasterListActivity : AppCompatActivity() {
 
     private fun setupPagination() {
         btnPrev.setOnClickListener {
-            if (currentPage > 1) loadPage(currentPage - 1)
+            if (currentPage > 1) loadLoansFromApi(currentPage - 1)
         }
         btnNext.setOnClickListener {
-            if (currentPage < totalPages) loadPage(currentPage + 1)
+            if (currentPage < totalPages) loadLoansFromApi(currentPage + 1)
         }
     }
 

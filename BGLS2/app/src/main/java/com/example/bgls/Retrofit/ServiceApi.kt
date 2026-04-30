@@ -228,4 +228,48 @@ interface ServiceApi {
     suspend fun getBranchNameByKey(
         @Field("branch_key") branchKey: String
     ): retrofit2.Response<okhttp3.ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // LOAN MASTER APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** Paginated loan list – api/loans */
+    @GET("api/loans")
+    suspend fun getLoans(
+        @Query("page")  page: Int  = 1,
+        @Query("limit") limit: Int = 200
+    ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterPagedResponse>
+
+    /** Loan detail view – api/loanMaster?formmode=viewloan */
+    @GET("api/loanMaster")
+    suspend fun getLoanMasterView(
+        @Query("formmode")    formmode: String = "viewloan",
+        @Query("id")          id: String,
+        @Query("holder_key")  holderKey: String,
+        @Query("branch_key")  branchKey: String
+    ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterViewResponse>
+
+    /** Search by Loan ID (partial match) */
+    @GET("api/loan/search")
+    suspend fun searchLoanById(
+        @Query("loanId") loanId: String
+    ): retrofit2.Response<List<com.example.bgls.DataModels.LoanMaster>>
+
+    /** Search by Loan Type (partial match) */
+    @GET("api/loan_type/search")
+    suspend fun searchLoanByType(
+        @Query("loanType") loanType: String
+    ): retrofit2.Response<List<com.example.bgls.DataModels.LoanMaster>>
+
+    /** Search by Mobile Number (partial match) */
+    @GET("api/loan_mobile_number/search")
+    suspend fun searchLoanByMobile(
+        @Query("MobileNumber") mobileNumber: String
+    ): retrofit2.Response<List<com.example.bgls.DataModels.LoanMaster>>
+
+    /** Filter loans by status */
+    @GET("api/loan/statusSearch")
+    suspend fun searchLoanByStatus(
+        @Query("status") status: String
+    ): retrofit2.Response<List<com.example.bgls.DataModels.LoanMaster>>
 }

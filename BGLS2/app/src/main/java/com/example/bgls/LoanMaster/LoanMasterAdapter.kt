@@ -35,13 +35,13 @@ class LoanMasterAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = loanList[position]
 
-        holder.tvSno.text              = item.sno
-        holder.tvLoanId.text           = item.loanId
-        holder.tvLoanType.text         = item.loanType
-        holder.tvLoanName.text         = item.loanName
-        holder.tvMobileNo.text         = item.mobileNo
-        holder.tvRetailerBranchId.text = item.retailerBranchId
-        holder.tvStatus.text           = item.status
+        holder.tvSno.text              = (position + 1).toString()
+        holder.tvLoanId.text           = item.id ?: ""
+        holder.tvLoanType.text         = item.loanName ?: ""
+        holder.tvLoanName.text         = item.customerName
+        holder.tvMobileNo.text         = item.mobilePhone ?: ""
+        holder.tvRetailerBranchId.text = item.retailerBranch ?: ""
+        holder.tvStatus.text           = item.accountState ?: ""
 
         // Alternate row background for readability
         if (position % 2 == 0) {
