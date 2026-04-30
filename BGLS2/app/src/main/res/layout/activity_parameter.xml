@@ -15,17 +15,25 @@
         android:orientation="horizontal"
         android:padding="8dp"
         android:gravity="center_vertical"
-        android:background="#F8F9FA">
-
+        android:background="@drawable/header_bg">
+        <!-- Menu icon (hamburger) -->
+        <ImageView
+            android:id="@+id/menuIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/menu"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp" />
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="REFERENCE CODE MAINTENANCE"
+            android:gravity="center"
             android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#1A1D1E"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
             android:textAllCaps="true"
             android:paddingStart="8dp"/>
 

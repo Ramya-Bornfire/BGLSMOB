@@ -9,6 +9,7 @@
 
     <!-- 🔷 TOP BAR -->
     <RelativeLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@drawable/header_bg"
@@ -16,11 +17,11 @@
         android:paddingEnd="12dp">
 
         <ImageView
-            android:id="@+id/btnBack"
+            android:id="@+id/menuIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow_back"
+            android:src="@drawable/menu"
             android:clickable="true"
             android:focusable="true"
             app:tint="@android:color/white" />

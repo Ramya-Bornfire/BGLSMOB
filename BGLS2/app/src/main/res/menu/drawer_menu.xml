@@ -9,7 +9,7 @@
     <item
         android:id="@+id/nav_profile"
         android:title="Profile"
-        android:icon="@drawable/profile"/>
+        android:icon="@drawable/an_profile"/>
 
     <item
         android:id="@+id/nav_logout"
