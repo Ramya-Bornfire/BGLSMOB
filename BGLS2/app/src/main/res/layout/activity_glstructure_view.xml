@@ -11,42 +11,59 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- TOP HEADER -->
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <!-- MODERN HEADER WITH ACTIONS -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/header_bg"
-                android:padding="12dp">
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:gravity="center_vertical"
+                android:background="#F8F9FA">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_weight="1"
+                    android:text="GL STRUCTURE - VIEW"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#1A1D1E"
+                    android:textAllCaps="true"
+                    android:paddingStart="8dp"/>
 
-                    <ImageView
-                        android:id="@+id/btnBack"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/arrow_back"
-                        android:contentDescription="Back"
-                        android:scaleType="centerInside" />
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Edit"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_header_action"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:layout_marginEnd="8dp"/>
 
-                    <TextView
-                        android:id="@+id/toolbarTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text=" GL STRUCTURE- VIEW"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:gravity="center" />
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="Add"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_header_action"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </androidx.appcompat.widget.Toolbar>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
 
             <!-- MAIN CARD -->
             <LinearLayout

@@ -16,6 +16,15 @@
         android:theme="@style/Theme.BGLS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SchemeCodeAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GLStructureAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReferenceDetailAddActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChartOfAccounts.TransactionAccountAddActivity"
             android:exported="false" />
         <activity
@@ -53,6 +62,9 @@
             android:exported="true" />
         <activity
             android:name=".CustomerMaster.CustomerMasterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrganizationDetails.ViewBranchActivity"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.ViewBranchActivity"
@@ -123,7 +135,6 @@
         <activity
             android:name=".Transaction.TransactionActivity"
             android:exported="false" />
-
         <activity
             android:name=".GLStructureDeleteActivity"
             android:exported="false" />
@@ -142,16 +153,10 @@
         <activity
             android:name=".ReferenceDetailViewActivity"
             android:exported="false" />
-
         <activity android:name=".ReferenceDetailActivity" />
-
-        <activity
-            android:name=".OrganizationDetails.ViewBranchActivity"
-            android:exported="false" />
         <activity
             android:name=".SchemeCodeViewActivity"
             android:exported="false" />
-
         <activity
             android:name=".CustomerMaintenance.CustomerMaintenanceActivity"
             android:exported="false" />

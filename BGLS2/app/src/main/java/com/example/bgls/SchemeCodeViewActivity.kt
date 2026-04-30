@@ -21,19 +21,34 @@ class SchemeCodeViewActivity : AppCompatActivity() {
 
         val tvProduct = findViewById<EditText>(R.id.tvProduct)
         val tvProductType = findViewById<EditText>(R.id.tvProductType)
-        val tvId = findViewById<EditText>(R.id.tvId)    
+        val tvId = findViewById<EditText>(R.id.tvId)
         val tvState = findViewById<EditText>(R.id.tvState)
         val tvProductCategory = findViewById<EditText>(R.id.tvProductCategory)
         val tvProductDescription = findViewById<EditText>(R.id.tvProductDescription)
 
         // Populate from intent
-        intent.extras?.let {
-            tvProduct.setText(it.getString("PRODUCT", "Bizna All Inclusive"))
-            tvId.setText(it.getString("ID", "60003"))
-            tvProductCategory.setText(it.getString("CATEGORY", "Purchase Financing"))
-            tvProductType.setText(it.getString("TYPE", "Fixed Term Loan"))
-            tvProductDescription.setText(it.getString("DESCRIPTION", "Loxea v3"))
-            tvState.setText(it.getString("STATUS", "Active"))
+        intent.extras?.let { bundle: android.os.Bundle ->
+            tvProduct.setText(bundle.getString("PRODUCT", "Bizna All Inclusive"))
+            tvId.setText(bundle.getString("ID", "60003"))
+            tvProductCategory.setText(bundle.getString("CATEGORY", "Purchase Financing"))
+            tvProductType.setText(bundle.getString("TYPE", "Fixed Term Loan"))
+            tvProductDescription.setText(bundle.getString("DESCRIPTION", "Loxea v3"))
+            tvState.setText(bundle.getString("STATUS", "Active"))
+        }
+
+        val mode = intent.getStringExtra("MODE") ?: "VIEW"
+        if (mode == "ADD") {
+            isEditMode = true
+            tvProduct.setText("")
+            tvId.setText("")
+            tvProductCategory.setText("")
+            tvProductType.setText("")
+            tvProductDescription.setText("")
+            tvState.setText("Active")
+            findViewById<Button>(R.id.btnModify).text = "Submit"
+            window.decorView.post {
+                setFormEnabled(findViewById(android.R.id.content), true)
+            }
         }
 
         findViewById<Button>(R.id.btnHome).setOnClickListener {
@@ -48,7 +63,8 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 setFormEnabled(findViewById(android.R.id.content), true)
                 Toast.makeText(this, "Edit mode enabled", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Data Submitted successfully", Toast.LENGTH_SHORT).show()
+                val message = if (mode == "ADD") "Scheme Code Added successfully" else "Data Submitted successfully"
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
@@ -135,7 +151,7 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 row.addView(EditText(this).apply {
                     setBackgroundResource(R.drawable.edittext_background)
                     setPadding(16, 16, 16, 16)
-                    isEnabled = false
+                    isEnabled = isEditMode
                     layoutParams = android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
                         setMargins(8, 0, 8, 0)
                     }
@@ -147,7 +163,7 @@ class SchemeCodeViewActivity : AppCompatActivity() {
 
     private fun populateProductFees() {
         val container = findViewById<android.widget.LinearLayout>(R.id.feesContainer)
-        
+
         val mockData = mapOf(
             1 to listOf("Motor Insurance", "None", "", "639714737", "Manual", "Flat (Ksh)", ""),
             2 to listOf("Loxea Maintenance", "None", "", "511226422", "Manual", "Flat (Ksh)", ""),
@@ -158,8 +174,10 @@ class SchemeCodeViewActivity : AppCompatActivity() {
             7 to listOf("VAT on OL", "None", "", "53561656", "Manual", "Flat (Ksh)", "")
         )
 
+        val mode = intent.getStringExtra("MODE") ?: "VIEW"
+
         for (i in 1..17) {
-            val data = mockData[i] ?: listOf("", "", "", "", "", "", "")
+            val data = if (mode == "ADD") listOf("", "", "", "", "", "", "") else (mockData[i] ?: listOf("", "", "", "", "", "", ""))
 
             val row1 = createFeeRow(
                 "FEE${i}_NAME", data[0],
@@ -227,11 +245,11 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 gravity = android.view.Gravity.CENTER_VERTICAL
             }
             field.addView(tvLabel)
-            
+
             val etValue = EditText(this).apply {
                 setText(value)
                 textSize = 12f
-                isEnabled = false
+                isEnabled = isEditMode
                 setBackgroundResource(R.drawable.edittext_background)
                 setPadding(16, 16, 16, 16)
                 layoutParams = android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f)

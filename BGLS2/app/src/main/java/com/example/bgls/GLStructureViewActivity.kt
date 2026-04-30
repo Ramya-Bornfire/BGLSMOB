@@ -1,5 +1,6 @@
 package com.example.bgls
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -12,9 +13,8 @@ import androidx.appcompat.widget.Toolbar
 
 class GLStructureViewActivity : AppCompatActivity() {
 
-    private lateinit var btnBack: ImageView
     private lateinit var toolbarTitle: TextView
-    private lateinit var btnUpdate: Button
+   // private lateinit var btnUpdate: Button
 
     private lateinit var etBranchId: EditText
     private lateinit var etBranchDes: EditText
@@ -33,15 +33,19 @@ class GLStructureViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glstructure_view)
 
-        // Toolbar setup
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
         // Initialize views
-        btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)
-        btnUpdate = findViewById(R.id.btnUpdate)
+        
+        findViewById<Button>(R.id.btnEdit).setOnClickListener {
+            val intent = Intent(this, GLStructureModifyActivity::class.java)
+            // Pass current data if needed
+            startActivity(intent)
+        }
+
+        findViewById<Button>(R.id.btnAdd).setOnClickListener {
+            // Navigate to an Add activity if one exists, otherwise show toast
+            Toast.makeText(this, "Opening Add GL Structure", Toast.LENGTH_SHORT).show()
+        }
 
         etBranchId = findViewById(R.id.etbranchid)
         etBranchDes = findViewById(R.id.etbranchdes)
@@ -56,10 +60,6 @@ class GLStructureViewActivity : AppCompatActivity() {
         etActOpen = findViewById(R.id.etactopen)
         etActClose = findViewById(R.id.etactclose)
 
-        // Back button
-        btnBack.setOnClickListener {
-            finish()
-        }
 
         // Get data from intent (optional)
         val branchId = intent.getStringExtra("branchId") ?: ""
@@ -104,12 +104,12 @@ class GLStructureViewActivity : AppCompatActivity() {
         etActClose.isEnabled = false
 
         // Submit button click
-        btnUpdate.setOnClickListener {
-            Toast.makeText(
-                this,
-                "View Mode - Submit Clicked",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        btnUpdate.setOnClickListener {
+//            Toast.makeText(
+//                this,
+//                "View Mode - Submit Clicked",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
     }
 }
