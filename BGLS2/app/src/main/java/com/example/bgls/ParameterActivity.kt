@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
-import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TableLayout
@@ -22,20 +21,12 @@ import androidx.appcompat.widget.PopupMenu
 import com.example.bgls.databinding.ActivityParameterBinding
 import retrofit2.Call
 import retrofit2.Response
-import androidx.activity.result.contract.ActivityResultContracts
-import android.net.Uri
 
 class ParameterActivity : AppCompatActivity() {
 
     private lateinit var binding:  ActivityParameterBinding
 
     private lateinit var tableLayout: TableLayout
-    
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            handleFileUpload(uri)
-        }
-    }
     private lateinit var tvTitle: TextView
 
     data class ReferenceItem(
@@ -99,7 +90,14 @@ class ParameterActivity : AppCompatActivity() {
         val type: String
     )
 
-    private var currentModule: String = "Reference Code Maintenance"
+    private val moduleDataMap = mapOf(
+        "Reference Code Maintenance" to getReferenceCodeMaintenanceData(),
+        "GL Structure" to getGLTableData(),
+        "Scheme Codes" to getSchemeTableData(),
+        "Chart of Accounts" to getChartAccountsTableData(),
+        "Account Ledger" to getAccountLedgerTableData(),
+        "Transaction Accounts" to getTransactionAccountsTableData()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,76 +105,12 @@ class ParameterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         tvTitle = binding.tvTitle
+
         tableLayout = binding.tableLayout
 
         createModuleButtons()
         loadModuleData("Reference Code Maintenance")
 
-        setupHeaderActions()
-    }
-
-    private fun setupHeaderActions() {
-        binding.btnAdd.setOnClickListener {
-            when (currentModule) {
-                "Reference Code Maintenance" -> {
-                    val intent = Intent(this, com.example.bgls.ReferenceDetailAddActivity::class.java)
-                    startActivity(intent)
-                }
-                "GL Structure" -> {
-                    val intent = Intent(this, com.example.bgls.GLStructureAddActivity::class.java)
-                    startActivity(intent)
-                }
-                "Scheme Codes"-> {
-                    val intent = Intent(this, com.example.bgls.SchemeCodeAddActivity::class.java)
-                    startActivity(intent)
-                }
-                "Chart of Accounts" -> {
-                    val intent = Intent(this, com.example.bgls.ChartOfAccounts.ChartOfAccountsAddActivity::class.java)
-                    startActivity(intent)
-                }
-                "Transaction Accounts" -> {
-                    val intent = Intent(this, com.example.bgls.ChartOfAccounts.TransactionAccountAddActivity::class.java)
-                    startActivity(intent)
-                }
-                else -> {
-                    Toast.makeText(this, "Add functionality for $currentModule", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        binding.btnFilter.setOnClickListener {
-            Toast.makeText(this, "Filter criteria for $currentModule", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnUpload.setOnClickListener {
-            if (currentModule == "GL Structure") {
-                // Launch file picker for GL Structure
-                filePickerLauncher.launch("*/*") 
-            } else {
-                Toast.makeText(this, "Upload functionality for $currentModule", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun handleFileUpload(uri: Uri) {
-        // In a real implementation, you would use a library like Retrofit or Volley 
-        // to send the file at 'uri' to your server.
-        
-        Toast.makeText(this, "Processing file: ${uri.lastPathSegment}", Toast.LENGTH_SHORT).show()
-
-        // Simulate a network upload delay
-        binding.root.postDelayed({
-            android.app.AlertDialog.Builder(this)
-                .setTitle("Success")
-                .setMessage("The GL Structure has been successfully uploaded and processed.")
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton("OK") { dialog, _ -> 
-                    dialog.dismiss()
-                    // Refresh data if needed
-                    loadModuleData(currentModule)
-                }
-                .show()
-        }, 2000)
     }
 
     private fun createModuleButtons() {
@@ -193,23 +127,15 @@ class ParameterActivity : AppCompatActivity() {
             val button = Button(this).apply {
                 text = module
                 background = ContextCompat.getDrawable(context, R.drawable.tab_unselected)
-                isAllCaps = false // Matches the image style better
-                
-                // Set initial selection state for the first button
-                if (module == "Reference Code Maintenance") {
-                    background = ContextCompat.getDrawable(context, R.drawable.tab_selected)
-                    setTextColor(Color.WHITE)
-                } else {
-                    setTextColor(Color.BLACK)
-                }
 
-                setPadding(60, 20, 60, 20) // More padding for capsule look
+                setTextColor(ContextCompat.getColor(context, R.color.cyanblue))
+                setPadding(40, 16, 40, 16)
 
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    marginEnd = 24
+                    marginEnd = 16
                 }
                 setOnClickListener {
                     loadModuleData(module)
@@ -230,20 +156,13 @@ class ParameterActivity : AppCompatActivity() {
                 btn.setTextColor(Color.WHITE)
             } else {
                 btn.background = ContextCompat.getDrawable(this, R.drawable.tab_unselected)
-                btn.setTextColor(Color.BLACK)
+                btn.setTextColor(ContextCompat.getColor(this, R.color.cyanblue))
             }
         }
     }
 
     private fun loadModuleData(moduleName: String) {
-        currentModule = moduleName
         tvTitle.text = moduleName
-
-        // Show Upload button only for GL Structure
-        binding.btnUpload.visibility = if (moduleName == "GL Structure") View.VISIBLE else View.GONE
-
-        // Hide Add button for Account Ledger
-        binding.btnAdd.visibility = if (moduleName == "Account Ledger") View.GONE else View.VISIBLE
 
         when (moduleName) {
             "Reference Code Maintenance" -> {
@@ -834,17 +753,22 @@ class ParameterActivity : AppCompatActivity() {
                     textView.setTextColor(Color.BLUE)
                     textView.paint.isUnderlineText = true
 
-                    textView.setOnClickListener  {
+                    textView.setOnClickListener {
+
                         val intent = Intent(
-                            this@ParameterActivity,
-                            ReferenceDetailViewActivity::class.java
+                            this,
+                            ReferenceDetailActivity::class.java
                         )
 
-                        intent.putExtra("refId", item.refId)
-                        intent.putExtra("refType", item.refType)
-                        intent.putExtra("typeDesc", item.typeDesc)
-                        intent.putExtra("refDes", item.refDesc)
-                        intent.putExtra("moduleId", item.moduleId)
+                        intent.putExtra("REF_ID", item.refId)
+                        intent.putExtra("REF_DESC", item.refDesc)
+                        intent.putExtra("TYPE_DESC", item.typeDesc)
+
+                        Toast.makeText(
+                            this,
+                            "Clicked Ref ID: ${item.refId}",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
                         startActivity(intent)
                     }

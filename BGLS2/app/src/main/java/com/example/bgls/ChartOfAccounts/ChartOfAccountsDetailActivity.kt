@@ -1,8 +1,6 @@
 package com.example.bgls.ChartOfAccounts
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.R
@@ -16,18 +14,12 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
         val tvDetailTitle = findViewById<TextView>(R.id.tvDetailTitle)
 
         val mode = intent.getStringExtra("MODE") ?: "VIEW"
+        
+        // The user said: "if i click verify means i have attached the view above do same as it is"
+        // "when i click the modify means i have attached above it should open"
         tvDetailTitle.text = "CHART OF ACCOUNTS - $mode"
 
-        findViewById<Button>(R.id.btnEdit).setOnClickListener {
-            // Re-open this same activity with MODIFY mode
-            val intent = Intent(this, ChartOfAccountsDetailActivity::class.java)
-            intent.putExtra("MODE", "MODIFY")
-            startActivity(intent)
-        }
-
-        findViewById<Button>(R.id.btnAdd).setOnClickListener {
-            val intent = Intent(this, ChartOfAccountsAddActivity::class.java)
-            startActivity(intent)
-        }
+        // Here we could dynamically disable fields if mode == "VIEW" or "VERIFY"
+        // or load data based on an passed "ACCT_ID" extra.
     }
 }
