@@ -154,4 +154,78 @@ interface ServiceApi {
         @Query("Fromdate") fromDate: String,
         @Query("ListFlg") listFlg: String = "Y"
     ): Call<BusinessActivityResponse>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // CUSTOMER MASTER APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** General customer master endpoint (formmode = list / view / modify / verify) */
+    @GET("api/customerMaster")
+    suspend fun getCustomerMaster(
+        @Query("formmode")   formmode: String,
+        @Query("id")         id: String?        = null,
+        @Query("branch_key") branchKey: String? = null,
+        @Query("module")     module: String?    = null
+    ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterViewResponse>
+
+    /** All customers (verified + unverified) – server-side pagination */
+    @GET("api/AllApprovedCust")
+    suspend fun getAllApprovedCust(
+        @Query("page")  page: Int  = 1,
+        @Query("limit") limit: Int = 200
+    ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
+
+    /** Only verified / approved customers – server-side pagination */
+    @GET("api/ApprovedCust")
+    suspend fun getApprovedCust(
+        @Query("page")  page: Int  = 1,
+        @Query("limit") limit: Int = 200
+    ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
+
+    /** Only unverified / not-approved customers – server-side pagination */
+    @GET("api/NotApprovedCust")
+    suspend fun getNotApprovedCust(
+        @Query("page")  page: Int  = 1,
+        @Query("limit") limit: Int = 200
+    ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
+
+    /** Search by customer ID (partial match), optionally filter by status */
+    @GET("api/customers/search")
+    suspend fun searchCustomersById(
+        @Query("customerId") customerId: String,
+        @Query("status")     status: String? = null
+    ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
+
+    /** Search by mobile number (partial match), optionally filter by status */
+    @GET("api/customers/mobilesearch")
+    suspend fun searchCustomersByMobile(
+        @Query("mobile") mobile: String,
+        @Query("status") status: String? = null
+    ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
+
+    /** Search by email address (partial match), optionally filter by status */
+    @GET("api/customers/emailsearch")
+    suspend fun searchCustomersByEmail(
+        @Query("email")  email: String,
+        @Query("status") status: String? = null
+    ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
+
+    /** Filter the full list by status (ACTIVE / INACTIVE / PENDING) */
+    @GET("api/customers/statusSearch")
+    suspend fun searchCustomersByStatus(
+        @Query("status") status: String
+    ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
+
+    /** Account / loan details for a given customer ID – returns raw rows */
+    @GET("api/getAccDet")
+    suspend fun getAccDet(
+        @Query("id") id: String
+    ): retrofit2.Response<List<List<Any?>>>
+
+    /** Fetch branch name by branch key */
+    @FormUrlEncoded
+    @POST("api/getBranchNameByKey")
+    suspend fun getBranchNameByKey(
+        @Field("branch_key") branchKey: String
+    ): retrofit2.Response<okhttp3.ResponseBody>
 }

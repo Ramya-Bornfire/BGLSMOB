@@ -2,223 +2,57 @@ package com.example.bgls.CustomerMaster
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.CustomerMaster.CustomerMasterAdapter
-import com.example.bgls.CustomerMaster.CustomerMasterViewActivity
 import com.example.bgls.DataModels.CustomerMaster
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class CustomerMasterListActivity : AppCompatActivity() {
 
+    // ─── Views ───
     private lateinit var spinnerFilter: Spinner
     private lateinit var spinnerStatus: Spinner
+    private lateinit var etSearch: EditText
     private lateinit var btnDownload: Button
     private lateinit var btnPrev: Button
     private lateinit var btnNext: Button
     private lateinit var tvPageInfo: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private lateinit var adapter: CustomerMasterAdapter
 
-    // ─── Pagination ───
-    private val pageSize = 16
+    // ─── Pagination state (server-side) ───
+    private val pageLimit = 200
     private var currentPage = 1
     private var totalPages = 1
 
-    // ─── Full dummy data — replace with API later ───
-    private val allCustomers = mutableListOf(
-        CustomerMaster(
-            "1",
-            "27917600",
-            "MERCY NYANGOGE MACHUKA",
-            "11-06-1989",
-            "NAIROBI HEAD OFFICE",
-            "254725661248",
-            "mercymachuka24@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "2",
-            "22187093",
-            "BEATRICE KEMUNTO OBWOCHA",
-            "16-06-1981",
-            "NAIROBI HEAD OFFICE",
-            "254721169780",
-            "beatrice.obwocha@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "3",
-            "13667114",
-            "JACKLYNE OBEGI",
-            "30-09-1976",
-            "NAIROBI HEAD OFFICE",
-            "254726678050",
-            "jackieobegi@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "4",
-            "22619397",
-            "NJOGU YUNA NYATHIRIGA",
-            "01-01-1990",
-            "NAIROBI HEAD OFFICE",
-            "254722663889",
-            "nyathiriga@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "5",
-            "10957906",
-            "MWANASITI MOHAMED HASSAN",
-            "01-01-1970",
-            "NAIROBI HEAD OFFICE",
-            "254720789082",
-            "catherinemzungu4@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "6",
-            "11417859",
-            "WYCLIFFE NDEKWE",
-            "28-05-1972",
-            "NAIROBI HEAD OFFICE",
-            "254722243267",
-            "wandekwe@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "7",
-            "CUST0000040801",
-            "HARISH KALYAN",
-            "21-03-1998",
-            "Al Salam Bank Seychelles Limited",
-            "3684308",
-            "harishkalyan@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "8",
-            "CUST0000041101",
-            "SUNIL KUMAR",
-            "21-03-1998",
-            "Al Salam Bank Seychelles Limited",
-            "5887958",
-            "sunilkumar@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "9",
-            "CUST0000041401",
-            "RAJILAKSHMI",
-            "28-01-2003",
-            "Al Salam Bank Seychelles Limited",
-            "5744541",
-            "raji@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "10",
-            "CUST0000039401",
-            "PON PRASANTH",
-            "21-03-1998",
-            "Al Salam Bank Seychelles Limited",
-            "5659769",
-            "ponprasanth321@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "11",
-            "23598125",
-            "ELIZABETH NYAMBURA HOSEAH",
-            "29-10-1984",
-            "NAIROBI HEAD OFFICE",
-            "254721480542",
-            "liznyambura59@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "12",
-            "32886653",
-            "NDIWA PAUL",
-            "11-12-1995",
-            "NAIROBI HEAD OFFICE",
-            "254703815518",
-            "paulndiwa95@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "13",
-            "30118172",
-            "CHERUIYOT ISAAC",
-            "02-06-1993",
-            "NAIROBI HEAD OFFICE",
-            "254727938049",
-            "cherioyotisaac170@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "14",
-            "36070502",
-            "HESBON MUSILI",
-            "31-12-1899",
-            "NAIROBI HEAD OFFICE",
-            "254703321017",
-            "musilihesbon@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "15",
-            "30982540",
-            "SIMOTWO TOM",
-            "03-12-1994",
-            "NAIROBI HEAD OFFICE",
-            "254728724194",
-            "simotwot@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "16",
-            "38441246",
-            "HILLARY AMACHE LUSENO",
-            "14-03-2001",
-            "NAIROBI HEAD OFFICE",
-            "254797828762",
-            "hluseno695@gmail.com",
-            "ACTIVE"
-        ),
-        // Add more rows for pagination demo
-        CustomerMaster(
-            "17",
-            "29100001",
-            "JOHN DOE",
-            "10-05-1985",
-            "NAIROBI HEAD OFFICE",
-            "254700000001",
-            "johndoe@gmail.com",
-            "ACTIVE"
-        ),
-        CustomerMaster(
-            "18",
-            "29100002",
-            "JANE DOE",
-            "22-08-1990",
-            "NAIROBI HEAD OFFICE",
-            "254700000002",
-            "janedoe@gmail.com",
-            "INACTIVE"
-        )
-    )
+    // ─── Search debounce ───
+    private var searchJob: Job? = null
 
-    private var filteredCustomers = allCustomers.toMutableList()
+    // ─── Filter state ───
+    private var selectedFilter = "Select Filter"   // Customer Id / Mobile No / Email
+    private var selectedStatus = "Select Status"   // ACTIVE / INACTIVE / PENDING
+
+    // ─── Filter options (must match spinner positions) ───
+    private val filterOptions = listOf("Select Filter", "Customer Id", "Mobile No", "Email")
+    private val statusOptions = listOf("Select Status", "ACTIVE", "INACTIVE", "BLACKLISTED", "EXITED", "PENDING_APPROVAL", "REJECTED")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,85 +60,253 @@ class CustomerMasterListActivity : AppCompatActivity() {
 
         initViews()
         setupSpinners()
+        setupSearchBox()
         setupRecyclerView()
         setupPagination()
         setupDownload()
+
+        // Initial load – all customers, page 1
         loadPage(1)
     }
 
     private fun initViews() {
-        spinnerFilter  = findViewById(R.id.spinnerFilter)
-        spinnerStatus  = findViewById(R.id.spinnerStatus)
-        btnDownload    = findViewById(R.id.btnDownload)
-        btnPrev        = findViewById(R.id.btnPrev)
-        btnNext        = findViewById(R.id.btnNext)
-        tvPageInfo     = findViewById(R.id.tvPageInfo)
-        recyclerView   = findViewById(R.id.recyclerViewCustomers)
+        spinnerFilter = findViewById(R.id.spinnerFilter)
+        spinnerStatus = findViewById(R.id.spinnerStatus)
+        etSearch      = findViewById(R.id.etSearch)
+        btnDownload   = findViewById(R.id.btnDownload)
+        btnPrev       = findViewById(R.id.btnPrev)
+        btnNext       = findViewById(R.id.btnNext)
+        tvPageInfo    = findViewById(R.id.tvPageInfo)
+        recyclerView  = findViewById(R.id.recyclerViewCustomers)
+        progressBar   = findViewById(R.id.progressBar)
     }
+
+    // ─── Spinners ────────────────────────────────────────────────────────────
 
     private fun setupSpinners() {
         // Filter spinner
-        val filterOptions = listOf("Select Filter", "Customer Id", "Customer Name", "Mobile No", "Email")
-        val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFilter.adapter = filterAdapter
+        spinnerFilter.adapter = ArrayAdapter(
+            this, android.R.layout.simple_spinner_item, filterOptions
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
         // Status spinner
-        val statusOptions = listOf("Select Status", "ACTIVE", "INACTIVE", "PENDING")
-        val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerStatus.adapter = statusAdapter
+        spinnerStatus.adapter = ArrayAdapter(
+            this, android.R.layout.simple_spinner_item, statusOptions
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
-        // Filter by status when changed
+        spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                selectedFilter = filterOptions[pos]
+                etSearch.hint = when (selectedFilter) {
+                    "Customer Id" -> "Search by Customer ID…"
+                    "Mobile No"   -> "Search by Mobile Number…"
+                    "Email"       -> "Search by Email…"
+                    else          -> "Select a filter above to search"
+                }
+                etSearch.isEnabled = selectedFilter != "Select Filter"
+                etSearch.setText("")
+                // Reset to full list when filter type changes
+                if (selectedFilter == "Select Filter") loadPage(1)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val selected = statusOptions[pos]
-                filteredCustomers = if (selected == "Select Status") {
-                    allCustomers.toMutableList()
+                selectedStatus = statusOptions[pos]
+                val query = etSearch.text.toString().trim()
+                if (query.isNotEmpty() && selectedFilter != "Select Filter") {
+                    triggerSearch(query)
+                } else if (selectedStatus != "Select Status") {
+                    loadByStatus(selectedStatus)
                 } else {
-                    allCustomers.filter { it.status == selected }.toMutableList()
+                    loadPage(1)
                 }
-                loadPage(1)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
+    // ─── Search box (debounced 400 ms) ───────────────────────────────────────
+
+    private fun setupSearchBox() {
+        etSearch.isEnabled = false   // enabled once a filter is selected
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                searchJob?.cancel()
+                val query = s.toString().trim()
+                if (query.isEmpty()) {
+                    loadPage(1)
+                    return
+                }
+                searchJob = lifecycleScope.launch {
+                    delay(400)            // debounce
+                    triggerSearch(query)
+                }
+            }
+        })
+    }
+
+    private fun triggerSearch(query: String) {
+        val statusParam = if (selectedStatus == "Select Status") null else selectedStatus
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = when (selectedFilter) {
+                    "Customer Id" -> RetrofitClient.api.searchCustomersById(query, statusParam)
+                    "Mobile No"   -> RetrofitClient.api.searchCustomersByMobile(query, statusParam)
+                    "Email"       -> RetrofitClient.api.searchCustomersByEmail(query, statusParam)
+                    else          -> null
+                }
+                if (response != null && response.isSuccessful) {
+                    val list = response.body() ?: emptyList()
+                    fetchAndMapBranchNames(list)
+                    tvPageInfo.text = "${list.size} result(s)"
+                    btnPrev.isEnabled = false; btnPrev.alpha = 0.5f
+                    btnNext.isEnabled = false; btnNext.alpha = 0.5f
+                } else {
+                    Toast.makeText(this@CustomerMasterListActivity,
+                        "Search failed: ${response?.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CustomerMasterListActivity,
+                    "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun loadByStatus(status: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.searchCustomersByStatus(status)
+                if (response.isSuccessful) {
+                    val list = response.body() ?: emptyList()
+                    fetchAndMapBranchNames(list)
+                    tvPageInfo.text = "${list.size} result(s)"
+                    btnPrev.isEnabled = false; btnPrev.alpha = 0.5f
+                    btnNext.isEnabled = false; btnNext.alpha = 0.5f
+                } else {
+                    Toast.makeText(this@CustomerMasterListActivity,
+                        "Filter failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CustomerMasterListActivity,
+                    "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    // ─── Paginated full-list load ─────────────────────────────────────────────
+
+    private fun loadPage(page: Int) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getAllApprovedCust(page, pageLimit)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        currentPage = body.currentPage
+                        totalPages  = body.totalPages
+                        fetchAndMapBranchNames(body.data)
+                        tvPageInfo.text = "Page $currentPage of $totalPages"
+                        updatePaginationButtons()
+                    }
+                } else {
+                    Toast.makeText(this@CustomerMasterListActivity,
+                        "Load failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CustomerMasterListActivity,
+                    "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun updatePaginationButtons() {
+        btnPrev.isEnabled = currentPage > 1
+        btnPrev.alpha     = if (currentPage > 1) 1f else 0.5f
+        btnNext.isEnabled = currentPage < totalPages
+        btnNext.alpha     = if (currentPage < totalPages) 1f else 0.5f
+    }
+
+    private suspend fun fetchAndMapBranchNames(list: List<CustomerMaster>) {
+        val uniqueBranchKeys = list.mapNotNull { it.branchKey }.toSet()
+        val branchNameMap = mutableMapOf<String, String>()
+
+        for (key in uniqueBranchKeys) {
+            try {
+                val res = RetrofitClient.api.getBranchNameByKey(key)
+                if (res.isSuccessful) {
+                    val responseStr = res.body()?.string()?.trim() ?: ""
+                    // A valid branch name is short plain text.
+                    // If the response contains HTML tags or is suspiciously long,
+                    // the endpoint returned a login/error page instead – skip it.
+                    val isValidBranchName = responseStr.isNotEmpty()
+                            && !responseStr.contains("<", ignoreCase = false)
+                            && responseStr.length < 200
+                    if (isValidBranchName) {
+                        branchNameMap[key] = responseStr
+                    }
+                }
+            } catch (e: Exception) {
+                // Ignore failure for individual branch names
+            }
+        }
+
+        list.forEach {
+            val resolvedName = branchNameMap[it.branchKey]
+            it.branchName = if (!resolvedName.isNullOrEmpty()) resolvedName else "UNKNOWN"
+        }
+        adapter.updateList(list)
+    }
+
+    // ─── RecyclerView ─────────────────────────────────────────────────────────
 
     private fun setupRecyclerView() {
         adapter = CustomerMasterAdapter(this, emptyList()) { customer ->
-            // Navigate to Customer Detail screen
-            val intent = Intent(this, CustomerMasterViewActivity::class.java)
-            intent.putExtra("customerId", customer.customerId)
-            intent.putExtra("customerName", customer.customerName)
-            intent.putExtra("mobile", customer.mobileNo)
-            intent.putExtra("email", customer.email)
+            val intent = Intent(this, CustomerMasterViewActivity::class.java).apply {
+                putExtra("customerId",  customer.customerId  ?: "")
+                putExtra("branchKey",   customer.branchKey   ?: "")
+                // Pass cached fields so the view screen can display immediately
+                // while the full-detail API call completes in the background.
+                putExtra("customerName",         customer.customerName         ?: "")
+                putExtra("firstName",            customer.firstName            ?: "")
+                putExtra("lastName",             customer.lastName             ?: "")
+                putExtra("gender",               customer.gender               ?: "")
+                putExtra("dob",                  customer.dob                  ?: "")
+                putExtra("branchName",           customer.branchName           ?: "")
+                putExtra("clientRoleKey",        customer.clientRoleKey        ?: "")
+                putExtra("creationDate",         customer.creationDate         ?: "")
+                putExtra("approvalDate",         customer.approvalDate         ?: "")
+                putExtra("lastModificationDate", customer.lastModificationDate ?: "")
+                putExtra("activationDate",       customer.activationDate       ?: "")
+                putExtra("mobileNo",             customer.mobileNo             ?: "")
+                putExtra("email",                customer.email                ?: "")
+                putExtra("address1",             customer.address1             ?: "")
+                putExtra("address2",             customer.address2             ?: "")
+                putExtra("city",                 customer.city                 ?: "")
+                putExtra("suburb",               customer.suburb               ?: "")
+                putExtra("loanCycle",            customer.loanCycle            ?: "")
+                putExtra("groupLoanCycle",       customer.groupLoanCycle       ?: "")
+                putExtra("assignedUser",         customer.assignedUser         ?: "")
+            }
             startActivity(intent)
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
 
-    // ─── Load a specific page ───
-    private fun loadPage(page: Int) {
-        totalPages = Math.max(1, Math.ceil(filteredCustomers.size.toDouble() / pageSize).toInt())
-        currentPage = page.coerceIn(1, totalPages)
-
-        val fromIndex = (currentPage - 1) * pageSize
-        val toIndex = minOf(fromIndex + pageSize, filteredCustomers.size)
-        val pageData = if (fromIndex < filteredCustomers.size) {
-            filteredCustomers.subList(fromIndex, toIndex)
-        } else emptyList()
-
-        adapter.updateList(pageData)
-        tvPageInfo.text = "Page $currentPage of $totalPages"
-
-        // Disable Prev on first page, Next on last page
-        btnPrev.isEnabled = currentPage > 1
-        btnPrev.alpha = if (currentPage > 1) 1f else 0.5f
-        btnNext.isEnabled = currentPage < totalPages
-        btnNext.alpha = if (currentPage < totalPages) 1f else 0.5f
-    }
+    // ─── Pagination buttons ───────────────────────────────────────────────────
 
     private fun setupPagination() {
         btnPrev.setOnClickListener {
@@ -315,10 +317,18 @@ class CustomerMasterListActivity : AppCompatActivity() {
         }
     }
 
+    // ─── Download ────────────────────────────────────────────────────────────
+
     private fun setupDownload() {
         btnDownload.setOnClickListener {
-            // TODO: Export list to CSV/Excel
-            Toast.makeText(this, "Downloading customer list...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Downloading customer list…", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    // ─── Loading state ────────────────────────────────────────────────────────
+
+    private fun showLoading(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        recyclerView.visibility = if (show) View.GONE else View.VISIBLE
     }
 }

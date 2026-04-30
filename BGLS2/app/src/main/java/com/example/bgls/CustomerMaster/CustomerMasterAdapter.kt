@@ -17,14 +17,14 @@ class CustomerMasterAdapter(
 ) : RecyclerView.Adapter<CustomerMasterAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvSno: TextView = itemView.findViewById(R.id.tvSno)
+        val tvSno: TextView        = itemView.findViewById(R.id.tvSno)
         val tvCustomerId: TextView = itemView.findViewById(R.id.tvCustomerId)
         val tvCustomerName: TextView = itemView.findViewById(R.id.tvCustomerName)
-        val tvDob: TextView = itemView.findViewById(R.id.tvDob)
+        val tvDob: TextView        = itemView.findViewById(R.id.tvDob)
         val tvBranchName: TextView = itemView.findViewById(R.id.tvBranchName)
-        val tvMobileNo: TextView = itemView.findViewById(R.id.tvMobileNo)
-        val tvEmail: TextView = itemView.findViewById(R.id.tvEmail)
-        val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
+        val tvMobileNo: TextView   = itemView.findViewById(R.id.tvMobileNo)
+        val tvEmail: TextView      = itemView.findViewById(R.id.tvEmail)
+        val tvStatus: TextView     = itemView.findViewById(R.id.tvStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,39 +36,57 @@ class CustomerMasterAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = customerList[position]
 
-        holder.tvSno.text          = item.sno
-        holder.tvCustomerId.text   = item.customerId
-        holder.tvCustomerName.text = item.customerName
-        holder.tvDob.text          = item.dob
-        holder.tvBranchName.text   = item.branchName
-        holder.tvMobileNo.text     = item.mobileNo
-        holder.tvEmail.text        = item.email
-        holder.tvStatus.text       = item.status
+        // All fields are now nullable – fall back to empty string safely
+        holder.tvSno.text          = (position + 1).toString()
+        holder.tvCustomerId.text   = item.customerId   ?: ""
+        holder.tvCustomerName.text = item.customerName ?: ""
+        holder.tvDob.text          = formatDate(item.dob)
+        holder.tvBranchName.text   = item.branchName   ?: ""
+        holder.tvMobileNo.text     = item.mobileNo     ?: ""
+        holder.tvEmail.text        = item.email        ?: ""
+        holder.tvStatus.text       = item.status       ?: ""
 
         // Alternate row background for readability
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
+        holder.itemView.setBackgroundColor(
+            if (position % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+        )
+
+        // Status badge colour hint
+        when (item.status?.uppercase()) {
+            "1", "Y", "ACTIVE"   -> holder.tvStatus.setTextColor(Color.parseColor("#2E7D32"))
+            "0", "N", "INACTIVE" -> holder.tvStatus.setTextColor(Color.parseColor("#C62828"))
+            else                 -> holder.tvStatus.setTextColor(Color.parseColor("#555555"))
         }
 
-        // Highlight selected row (like row 10 in screenshot)
-        holder.itemView.setOnClickListener {
-            onCustomerClick(item)
-        }
-
-        // Customer ID clickable (blue link)
-        holder.tvCustomerId.setOnClickListener {
-            onCustomerClick(item)
-        }
+        holder.itemView.setOnClickListener { onCustomerClick(item) }
+        holder.tvCustomerId.setOnClickListener { onCustomerClick(item) }
     }
-
 
     override fun getItemCount(): Int = customerList.size
 
-    // ─── Update list when page changes or filter applied ───
     fun updateList(newList: List<CustomerMaster>) {
         customerList = newList
         notifyDataSetChanged()
+    }
+
+    private fun formatDate(dateString: String?): String {
+        if (dateString.isNullOrEmpty()) return ""
+        try {
+            // Check if it's already an epoch timestamp in milliseconds
+            val epoch = dateString.toLongOrNull()
+            if (epoch != null) {
+                val date = java.util.Date(epoch)
+                val format = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US)
+                return format.format(date)
+            }
+            
+            // Try ISO format
+            val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.US)
+            val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US)
+            val date = inputFormat.parse(dateString)
+            return if (date != null) outputFormat.format(date) else dateString
+        } catch (e: Exception) {
+            return dateString
+        }
     }
 }

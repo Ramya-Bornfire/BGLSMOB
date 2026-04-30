@@ -61,6 +61,44 @@
             android:paddingEnd="16dp"/>
     </LinearLayout>
 
+    <!-- ─── SEARCH ROW ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Select a filter above to search"
+            android:inputType="text"
+            android:singleLine="true"
+            android:background="@drawable/edittext_background"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:enabled="false"/>
+    </LinearLayout>
+
+    <!-- ─── PROGRESS BAR (shown while loading) ─── -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
     <!-- ─── TABLE: Header + Rows inside SAME HorizontalScrollView ─── -->
     <HorizontalScrollView
         android:layout_width="match_parent"
