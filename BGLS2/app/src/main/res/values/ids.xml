@@ -5,4 +5,23 @@
     <item name="tvSwift" type="id" />
     <item name="tvHead" type="id" />
     <item name="spinnerAction" type="id" />
+    <item name="cbAccruedIntAfterMaturity" type="id" />
+    <item name="cbAdjustInterestSchedule" type="id" />
+    <item name="cbAdjustPrincipalSchedule" type="id" />
+    <item name="cbAdjustPaymentDates" type="id" />
+    <item name="cbAdjustFeeSchedule" type="id" />
+    <item name="cbAdjustPenaltySchedule" type="id" />
+    <item name="cbConfigurePaymentHolidays" type="id" />
+    <item name="cbCloseDormantAccounts" type="id" />
+    <item name="cbLockArrearsAccount" type="id" />
+    <item name="cbCapCharges" type="id" />
+    <item name="cbAllowArbitraryFees" type="id" />
+    <item name="cbEnableLinking" type="id" />
+    <item name="cbAutoSetSettlementAcct" type="id" />
+    <item name="cbAutoCreateSettlementAcct" type="id" />
+    <item name="cbEnableGuarantors" type="id" />
+    <item name="cbEnableCollaterals" type="id" />
+    <item name="tvLinkedDepositProduct" type="id" />
+    <item name="tvSettlementOptions" type="id" />
+    <item name="tvRequiredSecurities" type="id" />
 </resources>

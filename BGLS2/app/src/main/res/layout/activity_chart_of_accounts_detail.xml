@@ -5,24 +5,59 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- Title Bar -->
+    <!-- MODERN HEADER WITH ACTIONS -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E9ECEF"
-        android:padding="16dp"
-        android:layout_marginTop="24dp">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        android:background="#F8F9FA">
+
         <TextView
             android:id="@+id/tvDetailTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="CHART OF ACCOUNTS - VIEW"
-            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#333333"/>
+            android:textSize="18sp"
+            android:textColor="#1A1D1E"
+            android:textAllCaps="true"
+            android:paddingStart="8dp"/>
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_header_action"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_header_action"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
     </LinearLayout>
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
 
     <ScrollView
         android:layout_width="match_parent"
