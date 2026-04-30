@@ -151,6 +151,13 @@
         <activity
             android:name=".SchemeCodeViewActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".CustomerMaintenance.CustomerMaintenanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerMaintenance.CustomerMaintenanceViewActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

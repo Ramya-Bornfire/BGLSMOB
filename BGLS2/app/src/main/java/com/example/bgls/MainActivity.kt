@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.widget.Toast
 import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.ChartOfAccounts.ChartOfAccountsActivity
+import com.example.bgls.CustomerMaintenance.CustomerMaintenanceActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     "KYC Compliance",
                     "Compliance Department",
                     "Hold and Reject")),
-            Transaction("Customer Maintenance"),
+            Transaction("Customer Maintenance" ,listOf("Customer Maintenance")),
             Transaction("Loan Maintenance"),
             Transaction("Loan Operation",
                 listOf("Loan Operation","Loan Closure")),
@@ -151,6 +152,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Chart of Accounts"->{
                     startActivity(Intent(this, ChartOfAccountsActivity::class.java))
+                }
+                "Customer Maintenance"->{
+                    startActivity(Intent(this, CustomerMaintenanceActivity::class.java))
+
                 }
 
                 else -> {

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvMainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CUSTOMER MAINTENANCE - VIEW"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:id="@+id/btnAccountDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="#2196F3"
+            android:minWidth="0dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="Account Details"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
+    <!-- Form Body -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+            <!-- Left Column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingEnd="16dp">
+
+                <include layout="@layout/item_form_row" android:id="@+id/rowCustomerId" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowFirstName" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowGender" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowBranch" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowCreationDate" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowLastModificationDate" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowMobileNo" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowAddress1" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowCity" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowLoanCycle" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowAssignedUser" />
+
+            </LinearLayout>
+
+            <!-- Right Column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <include layout="@layout/item_form_row" android:id="@+id/rowCustomerName" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowLastName" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowDob" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowClientRoleKey" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowApprovalDate" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowActivationDate" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowEmailId" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowAddress2" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowSuburb" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowGroupLoanCycle" />
+                <include layout="@layout/item_form_row" android:id="@+id/rowAsOnDate" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ─── ACCOUNT DETAILS TABLE (Hidden by default) ─── -->
+        <LinearLayout
+            android:id="@+id/layoutAccountDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:visibility="gone">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- HEADER ROW -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="140dp" android:text="Account ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="180dp" android:text="Account Name"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="110dp" android:text="Date of Loan"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="110dp" android:gravity="center_vertical|end" android:text="Loan Amount"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="110dp" android:gravity="center_vertical|end" android:text="Loan Balance"/>
+                    </LinearLayout>
+
+                    <!-- DATA LIST -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewAccountDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F5F5F5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#2196F3"
+            android:minWidth="0dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="Home"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnModify"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#2196F3"
+            android:minWidth="0dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="Modify"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:backgroundTint="#2196F3"
+            android:minWidth="0dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="Back"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</LinearLayout>

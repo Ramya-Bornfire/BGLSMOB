@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- ─── TITLE BAR ─── -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CUSTOMER MAINTENANCE - LIST"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <!-- Select Filter Spinner -->
+        <Spinner
+            android:id="@+id/spinnerFilter"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Select Status Spinner -->
+        <Spinner
+            android:id="@+id/spinnerStatus"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- All Spinner -->
+        <Spinner
+            android:id="@+id/spinnerAll"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+    </LinearLayout>
+
+    <!-- ─── TABLE: Header + Rows inside SAME HorizontalScrollView ─── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- TABLE HEADER -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:minWidth="60dp" android:text="S.NO"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:text="CUSTOMER ID"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="200dp" android:text="CUSTOMER NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DOB"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="160dp" android:text="BRANCH NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="130dp" android:text="Mobile No"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="200dp" android:text="Email"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="STATUS"/>
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="#CCCCCC"/>
+
+            <!-- TABLE ROWS -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCustomerMaintenance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Divider -->
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+        android:background="#CCCCCC"/>
+
+    <!-- ─── PAGINATION ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/btnPrev"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:text="Prev"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/tvPageInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Page 1 of 11"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:text="Next"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2196F3"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+    </LinearLayout>
+
+</LinearLayout>

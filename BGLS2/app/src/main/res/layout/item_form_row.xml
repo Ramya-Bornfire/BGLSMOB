@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginBottom="12dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#555555"
+        android:textSize="13sp" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5">
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/table_cell_bg"
+            android:padding="8dp"
+            android:textColor="#333333"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/etValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/table_cell_bg"
+            android:padding="8dp"
+            android:textColor="#333333"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:inputType="text" />
+    </FrameLayout>
+
+</LinearLayout>
