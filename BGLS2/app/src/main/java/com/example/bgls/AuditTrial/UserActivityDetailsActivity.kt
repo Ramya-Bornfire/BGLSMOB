@@ -1,17 +1,22 @@
 package com.example.bgls.AuditTrial
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.UserActivityItem
+import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,25 +27,57 @@ class UserActivityDetailsActivity : AppCompatActivity() {
 
     private lateinit var tvCurrentDate: TextView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var btnBack: ImageView
+    //private lateinit var btnBack: ImageView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var menuIcon: ImageView
     private lateinit var adapter: UserActivityAdapter   // change adapter to use UserActivityItem
     private val activityList = mutableListOf<UserActivityItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        menuIcon = findViewById(R.id.menuIcon)
 
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Navigate back to MainActivity (or any home screen)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_profile -> {
+                    // TODO: Open Profile activity if needed
+                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_logout -> {
+                    // TODO: Implement logout logic (clear session, go to login)
+                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
         initViews()
         setupDatePicker()
         setupRecyclerView()
-        setupButtons()
+        //setupButtons()
         loadActivitiesForDate(getCurrentDateString())
     }
 
     private fun initViews() {
         tvCurrentDate = findViewById(R.id.tvCurrentDate)
         recyclerView = findViewById(R.id.recyclerViewUserActivity)
-        btnBack = findViewById(R.id.btnBack)
+        //btnBack = findViewById(R.id.btnBack)
+
     }
 
     private fun setupDatePicker() {
@@ -108,7 +145,7 @@ class UserActivityDetailsActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun setupButtons() {
-        btnBack.setOnClickListener { onBackPressed() }
-    }
+//    private fun setupButtons() {
+//        btnBack.setOnClickListener { onBackPressed() }
+//    }
 }
