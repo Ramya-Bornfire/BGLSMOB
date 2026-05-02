@@ -16,6 +16,15 @@
         android:theme="@style/Theme.BGLS"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".TransactionMaintenance.ProfileAndLossAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.TrialBalanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.TransAccountLedgerActivity"
+            android:exported="false" />
+        <activity
             android:name=".SchemeCodeAddActivity"
             android:exported="false" />
         <activity
@@ -162,6 +171,27 @@
             android:exported="false" />
         <activity
             android:name=".CustomerMaintenance.CustomerMaintenanceViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.AccountLedgerPositingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.AccountLedgerDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.JournalEntriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.MassEntriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.JournalEntriesListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionMaintenance.JournalEntriesViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoanMaintenance.LoanMaintenanceActivity"
             android:exported="false" />
     </application>
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- ─── TOP HEADER ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#4EBACE"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TRANSACTION MAINTANANCE - LIST"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Filter"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:minHeight="0dp"/>
+    </LinearLayout>
+
+    <!-- ─── TABLE: Header + Rows inside SAME HorizontalScrollView ─── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- ─── TABLE HEADER ─── -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.1" android:minWidth="110dp" android:text="TRAN DATE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:text="TRAN ID"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:minWidth="90dp" android:text="PA TRAN TY"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:text="CURRENCY"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:text="AMOUNT"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:text="ACCT ID"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.3" android:minWidth="130dp" android:text="ACCT NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="180dp" android:text="TRAN PARTICUL"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:text="STATUS"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.1" android:minWidth="110dp" android:text="SELECT"/>
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="#CCCCCC"/>
+
+            <!-- ─── ROWS — same scroll container so they never misalign ─── -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvJournalList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:scrollbars="none"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

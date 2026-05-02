@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <!-- HEADER row: Bulk Transactions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical">
+        
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp" 
+            android:layout_height="wrap_content" 
+            android:layout_weight="1"
+            android:text="Bulk Transactions" 
+            android:textStyle="bold" 
+            android:textSize="18sp" 
+            android:textColor="@color/white"/>
+
+        <TextView 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:text="TRAN DATE" 
+            android:textSize="12sp" 
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp"/>
+            
+        <EditText 
+            android:layout_width="120dp" 
+            android:layout_height="30dp" 
+            android:background="#DDE0E2" 
+            android:enabled="false" 
+            android:text="30-04-2026" 
+            android:padding="6dp" 
+            android:textSize="12sp"
+            android:textColor="#333333"/>
+    </LinearLayout>
+
+    <!-- INPUTS: Tran ID, Tran Type -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRAN ID" android:textSize="12sp" android:layout_marginEnd="8dp"/>
+        <EditText android:layout_width="120dp" android:layout_height="36dp" android:background="#E8EAED" android:enabled="false" android:text="TR8868" android:padding="8dp" android:textSize="12sp" android:layout_marginEnd="24dp"/>
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRAN TYPE" android:textSize="12sp" android:layout_marginEnd="8dp"/>
+        <EditText android:layout_width="160dp" android:layout_height="36dp" android:background="#E8EAED" android:enabled="false" android:text="Transfer" android:padding="8dp" android:textSize="12sp" android:layout_marginEnd="24dp"/>
+
+        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+    </LinearLayout>
+
+    <!-- Buttons: Add, Remove, Submit -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginBottom="8dp">
+        <Button android:id="@+id/btnAddRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Add" android:backgroundTint="#4CAF50" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
+        <Button android:id="@+id/btnRemoveRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Remove" android:backgroundTint="#F44336" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
+        <Button android:id="@+id/btnSubmit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Submit" android:backgroundTint="#2196F3" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical">
+            <!-- Table Header -->
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#F8F9FA" android:paddingTop="8dp" android:paddingBottom="8dp" android:gravity="center_vertical">
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Part Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Account No" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Name" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Part Tran Type" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Amount" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Tran Particular" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" gravity="center"/>
+                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate Code" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                <TextView android:layout_width="160dp" android:layout_height="wrap_content" android:text="Additional Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center"/>
+            </LinearLayout>
+            
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMassEntries"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- FOOTER TOTALS Mass Entries -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="16dp">
+        <TextView android:id="@+id/tvMassTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Credit: 0.00  |  Total Debit: 0.00" android:textSize="12sp" android:textColor="#444444"/>
+    </LinearLayout>
+</LinearLayout>

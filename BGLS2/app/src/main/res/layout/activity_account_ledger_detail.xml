@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- Header - Updated with View, Validate, Post buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#2196F3"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ACCOUNT LEDGER POSTING"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"/>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button android:id="@+id/btnDetView" android:layout_width="wrap_content" android:layout_height="36dp" android:text="View" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+            <Button android:id="@+id/btnDetValidate" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Validate" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+            <Button android:id="@+id/btnDetPost" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Post" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="16dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"/>
+            <TextView
+                android:id="@+id/tvDetailHeaderDate"
+                android:layout_width="120dp"
+                android:layout_height="32dp"
+                android:background="#FFFFFF"
+                android:text="27-04-2026"
+                android:padding="6dp"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#333333"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Main Content Box -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/table_cell_bg"
+            android:padding="16dp">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+                    
+                <!-- COLUMN 1 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingEnd="8dp">
+                    
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Id" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="ACCT ID" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetAcctId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Type" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Acct CCY" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetAcctCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Particulars" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranParticulars" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Flow Code" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetFlowCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Date" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Code" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Ref NO" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranRefNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Partition Type" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPartitionType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Instrument NO" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetInstrumentNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Ref CCY" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetRefCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Rate Code" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetRateCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Entry User" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetEntryUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Entry Time" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetEntryTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Status" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranStatus" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- COLUMN 2 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="8dp">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Part Tran Id" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPartTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Acct Name" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetAcctName" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Part Tran Type" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPartTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Amt" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Remarks" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranRemarks" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Flow Date" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetFlowDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Value Date" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetValueDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Report Code" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetTranReportCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Additional Details" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetAdditionalDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Partition Details" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPartitionDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Instrument Date" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetInstrumentDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Ref CCY Amt" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetRefCcyAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Rate" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetRate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Post User" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPostUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Post Time" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetPostTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Deleted" android:textSize="12sp" android:textColor="#666666"/>
+                        <TextView android:id="@+id/tvDetDeleted" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Pagination Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end|center_vertical"
+                android:layout_marginTop="16dp">
+                
+                <Button android:id="@+id/btnDetPrevious" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Previous" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="12sp" android:minHeight="0dp" android:layout_marginEnd="8dp" android:textAllCaps="false"/>
+                <TextView android:id="@+id/tvDetPage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1 / 2" android:textSize="12sp" android:layout_marginEnd="8dp"/>
+                <Button android:id="@+id/btnDetNext" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Next" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="12sp" android:minHeight="0dp" android:textAllCaps="false"/>
+            </LinearLayout>
+            
+            <!-- Bottom Summary Table -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="GENERAL LEDGER" android:padding="12dp" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="GL SUB HEAD" android:padding="12dp" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:text="CRNCY" android:padding="12dp" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="ACCOUNT BALANCE" android:padding="12dp" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical|end" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="BALANCE IND" android:padding="12dp" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="1000" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="1500" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:text="SCR" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="0.00" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical|end" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="Credit" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Detailed Transactions Table Section -->
+            <LinearLayout
+                android:id="@+id/layoutTableContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+                
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+                    
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        
+                        <!-- Table Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#E8EAED">
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="TRAN DATE"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN ID"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:text="PA TRAN TY"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CURRENCY"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:gravity="center|end" android:text="AMOUNT"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="ACCT NAME"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="VALIDATE"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCOUNT BAL"/>
+                            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="SELECT"/>
+                        </LinearLayout>
+                        
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvRelatedEntries"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"/>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Footer removed as buttons moved to header -->
+
+</LinearLayout>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload Files"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upload File :"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="end"
+            android:layout_marginEnd="16dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:orientation="horizontal"
+            android:background="@drawable/table_cell_bg"
+            android:padding="2dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnChooseFile"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Choose file"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#F0F0F0"
+                android:textColor="#333333"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/tvFileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No fi...osen"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:paddingStart="8dp"
+                android:singleLine="true"
+                android:ellipsize="middle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSubmitUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Submit"
+        android:backgroundTint="#007BFF"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:textSize="14sp"
+        android:textAllCaps="false"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnCloseUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Close"
+        android:backgroundTint="#007BFF"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:textSize="14sp"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

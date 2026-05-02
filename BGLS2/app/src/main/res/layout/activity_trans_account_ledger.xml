@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#2196F3"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ACCOUNT LEDGER"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:minWidth="1000dp">
+            
+            <!-- Table Header (Matching ChartOfAccounts Ledger tab) -->
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E8EAED">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="HEAD"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="ACCT ID"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCT NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="CURRENCY"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="CREDITS"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DEBITS"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="STATUS"/>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTransLedger"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

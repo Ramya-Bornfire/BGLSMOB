@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="#E8EAED"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:gravity="center_vertical">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TRAIL BALANCE- REPORTS"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#333333"/>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button android:id="@+id/btnFilter" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Filter" android:textAllCaps="false" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+            
+            <LinearLayout
+                android:id="@+id/layoutDatePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/spinner_background"
+                android:paddingHorizontal="8dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:id="@+id/tvSelectedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="02-May-2026"
+                    android:textSize="12sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="4dp"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:tint="#666666"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="horizontal">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:minWidth="1000dp">
+            
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E8EAED">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="GL CODE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCOUNT NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="OPENING BALANCE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="NET CHANGE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CLOSING BALANCE"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvTrialBalance"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF"/>
+
+            <!-- Duplicate Header / Footer Row as per screenshot -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E8EAED">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="GL CODE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCOUNT NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="OPENING BALANCE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="NET CHANGE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CLOSING BALANCE"/>
+            </LinearLayout>
+
+            <!-- Total Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="#333333"/>
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

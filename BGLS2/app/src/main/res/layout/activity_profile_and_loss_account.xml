@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <!-- INCOME SECTION -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:layout_marginEnd="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED"
+                    android:paddingHorizontal="12dp"
+                    android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="INCOME" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:text="PROFIT AND LOSS ACCOUNT" android:gravity="center" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+                    <Button android:id="@+id/btnFilterIncome" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Filter" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+                </LinearLayout>
+
+                <!-- Income Table Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvIncome"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="#FFFFFF"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:gravity="end">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total:" android:textStyle="bold" android:textSize="12sp" android:layout_marginEnd="16dp"/>
+                    <TextView android:id="@+id/tvTotalIncome" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="22,557,592.73" android:textStyle="bold" android:textSize="12sp"/>
+                </LinearLayout>
+
+                <Button android:id="@+id/btnHome" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Home" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:layout_gravity="center" android:layout_marginBottom="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="16dp"/>
+            </LinearLayout>
+
+            <!-- EXPENDITURE SECTION -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:layout_marginStart="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED"
+                    android:paddingHorizontal="12dp"
+                    android:gravity="center_vertical">
+                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="EXPENDITURE" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333"/>
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/spinner_background"
+                        android:paddingHorizontal="8dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="02-May-2026" android:textSize="10sp" android:layout_marginEnd="4dp"/>
+                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@android:drawable/ic_menu_my_calendar" android:tint="#666666"/>
+                    </LinearLayout>
+                    
+                    <Button android:id="@+id/btnFilterExpenditure" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Filter" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+                </LinearLayout>
+
+                <!-- Expenditure Table Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvExpenditure"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="#FFFFFF"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:gravity="end">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total:" android:textStyle="bold" android:textSize="12sp" android:layout_marginEnd="16dp"/>
+                    <TextView android:id="@+id/tvTotalExpenditure" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00" android:textStyle="bold" android:textSize="12sp"/>
+                </LinearLayout>
+
+                <Button android:id="@+id/btnBack" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Back" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:layout_gravity="center" android:layout_marginBottom="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="16dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Profit Info -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:gravity="center">
+        
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Report Status : " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+            <TextView android:id="@+id/tvReportStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profit" android:textStyle="bold" android:textSize="16sp" android:textColor="#4CAF50"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="4dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profit Amount: " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+            <TextView android:id="@+id/tvProfitAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="22,557,592.73" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

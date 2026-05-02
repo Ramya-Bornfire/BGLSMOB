@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:gravity="center_vertical"
+    android:background="#FFFFFF">
+
+    <!-- Tran Id (Disabled) -->
+    <EditText
+        android:id="@+id/etTranId"
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:background="#E8EAED"
+        android:enabled="false"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Part Tran Id -->
+    <EditText
+        android:id="@+id/etPartTranId"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Account No -->
+    <EditText
+        android:id="@+id/etAccountNo"
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Account Name -->
+    <EditText
+        android:id="@+id/etAccountName"
+        android:layout_width="140dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Part Tran Type (Spinner) -->
+    <Spinner
+        android:id="@+id/spinnerPartTranType"
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:background="@drawable/spinner_background"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Tran Amount -->
+    <EditText
+        android:id="@+id/etTranAmount"
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:inputType="numberDecimal"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Tran Particular -->
+    <EditText
+        android:id="@+id/etTranParticular"
+        android:layout_width="140dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Remarks -->
+    <EditText
+        android:id="@+id/etRemarks"
+        android:layout_width="140dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Rate Code -->
+    <EditText
+        android:id="@+id/etRateCode"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Rate -->
+    <EditText
+        android:id="@+id/etRate"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Additional Remarks -->
+    <EditText
+        android:id="@+id/etAdditionalRemarks"
+        android:layout_width="160dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edittext_background"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:textColor="#333333"/>
+
+</LinearLayout>

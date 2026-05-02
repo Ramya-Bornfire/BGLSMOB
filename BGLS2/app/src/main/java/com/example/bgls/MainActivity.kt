@@ -16,10 +16,16 @@ import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.ChartOfAccounts.ChartOfAccountsActivity
 import com.example.bgls.CustomerMaintenance.CustomerMaintenanceActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
+import com.example.bgls.LoanMaintenance.LoanMaintenanceActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
 import com.example.bgls.OrganizationDetails.OrganizationDetialsActivity
 import com.example.bgls.Transaction.TransactionActivity
+import com.example.bgls.TransactionMaintenance.AccountLedgerPositingActivity
+import com.example.bgls.TransactionMaintenance.JournalEntriesActivity
+import com.example.bgls.TransactionMaintenance.ProfileAndLossAccountActivity
+import com.example.bgls.TransactionMaintenance.TransAccountLedgerActivity
+import com.example.bgls.TransactionMaintenance.TrialBalanceActivity
 import com.example.bgls.UserControl.UserControlActivity
 
 class MainActivity : AppCompatActivity() {
@@ -85,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                     "Compliance Department",
                     "Hold and Reject")),
             Transaction("Customer Maintenance" ,listOf("Customer Maintenance")),
-            Transaction("Loan Maintenance"),
+            Transaction("Loan Maintenance",listOf("Loan Maintenance")),
             Transaction("Loan Operation",
                 listOf("Loan Operation","Loan Closure")),
             Transaction("Deposit Accounts",
@@ -156,6 +162,31 @@ class MainActivity : AppCompatActivity() {
                 "Customer Maintenance"->{
                     startActivity(Intent(this, CustomerMaintenanceActivity::class.java))
 
+                }
+                "Loan Maintenance"->{
+                    startActivity(Intent(this, LoanMaintenanceActivity::class.java))
+                }
+
+                "Journal Entries"->{
+                    startActivity(Intent(this, JournalEntriesActivity::class.java))
+
+                }
+                "Account Ledger Positing"->{
+                    startActivity(Intent(this, AccountLedgerPositingActivity::class.java))
+
+
+                }
+                "Account Leader"->{
+                    startActivity(Intent(this, TransAccountLedgerActivity::class.java))
+
+
+                }
+                "Trial Balance"->{
+                    startActivity(Intent(this, TrialBalanceActivity::class.java))
+                }
+
+                "Profile and Loss Account"->{
+                    startActivity(Intent(this, ProfileAndLossAccountActivity::class.java))
                 }
 
                 else -> {

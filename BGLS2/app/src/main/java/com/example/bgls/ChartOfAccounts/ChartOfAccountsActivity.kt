@@ -52,8 +52,15 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         setupTabs()
         setupActionButtons()
         
-        // Initial state
-        selectTab(btnTabChart, scrollTabChart)
+        // Initial state based on Intent
+        val tabToSelect = intent.getStringExtra("SELECT_TAB")
+        if (tabToSelect == "LEDGER") {
+            selectTab(btnTabLedger, scrollTabLedger)
+        } else if (tabToSelect == "TRANSACTION") {
+            selectTab(btnTabTransaction, scrollTabTransaction)
+        } else {
+            selectTab(btnTabChart, scrollTabChart)
+        }
     }
 
     private fun initViews() {
