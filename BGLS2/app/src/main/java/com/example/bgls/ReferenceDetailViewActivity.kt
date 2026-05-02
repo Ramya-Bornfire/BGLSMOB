@@ -48,6 +48,7 @@ class ReferenceDetailViewActivity : AppCompatActivity() {
         val refId = intent.getStringExtra("refId") ?: ""
         val refDes = intent.getStringExtra("refDes") ?: ""
         val moduleId = intent.getStringExtra("moduleId") ?: ""
+        val remarks = intent.getStringExtra("remarks") ?: ""
 
         // Spinner data with selected value
         val refTypes = listOf(
@@ -69,6 +70,7 @@ class ReferenceDetailViewActivity : AppCompatActivity() {
         etRefId.setText(refId)
         etRefDes.setText(refDes)
         etMod.setText(moduleId)
+        etRemark.setText(remarks)
 
         // Disable all fields (READ ONLY)
         spRefType.isEnabled = false

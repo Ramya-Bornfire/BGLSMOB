@@ -6,7 +6,8 @@ data class ReferenceCode(
     val ref_type_desc: String,
     val ref_id: String,
     val ref_id_desc: String,
-    val module_id: String
+    val module_id: String,
+    val remarks: String? = null
 )
 data class RefResponse(
     val formmode: String,

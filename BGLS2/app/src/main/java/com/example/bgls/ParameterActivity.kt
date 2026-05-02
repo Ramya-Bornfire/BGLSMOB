@@ -49,7 +49,8 @@ class ParameterActivity : AppCompatActivity() {
         val typeDesc: String,
         val refId: String,
         val refDesc: String,
-        val moduleId: String
+        val moduleId: String,
+        val remarks: String? = null
     )
     data class GLItem(
         val sNo: String,
@@ -61,7 +62,12 @@ class ParameterActivity : AppCompatActivity() {
         val glshDesc: String,
         val crncyCode: String,
         val creditBal: String,
-        val debitBal: String
+        val debitBal: String,
+        val balSheetGroup: String,
+        val seqOrder: String,
+        val noAcctOpened: String,
+        val noAcctClosed: String,
+        val totalBalance: String
     )
     data class SchemeItem(
         val product: String,
@@ -285,10 +291,10 @@ class ParameterActivity : AppCompatActivity() {
                 loadReferenceCodesFromAPI()   // ✅ CALL API HERE
             }
             "GL Structure" -> {
-                populateGLTable(getGLTableData())
+                loadGLStructureFromAPI()
             }
             "Scheme Codes" -> {
-                populateSchemeTable(getSchemeTableData())
+                loadSchemeCodesFromAPI()
             }
             "Chart of Accounts" -> {
                 populateChartAccountsTable(getChartAccountsTableData())
@@ -717,7 +723,11 @@ class ParameterActivity : AppCompatActivity() {
                                     intent.putExtra("currencyCode", item.crncyCode)
                                     intent.putExtra("creditBal", item.creditBal)
                                     intent.putExtra("debitBal", item.debitBal)
-
+                                    intent.putExtra("balanceGroup", item.balSheetGroup)
+                                    intent.putExtra("sequence", item.seqOrder)
+                                    intent.putExtra("totalBalance", item.totalBalance)
+                                    intent.putExtra("accountOpen", item.noAcctOpened)
+                                    intent.putExtra("accountClose", item.noAcctClosed)
                                     startActivity(intent)
                                 }
                                 "Modify" ->  {
@@ -741,6 +751,11 @@ class ParameterActivity : AppCompatActivity() {
                                     intent.putExtra("currencyCode", item.crncyCode)
                                     intent.putExtra("creditBal", item.creditBal)
                                     intent.putExtra("debitBal", item.debitBal)
+                                    intent.putExtra("balanceGroup", item.balSheetGroup)
+                                    intent.putExtra("sequence", item.seqOrder)
+                                    intent.putExtra("totalBalance", item.totalBalance)
+                                    intent.putExtra("accountOpen", item.noAcctOpened)
+                                    intent.putExtra("accountClose", item.noAcctClosed)
 
                                     startActivity(intent)
                                 }
@@ -765,6 +780,11 @@ class ParameterActivity : AppCompatActivity() {
                                     intent.putExtra("currencyCode", item.crncyCode)
                                     intent.putExtra("creditBal", item.creditBal)
                                     intent.putExtra("debitBal", item.debitBal)
+                                    intent.putExtra("balanceGroup", item.balSheetGroup)
+                                    intent.putExtra("sequence", item.seqOrder)
+                                    intent.putExtra("totalBalance", item.totalBalance)
+                                    intent.putExtra("accountOpen", item.noAcctOpened)
+                                    intent.putExtra("accountClose", item.noAcctClosed)
 
                                     startActivity(intent)
                                 }
@@ -880,6 +900,7 @@ class ParameterActivity : AppCompatActivity() {
                         intent.putExtra("typeDesc", item.typeDesc)
                         intent.putExtra("refDes", item.refDesc)
                         intent.putExtra("moduleId", item.moduleId)
+                        intent.putExtra("remarks", item.remarks)
 
                         startActivity(intent)
                     }
@@ -929,6 +950,7 @@ class ParameterActivity : AppCompatActivity() {
                             intent.putExtra("typeDesc", item.typeDesc)
                             intent.putExtra("refDes", item.refDesc)
                             intent.putExtra("moduleId", item.moduleId)
+                            intent.putExtra("remarks", item.remarks)
 
                             startActivity(intent)
                         }
@@ -944,6 +966,7 @@ class ParameterActivity : AppCompatActivity() {
                             intent.putExtra("typeDesc", item.typeDesc)
                             intent.putExtra("refDes", item.refDesc)
                             intent.putExtra("moduleId", item.moduleId)
+                            intent.putExtra("remarks", item.remarks)
 
                             startActivity(intent)
                         }
@@ -959,6 +982,7 @@ class ParameterActivity : AppCompatActivity() {
                             intent.putExtra("typeDesc", item.typeDesc)
                             intent.putExtra("refDes", item.refDesc)
                             intent.putExtra("moduleId", item.moduleId)
+                            intent.putExtra("remarks", item.remarks)
 
                             startActivity(intent)
                         }
@@ -1027,8 +1051,8 @@ class ParameterActivity : AppCompatActivity() {
 
     private fun getGLTableData(): List<GLItem> {
         return listOf(
-            GLItem("1", "GL001", "Cash Account", "001", "Chennai", "SH01", "Main", "INR", "10000", "5000"),
-            GLItem("2", "GL002", "Bank Account", "002", "Mumbai", "SH02", "Branch", "INR", "20000", "8000")
+            GLItem("1", "GL001", "Cash Account", "001", "Chennai", "SH01", "Main", "INR", "10000", "5000", "Group1", "1", "10", "0", "15000"),
+            GLItem("2", "GL002", "Bank Account", "002", "Mumbai", "SH02", "Branch", "INR", "20000", "8000", "Group2", "2", "20", "5", "25000")
         )
     }
 
@@ -1098,7 +1122,8 @@ class ParameterActivity : AppCompatActivity() {
                                     typeDesc = it.ref_type_desc,
                                     refId = it.ref_id,
                                     refDesc = it.ref_id_desc,
-                                    moduleId = it.module_id
+                                    moduleId = it.module_id,
+                                    remarks = it.remarks
                                 )
                             } ?: emptyList()
 
@@ -1136,6 +1161,79 @@ class ParameterActivity : AppCompatActivity() {
             })
     }
 
+    private fun loadGLStructureFromAPI() {
+        RetrofitClient.api.getGLCode("list", null, null)
+            .enqueue(object : retrofit2.Callback<com.example.bgls.DataModels.GLResponse> {
+                override fun onResponse(call: retrofit2.Call<com.example.bgls.DataModels.GLResponse>, response: retrofit2.Response<com.example.bgls.DataModels.GLResponse>) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            val list = body.getvaluelist?.mapIndexed { index, it ->
+                                GLItem(
+                                    sNo = (index + 1).toString(),
+                                    glCode = it.glCode ?: "",
+                                    glDesc = it.gl_type_description ?: it.glDescription ?: "",
+                                    branchId = it.branch_id ?: "",
+                                    branchDesc = it.branch_desc ?: "",
+                                    glshCode = it.glsh_code ?: "",
+                                    glshDesc = it.glsh_desc ?: "",
+                                    crncyCode = it.crncy_code ?: "",
+                                    creditBal = it.total_balance ?: "0.00",
+                                    debitBal = it.total_balance ?: "0.00",
+                                    balSheetGroup = it.bal_sheet_group ?: "",
+                                    seqOrder = it.seq_order ?: "",
+                                    noAcctOpened = it.no_acct_opened ?: "",
+                                    noAcctClosed = it.no_acct_closed ?: "",
+                                    totalBalance = it.total_balance ?: ""
+                                )
+                            } ?: emptyList()
+                            populateGLTable(list)
+                        }
+                    } else {
+                        Toast.makeText(this@ParameterActivity, "GL Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: retrofit2.Call<com.example.bgls.DataModels.GLResponse>, t: Throwable) {
+                    Toast.makeText(this@ParameterActivity, "GL Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 
+    private fun loadSchemeCodesFromAPI() {
+        RetrofitClient.api.getParameters("list")
+            .enqueue(object : retrofit2.Callback<com.example.bgls.DataModels.SchemeResponse> {
+                override fun onResponse(call: retrofit2.Call<com.example.bgls.DataModels.SchemeResponse>, response: retrofit2.Response<com.example.bgls.DataModels.SchemeResponse>) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            val list = body.lms_schemes?.map {
+                                val rawStatus = it.status ?: it.state ?: it.entity_flg ?: ""
+                                val displayStatus = when (rawStatus.uppercase()) {
+                                    "Y" -> "Active"
+                                    "N" -> "Inactive"
+                                    "ACTIVE" -> "Active"
+                                    "INACTIVE" -> "Inactive"
+                                    else -> rawStatus
+                                }
 
+                                SchemeItem(
+                                    product = it.product ?: "",
+                                    id = it.id ?: "",
+                                    category = it.productCategory ?: it.category ?: "",
+                                    type = it.productType ?: it.type ?: "",
+                                    description = it.productDescription ?: it.description ?: "",
+                                    status = displayStatus
+                                )
+                            } ?: emptyList()
+                            populateSchemeTable(list)
+                        }
+                    } else {
+                        Toast.makeText(this@ParameterActivity, "Scheme Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: retrofit2.Call<com.example.bgls.DataModels.SchemeResponse>, t: Throwable) {
+                    Toast.makeText(this@ParameterActivity, "Scheme Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 }

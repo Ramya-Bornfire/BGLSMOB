@@ -27,6 +27,7 @@ object RetrofitClient {
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", authHeader)
+                    .addHeader("Accept", "application/json")
                     .addHeader("ngrok-skip-browser-warning", "true")
                     .build()
                 chain.proceed(request)

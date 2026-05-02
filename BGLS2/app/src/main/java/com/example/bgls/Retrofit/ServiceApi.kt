@@ -18,11 +18,6 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ServiceApi {
-    @GET("api/refCodeMain")
-    fun getRefList(
-        @Query("formmode") formmode: String = "list"
-    ): Call<RefResponse>
-
     @GET("api/organizationDetails")
     suspend fun getOrganizationDetails(
         @Query("formmode") formmode: String? = "add"
@@ -93,35 +88,94 @@ interface ServiceApi {
         @Query("month") month: String?
     ): Response<CalendarResponse>
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // REFERENCE CODE MAINTENANCE APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/refCodeMain")
+    fun getRefList(
+        @Query("formmode") formmode: String = "list"
+    ): Call<com.example.bgls.DataModels.RefResponse>
+
+    @FormUrlEncoded
+    @POST("api/refAdd")
+    fun addReferenceCode(
+        @Field("ref_type") ref_type: String,
+        @Field("ref_type_desc") ref_type_desc: String,
+        @Field("ref_id") ref_id: String,
+        @Field("ref_id_desc") ref_id_desc: String,
+        @Field("module_id") module_id: String,
+        @Field("remarks") remarks: String?
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/customer/refUpdate")
+    fun updateReferenceCode(
+        @Field("ref_type") ref_type: String,
+        @Field("ref_type_desc") ref_type_desc: String,
+        @Field("ref_id") ref_id: String,
+        @Field("ref_id_desc") ref_id_desc: String,
+        @Field("module_id") module_id: String,
+        @Field("remarks") remarks: String?
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/customer/refDelete")
+    fun deleteReferenceCode(
+        @Field("ref_id") ref_id: String
+    ): Call<ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // GL STRUCTURE MAINTENANCE APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
     @GET("api/glcode")
     fun getGLCode(
         @Query("formmode") formmode: String?,
         @Query("glcode") glcode: String?,
         @Query("glsh_Code") glshCode: String?
-    ): Call<Map<String, Any>>
+    ): Call<com.example.bgls.DataModels.GLResponse>
+
+    @FormUrlEncoded
+    @POST("api/GeneralLedgerAdd")
+    fun manageGLStructure(
+        @Query("formmode") formmode: String,
+        @Query("glcode") glcode: String?,
+        @Query("glsh_code") glshCode: String?,
+        @FieldMap fields: Map<String, String>
+    ): Call<ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // SCHEME CODE MAINTENANCE APIs
+    // ─────────────────────────────────────────────────────────────────────────
 
     @GET("api/parameters")
     fun getParameters(
         @Query("formmode") formmode: String?
-    ): Call<Map<String, Any>>
-
-    @GET("api/parameters/view")
-    fun viewParameter(
-        @Query("id") id: String
-    ): Call<Map<String, Any>>
-
-    @GET("api/parameters/add")
-    fun addParameter(): Call<Map<String, Any>>
+    ): Call<com.example.bgls.DataModels.SchemeResponse>
 
     @GET("api/parameters/update")
-    fun updateParameter(
+    fun getParameterDetail(
         @Query("id") id: String
-    ): Call<Map<String, Any>>
+    ): Call<ResponseBody>
 
-    @GET("api/parameters/delete")
+    @POST("api/parameters")
+    fun addParameter(
+        @Body schemeCode: com.example.bgls.DataModels.SchemeCode,
+        @Query("formmode") formmode: String = "add"
+    ): Call<ResponseBody>
+
+    @POST("api/parameters")
+    fun updateParameter(
+        @Body schemeCode: com.example.bgls.DataModels.SchemeCode,
+        @Query("formmode") formmode: String = "edit"
+    ): Call<ResponseBody>
+
+    @POST("api/parameters")
     fun deleteParameter(
-        @Query("id") id: String
-    ): Call<Map<String, Any>>
+        @Body schemeCode: com.example.bgls.DataModels.SchemeCode,
+        @Query("formmode") formmode: String = "delete"
+    ): Call<ResponseBody>
 
     @GET("api/chartOfAccounts")
     fun getChartOfAccounts(
@@ -301,4 +355,12 @@ interface ServiceApi {
         @Query("formmode") formmode: String = "view",
         @Query("acct_num") acctNum: String
     ): retrofit2.Response<com.example.bgls.DataModels.AccountLedgerViewResponse>
+
+    @GET("getTypeDescription")
+    suspend fun getTypeDescription(@Query("refType") refType: String): Response<TypeDescriptionResponse>
+
+    data class TypeDescriptionResponse(
+        val typeDesc: String,
+        val moduleId: String
+    )
 }

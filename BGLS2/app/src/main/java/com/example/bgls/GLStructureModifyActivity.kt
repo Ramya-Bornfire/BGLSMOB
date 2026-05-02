@@ -68,20 +68,38 @@ class GLStructureModifyActivity : AppCompatActivity() {
         etGlSub.setText(intent.getStringExtra("glshCode"))
         etGlsh.setText(intent.getStringExtra("glshDesc"))
         etCurrencyCode.setText(intent.getStringExtra("currencyCode"))
-        etBal.setText(intent.getStringExtra("creditBal"))
-        etTol.setText(intent.getStringExtra("debitBal"))
+        etBal.setText(intent.getStringExtra("balanceGroup") ?: intent.getStringExtra("creditBal"))
+        etSeq.setText(intent.getStringExtra("sequence"))
+        etTol.setText(intent.getStringExtra("totalBalance") ?: intent.getStringExtra("debitBal"))
+        etActOpen.setText(intent.getStringExtra("accountOpen"))
+        etActClose.setText(intent.getStringExtra("accountClose"))
 
         // Submit Button
         btnUpdate.setOnClickListener {
-            Toast.makeText(
-                this,
-                "GL Structure Updated Successfully",
-                Toast.LENGTH_SHORT
-            ).show()
+            // API call here
+            val fields = mapOf(
+                "branch_id" to etBranchId.text.toString(),
+                "branch_desc" to etBranchDes.text.toString(),
+                "glCode" to etGlCode.text.toString(),
+                "glDescription" to etGlDes.text.toString(),
+                "glsh_code" to etGlsh.text.toString(),
+                "crncy_code" to etCurrencyCode.text.toString(),
+                "total_balance" to etBal.text.toString()
+            )
 
-            // TODO:
-            // API call for update
-            // or save updated data here
-        }
+            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("edit", fields["glCode"], fields["glsh_code"], fields).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@GLStructureModifyActivity, "GL Structure Updated Successfully", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this@GLStructureModifyActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                    Toast.makeText(this@GLStructureModifyActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
-}
+}}

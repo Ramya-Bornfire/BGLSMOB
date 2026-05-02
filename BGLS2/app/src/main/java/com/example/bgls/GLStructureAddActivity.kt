@@ -79,13 +79,34 @@ class GLStructureAddActivity : AppCompatActivity() {
             }
 
             // 🔥 Debug / Success
-            Toast.makeText(
-                this,
-                "GL Added: $glCode",
-                Toast.LENGTH_LONG
-            ).show()
+            // API call here
+            val fields = mapOf(
+                "branch_id" to branchId,
+                "branch_desc" to branchDes,
+                "glCode" to glCode,
+                "glDescription" to glDes,
+                "glsh_code" to glSh,
+                "crncy_code" to currency,
+                "total_balance" to bal,
+                "seq_order" to seq,
+                "no_acct_opened" to actOpen,
+                "no_acct_closed" to actClose
+            )
 
-            // TODO 👉 API Call here (Retrofit POST)
+            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("add", glCode, glSh, fields).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@GLStructureAddActivity, "GL Structure Added Successfully", Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this@GLStructureAddActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                    Toast.makeText(this@GLStructureAddActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 }

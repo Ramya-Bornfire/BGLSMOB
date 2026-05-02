@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import com.example.bgls.Retrofit.RetrofitClient
 
 class SchemeCodeAddActivity : AppCompatActivity() {
 
@@ -328,75 +329,40 @@ class SchemeCodeAddActivity : AppCompatActivity() {
         // Here you will make your API call to save the data
         // Collect all data from EditTexts and CheckBoxes
 
-        val schemeData = mapOf(
-            "product" to tvProduct.text.toString(),
-            "productType" to tvProductType.text.toString(),
-            "id" to tvId.text.toString(),
-            "state" to tvState.text.toString(),
-            "productCategory" to tvProductCategory.text.toString(),
-            "productDescription" to tvProductDescription.text.toString(),
-            "availableTo" to etAvailableTo.text.toString(),
-            "branches" to etBranches.text.toString(),
-            "idType" to etIdType.text.toString(),
-            "usingTemplate" to etUsingTemplate.text.toString(),
-            "initialAccountState" to etInitialAccountState.text.toString(),
-            "loanAmountConstraints" to etLoanAmountConstraints.text.toString(),
-            "accountsManagedUnderCredit" to etAccountsManagedUnderCredit.text.toString(),
-            "interestCalcMethod" to etInterestCalcMethod.text.toString(),
-            "accruedIntPostFreq" to etAccruedIntPostFreq.text.toString(),
-            "interestType" to etInterestType.text.toString(),
-            "interestRateCharged" to etInterestRateCharged.text.toString(),
-            "interestRateConstraints" to etInterestRateConstraints.text.toString(),
-            "daysInYear" to etDaysInYear.text.toString(),
-            "repaymentIntCalc" to etRepaymentIntCalc.text.toString(),
-            "accruedIntAfterMaturity" to cbAccruedIntAfterMaturity.isChecked,
-            "paymentIntervalMethod" to etPaymentIntervalMethod.text.toString(),
-            "repaymentMadeEvery" to etRepaymentMadeEvery.text.toString(),
-            "installmentConstraints" to etInstallmentConstraints.text.toString(),
-            "firstDueDateOffset" to etFirstDueDateOffset.text.toString(),
-            "collectPrincipalEvery" to etCollectPrincipalEvery.text.toString(),
-            "gracePeriod" to etGracePeriod.text.toString(),
-            "roundOffRepaySchedule" to etRoundOffRepaySchedule.text.toString(),
-            "roundOffRepayCurrency" to etRoundOffRepayCurrency.text.toString(),
-            "nonWorkingDaysResched" to etNonWorkingDaysResched.text.toString(),
-            "adjustPaymentDates" to cbAdjustPaymentDates.isChecked,
-            "adjustPrincipalSchedule" to cbAdjustPrincipalSchedule.isChecked,
-            "adjustInterestSchedule" to cbAdjustInterestSchedule.isChecked,
-            "adjustFeeSchedule" to cbAdjustFeeSchedule.isChecked,
-            "adjustPenaltySchedule" to cbAdjustPenaltySchedule.isChecked,
-            "configurePaymentHolidays" to cbConfigurePaymentHolidays.isChecked,
-            "prepaymentAcceptance" to etPrepaymentAcceptance.text.toString(),
-            "acceptPrepayFutureInt" to etAcceptPrepayFutureInt.text.toString(),
-            "repaymentAllocationOrder" to etRepaymentAllocationOrder.text.toString(),
-            "arrearsTolerancePeriod" to etArrearsTolerancePeriod.text.toString(),
-            "arrearsDayCalcFrom" to etArrearsDayCalcFrom.text.toString(),
-            "arrearsToleranceAmt" to etArrearsToleranceAmt.text.toString(),
-            "withAFloor" to etWithAFloor.text.toString(),
-            "nonWorkingDaysArrears" to etNonWorkingDaysArrears.text.toString(),
-            "penaltyCalcMethod" to etPenaltyCalcMethod.text.toString(),
-            "penaltyTolerancePeriod" to etPenaltyTolerancePeriod.text.toString(),
-            "penaltyRateConstraints" to etPenaltyRateConstraints.text.toString(),
-            "penaltyRateChange" to etPenaltyRateChange.text.toString(),
-            "closeDormantAccounts" to cbCloseDormantAccounts.isChecked,
-            "lockArrearsAccount" to cbLockArrearsAccount.isChecked,
-            "capCharges" to cbCapCharges.isChecked,
-            "allowArbitraryFees" to cbAllowArbitraryFees.isChecked,
-            "enableLinking" to cbEnableLinking.isChecked,
-            "autoSetSettlementAcct" to cbAutoSetSettlementAcct.isChecked,
-            "autoCreateSettlementAcct" to cbAutoCreateSettlementAcct.isChecked,
-            "enableGuarantors" to cbEnableGuarantors.isChecked,
-            "enableCollaterals" to cbEnableCollaterals.isChecked
+        val schemeCode = com.example.bgls.DataModels.SchemeCode(
+            product = tvProduct.text.toString(),
+            productType = tvProductType.text.toString(),
+            id = tvId.text.toString(),
+            state = tvState.text.toString(),
+            productCategory = tvProductCategory.text.toString(),
+            productDescription = tvProductDescription.text.toString(),
+            availableTo = etAvailableTo.text.toString(),
+            branches = etBranches.text.toString()
         )
 
-        // TODO: Make your API call here with schemeData
-        // Example: ApiService.saveSchemeData(schemeData)
+        val apiCall = if (btnModify.text == "Add") {
+            RetrofitClient.api.addParameter(schemeCode)
+        } else {
+            RetrofitClient.api.updateParameter(schemeCode)
+        }
 
-        Toast.makeText(this, "Data saved successfully! API call would be made here", Toast.LENGTH_SHORT).show()
+        apiCall.enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+            override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@SchemeCodeAddActivity, "Data saved successfully!", Toast.LENGTH_SHORT).show()
+                    setFieldsEditable(false)
+                    isAddMode = true
+                    btnModify.text = "Add"
+                    finish()
+                } else {
+                    Toast.makeText(this@SchemeCodeAddActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-        // Make fields non-editable again after saving
-        setFieldsEditable(false)
-        isAddMode = true
-        btnModify.text = "Add"
+            override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                Toast.makeText(this@SchemeCodeAddActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun showDeleteConfirmationDialog() {
@@ -411,8 +377,22 @@ class SchemeCodeAddActivity : AppCompatActivity() {
     }
 
     private fun deleteParameter() {
-        // TODO: Make API call to delete the data
-        Toast.makeText(this, "Parameter deleted successfully! API call would be made here", Toast.LENGTH_SHORT).show()
-        finish()
+        val schemeCode = com.example.bgls.DataModels.SchemeCode(
+            id = tvId.text.toString()
+        )
+        RetrofitClient.api.deleteParameter(schemeCode).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+            override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@SchemeCodeAddActivity, "Parameter deleted successfully!", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@SchemeCodeAddActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                Toast.makeText(this@SchemeCodeAddActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
