@@ -1,19 +1,24 @@
 package com.example.bgls.AuditTrial
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.Adapter.BusinessActivityAdapter
 import com.example.bgls.DataModels.BusinessActivityItem
 import com.example.bgls.DataModels.BusinessActivityResponse
+import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +29,10 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
 
     private lateinit var tvCurrentDate: TextView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var btnBack: ImageView
+    //private lateinit var btnBack: ImageView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var menuIcon: ImageView
     private lateinit var adapter: BusinessActivityAdapter
 
     private val activityList = mutableListOf<BusinessActivityItem>()
@@ -32,11 +40,40 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_details)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        menuIcon = findViewById(R.id.menuIcon)
+
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Navigate back to MainActivity (or any home screen)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_profile -> {
+                    // TODO: Open Profile activity if needed
+                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_logout -> {
+                    // TODO: Implement logout logic (clear session, go to login)
+                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
 
         initViews()
         setupRecyclerView()
         setupDatePicker()
-        setupButtons()
+        //setupButtons()
 
         val today = getCurrentDateString()
         tvCurrentDate.text = today
@@ -46,7 +83,8 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
     private fun initViews() {
         tvCurrentDate = findViewById(R.id.tvCurrentDate)
         recyclerView = findViewById(R.id.recyclerViewbusinessActivity)
-        btnBack = findViewById(R.id.btnBack)
+        //btnBack = findViewById(R.id.btnBack)
+
     }
 
     private fun setupRecyclerView() {
@@ -73,9 +111,9 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupButtons() {
-        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-    }
+//    private fun setupButtons() {
+//        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+//    }
 
     private fun getCurrentDateString(): String {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
