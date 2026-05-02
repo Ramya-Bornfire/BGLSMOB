@@ -21,7 +21,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:paddingBottom="16dp"
-            android:background="#E8EBEF"
+            android:background="@drawable/header_bg"
             android:padding="12dp"
             android:textColor="#333333" />
 
