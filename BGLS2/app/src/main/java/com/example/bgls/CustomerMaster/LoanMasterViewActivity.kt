@@ -197,7 +197,9 @@ class LoanMasterViewActivity : AppCompatActivity() {
         }
 
         btnLedger.setOnClickListener {
-            val intent = Intent(this, AccountLedgerActivity::class.java)
+            val intent = Intent(this, AccountLedgerActivity::class.java).apply {
+                putExtra("acct_num", loanId)
+            }
             startActivity(intent)
         }
 

@@ -1,47 +1,207 @@
 package com.example.bgls.CustomerMaster
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AccountLedgerActivity : AppCompatActivity() {
 
+    private val TAG = "AccountLedgerActivity"
     private lateinit var recyclerViewAccountLedger: RecyclerView
     private lateinit var adapter: AccountLedgerAdapter
+    
+    // Header Views
+    private lateinit var etAcctId: EditText
+    private lateinit var etAcctName: EditText
+    private lateinit var etAcctCcy: EditText
+    private lateinit var etAcctBal: EditText
+    private lateinit var etGenLed: EditText
+    private lateinit var etGlDes: EditText
+    private lateinit var etGlSubHead: EditText
+    private lateinit var etGlshDes: EditText
+    private lateinit var etAccountCurrency: EditText
+    private lateinit var etHomeCurrencyBal: EditText
+    private lateinit var etAcctOpenDate: EditText
+    private lateinit var etAcctCloseDate: EditText
+    private lateinit var etFromDate: EditText
+    private lateinit var etToDate: EditText
+    private lateinit var etAcctStatus: EditText
+
+    private var acctNum: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_ledger)
 
-        recyclerViewAccountLedger = findViewById(R.id.recyclerViewAccountLedger)
+        acctNum = intent.getStringExtra("acct_num") ?: ""
+        
+        initViews()
 
-        setupTable()
+        if (acctNum.isNotEmpty()) {
+            fetchAccountLedger(acctNum)
+        } else {
+            Toast.makeText(this, "No account number provided", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun setupTable() {
-        val dummyData = listOf(
-            LedgerItem("19-06-2023", "TR00001/5", "Loan Disbursement Amount", "KES", "0.00", "127,285.00", "-127,285.00"),
-            LedgerItem("19-06-2023", "TR00002/98", "Interest Applied", "KES", "0.00", "7,001.00", "-134,286.00"),
-            LedgerItem("19-06-2023", "TR00003/20002", "Fees Applied", "KES", "0.00", "535.00", "-134,821.00"),
-            LedgerItem("19-06-2023", "TR00005/9813", "Principal Recovery", "KES", "10,607.00", "0.00", "-124,214.00"),
-            LedgerItem("19-06-2023", "TR00006/9965", "Interest Recovery", "KES", "7,001.00", "0.00", "-117,213.00"),
-            LedgerItem("19-06-2023", "TR00007/9845", "Fees Recovery", "KES", "535.00", "0.00", "-116,678.00"),
-            LedgerItem("19-07-2023", "TR00002/99", "Interest Applied", "KES", "0.00", "7,001.00", "-123,679.00"),
-            LedgerItem("19-07-2023", "TR00003/20003", "Fees Applied", "KES", "0.00", "535.00", "-124,214.00"),
-            LedgerItem("02-08-2023", "TR00005/9814", "Principal Recovery", "KES", "10,607.00", "0.00", "-113,607.00"),
-            LedgerItem("02-08-2023", "TR00006/9966", "Interest Recovery", "KES", "7,001.00", "0.00", "-106,606.00"),
-            LedgerItem("02-08-2023", "TR00007/9846", "Fees Recovery", "KES", "535.00", "0.00", "-106,071.00"),
-            LedgerItem("18-08-2023", "TR00002/100", "Interest Applied", "KES", "0.00", "7,001.00", "-113,072.00"),
-            LedgerItem("18-08-2023", "TR00003/20004", "Fees Applied", "KES", "0.00", "535.00", "-113,607.00"),
-            LedgerItem("18-08-2023", "TR00004/8433", "Penalty Applied", "KES", "0.00", "2,378.00", "-115,985.00"),
-            LedgerItem("17-09-2023", "TR00002/101", "Interest Applied", "KES", "0.00", "7,001.00", "-122,986.00"),
-            LedgerItem("17-09-2023", "TR00003/20005", "Fees Applied", "KES", "0.00", "3,662.00", "-126,648.00")
-        )
-
+    private fun initViews() {
+        recyclerViewAccountLedger = findViewById(R.id.recyclerViewAccountLedger)
         recyclerViewAccountLedger.layoutManager = LinearLayoutManager(this)
-        adapter = AccountLedgerAdapter(this, dummyData)
+
+        etAcctId = findViewById(R.id.etAcctId)
+        etAcctName = findViewById(R.id.etAcctName)
+        etAcctCcy = findViewById(R.id.etAcctCcy)
+        etAcctBal = findViewById(R.id.etAcctBal)
+        etGenLed = findViewById(R.id.etGenLed)
+        etGlDes = findViewById(R.id.etGlDes)
+        etGlSubHead = findViewById(R.id.etGlSubHead)
+        etGlshDes = findViewById(R.id.etGlshDes)
+        etAccountCurrency = findViewById(R.id.etAccountCurrency)
+        etHomeCurrencyBal = findViewById(R.id.etHomeCurrencyBal)
+        etAcctOpenDate = findViewById(R.id.etAcctOpenDate)
+        etAcctCloseDate = findViewById(R.id.etAcctCloseDate)
+        etFromDate = findViewById(R.id.etFromDate)
+        etToDate = findViewById(R.id.etToDate)
+        etAcctStatus = findViewById(R.id.etAcctStatus)
+    }
+
+    private fun fetchAccountLedger(num: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getAccountLedger2(acctNum = num)
+                if (response.isSuccessful && response.body() != null) {
+                    val data = response.body()!!
+                    populateHeader(data)
+                    setupTransactions(data.dataList)
+                } else {
+                    Log.e(TAG, "API error: ${response.code()}")
+                    Toast.makeText(this@AccountLedgerActivity, "Failed to load ledger", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Network error", e)
+                Toast.makeText(this@AccountLedgerActivity, "Network error", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun populateHeader(data: com.example.bgls.DataModels.AccountLedgerViewResponse) {
+        val ca = data.chartAccount ?: return
+        etAcctId.setText(ca.acctNum ?: "")
+        etAcctName.setText(ca.acctName ?: "")
+        etAcctCcy.setText(ca.acctCrncy ?: "")
+        etAcctBal.setText(formatDecimal(ca.acctBal))
+        etGenLed.setText(ca.glCode ?: "")
+        etGlDes.setText(ca.glDesc ?: "")
+        etGlSubHead.setText(ca.glshCode ?: "")
+        etGlshDes.setText(ca.glshDesc ?: "")
+        etAccountCurrency.setText(ca.refCrncy ?: "")
+        etHomeCurrencyBal.setText(formatDecimal(ca.acctBal))
+        
+        // Status
+        val status = if (ca.acctStatus == "Y" || ca.entityFlg == "Y") "ACTIVE" else "INACTIVE"
+        etAcctStatus.setText(status)
+
+        // Dates - Backend format might vary, but using dd-MM-yyyy for display
+        etToDate.setText(formatBackendDate(data.tranDate))
+    }
+
+    private fun setupTransactions(dataList: List<List<Any?>>?) {
+        if (dataList == null) return
+
+        val ledgerItems = mutableListOf<LedgerItem>()
+        var runningBalance = 0.0
+
+        dataList.forEach { row ->
+            if (row.size >= 7) {
+                val dateStr = formatBackendDate(row[0])
+                val tranId = row[1]?.toString() ?: ""
+                val particulars = row[2]?.toString() ?: ""
+                val currency = row[3]?.toString() ?: ""
+                
+                // Index 5 is Credit, Index 6 is Debit as per web template
+                val credit = parseDouble(row[5])
+                val debit = parseDouble(row[6])
+                
+                runningBalance = runningBalance + credit - debit
+                
+                ledgerItems.add(LedgerItem(
+                    tranDate = dateStr,
+                    tranId = tranId,
+                    tranParticulars = particulars,
+                    currency = currency,
+                    credits = formatDecimal(credit),
+                    debits = formatDecimal(debit),
+                    balance = formatDecimal(runningBalance)
+                ))
+            }
+        }
+
+        adapter = AccountLedgerAdapter(this, ledgerItems)
         recyclerViewAccountLedger.adapter = adapter
+    }
+
+    private fun parseDouble(value: Any?): Double {
+        if (value == null) return 0.0
+        return try {
+            when (value) {
+                is Double -> value
+                is Number -> value.toDouble()
+                is String -> value.toDouble()
+                else -> 0.0
+            }
+        } catch (e: Exception) {
+            0.0
+        }
+    }
+
+    private fun formatDecimal(value: Double?): String {
+        if (value == null) return "0.00"
+        return DecimalFormat("#,##0.00").format(value)
+    }
+
+    private fun formatBackendDate(dateObj: Any?): String {
+        if (dateObj == null) return ""
+        val dateStr = dateObj.toString()
+        if (dateStr.isEmpty()) return ""
+
+        return try {
+            // If it's a timestamp
+            if (dateStr.toDoubleOrNull() != null) {
+                val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                return sdf.format(java.util.Date(dateStr.toLong()))
+            }
+            
+            // Standard backend formats
+            val inputFormats = arrayOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                "yyyy-MM-dd",
+                "dd-MM-yyyy",
+                "EEE MMM dd HH:mm:ss zzz yyyy" // Java Date.toString()
+            )
+            
+            for (format in inputFormats) {
+                try {
+                    val parser = SimpleDateFormat(format, Locale.US)
+                    val date = parser.parse(dateStr)
+                    if (date != null) {
+                        return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
+                    }
+                } catch (e: Exception) {}
+            }
+            dateStr
+        } catch (e: Exception) {
+            dateStr
+        }
     }
 }

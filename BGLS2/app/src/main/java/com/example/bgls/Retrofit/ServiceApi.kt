@@ -291,4 +291,14 @@ interface ServiceApi {
         @Query("holder_key") holderKey: String,
         @Query("encodedKey") encodedKey: String
     ): retrofit2.Response<com.example.bgls.DataModels.LoanScheduleViewResponse>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ACCOUNT LEDGER APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/accountLedger2")
+    suspend fun getAccountLedger2(
+        @Query("formmode") formmode: String = "view",
+        @Query("acct_num") acctNum: String
+    ): retrofit2.Response<com.example.bgls.DataModels.AccountLedgerViewResponse>
 }
