@@ -43,11 +43,18 @@ class LoanScheduleViewActivity : AppCompatActivity() {
 
     private val decimalFormat = DecimalFormat("#,##0.00")
     private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    private var loanId: String = ""
+    private var holderKey: String = ""
+    private var encodedKey: String = ""
+    private var branchKey: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_schedule_view)
-
+        loanId = intent.getStringExtra("loanId") ?: ""
+        holderKey = intent.getStringExtra("holder_key") ?: ""
+        encodedKey = intent.getStringExtra("encoded_key") ?: ""
+        branchKey = intent.getStringExtra("branchKey") ?: ""
         initViews()
         setupButtons()
         fetchLoanScheduleDetails()
@@ -79,9 +86,11 @@ class LoanScheduleViewActivity : AppCompatActivity() {
         val holderKey = intent.getStringExtra("holder_key") ?: ""
 
         btnAccount.setOnClickListener {
-            val intent = Intent(this, LoanMasterViewActivity::class.java)
-            intent.putExtra("id", loanId)
-            intent.putExtra("holder_key", holderKey)
+            val intent = Intent(this, LoanMasterViewActivity::class.java).apply {
+                putExtra("loanId", loanId)           // correct key for LoanMasterViewActivity
+                putExtra("holderKey", holderKey)     // correct key
+                putExtra("branchKey", branchKey)     // correct key
+            }
             startActivity(intent)
         }
 
@@ -97,9 +106,10 @@ class LoanScheduleViewActivity : AppCompatActivity() {
             Toast.makeText(this, "Loan ID missing", Toast.LENGTH_SHORT).show()
             return
         }
+        Log.d("LoanSchedule", "Calling API with loanId=$loanId, holderKey=$holderKey, encodedKey=$encodedKey")
         val holderKey = intent.getStringExtra("holder_key") ?: ""
         val encodedKey = intent.getStringExtra("encoded_key") ?: ""
-        Log.d("LoanSchedule", "Calling API with loanId=$loanId, holderKey=$holderKey, encodedKey=$encodedKey")
+
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {

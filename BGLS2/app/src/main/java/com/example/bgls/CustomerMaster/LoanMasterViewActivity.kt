@@ -191,6 +191,7 @@ class LoanMasterViewActivity : AppCompatActivity() {
                 putExtra("loanId", loanId)
                 putExtra("holder_key", holderKey)
                 putExtra("encoded_key", encodedKey)
+                putExtra("branchKey", branchKey)
             }
             startActivity(intent)
         }
