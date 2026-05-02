@@ -2,6 +2,7 @@ package com.example.bgls.CustomerMaster
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -98,7 +99,7 @@ class LoanScheduleViewActivity : AppCompatActivity() {
         }
         val holderKey = intent.getStringExtra("holder_key") ?: ""
         val encodedKey = intent.getStringExtra("encoded_key") ?: ""
-
+        Log.d("LoanSchedule", "Calling API with loanId=$loanId, holderKey=$holderKey, encodedKey=$encodedKey")
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {

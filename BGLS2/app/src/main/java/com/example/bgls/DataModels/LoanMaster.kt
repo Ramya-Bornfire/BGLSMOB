@@ -128,5 +128,6 @@ data class LoanMasterViewResponse(
     @SerializedName("customer_name")  val customerName: List<String>? = null,
     @SerializedName("branchName1")    val branchName1: String? = null,
     @SerializedName("acct_bal")       val acctBal: Double? = null,
-    @SerializedName("user")           val user: String? = null
+    @SerializedName("user")           val user: String? = null,
+    @SerializedName("encoded_key")    val encodedKey: String? = null
 )

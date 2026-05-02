@@ -89,20 +89,23 @@ class LoanMasterViewActivity : AppCompatActivity() {
     // Re-using Remarks1 is tricky if there are two in UI, we'll map the first one and ignore the second if it doesn't have a unique ID.
     private lateinit var etBalanceOutstanding: EditText
 
+    private var loanId: String = ""
+    private var holderKey: String = ""
+    private var branchKey: String = ""
+    private var encodedKey: String = ""
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_master_view)
+        loanId = intent.getStringExtra("loanId") ?: ""
+        holderKey = intent.getStringExtra("holderKey") ?: ""
+        branchKey = intent.getStringExtra("branchKey") ?: ""
         val tvMainTitle = findViewById<android.widget.TextView>(R.id.tvMainTitle)
         if (intent.getStringExtra("source") == "LoanMaintenance") {
             tvMainTitle.text = "LOAN MAINTENANCE - VIEW"
         }
         initViews()
         setupButtons()
-
-        val loanId = intent.getStringExtra("loanId") ?: ""
-        val holderKey = intent.getStringExtra("holderKey") ?: ""
-        val branchKey = intent.getStringExtra("branchKey") ?: ""
 
         if (loanId.isNotEmpty() && holderKey.isNotEmpty()) {
             fetchLoanDetails(loanId, holderKey, branchKey)
@@ -184,7 +187,11 @@ class LoanMasterViewActivity : AppCompatActivity() {
 
     private fun setupButtons() {
         btnSchedule.setOnClickListener {
-            val intent = Intent(this, LoanScheduleViewActivity::class.java)
+            val intent = Intent(this, LoanScheduleViewActivity::class.java).apply{
+                putExtra("loanId", loanId)
+                putExtra("holder_key", holderKey)
+                putExtra("encoded_key", encodedKey)
+            }
             startActivity(intent)
         }
 
@@ -204,7 +211,10 @@ class LoanMasterViewActivity : AppCompatActivity() {
             try {
                 val response = RetrofitClient.api.getLoanMasterView(id = id, holderKey = holderKey, branchKey = branchKey)
                 if (response.isSuccessful && response.body() != null) {
-                    populateUI(response.body()!!)
+                    val data = response.body()!!
+                    populateUI(data)
+                    encodedKey = data.view?.encodedKey ?: ""   // <-- FIX HERE
+                    Log.d(TAG, "Encoded key from API: $encodedKey")
                 } else {
                     Log.e(TAG, "API error: ${response.code()}")
                     Toast.makeText(this@LoanMasterViewActivity, "Failed to load loan details", Toast.LENGTH_SHORT).show()
