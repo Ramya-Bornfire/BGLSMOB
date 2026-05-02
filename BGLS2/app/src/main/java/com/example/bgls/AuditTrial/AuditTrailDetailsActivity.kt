@@ -14,7 +14,7 @@ class AuditTrailDetailsActivity : AppCompatActivity() {
     private lateinit var tvUserActivity: TextView
     private lateinit var tvBusinessActivity: TextView
     //private lateinit var btnHome: Button
-    private lateinit var btnBack: ImageView
+   // private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class AuditTrailDetailsActivity : AppCompatActivity() {
         tvUserActivity = findViewById(R.id.tvUserActivity)
         tvBusinessActivity = findViewById(R.id.tvBusinessActivity)
        // btnHome = findViewById(R.id.btnHome)
-        btnBack = findViewById(R.id.btnBack)
+      //  btnBack = findViewById(R.id.btnBack)
     }
 
     private fun setupClickListeners() {
@@ -54,8 +54,8 @@ class AuditTrailDetailsActivity : AppCompatActivity() {
 //        }
 
         // ─── Back button ───
-        btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+//        btnBack.setOnClickListener {
+//            onBackPressedDispatcher.onBackPressed()
+//        }
     }
 }
