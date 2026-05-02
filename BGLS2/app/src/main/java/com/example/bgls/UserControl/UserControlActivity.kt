@@ -6,19 +6,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
+import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import com.google.android.material.navigation.NavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +46,9 @@ class UserControlActivity : AppCompatActivity(),
     private lateinit var employeeAdapter: EmployeeProfileAdapter
 
     private var isUserProfileTabActive = true
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var menuIcon: ImageView
 
     // Launcher for user add/edit – refresh list
     private val userResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -65,6 +73,7 @@ class UserControlActivity : AppCompatActivity(),
         setupBottomButtons()
         loadUserProfiles()
         loadEmployeeProfiles()
+        setupDrawerMenu()
         selectTab(isUserProfile = true)
     }
 
@@ -76,6 +85,9 @@ class UserControlActivity : AppCompatActivity(),
         layoutEmployeeProfile = findViewById(R.id.layoutEmployeeProfile)
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers)
         recyclerViewEmployees = findViewById(R.id.recyclerViewEmployees)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        menuIcon = findViewById(R.id.menuIcon)
     }
 
     private fun setupRecyclerViews() {
@@ -286,5 +298,33 @@ class UserControlActivity : AppCompatActivity(),
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+    private fun setupDrawerMenu() {
+
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Navigate back to MainActivity (or any home screen)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_profile -> {
+                    // TODO: Open Profile activity if needed
+                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_logout -> {
+                    // TODO: Implement logout logic (clear session, go to login)
+                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
     }
 }

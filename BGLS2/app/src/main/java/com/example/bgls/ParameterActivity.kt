@@ -24,13 +24,19 @@ import retrofit2.Call
 import retrofit2.Response
 import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
+import android.widget.ImageView
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
 class ParameterActivity : AppCompatActivity() {
 
     private lateinit var binding:  ActivityParameterBinding
 
     private lateinit var tableLayout: TableLayout
-    
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var menuIcon: ImageView
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             handleFileUpload(uri)
@@ -108,11 +114,40 @@ class ParameterActivity : AppCompatActivity() {
 
         tvTitle = binding.tvTitle
         tableLayout = binding.tableLayout
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        menuIcon = findViewById(R.id.menuIcon)
 
         createModuleButtons()
         loadModuleData("Reference Code Maintenance")
 
         setupHeaderActions()
+
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Navigate back to MainActivity (or any home screen)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_profile -> {
+                    // TODO: Open Profile activity if needed
+                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_logout -> {
+                    // TODO: Implement logout logic (clear session, go to login)
+                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
     }
 
     private fun setupHeaderActions() {
