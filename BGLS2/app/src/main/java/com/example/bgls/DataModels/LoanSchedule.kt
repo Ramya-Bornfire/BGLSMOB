@@ -1,5 +1,6 @@
 package com.example.bgls.DataModels
 
+
 data class LoanSchedule(
     val dueDate: String,
     val principalExpenses: String,

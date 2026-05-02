@@ -9,10 +9,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.LoanSchedule.LoanScheduleListActivityAdapter
-import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
-import com.example.bgls.DataModels.LoanScheduleListModel
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+
+import android.view.View
+import android.widget.ProgressBar
+import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
 
 class LoanScheduleListActivity : AppCompatActivity() {
 
@@ -22,6 +27,7 @@ class LoanScheduleListActivity : AppCompatActivity() {
     private lateinit var btnNext: Button
     private lateinit var tvPageInfo: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private lateinit var adapter: LoanScheduleListActivityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +43,7 @@ class LoanScheduleListActivity : AppCompatActivity() {
 
         initViews()
         setupRecyclerView()
-        loadDummyData()
+        fetchLoanScheduleList()
     }
 
     private fun initViews() {
@@ -47,6 +53,7 @@ class LoanScheduleListActivity : AppCompatActivity() {
         btnNext       = findViewById(R.id.btnNext)
         tvPageInfo    = findViewById(R.id.tvPageInfo)
         recyclerView  = findViewById(R.id.recyclerViewLoanScheduleList)
+        progressBar   = findViewById(R.id.progressBar)
 
         val filterOptions = listOf("Select Filter", "Loan Name", "Loan Id", "Retailer Name")
         val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
@@ -56,8 +63,10 @@ class LoanScheduleListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = LoanScheduleListActivityAdapter(this, emptyList()) { item ->
-            val intent = Intent(this,LoanScheduleViewActivity::class.java)
+            val intent = Intent(this, LoanScheduleViewActivity::class.java)
             intent.putExtra("loanId", item.loanId)
+            intent.putExtra("holder_key", item.accountHolderKey)
+            intent.putExtra("encoded_key", item.encodedKey)
             intent.putExtra("is_from_loan_schedule", true)
             startActivity(intent)
         }
@@ -65,15 +74,31 @@ class LoanScheduleListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun loadDummyData() {
-        val dummyData = listOf(
-            LoanScheduleListModel("1", "Consumer Credit New Client", "CCNa4669c7aa0ce25ecd788", "Kingsway Tyres Limited (Nairobi)", "University Way", "ACTIVE_IN_ARREARS"),
-            LoanScheduleListModel("2", "Consumer Credit Repeat Client", "CCR0eff4343df2c1c0f7c6e", "Buytec Stores Limited", "Nairobi", "ACTIVE_IN_ARREARS"),
-            LoanScheduleListModel("3", "Boda Financing Monthly", "BFM190774592", "", "Pioneer House", "ACTIVE_IN_ARREARS"),
-            LoanScheduleListModel("4", "Consumer Credit New Client", "CCNa8419916f871da6a6db1", "Kenyatronics Traders Limited", "CBD", "ACTIVE_IN_ARREARS"),
-            LoanScheduleListModel("5", "Consumer Credit Repeat Client", "CCRfd3790fe5076d4d8dc95", "Victoria Courts Kenya", "Karen", "ACTIVE_IN_ARREARS"),
-            LoanScheduleListModel("6", "Consumer Credit Repeat Client", "CCR43debe41450141d0e25d", "Appliance Zone Ltd", "Westlands", "ACTIVE_IN_ARREARS")
-        )
-        adapter.updateList(dummyData)
+    private fun fetchLoanScheduleList() {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getLoanScheduleList()
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    val list = responseBody?.list ?: emptyList()
+                    // Map SNO based on index
+                    val mappedList = list.mapIndexed { index, model ->
+                        model.copy(sno = (index + 1).toString())
+                    }
+                    adapter.updateList(mappedList)
+                    tvPageInfo.text = "Total: ${mappedList.size}"
+                    Toast.makeText(this@LoanScheduleListActivity, "Loaded ${mappedList.size} schedules", Toast.LENGTH_SHORT).show()
+                } else {
+                    val errorMsg = "Failed to load schedule: ${response.code()} ${response.message()}"
+                    Toast.makeText(this@LoanScheduleListActivity, errorMsg, Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoanScheduleListActivity, 
+                    "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 }

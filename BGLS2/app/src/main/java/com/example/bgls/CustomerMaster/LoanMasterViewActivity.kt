@@ -4,15 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.bgls.DataModels.LoanMasterDetail
 import com.example.bgls.DataModels.LoanMasterViewResponse
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient

@@ -24,4 +24,6 @@
     <item name="tvLinkedDepositProduct" type="id" />
     <item name="tvSettlementOptions" type="id" />
     <item name="tvRequiredSecurities" type="id" />
+    <item name="etOutstandingBalance" type="id" />
+    <item name="etCurrency" type="id" />
 </resources>

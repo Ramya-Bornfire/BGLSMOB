@@ -20,6 +20,9 @@ object RetrofitClient {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         OkHttpClient.Builder()
+            .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
             .addInterceptor(logging)   // 👈 ADD THIS
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().newBuilder()

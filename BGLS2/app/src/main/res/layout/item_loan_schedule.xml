@@ -7,89 +7,78 @@
     <TextView android:id="@+id/tvDueDate"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1" android:minWidth="90dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvPrincipalExpenses"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvInterestExpenses"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvFeeExpenses"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvPenaltyExpenses"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvRepaidDate"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1" android:minWidth="90dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvPrincipalPaid"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvInterestPaid"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvFeePaid"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvPenaltyPaid"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvTotalDues"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="120dp"
-        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:padding="8dp"
         android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
-        android:paddingStart="8dp" android:paddingEnd="8dp"
-        android:textSize="12sp" android:textColor="#333333"/>
+        android:textSize="11sp" android:textColor="#333333"/>
 
 </LinearLayout>

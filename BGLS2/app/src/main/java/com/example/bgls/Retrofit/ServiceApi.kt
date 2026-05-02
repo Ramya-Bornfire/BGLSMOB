@@ -272,4 +272,23 @@ interface ServiceApi {
     suspend fun searchLoanByStatus(
         @Query("status") status: String
     ): retrofit2.Response<List<com.example.bgls.DataModels.LoanMaster>>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // LOAN SCHEDULE APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** Loan schedule list – api/loanSchedule?formmode=listschedule */
+    @GET("api/loanSchedule")
+    suspend fun getLoanScheduleList(
+        @Query("formmode") formmode: String = "listschedule"
+    ): retrofit2.Response<com.example.bgls.DataModels.LoanScheduleListResponse>
+
+    /** Loan schedule view – api/loanSchedule?formmode=viewloanschedule1 */
+    @GET("api/loanSchedule")
+    suspend fun getLoanScheduleView(
+        @Query("formmode") formmode: String = "viewloanschedule1",
+        @Query("id") id: String,
+        @Query("holder_key") holderKey: String,
+        @Query("encodedKey") encodedKey: String
+    ): retrofit2.Response<com.example.bgls.DataModels.LoanScheduleViewResponse>
 }
