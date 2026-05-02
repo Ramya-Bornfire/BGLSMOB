@@ -51,9 +51,9 @@ class SchemeCodeViewActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
-            finish()
-        }
+//        findViewById<Button>(R.id.btnHome).setOnClickListener {
+//            finish()
+//        }
 
         val btnModify = findViewById<Button>(R.id.btnModify)
         btnModify.setOnClickListener {
@@ -81,9 +81,9 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 .show()
         }
 
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
-        }
+//        findViewById<Button>(R.id.btnBack).setOnClickListener {
+//            finish()
+//        }
 
         populateTransactionSettings()
         populateProductFees()

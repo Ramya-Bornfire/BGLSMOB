@@ -36,16 +36,16 @@ class GLStructureViewActivity : AppCompatActivity() {
         // Initialize views
         toolbarTitle = findViewById(R.id.toolbarTitle)
         
-        findViewById<Button>(R.id.btnEdit).setOnClickListener {
-            val intent = Intent(this, GLStructureModifyActivity::class.java)
-            // Pass current data if needed
-            startActivity(intent)
-        }
+//        findViewById<Button>(R.id.btnEdit).setOnClickListener {
+//            val intent = Intent(this, GLStructureModifyActivity::class.java)
+//            // Pass current data if needed
+//            startActivity(intent)
+//        }
 
-        findViewById<Button>(R.id.btnAdd).setOnClickListener {
-            // Navigate to an Add activity if one exists, otherwise show toast
-            Toast.makeText(this, "Opening Add GL Structure", Toast.LENGTH_SHORT).show()
-        }
+//        findViewById<Button>(R.id.btnAdd).setOnClickListener {
+//            // Navigate to an Add activity if one exists, otherwise show toast
+//            Toast.makeText(this, "Opening Add GL Structure", Toast.LENGTH_SHORT).show()
+//        }
 
         etBranchId = findViewById(R.id.etbranchid)
         etBranchDes = findViewById(R.id.etbranchdes)

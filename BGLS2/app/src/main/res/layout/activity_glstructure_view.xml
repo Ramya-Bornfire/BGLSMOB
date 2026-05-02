@@ -9,16 +9,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="1dp">
 
             <!-- MODERN HEADER WITH ACTIONS -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 android:padding="8dp"
                 android:gravity="center_vertical"
-                android:background="#F8F9FA">
+                android:background="@drawable/header_bg">
 
                 <TextView
                     android:id="@+id/toolbarTitle"
@@ -28,38 +29,38 @@
                     android:text="GL STRUCTURE - VIEW"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:textColor="#1A1D1E"
+                    android:textColor="#ffffff"
                     android:textAllCaps="true"
                     android:paddingStart="8dp"/>
 
-                <Button
-                    android:id="@+id/btnEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:text="Edit"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_header_action"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:layout_marginEnd="8dp"/>
+<!--                <Button-->
+<!--                    android:id="@+id/btnEdit"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="36dp"-->
+<!--                    android:text="Edit"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:background="@drawable/btn_header_action"-->
+<!--                    android:minHeight="0dp"-->
+<!--                    android:minWidth="0dp"-->
+<!--                    android:paddingStart="12dp"-->
+<!--                    android:paddingEnd="12dp"-->
+<!--                    android:layout_marginEnd="8dp"/>-->
 
-                <Button
-                    android:id="@+id/btnAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:text="Add"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/btn_header_action"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"/>
+<!--                <Button-->
+<!--                    android:id="@+id/btnAdd"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="36dp"-->
+<!--                    android:text="Add"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:background="@drawable/btn_header_action"-->
+<!--                    android:minHeight="0dp"-->
+<!--                    android:minWidth="0dp"-->
+<!--                    android:paddingStart="12dp"-->
+<!--                    android:paddingEnd="12dp"/>-->
 
             </LinearLayout>
 

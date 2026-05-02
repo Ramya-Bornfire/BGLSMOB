@@ -20,9 +20,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:paddingBottom="16dp"
-            android:background="#E8EBEF"
+            android:background="@drawable/header_bg"
             android:padding="12dp"
-            android:textColor="#333333" />
+            android:textColor="#ffffff" />
 
         <!-- Header Information -->
         <LinearLayout
@@ -346,14 +346,14 @@
             android:padding="16dp"
             android:background="#E8EBEF">
             
-            <Button
-                android:id="@+id/btnHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:backgroundTint="#007BFF"
-                android:textColor="@android:color/white"
-                android:layout_marginEnd="8dp" />
+<!--            <Button-->
+<!--                android:id="@+id/btnHome"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Home"-->
+<!--                android:backgroundTint="#007BFF"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                android:layout_marginEnd="8dp" />-->
             
             <Button
                 android:id="@+id/btnModify"
@@ -373,13 +373,13 @@
                 android:textColor="@android:color/white"
                 android:layout_marginEnd="8dp" />
                 
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:backgroundTint="#007BFF"
-                android:textColor="@android:color/white" />
+<!--            <Button-->
+<!--                android:id="@+id/btnBack"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Back"-->
+<!--                android:backgroundTint="#007BFF"-->
+<!--                android:textColor="@android:color/white" />-->
         </LinearLayout>
 
     </LinearLayout>
