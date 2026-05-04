@@ -1,5 +1,6 @@
 package com.example.bgls.ChartOfAccounts
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -9,16 +10,22 @@ import android.widget.Button
 import android.widget.HorizontalScrollView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.ChartAccountItem   // ✅ correct class
 import com.example.bgls.DataModels.TabChartModel
 import com.example.bgls.DataModels.TabLedgerModel
 import com.example.bgls.DataModels.TabTransactionModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ChartOfAccountsActivity : AppCompatActivity() {
 
@@ -37,6 +44,12 @@ class ChartOfAccountsActivity : AppCompatActivity() {
     private lateinit var spinnerOffice: Spinner
     private lateinit var tvMainTitle: TextView
 
+    private var activeTabId: Int = R.id.btnTabChart
+
+    private lateinit var chartAdapter: TabChartAdapter
+    private lateinit var ledgerAdapter: TabLedgerAdapter
+    private lateinit var transactionAdapter: TabTransactionAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,15 +64,12 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupTabs()
         setupActionButtons()
-        
-        // Initial state based on Intent
-        val tabToSelect = intent.getStringExtra("SELECT_TAB")
-        if (tabToSelect == "LEDGER") {
-            selectTab(btnTabLedger, scrollTabLedger)
-        } else if (tabToSelect == "TRANSACTION") {
-            selectTab(btnTabTransaction, scrollTabTransaction)
-        } else {
-            selectTab(btnTabChart, scrollTabChart)
+
+        // Initial tab selection (optional)
+        when (intent.getStringExtra("SELECT_TAB")) {
+            "LEDGER" -> selectTab(btnTabLedger, scrollTabLedger)
+            "TRANSACTION" -> selectTab(btnTabTransaction, scrollTabTransaction)
+            else -> selectTab(btnTabChart, scrollTabChart)
         }
     }
 
@@ -75,33 +85,32 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         rvTabChart = findViewById(R.id.rvTabChart)
         rvTabLedger = findViewById(R.id.rvTabLedger)
         rvTabTransaction = findViewById(R.id.rvTabTransaction)
-        btnAdd=findViewById<Button>(R.id.btnAdd)
+        btnAdd = findViewById(R.id.btnAdd)
         spinnerOffice = findViewById(R.id.spinnerOffice)
         tvMainTitle = findViewById(R.id.tvMainTitle)
     }
 
     private fun setupRecyclerViews() {
-        // Initialize adapters with empty lists, data will be loaded dynamically based on Spinner selection
+        chartAdapter = TabChartAdapter(this, emptyList())
+        ledgerAdapter = TabLedgerAdapter(this, emptyList())
+        transactionAdapter = TabTransactionAdapter(this, emptyList())
+
         rvTabChart.layoutManager = LinearLayoutManager(this)
-        rvTabChart.adapter = TabChartAdapter(this, emptyList())
+        rvTabChart.adapter = chartAdapter
 
         rvTabLedger.layoutManager = LinearLayoutManager(this)
-        rvTabLedger.adapter = TabLedgerAdapter(this, emptyList())
+        rvTabLedger.adapter = ledgerAdapter
 
         rvTabTransaction.layoutManager = LinearLayoutManager(this)
-        rvTabTransaction.adapter = TabTransactionAdapter(this, emptyList())
+        rvTabTransaction.adapter = transactionAdapter
     }
-
-    private var activeTabId: Int = R.id.btnTabChart
 
     private fun setupActionButtons() {
         btnAdd.setOnClickListener {
             if (activeTabId == R.id.btnTabTransaction) {
-                val intent = android.content.Intent(this, TransactionAccountAddActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, TransactionAccountAddActivity::class.java))
             } else {
-                val intent = android.content.Intent(this, ChartOfAccountsAddActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, ChartOfAccountsAddActivity::class.java))
             }
         }
     }
@@ -114,17 +123,15 @@ class ChartOfAccountsActivity : AppCompatActivity() {
 
     private fun selectTab(selectedButton: Button, selectedScroll: HorizontalScrollView) {
         activeTabId = selectedButton.id
-        
-        // Reset all buttons
-        val buttons = listOf(btnTabChart, btnTabLedger, btnTabTransaction)
-        for (btn in buttons) {
+
+        // Reset all tab buttons
+        listOf(btnTabChart, btnTabLedger, btnTabTransaction).forEach { btn ->
             btn.setBackgroundResource(R.drawable.tab_unselected)
             btn.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.cyanblue))
         }
 
-        // Reset all scroll views
-        val scrolls = listOf(scrollTabChart, scrollTabLedger, scrollTabTransaction)
-        for (scroll in scrolls) {
+        // Hide all scroll views
+        listOf(scrollTabChart, scrollTabLedger, scrollTabTransaction).forEach { scroll ->
             scroll.visibility = View.GONE
         }
 
@@ -133,31 +140,26 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         selectedButton.setTextColor(Color.WHITE)
         selectedScroll.visibility = View.VISIBLE
 
-        // Handle Add Button, Spinner, and Title visibility/text
+        // UI changes per tab
         when (selectedButton.id) {
             R.id.btnTabChart -> {
                 btnAdd.visibility = View.VISIBLE
                 spinnerOffice.visibility = View.VISIBLE
                 tvMainTitle.text = "CHART OF ACCOUNTS"
+                updateSpinnerForTab(R.id.btnTabChart)
             }
             R.id.btnTabLedger -> {
                 btnAdd.visibility = View.GONE
                 spinnerOffice.visibility = View.VISIBLE
                 tvMainTitle.text = "ACCOUNT LEDGER"
+                updateSpinnerForTab(R.id.btnTabLedger)
             }
             R.id.btnTabTransaction -> {
                 btnAdd.visibility = View.VISIBLE
-                spinnerOffice.visibility = View.GONE // Hide dropdown for Transaction tab
+                spinnerOffice.visibility = View.GONE
                 tvMainTitle.text = "TRANSACTION ACCOUNTS"
+                loadTransactionAccounts()
             }
-        }
-
-        // Update dropdown logic dynamically based on active tab
-        if (selectedButton.id != R.id.btnTabTransaction) {
-            updateSpinnerForTab(selectedButton.id)
-        } else {
-            // Even if dropdown is hidden, we need to load data for the Transaction tab
-            loadDataForTab(selectedButton.id, "Default")
         }
     }
 
@@ -165,79 +167,146 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         val options = when (tabId) {
             R.id.btnTabChart -> listOf("Office", "Customer", "Mirror")
             R.id.btnTabLedger -> listOf("Office", "Customer")
-            R.id.btnTabTransaction -> listOf("Transaction Option 1", "Transaction Option 2")
-            else -> listOf("Office", "Customer", "Mirror")
+            else -> emptyList()
         }
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        
-        // Temporarily remove listener to avoid rapid re-firing during setup
         spinnerOffice.onItemSelectedListener = null
         spinnerOffice.adapter = adapter
 
         spinnerOffice.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedOption = options[position]
-                loadDataForTab(tabId, selectedOption)
+                val selected = options[position]
+                when (tabId) {
+                    R.id.btnTabChart -> loadChartAccounts(selected)
+                    R.id.btnTabLedger -> loadLedgerAccounts(selected)
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        
-        // Initial load for this tab's default selection (Office is index 0)
-        loadDataForTab(tabId, options[0])
-    }
 
-    private fun loadDataForTab(tabId: Int, selectedOption: String) {
-        when (tabId) {
-            R.id.btnTabChart -> {
-                val data = if (selectedOption == "Customer") {
-                    listOf(
-                        TabChartModel("Asset", "2000", "CUST", "2100001110", "CUSTOMER LOAN ACC", "KES", "500.00", "0.00", "500.00", "Active"),
-                        TabChartModel("Asset", "2000", "CUST", "2100001120", "CUSTOMER SAVINGS ACC", "KES", "0.00", "100.00", "100.00", "Active")
-                    )
-                } else if (selectedOption == "Mirror") {
-                    listOf(
-                        TabChartModel("Asset", "3000", "MIRR", "3100001110", "MIRROR ACC 1", "KES", "0.00", "0.00", "0.00", "Active")
-                    )
-                } else {
-                    // Default Office Data
-                    listOf(
-                        TabChartModel("Asset", "1000", "OAGEN", "1100001110", "BANK ACCOUNT", "KES", "0.00", "0.00", "0.00", "Active"),
-                        TabChartModel("Asset", "1000", "OAGEN", "1100001120", "CASH ON HAND", "KES", "0.00", "0.00", "0.00", "Active"),
-                        TabChartModel("Asset", "1000", "OAGEN", "1100001130", "PETTY CASH", "KES", "0.00", "0.00", "0.00", "Active"),
-                        TabChartModel("Asset", "129", "", "1291100001", "Interest Receivable-Consumer Credit New Client", "KES", "0.00", "0.00", "0.00", "Active"),
-                        TabChartModel("Asset", "129", "", "1291200001", "Interest Receivable-Consumer Credit Repeat Client", "KES", "0.00", "0.00", "0.00", "Active")
-                    )
-                }
-                (rvTabChart.adapter as? TabChartAdapter)?.updateList(data)
-            }
-            R.id.btnTabLedger -> {
-                val data = if (selectedOption == "Customer") {
-                    listOf(
-                        TabLedgerModel("INCOME", "CUST_ACC_001", "Customer Interest Income", "KES", "15000", "2000", "CR", "Active")
-                    )
-                } else {
-                    listOf(
-                        TabLedgerModel("ASSET", "OFF_ACC_001", "Office Cash Account", "KES", "10000", "5000", "CR", "Active"),
-                        TabLedgerModel("LIABILITY", "OFF_ACC_002", "Office Loan Account", "KES", "2000", "8000", "DR", "Active")
-                    )
-                }
-                (rvTabLedger.adapter as? TabLedgerAdapter)?.updateList(data)
-            }
-            R.id.btnTabTransaction -> {
-                val data = if (selectedOption == "Transaction Option 2") {
-                    listOf(
-                        TabTransactionModel("3", "Transfer", "ACC003", "Customer Account", "ACC004", "Vendor Account", "Fund Transfer", "TR")
-                    )
-                } else {
-                    listOf(
-                        TabTransactionModel("1", "Deposit", "ACC001", "Cash Account", "ACC002", "Bank Account", "Cash Deposit", "CR"),
-                        TabTransactionModel("2", "Withdrawal", "ACC002", "Bank Account", "ACC001", "Cash Account", "ATM Withdrawal", "DR")
-                    )
-                }
-                (rvTabTransaction.adapter as? TabTransactionAdapter)?.updateList(data)
+        // Load initial data
+        if (options.isNotEmpty()) {
+            when (tabId) {
+                R.id.btnTabChart -> loadChartAccounts(options[0])
+                R.id.btnTabLedger -> loadLedgerAccounts(options[0])
             }
         }
+    }
+
+    // ------------------------------------------------------------
+    // Chart of Accounts Tab
+    // ------------------------------------------------------------
+    private fun loadChartAccounts(selectedOption: String) {
+        val type = when (selectedOption) {
+            "Office" -> "O"
+            "Customer" -> "C"
+            "Mirror" -> "M"
+            else -> "O"
+        }
+
+        RetrofitClient.api.filterChartOfAccounts(type)
+            .enqueue(object : Callback<List<ChartAccountItem>> {
+                override fun onResponse(call: Call<List<ChartAccountItem>>, response: Response<List<ChartAccountItem>>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val list = response.body()!!.map { item ->
+                            TabChartModel(
+                                head = item.classification ?: "",
+                                gl = item.gl_code ?: "",              // ✅ GL code from API
+                                schemeCode = item.schm_code ?: "",     // ✅ Scheme Code from API
+                                acctId = item.acct_num ?: "",
+                                acctName = item.acct_name ?: "",
+                                currency = item.acct_crncy ?: "",
+                                credits = item.cr_amt ?: "0.00",
+                                debits = item.dr_amt ?: "0.00",
+                                balance = item.acct_bal ?: "0.00",
+                                status = if (item.entity_flg == "Y") "Active" else "Inactive"
+                            )
+                        }
+                        chartAdapter.updateList(list)
+                    } else {
+                        Toast.makeText(this@ChartOfAccountsActivity, "Error loading chart accounts", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ChartAccountItem>>, t: Throwable) {
+                    Toast.makeText(this@ChartOfAccountsActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    // ------------------------------------------------------------
+    // Account Ledger Tab
+    // ------------------------------------------------------------
+    private fun loadLedgerAccounts(selectedOption: String) {
+        val type = when (selectedOption) {
+            "Office" -> "O"
+            "Customer" -> "C"
+            else -> "O"
+        }
+
+        RetrofitClient.api.filterChartOfAccounts(type)
+            .enqueue(object : Callback<List<ChartAccountItem>> {
+                override fun onResponse(call: Call<List<ChartAccountItem>>, response: Response<List<ChartAccountItem>>) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val list = response.body()!!.map { item ->
+                            TabLedgerModel(
+                                head = item.classification ?: "",
+                                acctId = item.acct_num ?: "",
+                                acctName = item.acct_name ?: "",
+                                currency = item.acct_crncy ?: "",
+                                credits = item.cr_amt ?: "0.00",
+                                debits = item.dr_amt ?: "0.00",
+                                balance = item.acct_bal ?: "0.00",
+                                status = if (item.entity_flg == "Y") "Active" else "Inactive"
+                            )
+                        }
+                        ledgerAdapter.updateList(list)
+                    } else {
+                        Toast.makeText(this@ChartOfAccountsActivity, "Error loading ledger accounts", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ChartAccountItem>>, t: Throwable) {
+                    Toast.makeText(this@ChartOfAccountsActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    // ------------------------------------------------------------
+    // Transaction Accounts Tab
+    // ------------------------------------------------------------
+    private fun loadTransactionAccounts() {
+        RetrofitClient.api.getTransactionAccountsList("list")
+            .enqueue(object : Callback<com.example.bgls.DataModels.TransactionAccountsResponse> {
+                override fun onResponse(
+                    call: Call<com.example.bgls.DataModels.TransactionAccountsResponse>,
+                    response: Response<com.example.bgls.DataModels.TransactionAccountsResponse>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val transactions = response.body()!!.list ?: emptyList()
+                        val tabModels = transactions.map { item ->
+                            TabTransactionModel(
+                                id = item.id,
+                                event = item.event,
+                                debitAccNo = item.debitAccNo,
+                                debitAccName = item.debitAccName,
+                                creditAccNo = item.creditAccNo,
+                                creditAccName = item.creditAccName,
+                                tranParticular = item.tranParticular,
+                                type = item.type
+                            )
+                        }
+                        transactionAdapter.updateList(tabModels)
+                    } else {
+                        Toast.makeText(this@ChartOfAccountsActivity, "Error loading transaction accounts", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<com.example.bgls.DataModels.TransactionAccountsResponse>, t: Throwable) {
+                    Toast.makeText(this@ChartOfAccountsActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }

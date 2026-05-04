@@ -66,6 +66,7 @@ class TabChartAdapter(
         holder.tvAcctId.setOnClickListener {
             val intent = Intent(context, ChartOfAccountsDetailActivity::class.java)
             intent.putExtra("MODE", "VIEW")
+            intent.putExtra("ACCT_NUM", item.acctId)   // 🔥 ADD THIS LINE
             context.startActivity(intent)
         }
 
@@ -78,12 +79,13 @@ class TabChartAdapter(
             popup.menu.add("Verify")
             popup.menu.add("Delete")
             popup.menu.add("View")
-            
+
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.title) {
                     "Modify", "Verify", "View" -> {
                         val intent = Intent(context, ChartOfAccountsDetailActivity::class.java)
                         intent.putExtra("MODE", menuItem.title.toString().uppercase())
+                        intent.putExtra("ACCT_NUM", item.acctId)   // ✅ Add this line
                         context.startActivity(intent)
                         true
                     }

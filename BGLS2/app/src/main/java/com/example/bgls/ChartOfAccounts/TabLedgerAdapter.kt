@@ -1,12 +1,14 @@
 package com.example.bgls.ChartOfAccounts
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.CustomerMaster.AccountLedgerActivity
 import com.example.bgls.DataModels.TabLedgerModel
 import com.example.bgls.R
 
@@ -52,8 +54,8 @@ class TabLedgerAdapter(
         holder.tvAcctId.paintFlags = holder.tvAcctId.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
         holder.tvAcctId.setTextColor(Color.parseColor("#2196F3"))
         holder.tvAcctId.setOnClickListener {
-            val intent = android.content.Intent(context, com.example.bgls.CustomerMaster.AccountLedgerActivity::class.java)
-            // intent.putExtra("ACCT_ID", item.acctId) // Pass ID if needed
+            val intent = Intent(context, AccountLedgerActivity::class.java)
+            intent.putExtra("acct_num", item.acctId)   // <-- add this line
             context.startActivity(intent)
         }
     }

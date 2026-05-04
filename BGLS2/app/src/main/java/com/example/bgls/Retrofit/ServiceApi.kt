@@ -13,6 +13,7 @@ import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
 import com.example.bgls.DataModels.SingleEmployeeResponse
 import com.example.bgls.DataModels.SingleUserResponse
+import com.example.bgls.DataModels.TransactionAccountsResponse
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
 import okhttp3.RequestBody
@@ -195,6 +196,10 @@ interface ServiceApi {
     // ─────────────────────────────────────────────────────────────────────────
     // SCHEME CODE MAINTENANCE APIs
     // ─────────────────────────────────────────────────────────────────────────
+    @GET("api/transactionsAccounts")
+    fun getTransactionAccountsList(
+        @Query("formmode") formmode: String = "list"
+    ): Call<TransactionAccountsResponse>
 
     @GET("api/parameters")
     fun getParameters(
