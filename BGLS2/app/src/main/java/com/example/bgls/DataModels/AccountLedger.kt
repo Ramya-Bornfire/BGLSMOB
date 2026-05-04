@@ -14,7 +14,14 @@ data class ChartAccountDetail(
     @SerializedName("ref_crncy") val refCrncy: String? = null,
     @SerializedName("acct_status") val acctStatus: String? = null,
     @SerializedName("entity_flg") val entityFlg: String? = null,
-    @SerializedName("classification") val classification: String? = null
+    @SerializedName("classification") val classification: String? = null,
+    @SerializedName("entry_user") val entryUser: String? = null,
+    @SerializedName("auth_user") val authUser: String? = null,
+    @SerializedName("del_flg") val delFlg: String? = null,
+    @SerializedName("ref_crncy_bal") val refCrncyBal: Double? = null,
+    @SerializedName("modify_user") val modifyUser: String? = null,
+    @SerializedName("modify_time") val modifyTime: String? = null,
+    @SerializedName("entry_time") val entryTime: String? = null
 )
 
 data class AccountLedgerViewResponse(

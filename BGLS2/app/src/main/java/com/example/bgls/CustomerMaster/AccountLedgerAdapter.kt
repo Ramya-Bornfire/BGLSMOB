@@ -20,7 +20,8 @@ data class LedgerItem(
 
 class AccountLedgerAdapter(
     private val context: Context,
-    private val ledgerList: List<LedgerItem>
+    private val ledgerList: List<LedgerItem>,
+    private val onTranIdClick: (LedgerItem) -> Unit
 ) : RecyclerView.Adapter<AccountLedgerAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,6 +50,9 @@ class AccountLedgerAdapter(
         holder.tvCredits.text         = item.credits
         holder.tvDebits.text          = item.debits
         holder.tvBalance.text         = item.balance
+        holder.tvTranId.setOnClickListener {
+            onTranIdClick(item)
+        }
     }
 
     override fun getItemCount(): Int = ledgerList.size

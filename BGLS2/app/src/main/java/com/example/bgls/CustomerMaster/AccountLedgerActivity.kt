@@ -1,6 +1,7 @@
 package com.example.bgls.CustomerMaster
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import com.example.bgls.TransactionMaintenance.JournalEntriesViewActivity
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -149,8 +151,20 @@ class AccountLedgerActivity : AppCompatActivity() {
                 ))
             }
         }
+        adapter = AccountLedgerAdapter(this, ledgerItems) { ledgerItem ->
+            // When transaction ID is clicked
+            val combinedId = ledgerItem.tranId  // format: "TRAN_ID/PART_TRAN_ID"
+            val parts = combinedId.split("/")
+            val tranId = parts.getOrNull(0) ?: ""
+            val partTranId = parts.getOrNull(1) ?: ""
 
-        adapter = AccountLedgerAdapter(this, ledgerItems)
+            val intent = Intent(this, JournalEntriesViewActivity::class.java).apply {
+                putExtra("tran_id", tranId)
+                putExtra("part_tran_id", partTranId)
+                putExtra("acct_num", acctNum)   // from the intent that opened this activity
+            }
+            startActivity(intent)
+        }
         recyclerViewAccountLedger.adapter = adapter
     }
 

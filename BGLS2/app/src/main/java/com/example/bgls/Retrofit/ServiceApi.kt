@@ -8,12 +8,17 @@ import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
+import com.example.bgls.DataModels.JournalEntryItem
+import com.example.bgls.DataModels.JournalEntryResponse
 import com.example.bgls.DataModels.OrganizationResponse
 import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
 import com.example.bgls.DataModels.SingleEmployeeResponse
 import com.example.bgls.DataModels.SingleUserResponse
 import com.example.bgls.DataModels.TransactionAccountsResponse
+import com.example.bgls.DataModels.TransactionDetailsResponse
+import com.example.bgls.DataModels.TransactionDto
+import com.example.bgls.DataModels.TransactionMigrationResponse
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
 import okhttp3.RequestBody
@@ -27,19 +32,24 @@ interface ServiceApi {
     suspend fun getOrganizationDetails(
         @Query("formmode") formmode: String? = "add"
     ): Response<OrganizationResponse>
+
     @GET("api/organizationDetails")
     suspend fun getBranchDetailsView(
         @Query("formmode") formmode: String = "view",
         @Query("branch_code") branchCode: String
     ): Response<OrganizationViewResponse>
+
     @POST("tab2modify")
     suspend fun updateBranch(@Body body: RequestBody): Response<ResponseBody>
+
     @FormUrlEncoded
     @POST("tab2Del")
     suspend fun deleteBranch(@Field("branch_code") branchCode: String): Response<ResponseBody>
+
     @FormUrlEncoded
     @POST("OrgBranchAdd")
     suspend fun addBranch(@FieldMap params: Map<String, String>): Response<ResponseBody>
+
     @GET("api/userProfile")
     fun getUserProfiles(@Query("formmode") formmode: String = "list"): Call<UserProfileResponse>
 
@@ -92,6 +102,7 @@ interface ServiceApi {
         @Query("year") year: String,
         @Query("month") month: String?
     ): Response<CalendarResponse>
+
     @GET("api/chartOfAccounts")
     fun getChartOfAccountsList(
         @Query("formmode") formmode: String = "list"
@@ -132,6 +143,7 @@ interface ServiceApi {
     fun filterChartOfAccounts(
         @Query("type") type: String
     ): Call<List<ChartAccountItem>>
+
     @GET("api/chartOfAccounts")
     fun getChartOfAccountsReferences(
         @Query("formmode") formmode: String = "add"
@@ -268,30 +280,30 @@ interface ServiceApi {
     /** General customer master endpoint (formmode = list / view / modify / verify) */
     @GET("api/customerMaster")
     suspend fun getCustomerMaster(
-        @Query("formmode")   formmode: String,
-        @Query("id")         id: String?        = null,
+        @Query("formmode") formmode: String,
+        @Query("id") id: String? = null,
         @Query("branch_key") branchKey: String? = null,
-        @Query("module")     module: String?    = null
+        @Query("module") module: String? = null
     ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterViewResponse>
 
     /** All customers (verified + unverified) – server-side pagination */
     @GET("api/AllApprovedCust")
     suspend fun getAllApprovedCust(
-        @Query("page")  page: Int  = 1,
+        @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 200
     ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
 
     /** Only verified / approved customers – server-side pagination */
     @GET("api/ApprovedCust")
     suspend fun getApprovedCust(
-        @Query("page")  page: Int  = 1,
+        @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 200
     ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
 
     /** Only unverified / not-approved customers – server-side pagination */
     @GET("api/NotApprovedCust")
     suspend fun getNotApprovedCust(
-        @Query("page")  page: Int  = 1,
+        @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 200
     ): retrofit2.Response<com.example.bgls.DataModels.CustomerMasterPagedResponse>
 
@@ -299,7 +311,7 @@ interface ServiceApi {
     @GET("api/customers/search")
     suspend fun searchCustomersById(
         @Query("customerId") customerId: String,
-        @Query("status")     status: String? = null
+        @Query("status") status: String? = null
     ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
 
     /** Search by mobile number (partial match), optionally filter by status */
@@ -312,7 +324,7 @@ interface ServiceApi {
     /** Search by email address (partial match), optionally filter by status */
     @GET("api/customers/emailsearch")
     suspend fun searchCustomersByEmail(
-        @Query("email")  email: String,
+        @Query("email") email: String,
         @Query("status") status: String? = null
     ): retrofit2.Response<List<com.example.bgls.DataModels.CustomerMaster>>
 
@@ -342,17 +354,17 @@ interface ServiceApi {
     /** Paginated loan list – api/loans */
     @GET("api/loans")
     suspend fun getLoans(
-        @Query("page")  page: Int  = 1,
+        @Query("page") page: Int = 1,
         @Query("limit") limit: Int = 200
     ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterPagedResponse>
 
     /** Loan detail view – api/loanMaster?formmode=viewloan */
     @GET("api/loanMaster")
     suspend fun getLoanMasterView(
-        @Query("formmode")    formmode: String = "viewloan",
-        @Query("id")          id: String,
-        @Query("holder_key")  holderKey: String,
-        @Query("branch_key")  branchKey: String
+        @Query("formmode") formmode: String = "viewloan",
+        @Query("id") id: String,
+        @Query("holder_key") holderKey: String,
+        @Query("branch_key") branchKey: String
     ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterViewResponse>
 
     /** Search by Loan ID (partial match) */
@@ -415,4 +427,35 @@ interface ServiceApi {
         val typeDesc: String,
         val moduleId: String
     )
+
+    @GET("api/journalEntries")   // ✅ added "/api/"
+    suspend fun getJournalEntry(
+        @Query("formmode") formmode: String,
+        @Query("tran_id") tran_id: String,
+        @Query("part_tran_id") part_tran_id: String,
+        @Query("acct_num") acct_num: String
+    ): Response<JournalEntryResponse>
+
+
+    @GET("transactionValues")
+    suspend fun getTransactionDetails(
+        @Query("tran_id") tranId: String,
+        @Query("part_tran_id") partTranId: String
+    ): Response<TransactionDetailsResponse>
+
+    // Inside ServiceApi interface
+
+    @GET("api/TransactionMigration")
+    suspend fun getTransactionMigration(@Query("formmode") formmode: String = "add"): Response<TransactionMigrationResponse>
+
+    @GET("api/transactions/search")
+    suspend fun searchTransactions(
+        @Query("keyword") keyword: String,
+        @Query("flowCode") flowCode: String,
+        @Query("filterType") filterType: String
+    ): Response<List<TransactionDto>>
+
+    @GET("api/DisplayExcel")
+    @Streaming
+    suspend fun downloadExcel(@Query("type") type: String): Response<ResponseBody>
 }

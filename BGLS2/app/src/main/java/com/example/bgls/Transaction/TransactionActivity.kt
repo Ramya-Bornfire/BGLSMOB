@@ -2,25 +2,28 @@ package com.example.bgls.Transaction
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.Transaction.TransactionRecordAdapter
+import com.example.bgls.DataModels.TransactionDto
+import com.example.bgls.DataModels.TransactionMigrationResponse
 import com.example.bgls.DataModels.TransactionRecord
 import com.example.bgls.MainActivity
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.example.bgls.Retrofit.ServiceApi
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TransactionActivity : AppCompatActivity() {
 
@@ -28,80 +31,74 @@ class TransactionActivity : AppCompatActivity() {
     private lateinit var adapter: TransactionRecordAdapter
     private lateinit var btnDownload: Button
     private lateinit var spinnerFilter: Spinner
-    
+
     private lateinit var tabDisbursement: TextView
     private lateinit var tabInterest: TextView
     private lateinit var tabFees: TextView
     private lateinit var tabPenalty: TextView
+    private lateinit var tabRecovery: TextView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var menuIcon: ImageView
-    private lateinit var tabRecovery: TextView
 
-    private val disbursementData = listOf(
-        TransactionRecord("1", "TR00001", "18-01-2024", "DISBT", "45,000.00", "CCN6c3ddd52b6078e302218", "ANDREW GICHERU"),
-        TransactionRecord("2", "TR00002", "17-05-2024", "DISBT", "209,175.00", "CCR6cc960ec118f5fdc66fd", "IVY NDIIRA"),
-        TransactionRecord("3", "TR00003", "15-04-2025", "DISBT", "136,000.00", "CCRf8ec49f3769f4c680e58", "MUCHIRI JOSEPH MWANGI"),
-        TransactionRecord("4", "TR00004", "08-09-2025", "DISBT", "40,000.00", "CEF6c0c74a11e3174d78148", "MUCHIRI JOSEPH MWANGI")
-    )
+    private lateinit var apiService: ServiceApi
+    private var currentFlowCode = "DISBT"
+    private var currentTabName = "disbursement"
 
-    private val interestData = listOf(
-        TransactionRecord("1", "TR00101", "20-01-2024", "INT", "1,250.00", "CCN6c3ddd52b6078e302218", "ANDREW GICHERU"),
-        TransactionRecord("2", "TR00102", "19-05-2024", "INT", "5,400.00", "CCR6cc960ec118f5fdc66fd", "IVY NDIIRA")
-    )
+    private var cachedResponse: TransactionMigrationResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_transaction)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
-
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Navigate back to MainActivity (or any home screen)
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> {
-                    // TODO: Open Profile activity if needed
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_logout -> {
-                    // TODO: Implement logout logic (clear session, go to login)
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
-        
-
 
         initViews()
+        setupNavigationDrawer()
         setupSpinner()
         setupRecyclerView()
         setupTabs()
+        setupDownload()
+
+        // Initialize Retrofit
+        apiService = RetrofitClient.api
+
+        // Fetch data
+        fetchAllTransactionData()
     }
 
     private fun initViews() {
         recyclerView = findViewById(R.id.recyclerViewTransactions)
         btnDownload = findViewById(R.id.btnDownload)
         spinnerFilter = findViewById(R.id.spinnerFilter)
-        
+
         tabDisbursement = findViewById(R.id.tabDisbursement)
         tabInterest = findViewById(R.id.tabInterest)
         tabFees = findViewById(R.id.tabFees)
         tabPenalty = findViewById(R.id.tabPenalty)
         tabRecovery = findViewById(R.id.tabRecovery)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navigationView = findViewById(R.id.navigationView)
+        menuIcon = findViewById(R.id.menuIcon)
+    }
+
+    private fun setupNavigationDrawer() {
+        menuIcon.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
+                }
+                R.id.nav_profile -> Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
+                R.id.nav_logout -> Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
     }
 
     private fun setupSpinner() {
@@ -112,7 +109,7 @@ class TransactionActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TransactionRecordAdapter(disbursementData)
+        adapter = TransactionRecordAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
@@ -120,29 +117,39 @@ class TransactionActivity : AppCompatActivity() {
     private fun setupTabs() {
         val tabs = listOf(tabDisbursement, tabInterest, tabFees, tabPenalty, tabRecovery)
 
-        tabDisbursement.setOnClickListener { 
+        tabDisbursement.setOnClickListener {
             setActiveTab(tabDisbursement, tabs)
-            adapter.updateData(disbursementData)
+            currentFlowCode = "DISBT"
+            currentTabName = "disbursement"
+            loadDataForCurrentTab()
             btnDownload.text = "Download Disbursement"
         }
-        tabInterest.setOnClickListener { 
+        tabInterest.setOnClickListener {
             setActiveTab(tabInterest, tabs)
-            adapter.updateData(interestData)
+            currentFlowCode = "INDEM"
+            currentTabName = "interest"
+            loadDataForCurrentTab()
             btnDownload.text = "Download Interest"
         }
-        tabFees.setOnClickListener { 
+        tabFees.setOnClickListener {
             setActiveTab(tabFees, tabs)
-            adapter.updateData(emptyList()) // Placeholder
+            currentFlowCode = "FEEDEM"
+            currentTabName = "fees"
+            loadDataForCurrentTab()
             btnDownload.text = "Download Fees"
         }
-        tabPenalty.setOnClickListener { 
+        tabPenalty.setOnClickListener {
             setActiveTab(tabPenalty, tabs)
-            adapter.updateData(emptyList()) // Placeholder
+            currentFlowCode = "PENDEM"
+            currentTabName = "penalty"
+            loadDataForCurrentTab()
             btnDownload.text = "Download Penalty"
         }
-        tabRecovery.setOnClickListener { 
+        tabRecovery.setOnClickListener {
             setActiveTab(tabRecovery, tabs)
-            adapter.updateData(emptyList()) // Placeholder
+            currentFlowCode = "COLL"
+            currentTabName = "recovery"
+            loadDataForCurrentTab()
             btnDownload.text = "Download Recovery"
         }
     }
@@ -157,5 +164,115 @@ class TransactionActivity : AppCompatActivity() {
                 tab.setBackgroundColor(android.graphics.Color.TRANSPARENT)
             }
         }
+    }
+
+    private fun fetchAllTransactionData() {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.getTransactionMigration("add")
+                if (response.isSuccessful && response.body() != null) {
+                    cachedResponse = response.body()
+                    loadDataForCurrentTab()
+                } else {
+                    Toast.makeText(this@TransactionActivity, "Failed to load data", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@TransactionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loadDataForCurrentTab() {
+        val transactionList = when (currentTabName) {
+            "disbursement" -> cachedResponse?.disbursement
+            "interest" -> cachedResponse?.interest
+            "fees" -> cachedResponse?.fees
+            "penalty" -> cachedResponse?.penalty
+            "recovery" -> cachedResponse?.recovery
+            else -> emptyList()
+        }
+        val records = transactionList?.mapIndexed { index, dto ->
+            TransactionRecord(
+                sNo = (index + 1).toString(),
+                flowId = dto.tranId ?: "",
+                flowDate = formatDate(dto.flowDate),
+                flowCode = dto.flowCode ?: "",
+                flowAmount = formatAmount(dto.tranAmt),
+                accountNumber = dto.acctNum ?: "",
+                accountName = dto.acctName ?: ""
+            )
+        } ?: emptyList()
+        adapter.updateData(records)
+    }
+
+    private fun setupDownload() {
+        btnDownload.setOnClickListener {
+            val type = when (currentTabName) {
+                "disbursement" -> "disbursement"
+                "interest" -> "interest"
+                "fees" -> "fees"
+                "penalty" -> "penalty"
+                "recovery" -> "recovery"
+                else -> "disbursement"
+            }
+            downloadExcel(type)
+        }
+    }
+
+    private fun downloadExcel(type: String) {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.downloadExcel(type)
+                if (response.isSuccessful && response.body() != null) {
+                    saveExcelFile(response.body()!!, type)
+                } else {
+                    Toast.makeText(this@TransactionActivity, "Download failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@TransactionActivity, "Download error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveExcelFile(body: ResponseBody, type: String) {
+        try {
+            val file = File(getExternalFilesDir(null), "${type}_${System.currentTimeMillis()}.xlsx")
+            val inputStream = body.byteStream()
+            val outputStream = FileOutputStream(file)
+            inputStream.copyTo(outputStream)
+            outputStream.close()
+            Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+            // Optional: open file
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(
+                    androidx.core.content.FileProvider.getUriForFile(
+                        this@TransactionActivity,
+                        "${packageName}.fileprovider",
+                        file
+                    ),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateStr)
+            outputFormat.format(date)
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
+
+    private fun formatAmount(amount: Double?): String {
+        return if (amount != null) String.format("%,.2f", amount) else "0.00"
     }
 }
