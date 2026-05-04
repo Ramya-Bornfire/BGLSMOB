@@ -27,6 +27,7 @@ class LoanScheduleListActivity : AppCompatActivity() {
     private lateinit var btnNext: Button
     private lateinit var tvPageInfo: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var btnBack: ImageView
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: LoanScheduleListActivityAdapter
 
@@ -34,6 +35,8 @@ class LoanScheduleListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_schedule_list)
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
