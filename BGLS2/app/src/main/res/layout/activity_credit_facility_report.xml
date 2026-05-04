@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- HEADER BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:elevation="2dp">
+        
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Credit Facility Report"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginStart="8dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Details"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#007BFF"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="4dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+            <Button
+                android:id="@+id/btnSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Schedule"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#333333"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp">
+
+            <!-- CENTER CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="32dp"
+                android:elevation="2dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account No:"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="4dp">
+                        <EditText
+                            android:id="@+id/etAccountNo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:textSize="11sp"
+                            android:paddingStart="8dp"
+                            android:hint="Select Account"
+                            android:focusable="false"
+                            android:inputType="none"/>
+                        <ImageView
+                            android:id="@+id/ivSearchAccount"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_search"
+                            android:padding="4dp"
+                            android:tint="#333333"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account Name:"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <EditText
+                        android:id="@+id/etAccountName"
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_weight="1.5"
+                        android:background="@drawable/edittext_background"
+                        android:textSize="11sp"
+                        android:paddingStart="8dp"
+                        android:inputType="textPersonName"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="100dp"
+                    android:layout_height="36dp"
+                    android:text="Submit"
+                    android:textSize="11sp"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="#E9ECEF"
+        android:elevation="4dp">
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="100dp"
+            android:layout_height="36dp"
+            android:text="Home"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="100dp"
+            android:layout_height="36dp"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</LinearLayout>

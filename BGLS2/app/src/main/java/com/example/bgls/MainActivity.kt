@@ -188,6 +188,55 @@ class MainActivity : AppCompatActivity() {
                 "Profile and Loss Account"->{
                     startActivity(Intent(this, ProfileAndLossAccountActivity::class.java))
                 }
+                "Loan Operation" -> {
+                    startActivity(Intent(this, com.example.bgls.LoanOperation.LoanOperationActivity::class.java))
+                }
+                "Loan Closure" -> {
+                    startActivity(Intent(this, com.example.bgls.LoanOperation.LoanClosureActivity::class.java))
+                }
+                "Credit Facility Report" -> {
+                    startActivity(Intent(this, com.example.bgls.TransactionReports.CreditFacilityReportActivity::class.java))
+                }
+                "End Of Month Report" -> {
+                    startActivity(Intent(this, com.example.bgls.TransactionReports.EndOfMonthReportActivity::class.java))
+                }
+                "DAB Reports" -> {
+                    startActivity(Intent(this, com.example.bgls.TransactionReports.DABReportActivity::class.java))
+                }
+                "Consolidated Loan Reports" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Consolidated Loan - Reports")
+                    startActivity(intent)
+                }
+                "Transaction Reports" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Transaction - Reports")
+                    startActivity(intent)
+                }
+                "Recovery Report" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Recovery - Reports")
+                    intent.putExtra("SHOW_SPINNER", true) // Recovery report has the Excel spinner
+                    startActivity(intent)
+                }
+                "Demand generation Report" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Demand Generation - Reports")
+                    startActivity(intent)
+                }
+                "Interest Accrual Report" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Interest Accrual - Reports")
+                    startActivity(intent)
+                }
+                "Penalty Accrual Report" -> {
+                    val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
+                    intent.putExtra("REPORT_TITLE", "Penalty Accrual - Reports")
+                    startActivity(intent)
+                }
+                "Loan Collection" -> {
+                    startActivity(Intent(this, com.example.bgls.LoanCollectionActivity::class.java))
+                }
 
                 else -> {
                     Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- HEADER BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:elevation="2dp">
+        
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOAN PRE - CLOSURE"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginStart="8dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnScheduler"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="SCHEDULER"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#007BFF"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+            <Button
+                android:id="@+id/btnLedger"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="LEDGER"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#007BFF"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+            <Button
+                android:id="@+id/btnPreClosureMode"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="PRE - CLOSURE"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#007BFF"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="2dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+            <Button
+                android:id="@+id/btnClosureMode"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="CLOSURE"
+                android:textSize="10sp"
+                android:textAllCaps="false"
+                android:backgroundTint="#007BFF"
+                android:textColor="#FFFFFF"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- FIELD AREA -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
+
+                <!-- Account ID / No -->
+                <TextView
+                    android:id="@+id/tvAccountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account ID"
+                    android:textSize="11sp"
+                    android:layout_marginEnd="12dp"/>
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/edittext_background">
+                    <EditText
+                        android:id="@+id/etAccountId"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:hint="Select Account"
+                        android:textSize="10sp"
+                        android:background="@null"
+                        android:padding="4dp"
+                        android:focusable="false"
+                        android:inputType="none"/>
+                    <ImageView
+                        android:id="@+id/ivSearchAccount"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_search"
+                        android:padding="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:tint="#333333"/>
+                </LinearLayout>
+
+                <!-- Account Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account\nName"
+                    android:textSize="10sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="12dp"/>
+                <EditText
+                    android:id="@+id/etAccountName"
+                    android:layout_width="140dp"
+                    android:layout_height="32dp"
+                    android:textSize="10sp"
+                    android:padding="4dp"
+                    android:background="@drawable/edittext_background"/>
+
+                <!-- Disbursement -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disbursement"
+                    android:textSize="10sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="12dp"/>
+                <EditText
+                    android:id="@+id/etDisbursement"
+                    android:layout_width="140dp"
+                    android:layout_height="32dp"
+                    android:textSize="10sp"
+                    android:padding="4dp"
+                    android:background="@drawable/edittext_background"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp">
+                    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/tvBalanceLabel"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Loan Balance"
+                            android:textSize="10sp"/>
+                        <EditText
+                            android:id="@+id/etBalance"
+                            android:layout_width="120dp"
+                            android:layout_height="32dp"
+                            android:textSize="10sp"
+                            android:padding="4dp"
+                            android:background="@drawable/edittext_background"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="Closure\nBalance"
+                            android:textSize="10sp"/>
+                        <EditText
+                            android:id="@+id/etClosureBalance"
+                            android:layout_width="120dp"
+                            android:layout_height="32dp"
+                            android:textSize="10sp"
+                            android:padding="4dp"
+                            android:background="@drawable/edittext_background"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- PLUS/MINUS ICONS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp">
+                <ImageView
+                    android:id="@+id/ivAddRow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_input_add"
+                    android:tint="#333333"
+                    android:layout_marginEnd="8dp"/>
+                <ImageView
+                    android:id="@+id/ivRemoveRow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_delete"
+                    android:tint="#FF0000"/>
+            </LinearLayout>
+
+            <!-- TABLE AREA -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="#FFFFFF"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+                <LinearLayout
+                    android:id="@+id/llTableContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- Table Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E9ECEF">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Flow Date" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Flow Code" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Flow Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Tran Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Waiver Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Additional Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    </LinearLayout>
+                    
+                    <!-- Placeholder for rows -->
+                    <LinearLayout
+                        android:id="@+id/llRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <!-- Initial Empty Row Template -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center" android:text="17-12-2025"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center" android:text="FEEDEM"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="end" android:text="2208.34"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="end" android:text="2208.34"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="end" android:text="0.00"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="end" android:text="0.00"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</LinearLayout>

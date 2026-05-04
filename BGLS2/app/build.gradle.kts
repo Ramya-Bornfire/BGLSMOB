@@ -19,6 +19,7 @@ android {
 
     buildTypes {
         release {
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -35,12 +36,10 @@ android {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
         }
     }
-
     buildFeatures {
         viewBinding = true
     }
 }
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -55,9 +54,10 @@ dependencies {
     implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
     androidTestImplementation(libs.androidx.espresso.core)
 }
