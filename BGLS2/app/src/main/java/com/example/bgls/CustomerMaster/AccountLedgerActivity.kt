@@ -1,5 +1,6 @@
 package com.example.bgls.CustomerMaster
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
@@ -13,6 +14,8 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class AccountLedgerActivity : AppCompatActivity() {
@@ -111,7 +114,7 @@ class AccountLedgerActivity : AppCompatActivity() {
         // Status
         val status = if (ca.acctStatus == "Y" || ca.entityFlg == "Y") "ACTIVE" else "INACTIVE"
         etAcctStatus.setText(status)
-
+        etFromDate.setText(formatBackendDate(data.tranDate))
         // Dates - Backend format might vary, but using dd-MM-yyyy for display
         etToDate.setText(formatBackendDate(data.tranDate))
     }

@@ -32,6 +32,8 @@ import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Callback
 import android.app.AlertDialog
+import com.example.bgls.CustomerMaster.AccountLedgerActivity
+import com.example.bgls.DataModels.ChartAccountApiItem
 import okhttp3.ResponseBody
 class ParameterActivity : AppCompatActivity() {
 
@@ -304,7 +306,7 @@ class ParameterActivity : AppCompatActivity() {
                 loadChartOfAccountsFromAPI()
             }
             "Account Ledger" -> {
-                populateAccountLedgerTable(getAccountLedgerTableData())
+                loadAccountLedgerFromAPI()
             }
             "Transaction Accounts" -> {
                 populateTransactionAccountsTable(getTransactionAccountsTableData())
@@ -451,11 +453,12 @@ class ParameterActivity : AppCompatActivity() {
             values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
 
-                if (index == 1) { // ACCT ID
+                if (index == 1) { // ACCT ID column
                     tv.setTextColor(Color.parseColor("#2196F3"))
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener {
-                        val intent = Intent(this@ParameterActivity, com.example.bgls.CustomerMaster.AccountLedgerActivity::class.java)
+                        val intent = Intent(this@ParameterActivity, AccountLedgerActivity::class.java)
+                        intent.putExtra("acct_num", item.acctId)
                         startActivity(intent)
                     }
                 }
@@ -1276,6 +1279,38 @@ class ParameterActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<ChartOfAccountsListResponse>, t: Throwable) {
+                    Toast.makeText(this@ParameterActivity, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+    private fun loadAccountLedgerFromAPI() {
+        val type = "O" // "O" for Office, "C" for Customer
+        RetrofitClient.api.filterChartOfAccounts(type)
+            .enqueue(object : Callback<List<com.example.bgls.DataModels.ChartAccountItem>> {
+                override fun onResponse(
+                    call: Call<List<com.example.bgls.DataModels.ChartAccountItem>>,
+                    response: Response<List<com.example.bgls.DataModels.ChartAccountItem>>
+                ) {
+                    if (response.isSuccessful) {
+                        val list = response.body()?.map { item ->
+                            AccountLedgerItem(
+                                head = item.classification ?: "",
+                                acctId = item.acct_num ?: "",
+                                acctName = item.acct_name ?: "",
+                                currency = item.acct_crncy ?: "",
+                                credits = item.cr_amt ?: "0",
+                                debits = item.dr_amt ?: "0",
+                                balance = item.acct_bal ?: "0",
+                                status = if (item.entity_flg == "Y") "Active" else "Inactive"
+                            )
+                        } ?: emptyList()
+                        populateAccountLedgerTable(list)
+                    } else {
+                        Toast.makeText(this@ParameterActivity, "Error ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<com.example.bgls.DataModels.ChartAccountItem>>, t: Throwable) {
                     Toast.makeText(this@ParameterActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
