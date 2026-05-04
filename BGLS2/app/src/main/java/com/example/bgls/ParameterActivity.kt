@@ -27,8 +27,12 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity
+import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.google.android.material.navigation.NavigationView
-
+import retrofit2.Callback
+import android.app.AlertDialog
+import okhttp3.ResponseBody
 class ParameterActivity : AppCompatActivity() {
 
     private lateinit var binding:  ActivityParameterBinding
@@ -297,7 +301,7 @@ class ParameterActivity : AppCompatActivity() {
                 loadSchemeCodesFromAPI()
             }
             "Chart of Accounts" -> {
-                populateChartAccountsTable(getChartAccountsTableData())
+                loadChartOfAccountsFromAPI()
             }
             "Account Ledger" -> {
                 populateAccountLedgerTable(getAccountLedgerTableData())
@@ -483,51 +487,42 @@ class ParameterActivity : AppCompatActivity() {
 
         val headers = listOf(
             "HEAD", "GL", "SCHEME CODE", "ACCT ID", "ACCT NAME",
-            "CURRENCY", "CREDITS", "DEBITS", "BALANCE","STATUS", "ACTION"
+            "CURRENCY", "CREDITS", "DEBITS", "BALANCE", "STATUS", "ACTION"
         )
 
         val headerRow = TableRow(this)
-
         headers.forEach {
             val tv = createTextView(it, true, 1f)
             tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
             tv.setTextColor(Color.WHITE)
             headerRow.addView(tv)
         }
-
         tableLayout.addView(headerRow)
 
         data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
-
             val values = listOf(
-                item.head,
-                item.gl,
-                item.schemeCode,
-                item.acctId,
-                item.acctName,
-                item.currency,
-                item.credits,
-                item.debits,
-                item.balance,
-                item.status,
-                "Action ▼"
+                item.head, item.gl, item.schemeCode, item.acctId, item.acctName,
+                item.currency, item.credits, item.debits, item.balance, item.status, "Action ▼"
             )
 
             values.forEachIndexed { index, value ->
                 val tv = createTextView(value, false, 1f)
 
-                if (index == 3) { // ACCT ID
+                // ACCT ID column (index 3) – click to view
+                if (index == 3) {
                     tv.setTextColor(Color.parseColor("#2196F3"))
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener {
-                        val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity::class.java)
+                        val intent = Intent(this@ParameterActivity, ChartOfAccountsDetailActivity::class.java)
                         intent.putExtra("MODE", "VIEW")
+                        intent.putExtra("ACCT_NUM", item.acctId)
                         startActivity(intent)
                     }
                 }
 
-                if (index == 9) { // STATUS
+                // STATUS column (index 9) – color
+                if (index == 9) {
                     if (value.equals("Active", ignoreCase = true)) {
                         tv.setTextColor(Color.parseColor("#4CAF50"))
                     } else {
@@ -535,53 +530,70 @@ class ParameterActivity : AppCompatActivity() {
                     }
                 }
 
-                // ACTION column
+                // ACTION column (last index)
                 if (index == values.lastIndex) {
                     tv.setTextColor(Color.parseColor("#2196F3"))
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener { view ->
                         val popup = PopupMenu(this@ParameterActivity, view)
+                        popup.menu.add("View")
                         popup.menu.add("Modify")
                         popup.menu.add("Verify")
                         popup.menu.add("Delete")
-                        popup.menu.add("View")
-                        
                         popup.setOnMenuItemClickListener { menuItem ->
+                            val intent = Intent(this@ParameterActivity, ChartOfAccountsDetailActivity::class.java)
                             when (menuItem.title.toString()) {
-                                "Modify", "Verify", "View" -> {
-                                    val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity::class.java)
-                                    intent.putExtra("MODE", menuItem.title.toString().uppercase())
+                                "View" -> {
+                                    intent.putExtra("MODE", "VIEW")
+                                    intent.putExtra("ACCT_NUM", item.acctId)
                                     startActivity(intent)
-                                    true
+                                }
+                                "Modify" -> {
+                                    intent.putExtra("MODE", "MODIFY")
+                                    intent.putExtra("ACCT_NUM", item.acctId)
+                                    startActivity(intent)
+                                }
+                                "Verify" -> {
+                                    intent.putExtra("MODE", "VERIFY")
+                                    intent.putExtra("ACCT_NUM", item.acctId)
+                                    startActivity(intent)
                                 }
                                 "Delete" -> {
-                                    android.app.AlertDialog.Builder(this@ParameterActivity)
+                                    AlertDialog.Builder(this@ParameterActivity)
                                         .setTitle("Delete Account")
-                                        .setMessage("Are you sure you want to delete this Account?")
+                                        .setMessage("Are you sure you want to delete ${item.acctId}?")
                                         .setPositiveButton("Yes") { _, _ ->
-                                            Toast.makeText(this@ParameterActivity, "Account Deleted", Toast.LENGTH_SHORT).show()
+                                            RetrofitClient.api.deleteChartOfAccount(item.acctId)
+                                                .enqueue(object : Callback<ResponseBody> {
+                                                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                                        if (response.isSuccessful) {
+                                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                                            loadChartOfAccountsFromAPI() // refresh list
+                                                        } else {
+                                                            Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                                        Toast.makeText(this@ParameterActivity, t.message, Toast.LENGTH_SHORT).show()
+                                                    }
+                                                })
                                         }
                                         .setNegativeButton("No", null)
                                         .show()
-                                    true
                                 }
-                                else -> false
                             }
+                            true
                         }
                         popup.show()
                     }
                 }
 
-                // alternate row colors
-                if (rowIndex % 2 == 0) {
-                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                } else {
-                    tv.setBackgroundColor(Color.WHITE)
-                }
+                // Alternate row background
+                if (rowIndex % 2 == 0) tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
+                else tv.setBackgroundColor(Color.WHITE)
 
                 row.addView(tv)
             }
-
             tableLayout.addView(row)
         }
     }
@@ -1233,6 +1245,38 @@ class ParameterActivity : AppCompatActivity() {
                 }
                 override fun onFailure(call: retrofit2.Call<com.example.bgls.DataModels.SchemeResponse>, t: Throwable) {
                     Toast.makeText(this@ParameterActivity, "Scheme Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+    private fun loadChartOfAccountsFromAPI() {
+        RetrofitClient.api.getChartOfAccountsList()
+            .enqueue(object : Callback<ChartOfAccountsListResponse> {
+                override fun onResponse(
+                    call: Call<ChartOfAccountsListResponse>,
+                    response: Response<ChartOfAccountsListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val list = response.body()?.chartaccount?.map { item ->
+                            ChartAccountItem(
+                                head = item.classification ?: "",
+                                gl = item.gl_code ?: "",
+                                schemeCode = item.schm_code ?: "",
+                                acctId = item.acct_num ?: "",
+                                acctName = item.acct_name ?: "",
+                                currency = item.acct_crncy ?: "",
+                                credits = item.cr_amt ?: "0",
+                                debits = item.dr_amt ?: "0",
+                                balance = item.acct_bal ?: "0",
+                                status = if (item.entity_flg == "Y") "Active" else "Inactive"
+                            )
+                        } ?: emptyList()
+                        populateChartAccountsTable(list)
+                    } else {
+                        Toast.makeText(this@ParameterActivity, "Error ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<ChartOfAccountsListResponse>, t: Throwable) {
+                    Toast.makeText(this@ParameterActivity, t.message, Toast.LENGTH_SHORT).show()
                 }
             })
     }

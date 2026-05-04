@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- MODERN HEADER WITH ACTIONS -->
+    <!-- HEADER with action buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,31 +39,71 @@
             android:minWidth="0dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="8dp"/>
 
-<!--        <Button-->
-<!--            android:id="@+id/btnAdd"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="36dp"-->
-<!--            android:text="Add"-->
-<!--            android:textAllCaps="false"-->
-<!--            android:textSize="12sp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:background="@drawable/btn_header_action"-->
-<!--            android:minHeight="0dp"-->
-<!--            android:minWidth="0dp"-->
-<!--            android:paddingStart="12dp"-->
-<!--            android:paddingEnd="12dp"/>-->
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Verify"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_header_action"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_header_action"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_header_action"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
 
     </LinearLayout>
 
     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0"/>
 
+    <!-- ProgressBar placed OUTSIDE the ScrollView -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <!-- ONLY ONE direct child -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +111,7 @@
             android:background="@drawable/table_cell_bg"
             android:padding="16dp">
 
-            <!-- LEFT COLUMN -->
+            <!-- LEFT COLUMN (same as before) -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -211,6 +251,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

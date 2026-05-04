@@ -1,45 +1,165 @@
 package com.example.bgls.ChartOfAccounts
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.DataModels.ChartOfAccountsAddResponse
+import com.example.bgls.DataModels.RefCodeItem
 import com.example.bgls.R
-
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-
+import com.example.bgls.Retrofit.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import okhttp3.ResponseBody
 class ChartOfAccountsAddActivity : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
+    private lateinit var spinClassification: Spinner
+    private lateinit var spinAccountType: Spinner
+    private lateinit var spinSchemeType: Spinner
+    private lateinit var spinAdditionalDetails: Spinner
+    private lateinit var spinAccountPartitioning: Spinner
+    private lateinit var spinAccountStatus: Spinner
+    private lateinit var spinOwnership: Spinner
+    private lateinit var btnSubmitAdd: Button
+
+    // Data holders
+    private var chart1List = listOf<RefCodeItem>()
+    private var chart2List = listOf<RefCodeItem>()
+    private var chart3List = listOf<RefCodeItem>()
+    private var chart4List = listOf<RefCodeItem>()
+    private var chart5List = listOf<RefCodeItem>()
+    private var chart6List = listOf<RefCodeItem>()
+    private var chart7List = listOf<RefCodeItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart_of_accounts_add)
 
-        val btnSubmitAdd = findViewById<Button>(R.id.btnSubmitAdd)
-        
-        btnSubmitAdd.setOnClickListener {
-            Toast.makeText(this, "Account Added Successfully", Toast.LENGTH_SHORT).show()
-            finish() // Close screen on submit
-        }
-        
-        setupSpinners()
+        initViews()
+        loadDropdowns()
+        setupSubmit()
+    }
+
+    private fun initViews() {
+        progressBar = findViewById(R.id.progressBar) // add a ProgressBar in your add layout
+        spinClassification = findViewById(R.id.spinClassification)
+        spinAccountType = findViewById(R.id.spinAccountType)
+        spinSchemeType = findViewById(R.id.spinSchemeType)
+        spinAdditionalDetails = findViewById(R.id.spinAdditionalDetails)
+        spinAccountPartitioning = findViewById(R.id.spinAccountPartitioning)
+        spinAccountStatus = findViewById(R.id.spinAccountStatus)
+        spinOwnership = findViewById(R.id.spinOwnership)
+        btnSubmitAdd = findViewById(R.id.btnSubmitAdd)
+    }
+
+    private fun loadDropdowns() {
+        progressBar.visibility = View.VISIBLE
+        RetrofitClient.api.getChartOfAccountsReferences("add")
+            .enqueue(object : Callback<ChartOfAccountsAddResponse> {
+                override fun onResponse(call: Call<ChartOfAccountsAddResponse>, response: Response<ChartOfAccountsAddResponse>) {
+                    progressBar.visibility = View.GONE
+                    if (response.isSuccessful && response.body() != null) {
+                        val data = response.body()!!
+                        chart1List = data.Chart1 ?: emptyList()
+                        chart2List = data.Chart2 ?: emptyList()
+                        chart3List = data.Chart3 ?: emptyList()
+                        chart4List = data.Chart4 ?: emptyList()
+                        chart5List = data.Chart5 ?: emptyList()
+                        chart6List = data.Chart6 ?: emptyList()
+                        chart7List = data.Chart7 ?: emptyList()
+                        setupSpinners()
+                    } else {
+                        Toast.makeText(this@ChartOfAccountsAddActivity, "Failed to load dropdowns", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
+                override fun onFailure(call: Call<ChartOfAccountsAddResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this@ChartOfAccountsAddActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            })
     }
 
     private fun setupSpinners() {
-        val dummyOptions = listOf("Select", "Option 1", "Option 2")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, dummyOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        fun setupSpinner(spinner: Spinner, items: List<RefCodeItem>, hint: String) {
+            val displayList = mutableListOf(hint)
+            displayList.addAll(items.map { it.ref_id_desc })
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, displayList)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+            spinner.tag = items.map { it.ref_type_desc }
+        }
+        setupSpinner(spinClassification, chart1List, "Select Classification")
+        setupSpinner(spinAccountType, chart6List, "Select Account Type")
+        setupSpinner(spinSchemeType, chart7List, "Select Scheme Type")
+        setupSpinner(spinAdditionalDetails, chart2List, "Select Additional Details")
+        setupSpinner(spinAccountPartitioning, chart3List, "Select Partitioning")
+        setupSpinner(spinAccountStatus, chart4List, "Select Status")
+        setupSpinner(spinOwnership, chart5List, "Select Ownership")
+    }
 
-        findViewById<Spinner>(R.id.spinClassification).adapter = adapter
-        findViewById<Spinner>(R.id.spinAccountType).adapter = adapter
-        findViewById<Spinner>(R.id.spinSchemeType).adapter = adapter
-        findViewById<Spinner>(R.id.spinAdditionalDetails).adapter = adapter
-        findViewById<Spinner>(R.id.spinAccountPartitioning).adapter = adapter
-        findViewById<Spinner>(R.id.spinOwnership).adapter = adapter
-        
-        val statusOptions = listOf("Select", "Active", "Inactive")
-        val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        findViewById<Spinner>(R.id.spinAccountStatus).adapter = statusAdapter
+    private fun getSpinnerValue(spinner: Spinner): String {
+        @Suppress("UNCHECKED_CAST")
+        val valueList = spinner.tag as? List<String> ?: emptyList()
+        val pos = spinner.selectedItemPosition
+        return if (pos > 0 && pos - 1 < valueList.size) valueList[pos - 1] else ""
+    }
+
+    private fun setupSubmit() {
+        btnSubmitAdd.setOnClickListener {
+            val acctNum = findViewById<EditText>(R.id.etAccountID).text.toString()
+            if (acctNum.isEmpty()) {
+                Toast.makeText(this, "Account ID is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val fields = mutableMapOf<String, String>().apply {
+                put("classification", getSpinnerValue(spinClassification))
+                put("acct_type", getSpinnerValue(spinAccountType))
+                put("gl_code", findViewById<EditText>(R.id.etGeneralLedger).text.toString())
+                put("gl_desc", findViewById<EditText>(R.id.etGLDescription).text.toString())
+                put("glsh_code", findViewById<EditText>(R.id.etGLSubHead).text.toString())
+                put("glsh_desc", findViewById<EditText>(R.id.etGLSubHeadDescription).text.toString())
+                put("schm_type", getSpinnerValue(spinSchemeType))
+                put("schm_code", findViewById<EditText>(R.id.etSchemeCode).text.toString())
+                put("acct_num", acctNum)
+                put("acct_name", findViewById<EditText>(R.id.etAccountName).text.toString())
+                put("add_det_flg", getSpinnerValue(spinAdditionalDetails))
+                put("acct_partition", getSpinnerValue(spinAccountPartitioning))
+                put("ref_crncy", findViewById<EditText>(R.id.etAccountCurrency).text.toString())
+                put("acct_crncy", findViewById<EditText>(R.id.etHomeCurrency).text.toString())
+                put("ref_code", findViewById<EditText>(R.id.etRefCode).text.toString())
+                put("ref_desc", findViewById<EditText>(R.id.etRefDescription).text.toString())
+                put("rpt_code", findViewById<EditText>(R.id.etReportCode).text.toString())
+                put("acct_status", getSpinnerValue(spinAccountStatus))
+                put("own_type", getSpinnerValue(spinOwnership))
+                put("own_remarks", findViewById<EditText>(R.id.etRemarks).text.toString())
+                put("cr_amt", "0.00")
+                put("dr_amt", "0.00")
+                put("acct_bal", "0.00")
+                put("ref_crncy_bal", "0.00")
+            }
+
+            progressBar.visibility = View.VISIBLE
+            RetrofitClient.api.addChartOfAccount(fields)
+                .enqueue(object : Callback<okhttp3.ResponseBody> {
+                    override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
+                        progressBar.visibility = View.GONE
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@ChartOfAccountsAddActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ChartOfAccountsAddActivity, "Add failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(this@ChartOfAccountsAddActivity, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
     }
 }

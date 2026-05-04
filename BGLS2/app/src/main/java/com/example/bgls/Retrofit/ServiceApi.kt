@@ -2,6 +2,10 @@ package com.example.bgls.Retrofit
 import com.example.bgls.DataModels.AccessRoleRequest
 import com.example.bgls.DataModels.BusinessActivityResponse
 import com.example.bgls.DataModels.CalendarResponse
+import com.example.bgls.DataModels.ChartAccountItem
+import com.example.bgls.DataModels.ChartOfAccountsAddResponse
+import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
+import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
 import com.example.bgls.DataModels.OrganizationResponse
@@ -87,7 +91,50 @@ interface ServiceApi {
         @Query("year") year: String,
         @Query("month") month: String?
     ): Response<CalendarResponse>
+    @GET("api/chartOfAccounts")
+    fun getChartOfAccountsList(
+        @Query("formmode") formmode: String = "list"
+    ): Call<ChartOfAccountsListResponse>
 
+    @GET("api/chartOfAccounts")
+    fun getChartOfAccountsDetail(
+        @Query("formmode") formmode: String,
+        @Query("acct_num") acctNum: String
+    ): Call<ChartOfAccountsDetailResponse>
+
+    @FormUrlEncoded
+    @POST("api/AddScreens")
+    fun addChartOfAccount(
+        @FieldMap fields: Map<String, String>
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/ModifyScreens")
+    fun modifyChartOfAccount(
+        @Query("acct_num") acctNum: String,
+        @FieldMap fields: Map<String, String>
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/VerifyScreens")
+    fun verifyChartOfAccount(
+        @FieldMap fields: Map<String, String>
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/DeleteScreens")
+    fun deleteChartOfAccount(
+        @Query("acct_num") acctNum: String
+    ): Call<ResponseBody>
+
+    @GET("api/chartaccounts/filter")
+    fun filterChartOfAccounts(
+        @Query("type") type: String
+    ): Call<List<ChartAccountItem>>
+    @GET("api/chartOfAccounts")
+    fun getChartOfAccountsReferences(
+        @Query("formmode") formmode: String = "add"
+    ): Call<ChartOfAccountsAddResponse>
     // ─────────────────────────────────────────────────────────────────────────
     // REFERENCE CODE MAINTENANCE APIs
     // ─────────────────────────────────────────────────────────────────────────
