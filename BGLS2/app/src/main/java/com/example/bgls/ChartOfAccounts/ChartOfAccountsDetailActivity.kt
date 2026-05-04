@@ -18,16 +18,16 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
         val mode = intent.getStringExtra("MODE") ?: "VIEW"
         tvDetailTitle.text = "CHART OF ACCOUNTS - $mode"
 
-        findViewById<Button>(R.id.btnEdit).setOnClickListener {
-            // Re-open this same activity with MODIFY mode
-            val intent = Intent(this, ChartOfAccountsDetailActivity::class.java)
-            intent.putExtra("MODE", "MODIFY")
-            startActivity(intent)
-        }
+//        findViewById<Button>(R.id.btnEdit).setOnClickListener {
+//            // Re-open this same activity with MODIFY mode
+//            val intent = Intent(this, ChartOfAccountsDetailActivity::class.java)
+//            intent.putExtra("MODE", "MODIFY")
+//            startActivity(intent)
+//        }
 
-        findViewById<Button>(R.id.btnAdd).setOnClickListener {
-            val intent = Intent(this, ChartOfAccountsAddActivity::class.java)
-            startActivity(intent)
-        }
+//        findViewById<Button>(R.id.btnAdd).setOnClickListener {
+//            val intent = Intent(this, ChartOfAccountsAddActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 }
