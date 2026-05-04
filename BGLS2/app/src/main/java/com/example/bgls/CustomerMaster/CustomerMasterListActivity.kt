@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -37,6 +38,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: CustomerMasterAdapter
+    private lateinit var btnBack: ImageView
 
     // ─── Pagination state (server-side) ───
     private val pageLimit = 200
@@ -57,7 +59,8 @@ class CustomerMasterListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_master_list)
-
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         initViews()
         setupSpinners()
         setupSearchBox()

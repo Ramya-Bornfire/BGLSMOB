@@ -30,6 +30,7 @@ class LoanMasterListActivity : AppCompatActivity() {
     private lateinit var adapter: LoanMasterAdapter
     private lateinit var etSearchFilter: EditText
     private lateinit var progressBar: ProgressBar
+    private lateinit var btnBack: ImageView
 
     // ─── Pagination ───
     private val pageSize = 200
@@ -42,6 +43,8 @@ class LoanMasterListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_master_list)
+        btnBack = findViewById(R.id.btnBack)
+        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
