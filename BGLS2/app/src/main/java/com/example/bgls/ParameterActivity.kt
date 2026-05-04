@@ -34,6 +34,7 @@ import retrofit2.Callback
 import android.app.AlertDialog
 import com.example.bgls.CustomerMaster.AccountLedgerActivity
 import com.example.bgls.DataModels.ChartAccountApiItem
+import com.example.bgls.DataModels.TransactionAccountsResponse
 import okhttp3.ResponseBody
 class ParameterActivity : AppCompatActivity() {
 
@@ -309,7 +310,7 @@ class ParameterActivity : AppCompatActivity() {
                 loadAccountLedgerFromAPI()
             }
             "Transaction Accounts" -> {
-                populateTransactionAccountsTable(getTransactionAccountsTableData())
+                loadTransactionAccountsFromAPI()
             }
             else -> {
                 Toast.makeText(
@@ -1312,6 +1313,40 @@ class ParameterActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<List<com.example.bgls.DataModels.ChartAccountItem>>, t: Throwable) {
                     Toast.makeText(this@ParameterActivity, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+    private fun loadTransactionAccountsFromAPI() {
+        RetrofitClient.api.getTransactionAccountsList("list")
+            .enqueue(object : Callback<TransactionAccountsResponse> {
+                override fun onResponse(
+                    call: Call<TransactionAccountsResponse>,
+                    response: Response<TransactionAccountsResponse>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val apiList = response.body()!!.list ?: emptyList()
+                        val localList = apiList.map { item ->
+                            TransactionAccountItem(
+                                id = item.id ?: "",
+                                event = item.event ?: "",
+                                debitAccNo = item.debitAccountNumber ?: "",
+                                debitAccName = item.debitAccountName ?: "",
+                                creditAccNo = item.creditAccountNumber ?: "",
+                                creditAccName = item.creditAccountName ?: "",
+                                tranParticular = item.tranParticular ?: "",
+                                type = item.accountType ?: ""
+                            )
+                        }
+                        populateTransactionAccountsTable(localList)
+                    } else {
+                        Toast.makeText(this@ParameterActivity,
+                            "Failed to load transaction accounts: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<TransactionAccountsResponse>, t: Throwable) {
+                    Toast.makeText(this@ParameterActivity,
+                        "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }

@@ -288,14 +288,14 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                         val transactions = response.body()!!.list ?: emptyList()
                         val tabModels = transactions.map { item ->
                             TabTransactionModel(
-                                id = item.id,
-                                event = item.event,
-                                debitAccNo = item.debitAccNo,
-                                debitAccName = item.debitAccName,
-                                creditAccNo = item.creditAccNo,
-                                creditAccName = item.creditAccName,
-                                tranParticular = item.tranParticular,
-                                type = item.type
+                                id = item.id ?: "",
+                                event = item.event ?: "",
+                                debitAccNo = item.debitAccountNumber ?: "",
+                                debitAccName = item.debitAccountName ?: "",
+                                creditAccNo = item.creditAccountNumber ?: "",
+                                creditAccName = item.creditAccountName ?: "",
+                                tranParticular = item.tranParticular ?: "",
+                                type = item.accountType ?: ""
                             )
                         }
                         transactionAdapter.updateList(tabModels)
