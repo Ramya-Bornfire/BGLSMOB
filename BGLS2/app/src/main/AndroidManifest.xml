@@ -223,6 +223,35 @@
         <activity
             android:name=".DepositAccount.DepositAccountMaintenanceFlowActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ReversalTransaction.FailedReversalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.FailedReversalViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.FailedReversalEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.RecoveryReversalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.RecoveryReversalViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.RecoveryReversalEditActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ReversalTransaction.TransactionsReversalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.TransactionsReversalEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReversalTransaction.TransactionsReversalViewActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,0 +1,33 @@
+package com.example.bgls.DataModels
+
+data class ReversalDetailModel(
+    val tranId: String,
+    val partTranId: String,
+    val acctId: String,
+    val acctName: String,
+    val tranType: String,
+    val partTranType: String,
+    val currency: String,
+    val amount: String,
+    val particulars: String,
+    val remarks: String,
+    val flowCode: String,
+    val flowDate: String,
+    val tranDate: String,
+    val valueDate: String,
+    val tranReportCode: String,
+    val additionalDetails: String,
+    val partitionType: String,
+    val partitionDetails: String,
+    val instrumentNo: String,
+    val instrumentDate: String,
+    val homeCurrencyAmount: String,
+    val rateCode: String,
+    val rate: String,
+    val entryUser: String,
+    val entryTime: String,
+    val postUser: String,
+    val postTime: String,
+    val tranStatus: String,
+    val deleted: String
+)

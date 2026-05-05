@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#FFFFFF">
+
+    <!-- Header Filters -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:text="Account Number"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="#E8EAED"
+            android:textColor="#333333"
+            android:layout_marginEnd="2dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="36dp"
+            android:text="Account Name"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="#E8EAED"
+            android:textColor="#333333"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:textSize="11sp"
+            android:minHeight="0dp"
+            android:minWidth="60dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <!-- Account List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExcelAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/table_cell_bg"/>
+
+    <!-- Footer -->
+    <Button
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:text="Close"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:minHeight="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#007BFF"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>

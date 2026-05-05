@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#FFFFFF">
+
+    <!-- Header Filters -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="Flow Date" android:textSize="9sp" android:padding="8dp"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="Flow ID" android:textSize="9sp" android:padding="8dp"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="Flow Code" android:textSize="9sp" android:padding="8dp"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="Flow Amt" android:textSize="9sp" android:padding="8dp" android:gravity="end|center_vertical"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="Acct No" android:textSize="9sp" android:padding="8dp"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:text="Acct Name" android:textSize="9sp" android:padding="8dp"/>
+        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="Select" android:textSize="9sp" android:padding="8dp" android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:textSize="11sp"
+            android:minHeight="0dp"
+            android:minWidth="60dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- Value List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExcelValues"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/table_cell_bg"/>
+
+    <!-- Footer -->
+    <Button
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:text="Close"
+        android:textAllCaps="false"
+        android:textSize="12sp"
+        android:minHeight="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#007BFF"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>

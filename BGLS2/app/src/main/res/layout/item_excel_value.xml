@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/table_cell_bg">
+
+    <TextView
+        android:id="@+id/tvFlowDate"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:text="01-10-2025"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:background="@drawable/table_cell_bg"/>
+
+    <TextView
+        android:id="@+id/tvFlowId"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:text="F12345"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:background="@drawable/table_cell_bg"/>
+
+    <TextView
+        android:id="@+id/tvFlowCode"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:text="RECOVERY"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:background="@drawable/table_cell_bg"/>
+
+    <TextView
+        android:id="@+id/tvFlowAmt"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:text="14,000.00"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:gravity="end|center_vertical"
+        android:background="@drawable/table_cell_bg"/>
+
+    <TextView
+        android:id="@+id/tvAcctNo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:padding="8dp"
+        android:text="27917600"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:background="@drawable/table_cell_bg"/>
+
+    <TextView
+        android:id="@+id/tvAcctName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.4"
+        android:padding="8dp"
+        android:text="MERCY NYANGOGE"
+        android:textSize="9sp"
+        android:textColor="#333333"
+        android:background="@drawable/table_cell_bg"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:background="@drawable/table_cell_bg">
+        <RadioButton
+            android:id="@+id/rbSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="0.7"
+            android:scaleY="0.7"/>
+    </LinearLayout>
+
+</LinearLayout>

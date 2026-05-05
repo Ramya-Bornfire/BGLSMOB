@@ -20,6 +20,9 @@ import com.example.bgls.LoanMaintenance.LoanMaintenanceActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
 import com.example.bgls.OrganizationDetails.OrganizationDetialsActivity
+import com.example.bgls.ReversalTransaction.FailedReversalActivity
+import com.example.bgls.ReversalTransaction.RecoveryReversalActivity
+import com.example.bgls.ReversalTransaction.TransactionsReversalActivity
 import com.example.bgls.Transaction.TransactionActivity
 import com.example.bgls.TransactionMaintenance.AccountLedgerPositingActivity
 import com.example.bgls.TransactionMaintenance.JournalEntriesActivity
@@ -242,6 +245,17 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Account Maintenace" -> {
                     startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountMaintenanceListActivity::class.java))
+                }
+
+                "Transaction Reversal"->{
+                    startActivity(Intent(this, TransactionsReversalActivity::class.java))
+
+                }
+                "Recovery Reversal"->{
+                    startActivity(Intent(this,RecoveryReversalActivity::class.java))
+                }
+                "Failed Reversal"->{
+                    startActivity(Intent(this,FailedReversalActivity::class.java))
                 }
 
                 else -> {

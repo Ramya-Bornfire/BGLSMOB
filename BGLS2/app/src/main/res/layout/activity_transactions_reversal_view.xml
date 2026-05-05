@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@drawable/header_bg"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="TRANSACTION REVERSAL-VIEW"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/btnDetailView"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="View"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:minHeight="0dp"
+            android:minWidth="60dp"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_marginEnd="8dp"/>
+        <TextView
+            android:id="@+id/tvHeaderDate"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="10-04-2019"
+            android:textColor="#333333"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="16dp">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:elevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Left Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp">
+                    
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranId" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldAcctId" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranType" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldAcctCurrency" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranParticulars" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldFlowCode" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranDate" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranCode" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranRefNo" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPartitionType" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldInstrumentNo" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldAcctCurrency2" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldRateCode" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldEntryUser" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldEntryTime" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranStatus" />
+                </LinearLayout>
+
+                <!-- Right Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPartTranId" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldAcctName" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPartTranType" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranAmt" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranRemarks" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldFlowDate" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldValueDate" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldTranReportCode" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldAdditionalDetails" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPartitionDetails" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldInstrumentDate" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldHomeCurrencyAmount" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldRate" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPostUser" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldPostTime" />
+                    <include layout="@layout/view_field_item" android:id="@+id/fieldDeleted" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Mini Pagination -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end|center_vertical"
+                android:layout_marginTop="16dp">
+                <Button
+                    android:id="@+id/btnDetailPrev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Previous"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="12dp"/>
+                <TextView
+                    android:id="@+id/tvDetailInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1523 / 2607"
+                    android:layout_marginHorizontal="8dp"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+                <Button
+                    android:id="@+id/btnDetailNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Next"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="12dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Table Container (Hidden by default) -->
+    <LinearLayout
+        android:id="@+id/layoutTableContainer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:visibility="gone">
+
+        <!-- Rigid Table Header (9 Columns) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#E8EAED">
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:text="TRAN DATE" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="TRAN ID" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.7" android:text="PA TRAN TY" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CURRENCY" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:text="AMOUNT" android:textSize="9sp" android:padding="8dp" android:gravity="end|center_vertical"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="ACCT ID" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:text="ACCT NAME" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="STATUS" android:textSize="9sp" android:padding="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="SELECT" android:textSize="9sp" android:padding="8dp" android:gravity="center"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRelatedEntries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <!-- Footer space -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+
+</LinearLayout>

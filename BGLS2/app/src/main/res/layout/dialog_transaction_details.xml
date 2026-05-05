@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_background"
+    android:padding="0dp">
+
+    <!-- Dialog Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingHorizontal="16dp"
+        android:background="#FFFFFF">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transaction Details"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/ivCloseDialog"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/logout"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:tint="#999999"/>
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
+
+    <!-- Form Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:padding="16dp">
+        
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1,3">
+
+            <!-- Row 1 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Id" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagTranId" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Part Tran Id" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagPartTranId" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 2 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Acct ID" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <EditText android:id="@+id/etDiagAcctId" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Acct Name" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagAcctName" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 3 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Type" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagTranType" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Part Tran Type" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagPartTranType" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 4 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Account Currency" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagCurrency" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Tran Amt" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <EditText android:id="@+id/etDiagAmount" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/edittext_bg" android:padding="8dp" android:textSize="12sp" android:inputType="numberDecimal"/>
+            </TableRow>
+
+            <!-- Row 5 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Flow Code" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <Spinner android:id="@+id/spinnerDiagFlowCode" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                <TextView android:text="Flow Date" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagFlowDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 6 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Date" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagTranDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Value Date" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagValueDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Add more rows as needed to match screenshot -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Entry User" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagEntryUser" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Post User" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagPostUser" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Status" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagStatus" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Deleted" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagDeleted" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+        <Button
+            android:id="@+id/btnDiagSubmit"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Submit"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"/>
+        <Button
+            android:id="@+id/btnDiagClose"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Close"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>
