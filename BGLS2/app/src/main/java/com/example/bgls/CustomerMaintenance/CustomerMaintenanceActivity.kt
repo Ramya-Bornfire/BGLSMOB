@@ -8,25 +8,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.CustomerMaintenance.CustomerMaintenanceAdapter
 import com.example.bgls.DataModels.CustomerMaintenanceModel
+import com.example.bgls.DataModels.CustomerMaster
+import com.example.bgls.DataModels.CustomerMasterPagedResponse
 import com.example.bgls.MainActivity
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class CustomerMaintenanceActivity : AppCompatActivity() {
 
@@ -35,38 +36,25 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var menuIcon: ImageView
-    
+
     private var currentStatusFilter: String = "Select Status"
     private var currentPage: Int = 1
     private val itemsPerPage: Int = 20
 
-    // Extended dummy data with mixed statuses for testing the filter
-    private val allData = (1..100).map { i ->
-        val status = when (i % 7) {
-            0 -> "ACTIVE"
-            1 -> "INACTIVE"
-            2 -> "BLACKLIST"
-            3 -> "EXITED"
-            4 -> "PENDING_APPROVAL"
-            5 -> "REJECTED"
-            else -> "ACTIVE"
-        }
-        CustomerMaintenanceModel(
-            sNo = i.toString(),
-            customerId = "CUST${1000 + i}",
-            customerName = "CUSTOMER $i",
-            dob = "01-01-1990",
-            branchName = "NAIROBI HEAD OFFICE",
-            mobileNo = "2547000000${i.toString().padStart(2, '0')}",
-            email = "customer$i@gmail.com",
-            status = status
-        )
-    }
+    // Server‑side pagination for ALL mode
+    private var totalApiPages: Int = 1
+
+    // Holds complete list when status is filtered (client‑side pagination)
+    private var fullFilteredList: List<CustomerMaintenanceModel> = emptyList()
+
+    // Cache for branch names (branchKey -> branchName)
+    private val branchNameCache = mutableMapOf<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_customer_maintenance)
+
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
         menuIcon = findViewById(R.id.menuIcon)
@@ -78,18 +66,15 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    // Navigate back to MainActivity (or any home screen)
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_profile -> {
-                    // TODO: Open Profile activity if needed
                     Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
                 }
                 R.id.nav_logout -> {
-                    // TODO: Implement logout logic (clear session, go to login)
                     Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -102,9 +87,9 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
         setupSpinners()
         setupPagination()
-        
-        // Show all data initially
-        updateTableData("Select Status")
+
+        // Initial load
+        loadData()
     }
 
     private fun setupSpinners() {
@@ -114,7 +99,10 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
         findViewById<Spinner>(R.id.spinnerFilter).adapter = filterAdapter
 
         val statusSpinner = findViewById<Spinner>(R.id.spinnerStatus)
-        val statusOptions = listOf("Select Status", "ACTIVE", "INACTIVE", "BLACKLIST", "EXITED", "PENDING_APPROVAL", "REJECTED")
+        val statusOptions = listOf(
+            "Select Status", "ACTIVE", "INACTIVE", "BLACKLIST",
+            "EXITED", "PENDING_APPROVAL", "REJECTED"
+        )
         val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         statusSpinner.adapter = statusAdapter
@@ -123,7 +111,7 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 currentStatusFilter = statusOptions[position]
                 currentPage = 1
-                updateTableData(currentStatusFilter)
+                loadData()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -135,61 +123,157 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
     }
 
     private fun setupPagination() {
-        val btnPrev = findViewById<android.widget.Button>(R.id.btnPrev)
-        val btnNext = findViewById<android.widget.Button>(R.id.btnNext)
-        
+        val btnPrev = findViewById<Button>(R.id.btnPrev)
+        val btnNext = findViewById<Button>(R.id.btnNext)
+
         btnPrev.setOnClickListener {
             if (currentPage > 1) {
                 currentPage--
-                updateTableData(currentStatusFilter)
+                loadData()
             }
         }
-        
+
         btnNext.setOnClickListener {
-            val filteredData = getFilteredData(currentStatusFilter)
-            val totalPages = (filteredData.size + itemsPerPage - 1) / itemsPerPage
-            
+            val totalPages = if (currentStatusFilter == "Select Status") {
+                totalApiPages
+            } else {
+                if (fullFilteredList.isEmpty()) 1
+                else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+            }
+
             if (currentPage < totalPages) {
                 currentPage++
-                updateTableData(currentStatusFilter)
+                loadData()
             }
-        }
-    }
-    
-    private fun getFilteredData(statusFilter: String): List<CustomerMaintenanceModel> {
-        return if (statusFilter == "Select Status" || statusFilter == "ALL") {
-            allData
-        } else {
-            allData.filter { it.status.equals(statusFilter, ignoreCase = true) }
         }
     }
 
-    private fun updateTableData(statusFilter: String) {
-        val filteredData = getFilteredData(statusFilter)
-        
-        val totalPages = (filteredData.size + itemsPerPage - 1) / itemsPerPage
-        val maxPage = if (totalPages > 0) totalPages else 1
-        
-        if (currentPage > maxPage) {
-            currentPage = maxPage
+    private fun loadData() {
+        lifecycleScope.launch {
+            try {
+                if (currentStatusFilter == "Select Status") {
+                    // Server‑side paginated endpoint
+                    val response = RetrofitClient.api.getAllApprovedCust(currentPage, itemsPerPage)
+                    if (response.isSuccessful) {
+                        val body = response.body()
+                        if (body != null) {
+                            val list = body.data
+                            totalApiPages = body.totalPages
+                            // Enrich branch names
+                            enrichCustomerListWithBranchNames(list)
+                            val models = list.map { it.toMaintenanceModel() }
+                            updateTable(models)
+                        }
+                    } else {
+                        showToast("Failed to load data")
+                    }
+                } else {
+                    // Status search – returns all records
+                    val response = RetrofitClient.api.searchCustomersByStatus(currentStatusFilter)
+                    if (response.isSuccessful) {
+                        val list = response.body() ?: emptyList()
+                        // Enrich branch names
+                        enrichCustomerListWithBranchNames(list)
+                        fullFilteredList = list.map { it.toMaintenanceModel() }
+                        val totalPages = if (fullFilteredList.isEmpty()) 1
+                        else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+                        val start = (currentPage - 1) * itemsPerPage
+                        val end = minOf(start + itemsPerPage, fullFilteredList.size)
+                        val pageData = if (start < fullFilteredList.size) fullFilteredList.subList(start, end)
+                        else emptyList()
+                        updateTable(pageData)
+                    } else {
+                        showToast("Failed to load status data")
+                    }
+                }
+            } catch (e: Exception) {
+                showToast("Network error: ${e.message}")
+            }
         }
-        
-        val tvPageInfo = findViewById<android.widget.TextView>(R.id.tvPageInfo)
-        tvPageInfo.text = "Page $currentPage of $maxPage"
-        
-        val startIndex = (currentPage - 1) * itemsPerPage
-        val endIndex = Math.min(startIndex + itemsPerPage, filteredData.size)
-        
-        val pageData = if (startIndex < filteredData.size) {
-            filteredData.subList(startIndex, endIndex)
-        } else {
-            emptyList()
-        }
-        
+    }
+
+    private fun updateTable(pageData: List<CustomerMaintenanceModel>) {
+        val totalPages = if (currentStatusFilter == "Select Status") totalApiPages
+        else if (fullFilteredList.isEmpty()) 1
+        else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+
+        findViewById<TextView>(R.id.tvPageInfo).text = "Page $currentPage of $totalPages"
+
         adapter = CustomerMaintenanceAdapter(this, pageData)
         recyclerView.adapter = adapter
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // ─── Branch name resolution (cached) ─────────────────────────────────────
+
+    private suspend fun enrichCustomerListWithBranchNames(list: List<CustomerMaster>) {
+        if (list.isEmpty()) return
+
+        // Collect unique branch keys that are not yet cached
+        val keysToFetch = list.mapNotNull { it.branchKey?.takeIf { k -> k.isNotBlank() && !branchNameCache.containsKey(k) } }.toSet()
+
+        // Fetch missing branch names
+        keysToFetch.forEach { key ->
+            val branchName = fetchBranchName(key)
+            branchNameCache[key] = branchName
+        }
+
+        // Assign branchName to each customer
+        list.forEach { customer ->
+            val key = customer.branchKey
+            customer.branchName = when {
+                key.isNullOrBlank() -> "UNKNOWN"
+                else -> branchNameCache[key] ?: "UNKNOWN"
+            }
+        }
+    }
+
+    private suspend fun fetchBranchName(branchKey: String): String {
+        return try {
+            val response: Response<ResponseBody> = RetrofitClient.api.getBranchNameByKey(branchKey)
+            if (response.isSuccessful) {
+                response.body()?.string()?.trim()?.takeIf {
+                    it.isNotBlank() && !it.contains("<") && it.length < 200
+                } ?: "UNKNOWN"
+            } else {
+                "UNKNOWN"
+            }
+        } catch (e: Exception) {
+            "UNKNOWN"
+        }
+    }
+
+    // ─── Convert CustomerMaster to UI model with formatted DOB ─────────────────
+
+    private fun CustomerMaster.toMaintenanceModel(): CustomerMaintenanceModel {
+        // Format DOB from timestamp (yyyy-MM-dd'T'HH:mm:ss) to dd/MM/yyyy
+        val formattedDob = try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = inputFormat.parse(this.dob ?: "")
+            if (date != null) outputFormat.format(date) else this.dob ?: ""
+        } catch (e: Exception) {
+            this.dob ?: ""
+        }
+
+        return CustomerMaintenanceModel(
+            sNo = "",
+            customerId = this.customerId ?: "",
+            customerName = this.customerName,
+            dob = formattedDob,
+            branchName = this.branchName,   // already resolved by enrichment
+            mobileNo = this.mobileNo ?: "",
+            email = this.email ?: "",
+            status = this.status ?: "",
+            branchKey = this.branchKey ?: ""
+        )
+    }
 }
+
+// ─── Adapter class (add fallback for branch name) ─────────────────────────
 
 class CustomerMaintenanceAdapter(
     private val context: Context,
@@ -214,11 +298,12 @@ class CustomerMaintenanceAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.tvSNo.text = item.sNo
+        holder.tvSNo.text = (position + 1).toString()
         holder.tvCustomerId.text = item.customerId
         holder.tvCustomerName.text = item.customerName
         holder.tvDob.text = item.dob
-        holder.tvBranchName.text = item.branchName
+        // Fallback to "UNKNOWN" if branch name is empty
+        holder.tvBranchName.text = item.branchName.ifEmpty { "UNKNOWN" }
         holder.tvMobileNo.text = item.mobileNo
         holder.tvEmail.text = item.email
         holder.tvStatus.text = item.status
@@ -230,6 +315,7 @@ class CustomerMaintenanceAdapter(
         holder.tvCustomerId.setOnClickListener {
             val intent = Intent(context, CustomerMaintenanceViewActivity::class.java)
             intent.putExtra("CUSTOMER_ID", item.customerId)
+            intent.putExtra("BRANCH_KEY", item.branchKey)
             context.startActivity(intent)
         }
     }

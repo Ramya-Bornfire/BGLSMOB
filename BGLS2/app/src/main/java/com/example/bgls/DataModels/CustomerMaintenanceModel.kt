@@ -8,5 +8,6 @@ data class CustomerMaintenanceModel(
     val branchName: String,
     val mobileNo: String,
     val email: String,
-    val status: String
+    val status: String,
+    val branchKey: String
 )

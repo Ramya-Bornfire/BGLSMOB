@@ -1,28 +1,37 @@
 package com.example.bgls.CustomerMaintenance
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.EditText
 import android.widget.Toast
-import android.content.Intent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.CustomerMaster.AccountDetail
 import com.example.bgls.CustomerMaster.AccountDetailAdapter
 import com.example.bgls.CustomerMaster.LoanMasterViewActivity
+import com.example.bgls.DataModels.CustomerMaster
+import com.example.bgls.DataModels.CustomerMasterViewResponse
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import retrofit2.Response           // <-- ADD THIS IMPORT
 
 class CustomerMaintenanceViewActivity : AppCompatActivity() {
 
     private var isEditMode = false
     private val formRows = mutableListOf<View>()
+    private var currentCustomer: CustomerMaster? = null
+    private var branchKey: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,109 +43,204 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
             insets
         }
 
-        // The customer ID passed from the adapter
-        val customerId = intent.getStringExtra("CUSTOMER_ID") ?: "27917600"
+        val customerId = intent.getStringExtra("CUSTOMER_ID") ?: ""
+        branchKey = intent.getStringExtra("BRANCH_KEY") ?: ""
 
-        // Setup the specific row fields based on the screenshot
-        setupRow(findViewById(R.id.rowCustomerId), "Customer Id", customerId)
-        setupRow(findViewById(R.id.rowFirstName), "First Name", "MERCY NYANGOGE")
-        setupRow(findViewById(R.id.rowGender), "Gender", "FEMALE")
-        setupRow(findViewById(R.id.rowBranch), "Branch", "NAIROBI HEAD OFFICE")
-        setupRow(findViewById(R.id.rowCreationDate), "Creation Date", "15-11-2022")
-        setupRow(findViewById(R.id.rowLastModificationDate), "Last Modification Date", "03-09-2025")
-        setupRow(findViewById(R.id.rowMobileNo), "Mobile No", "254725661248")
-        setupRow(findViewById(R.id.rowAddress1), "Address 1", "")
-        setupRow(findViewById(R.id.rowCity), "City", "Nairobi")
-        setupRow(findViewById(R.id.rowLoanCycle), "Loan Cycle", "0")
-        setupRow(findViewById(R.id.rowAssignedUser), "Assigned User", "")
+        if (customerId.isEmpty()) {
+            Toast.makeText(this, "Customer ID missing", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
-        setupRow(findViewById(R.id.rowCustomerName), "Customer Name", "MERCY NYANGOGE MACHUKA")
-        setupRow(findViewById(R.id.rowLastName), "Last Name", "MACHUKA")
-        setupRow(findViewById(R.id.rowDob), "Date of Birth", "11-06-1989")
-        setupRow(findViewById(R.id.rowClientRoleKey), "Client Role Key", "8a858f765a4e7c76015a5baf3")
-        setupRow(findViewById(R.id.rowApprovalDate), "Approval Date", "10-10-2025")
-        setupRow(findViewById(R.id.rowActivationDate), "Activation Date", "18-11-2022")
-        setupRow(findViewById(R.id.rowEmailId), "Email Id", "mercymachuka24@gmail.com")
-        setupRow(findViewById(R.id.rowAddress2), "Address 2", "")
-        setupRow(findViewById(R.id.rowSuburb), "Suburb", "Kenya")
-        setupRow(findViewById(R.id.rowGroupLoanCycle), "Group Loan Cycle", "0")
-        setupRow(findViewById(R.id.rowAsOnDate), "As On Date", "03-09-2025")
+        lifecycleScope.launch {
+            fetchCustomerDetails(customerId)
+        }
+
+        findViewById<Button>(R.id.btnAccountDetails).setOnClickListener {
+            val layoutAccountDetails = findViewById<LinearLayout>(R.id.layoutAccountDetails)
+            layoutAccountDetails.visibility =
+                if (layoutAccountDetails.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
 
         val btnModify = findViewById<Button>(R.id.btnModify)
         val tvMainTitle = findViewById<TextView>(R.id.tvMainTitle)
-
         btnModify.setOnClickListener {
-            isEditMode = !isEditMode
-            if (isEditMode) {
-                // Enter Edit Mode
-                btnModify.text = "Submit"
-                tvMainTitle.text = "CUSTOMER MAINTENANCE - MODIFY"
-                
-                for (row in formRows) {
-                    val tvValue = row.findViewById<TextView>(R.id.tvValue)
-                    val etValue = row.findViewById<EditText>(R.id.etValue)
-                    
-                    etValue.setText(tvValue.text)
-                    tvValue.visibility = View.GONE
-                    etValue.visibility = View.VISIBLE
-                }
+            if (!isEditMode) {
+                enterEditMode(btnModify, tvMainTitle)
             } else {
-                // Submit Changes (Exit Edit Mode)
-                btnModify.text = "Modify"
-                tvMainTitle.text = "CUSTOMER MAINTENANCE - VIEW"
-                
-                for (row in formRows) {
-                    val tvValue = row.findViewById<TextView>(R.id.tvValue)
-                    val etValue = row.findViewById<EditText>(R.id.etValue)
-                    
-                    tvValue.text = etValue.text
-                    etValue.visibility = View.GONE
-                    tvValue.visibility = View.VISIBLE
-                }
-                
-                Toast.makeText(this, "Modified successfully", Toast.LENGTH_SHORT).show()
+                submitModification(btnModify, tvMainTitle)
             }
         }
 
-        val btnAccountDetails = findViewById<Button>(R.id.btnAccountDetails)
-        val layoutAccountDetails = findViewById<LinearLayout>(R.id.layoutAccountDetails)
-        val recyclerViewAccountDetails = findViewById<RecyclerView>(R.id.recyclerViewAccountDetails)
+        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+    }
 
-        val dummyAccounts = listOf(
-            AccountDetail("CCN60aeed68fb1843c0ec57", "CCN60aeed68fb1843c0ec57", "Consumer Credit New Client", "14-12-2022", "36,620.00", "-124,289.00"),
-            AccountDetail("CCN3851754328850517ca23", "CCN3851754328850517ca23", "Consumer Credit New Client", "18-11-2022", "92,985.00", "-272,359.00"),
-            AccountDetail("CCN1ab32cd3b745999db7ea", "CCN1ab32cd3b745999db7ea", "Consumer Credit New Client", "19-11-2022", "147,390.00", "-493,673.90"),
-            AccountDetail("CCNa73a323563f3537360c5", "CCNa73a323563f3537360c5", "Consumer Credit New Client", "23-11-2022", "86,985.00", "-288,240.00")
-        )
-        recyclerViewAccountDetails.layoutManager = LinearLayoutManager(this)
-        recyclerViewAccountDetails.adapter = AccountDetailAdapter(this, dummyAccounts) { account ->
-            val intent = Intent(this, LoanMasterViewActivity::class.java)
-            intent.putExtra("loanNo", account.accountId)
-            startActivity(intent)
-        }
-
-        btnAccountDetails.setOnClickListener {
-            if (layoutAccountDetails.visibility == View.VISIBLE) {
-                layoutAccountDetails.visibility = View.GONE
+    private suspend fun fetchCustomerDetails(customerId: String) {
+        try {
+            val response: Response<CustomerMasterViewResponse> =
+                RetrofitClient.api.getCustomerMaster("view", customerId, branchKey, null)
+            if (response.isSuccessful) {
+                val viewResponse = response.body()
+                if (viewResponse != null && viewResponse.customer != null) {
+                    currentCustomer = viewResponse.customer!!
+                    populateFields(currentCustomer!!)
+                    loadAccountDetails(customerId)
+                } else {
+                    showToast("Customer data empty")
+                }
             } else {
-                layoutAccountDetails.visibility = View.VISIBLE
+                showToast("Failed to load customer: ${response.code()}")
             }
-        }
-
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
+        } catch (e: Exception) {
+            showToast("Network error: ${e.message}")
         }
     }
 
+    private fun populateFields(customer: CustomerMaster) {
+        // ... same mapping as before ...
+        setupRow(findViewById(R.id.rowCustomerId), "Customer Id", customer.customerId ?: "")
+        setupRow(findViewById(R.id.rowFirstName), "First Name", customer.firstName ?: "")
+        setupRow(findViewById(R.id.rowGender), "Gender", customer.gender ?: "")
+        setupRow(findViewById(R.id.rowBranch), "Branch", customer.branchName)
+        setupRow(findViewById(R.id.rowCreationDate), "Creation Date", customer.creationDate ?: "")
+        setupRow(findViewById(R.id.rowLastModificationDate), "Last Modification Date", customer.lastModificationDate ?: "")
+        setupRow(findViewById(R.id.rowMobileNo), "Mobile No", customer.mobileNo ?: "")
+        setupRow(findViewById(R.id.rowAddress1), "Address 1", customer.address1 ?: "")
+        setupRow(findViewById(R.id.rowCity), "City", customer.city ?: "")
+        setupRow(findViewById(R.id.rowLoanCycle), "Loan Cycle", customer.loanCycle ?: "")
+        setupRow(findViewById(R.id.rowAssignedUser), "Assigned User", customer.assignedUser ?: "")
+        setupRow(findViewById(R.id.rowCustomerName), "Customer Name", customer.customerName)
+        setupRow(findViewById(R.id.rowLastName), "Last Name", customer.lastName ?: "")
+        setupRow(findViewById(R.id.rowDob), "Date of Birth", customer.dob ?: "")
+        setupRow(findViewById(R.id.rowClientRoleKey), "Client Role Key", customer.clientRoleKey ?: "")
+        setupRow(findViewById(R.id.rowApprovalDate), "Approval Date", customer.approvalDate ?: "")
+        setupRow(findViewById(R.id.rowActivationDate), "Activation Date", customer.activationDate ?: "")
+        setupRow(findViewById(R.id.rowEmailId), "Email Id", customer.email ?: "")
+        setupRow(findViewById(R.id.rowAddress2), "Address 2", customer.address2 ?: "")
+        setupRow(findViewById(R.id.rowSuburb), "Suburb", customer.suburb ?: "")
+        setupRow(findViewById(R.id.rowGroupLoanCycle), "Group Loan Cycle", customer.groupLoanCycle ?: "")
+        setupRow(findViewById(R.id.rowAsOnDate), "As On Date", customer.asOnDate ?: "")
+    }
+    private suspend fun loadAccountDetails(customerId: String) {
+        try {
+            val response = RetrofitClient.api.getAccDet(customerId)
+            if (response.isSuccessful) {
+                val rawRows = response.body() ?: emptyList()
+                val accounts = rawRows.mapNotNull { row ->
+                    if (row.size >= 6) {
+                        AccountDetail(
+                            holderKey   = row.getOrNull(0)?.toString() ?: "",
+                            accountId   = row.getOrNull(1)?.toString() ?: "",
+                            accountName = row.getOrNull(2)?.toString() ?: "",
+                            dateOfLoan  = row[3]?.toString() ?: "",
+                            loanAmount  = row[4]?.toString() ?: "",
+                            loanBalance = row[5]?.toString() ?: ""
+                        )
+                    } else null
+                }
+
+                val recyclerViewAccountDetails = findViewById<RecyclerView>(R.id.recyclerViewAccountDetails)
+                recyclerViewAccountDetails.layoutManager = LinearLayoutManager(this)
+                recyclerViewAccountDetails.adapter = AccountDetailAdapter(
+                    this@CustomerMaintenanceViewActivity,
+                    accounts
+                ) { account ->
+                    val intent = Intent(this@CustomerMaintenanceViewActivity, LoanMasterViewActivity::class.java)
+                    intent.putExtra("loanId", account.accountId)
+                    intent.putExtra("holderKey", account.holderKey)
+                    intent.putExtra("branchKey", branchKey)   // branchKey is already defined in the activity
+                    startActivity(intent)
+                }
+            } else {
+                showToast("Failed to load account details")
+            }
+        } catch (e: Exception) {
+            showToast("Error loading account details: ${e.message}")
+        }
+    }
+
+
+    // ... setupRow, enterEditMode, submitModification etc. remain identical ...
     private fun setupRow(rowView: View, labelText: String, valueText: String) {
         formRows.add(rowView)
-        
         val tvLabel = rowView.findViewById<TextView>(R.id.tvLabel)
         val tvValue = rowView.findViewById<TextView>(R.id.tvValue)
         val etValue = rowView.findViewById<EditText>(R.id.etValue)
-        
         tvLabel.text = labelText
         tvValue.text = valueText
         etValue.setText(valueText)
+        etValue.visibility = View.GONE
+    }
+
+    private fun enterEditMode(btnModify: Button, tvMainTitle: TextView) {
+        isEditMode = true
+        btnModify.text = "Submit"
+        tvMainTitle.text = "CUSTOMER MAINTENANCE - MODIFY"
+        for (row in formRows) {
+            val tvValue = row.findViewById<TextView>(R.id.tvValue)
+            val etValue = row.findViewById<EditText>(R.id.etValue)
+            etValue.setText(tvValue.text)
+            tvValue.visibility = View.GONE
+            etValue.visibility = View.VISIBLE
+        }
+    }
+
+    private fun submitModification(btnModify: Button, tvMainTitle: TextView) {
+        if (currentCustomer == null) {
+            showToast("No customer data to modify")
+            return
+        }
+
+        val fields = mutableMapOf<String, String>().apply {
+            put("customer_id", getEditedText(R.id.rowCustomerId))
+            put("first_name", getEditedText(R.id.rowFirstName))
+            put("last_name", getEditedText(R.id.rowLastName))
+            put("gender", getEditedText(R.id.rowGender))
+            put("birth_date", getEditedText(R.id.rowDob))
+            put("mobile_phone", getEditedText(R.id.rowMobileNo))
+            put("email_address", getEditedText(R.id.rowEmailId))
+            put("address_line1", getEditedText(R.id.rowAddress1))
+            put("address_line2", getEditedText(R.id.rowAddress2))
+            put("city", getEditedText(R.id.rowCity))
+            put("suburb", getEditedText(R.id.rowSuburb))
+            put("loan_cycle", getEditedText(R.id.rowLoanCycle))
+            put("group_loan_cycle", getEditedText(R.id.rowGroupLoanCycle))
+            put("assigned_user_key", getEditedText(R.id.rowAssignedUser))
+            put("assigned_branch_key", branchKey)
+        }
+
+        lifecycleScope.launch {
+            try {
+                val response: Response<okhttp3.ResponseBody> = RetrofitClient.api.modifyCustomer(fields)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@CustomerMaintenanceViewActivity, "Modified successfully", Toast.LENGTH_SHORT).show()
+
+                    isEditMode = false
+                    btnModify.text = "Modify"
+                    tvMainTitle.text = "CUSTOMER MAINTENANCE - VIEW"
+
+                    for (row in formRows) {
+                        val tvValue = row.findViewById<TextView>(R.id.tvValue)
+                        val etValue = row.findViewById<EditText>(R.id.etValue)
+                        tvValue.text = etValue.text
+                        etValue.visibility = View.GONE
+                        tvValue.visibility = View.VISIBLE
+                    }
+                } else {
+                    showToast("Modification failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                showToast("Network error: ${e.message}")
+            }
+        }
+    }
+
+    private fun getEditedText(rowId: Int): String {
+        val row = formRows.find { it.id == rowId } ?: return ""
+        return row.findViewById<EditText>(R.id.etValue).text.toString()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

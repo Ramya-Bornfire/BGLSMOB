@@ -184,11 +184,18 @@ interface ServiceApi {
     fun deleteReferenceCode(
         @Field("ref_id") ref_id: String
     ): Call<ResponseBody>
+// Inside ServiceApi interface
 
+
+    @FormUrlEncoded
+    @POST("verifyUserById")
+    fun verifyCustomerById(@Field("UserId") userId: String): Call<ResponseBody>
     // ─────────────────────────────────────────────────────────────────────────
     // GL STRUCTURE MAINTENANCE APIs
     // ─────────────────────────────────────────────────────────────────────────
-
+    @FormUrlEncoded
+    @POST("modifySubmit")
+    suspend fun modifyCustomer(@FieldMap fields: Map<String, String>): Response<ResponseBody>
     @GET("api/glcode")
     fun getGLCode(
         @Query("formmode") formmode: String?,
