@@ -214,6 +214,15 @@
         <activity
             android:name=".TransactionReports.GenericReportActivity"
             android:exported="false" />
+        <activity
+            android:name=".DepositAccount.DepositAccountOpeningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DepositAccount.DepositAccountMaintenanceListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DepositAccount.DepositAccountMaintenanceFlowActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

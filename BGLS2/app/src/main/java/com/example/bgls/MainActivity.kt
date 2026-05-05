@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             Transaction("Reversal Transactions",
                 listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
             Transaction("Collection Process",
-                listOf("Loan Collection","Recovery Path")),
+                listOf("Loan Collection")),
             Transaction("Batch Job Execution"),
             Transaction("Transaction Reports",
                 listOf("Credit Facility Report",
@@ -234,8 +234,14 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("REPORT_TITLE", "Penalty Accrual - Reports")
                     startActivity(intent)
                 }
+                "Account Opening" -> {
+                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountOpeningActivity::class.java))
+                }
                 "Loan Collection" -> {
                     startActivity(Intent(this, com.example.bgls.LoanCollectionActivity::class.java))
+                }
+                "Account Maintenace" -> {
+                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountMaintenanceListActivity::class.java))
                 }
 
                 else -> {

@@ -12,12 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        android:layout_marginTop="20dp">
 
         <LinearLayout
             android:layout_marginTop="30dp"
@@ -64,10 +59,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="#FFFFFF"
+            android:fillViewport="true"
             android:scrollbars="horizontal">
             <LinearLayout
                 android:id="@+id/llBulkRows"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <!-- Bulk Header -->
@@ -76,62 +72,47 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="#E9ECEF">
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Transaction ID" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Names" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Reference" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Mobile Number" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Allocated Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Trans. Time" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Status" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
-                    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="Allocated" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Transaction ID" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Names" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Reference" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Mobile Number" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Allocated Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Trans. Time" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Status" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Allocated" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
                 </LinearLayout>
 
-                <!-- Bulk Input Row -->
+                <!-- Bulk Input Row Template -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="0"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="01-05-2026 13:00"/>
-                    <EditText android:layout_width="120dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="UNALLOCATED"/>
-                    <RadioButton android:layout_width="80dp" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    android:orientation="horizontal"
+                    android:background="#E9ECEF">
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/table_cell_bg"
+                        android:textSize="10sp"
+                        android:padding="10dp"
+                        android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:text="0" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:text="01-05-2026 13:00" android:gravity="center"/>
+                    <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="10dp" android:text="UNALLOCATED" android:gravity="center"/>
+
+                    <RadioButton android:layout_width="0dp" android:layout_weight="0.8" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:gravity="center"/>
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
 
         <!-- Bulk Footer buttons -->
-        <LinearLayout
-            android:id="@+id/layoutBulkFooterButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:paddingBottom="20dp">
-            <Button android:id="@+id/btnBulkHome"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="Home"
-                android:textSize="11sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:layout_marginEnd="8dp"/>
-            <Button android:id="@+id/btnBulkSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="Submit"
-                android:textSize="11sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:layout_marginEnd="8dp"/>
-            <Button android:id="@+id/btnBulkBack" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Back" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF"/>
-        </LinearLayout>
     </LinearLayout>
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- TITLE BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:elevation="2dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DEPOSIT ACCOUNT MAINTENANCE FLOW"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- TABS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:background="@drawable/table_border"
+                android:layout_marginBottom="16dp">
+                
+                <TextView
+                    android:id="@+id/tabFlows"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Flows"
+                    android:gravity="center"
+                    android:background="#17A2B8"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
+                    
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+                
+                <TextView
+                    android:id="@+id/tabOperations"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Operations"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- DETAILS CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/table_border"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp"
+                android:baselineAligned="false">
+
+                <!-- Left Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="16dp">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Branch Id" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Customer Id" android:textSize="11sp"/>
+                        <EditText android:id="@+id/etCustId" android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit Type" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="Fixed" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="GLSH Code" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="2500" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit Account No" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="TD0041" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit Period" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="6" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Rate of Interest" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="5" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Frequency" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="Monthly" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Maturity Date" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="29-04-2026" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Right Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Branch Description" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Customer Name" android:textSize="11sp"/>
+                        <EditText android:id="@+id/etCustName" android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Scheme Code" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="TDFIXED" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="GLSH Description" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="DEPOSITS" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Date of Deposit" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="29-04-2026" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit Amount" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="100000" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Interest Amount" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="202499.96" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Currency" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="SCR" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Maturity Amount" android:textSize="11sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="100000" android:padding="4dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- FLOW TABLE -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+                
+                <LinearLayout
+                    android:id="@+id/layoutFlowTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    
+                    <!-- Table Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E9ECEF"
+                        android:paddingVertical="8dp">
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.5" android:minWidth="50dp" android:text="Flow ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="FLOW CODE"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="FLOW DATE"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="120dp" android:text="FLOW AMOUNT" android:gravity="end" android:paddingEnd="16dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Outstanding BALANCE" android:gravity="end" android:paddingEnd="16dp"/>
+                        <TextView
+                            android:id="@+id/tvSelectHeader"
+                            style="@style/TableHeader"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.8"
+                            android:text="SELECT"
+                            android:gravity="center"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+                    
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvFlows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/layoutOperations"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select a flow via the Radio Button to proceed."
+                    android:textStyle="italic"
+                    android:textColor="#666666"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#E9ECEF">
+        
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- TITLE BAR -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:elevation="2dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DEPOSIT ACCOUNT OPENING"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- SUB HEADER / TABS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF"
+                android:padding="8dp"
+                android:elevation="1dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+                
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                
+                <TextView
+                    android:id="@+id/btnDeposit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deposit"
+                    android:background="#17A2B8"
+                    android:textColor="#FFFFFF"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="6dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="12dp"/>
+
+                <TextView
+                    android:id="@+id/btnGenerateFlow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Generate Flow"
+                    android:textColor="#333333"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="6dp"
+                    android:textSize="12sp"
+                    android:layout_marginStart="12dp"/>
+
+                <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            </LinearLayout>
+
+            <!-- DEPOSIT FORM SECTION -->
+            <LinearLayout
+                android:id="@+id/layoutDepositForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/card_background"
+                    android:padding="20dp"
+                    android:baselineAligned="false">
+
+                    <!-- LEFT COLUMN -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="20dp">
+
+                        <!-- Branch Id -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Branch Id*"/>
+                            <EditText android:id="@+id/etBranchId" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Customer Id -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Customer Id*"/>
+                            <Spinner android:id="@+id/spCustomerId" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                        </LinearLayout>
+
+                        <!-- Deposit Type -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Deposit Type*"/>
+                            <Spinner android:id="@+id/spDepositType" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                        </LinearLayout>
+
+                        <!-- GLSH Code -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="GLSH Code"/>
+                            <EditText android:id="@+id/etGlshCode" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Deposit Account No -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Deposit Account No*"/>
+                            <EditText android:id="@+id/etDepositAccountNo" style="@style/LoanField" android:text="TD0085" android:enabled="false" android:background="#E9ECEF"/>
+                        </LinearLayout>
+
+                        <!-- Deposit Period -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Deposit Period*"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/etDepositPeriod" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background" android:layout_width="0dp" android:layout_weight="1"/>
+                                <TextView android:layout_width="wrap_content" android:layout_height="36dp" android:text="months" android:gravity="center" android:paddingHorizontal="8dp" android:textSize="11sp" android:textColor="#888888" android:background="@drawable/edittext_background" android:layout_marginStart="-2dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Rate of Interest -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Rate of Interest*"/>
+                            <EditText android:id="@+id/etRateOfInterest" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Frequency -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Frequency*"/>
+                            <Spinner android:id="@+id/spFrequency" android:layout_width="0dp" android:layout_weight="1" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
+                        </LinearLayout>
+
+                        <!-- Maturity Date -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Maturity Date"/>
+                            <EditText android:id="@+id/etMaturityDate" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background" android:hint="dd-mm-yyyy" android:drawableEnd="@android:drawable/ic_menu_my_calendar" android:focusable="false"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- RIGHT COLUMN -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Branch Description -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Branch Description"/>
+                            <EditText android:id="@+id/etBranchDescription" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Customer Name -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Customer Name"/>
+                            <EditText android:id="@+id/etCustomerName" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Scheme Code -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Scheme Code"/>
+                            <EditText android:id="@+id/etSchemeCode" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- GLSH Description -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="GLSH Description"/>
+                            <EditText android:id="@+id/etGlshDescription" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Date of Deposit -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Date of Deposit*"/>
+                            <EditText android:id="@+id/etDateOfDeposit" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background" android:hint="dd-mm-yyyy" android:drawableEnd="@android:drawable/ic_menu_my_calendar" android:focusable="false"/>
+                        </LinearLayout>
+
+                        <!-- Deposit Amount -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Deposit Amount*"/>
+                            <EditText android:id="@+id/etDepositAmount" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Interest Amount -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Interest Amount"/>
+                            <EditText android:id="@+id/etInterestAmount" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Currency -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Currency"/>
+                            <EditText android:id="@+id/etCurrency" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                        <!-- Maturity Amount -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <TextView style="@style/LoanLabel" android:text="Maturity Amount"/>
+                            <EditText android:id="@+id/etMaturityAmount" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_background"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- GENERATE FLOW SECTION -->
+            <LinearLayout
+                android:id="@+id/layoutGenerateFlow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="20dp"
+                android:visibility="gone">
+                
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DEPOSIT ACCOUNT OPENING - FLOW"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:textColor="#333333"
+                    android:background="#E9ECEF"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp"/>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:fillViewport="true"
+                    android:scrollbars="horizontal">
+                    
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <!-- Table Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#E9ECEF">
+                            <TextView style="@style/TableColumnHeader" android:layout_width="0dp" android:layout_weight="1" android:text="FLOW ID" android:gravity="center"/>
+                            <TextView style="@style/TableColumnHeader" android:layout_width="0dp" android:layout_weight="1" android:text="FLOW CODE" android:gravity="center"/>
+                            <TextView style="@style/TableColumnHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="FLOW DATE" android:gravity="center"/>
+                            <TextView style="@style/TableColumnHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="FLOW AMOUNT" android:gravity="center"/>
+                            <TextView style="@style/TableColumnHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="OUTSTANDING BALANCE" android:gravity="center"/>
+                        </LinearLayout>
+                        
+                        <!-- No records placeholder -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/table_cell_bg"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:text="No records available"
+                            android:textColor="#888888"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+                    <Button android:id="@+id/btnFlowHome" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Home" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnFlowSubmit" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Submit" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnFlowBack" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Back" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM BUTTONS -->
+    <LinearLayout
+        android:id="@+id/layoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+        
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>
