@@ -32,9 +32,7 @@ class FailedReversalEditActivity : AppCompatActivity() {
         loadMockData()
         setupRecyclerViews()
 
-        findViewById<Button>(R.id.btnEditHome).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btnEditBack).setOnClickListener { finish() }
-        findViewById<Button>(R.id.btnEditSubmit).setOnClickListener {
+        findViewById<Button>(R.id.btnHeaderSubmit).setOnClickListener {
             submitDataToApi()
         }
     }

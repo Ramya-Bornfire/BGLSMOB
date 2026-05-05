@@ -32,13 +32,26 @@
             android:layout_marginEnd="8dp"/>
         <TextView
             android:id="@+id/tvHeaderDate"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="32dp"
             android:background="#FFFFFF"
             android:gravity="center"
             android:text="10-04-2019"
             android:textColor="#333333"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnHeaderSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Submit"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:minHeight="0dp"
+            android:minWidth="70dp"/>
     </LinearLayout>
 
     <ScrollView
@@ -137,49 +150,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Footer -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#E8EAED">
-        <Button
-            android:id="@+id/btnEditHome"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="Home"
-            android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:layout_marginEnd="4dp"
-            android:textAllCaps="false"
-            android:minHeight="0dp"
-            android:minWidth="80dp"/>
-        <Button
-            android:id="@+id/btnEditSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="Submit"
-            android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:layout_marginEnd="4dp"
-            android:textAllCaps="false"
-            android:minHeight="0dp"
-            android:minWidth="80dp"/>
-        <Button
-            android:id="@+id/btnEditBack"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="Back"
-            android:backgroundTint="#2196F3"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textAllCaps="false"
-            android:minHeight="0dp"
-            android:minWidth="80dp"/>
-    </LinearLayout>
+
 
 </LinearLayout>
