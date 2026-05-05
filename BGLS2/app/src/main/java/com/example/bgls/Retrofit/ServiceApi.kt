@@ -8,8 +8,7 @@ import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
-import com.example.bgls.DataModels.JournalEntryItem
-import com.example.bgls.DataModels.JournalEntryResponse
+import com.example.bgls.DataModels.JournalEntryViewResponse
 import com.example.bgls.DataModels.OrganizationResponse
 import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
@@ -21,6 +20,7 @@ import com.example.bgls.DataModels.TransactionDto
 import com.example.bgls.DataModels.TransactionMigrationResponse
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
+import com.example.bgls.TransactionMaintenance.JournalEntriesActivity
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -434,8 +434,14 @@ interface ServiceApi {
         @Query("tran_id") tran_id: String,
         @Query("part_tran_id") part_tran_id: String,
         @Query("acct_num") acct_num: String
-    ): Response<JournalEntryResponse>
-
+    ): Response<JournalEntriesActivity.JournalEntryResponse>
+    @GET("api/journalEntries")
+    suspend fun getJournalEntryView(
+        @Query("formmode") formmode: String = "view",
+        @Query("tran_id") tranId: String,
+        @Query("part_tran_id") partTranId: String,
+        @Query("acct_num") acctNum: String
+    ): Response<JournalEntryViewResponse>
 
     @GET("transactionValues")
     suspend fun getTransactionDetails(

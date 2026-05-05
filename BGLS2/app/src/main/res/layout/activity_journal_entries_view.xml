@@ -60,7 +60,13 @@
                 android:minHeight="0dp"/>
         </LinearLayout>
     </LinearLayout>
-
+    <!-- After the header LinearLayout (before ScrollView) -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
     <!-- Main Content Box (Always Visible) -->
     <ScrollView
         android:layout_width="match_parent"

@@ -1,12 +1,13 @@
 package com.example.bgls.DataModels
 
 // DataModels/JournalEntryResponse.kt
-data class JournalEntryResponse(
-    val formmode: String?,
-    val jour: List<JournalEntryItem>?,
-    val ledgervalues: JournalEntryItem?,
-    val currentPartTran: Int?,
-    val maxPartTran: Int?
+data class JournalEntryViewResponse(
+    val formmode: String? = null,
+    val ledgervalues: JournalEntryItem? = null,
+    val currentPartTran: Int? = null,
+    val maxPartTran: Int? = null,
+    val gldetails: Any? = null,   // optional, if needed later
+    val jour: Any? = null          // optional
 )
 
 data class JournalEntryDetailModel(
@@ -61,7 +62,9 @@ data class JournalEntryItem(
     val rate: Double?,
     val modify_user: String?,
     val modify_time: String?,
-    val srl_no: String?
+    val srl_no: String?,
+    val entry_time: String? = null,
+    val post_time: String? = null
 )
 data class TransactionDetailsResponse(
     val ledgervalues: JournalEntryItem?
