@@ -115,15 +115,77 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center">
+                android:background="#FFFFFF"
+                android:paddingVertical="12dp"
+                android:paddingHorizontal="16dp"
+                android:gravity="end">
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total"
+                    android:text="Total:"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/tvTotalCredits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="40dp"/>
+
+                <TextView
+                    android:id="@+id/tvTotalDebits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="40dp"/>
+            </LinearLayout>
+
+            <!-- GLSH Details Section -->
+            <LinearLayout
+                android:id="@+id/layoutGLSH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GLSH DETAILS"
+                    android:background="#E8EAED"
+                    android:padding="8dp"
                     android:textStyle="bold"
                     android:textSize="14sp"
                     android:textColor="#333333"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#F5F5F5">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:text="GLSH CODE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="ACCOUNT NO"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:text="ACCOUNT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGLSHDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
             </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>

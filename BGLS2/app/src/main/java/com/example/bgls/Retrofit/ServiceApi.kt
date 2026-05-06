@@ -2,6 +2,7 @@ package com.example.bgls.Retrofit
 import com.example.bgls.DataModels.AccessRoleRequest
 import com.example.bgls.DataModels.BusinessActivityResponse
 import com.example.bgls.DataModels.CalendarResponse
+import com.example.bgls.DataModels.ChartAccountApiItem
 import com.example.bgls.DataModels.ChartAccountItem
 import com.example.bgls.DataModels.ChartOfAccountsAddResponse
 import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
@@ -573,4 +574,19 @@ interface ServiceApi {
     suspend fun getGLAccountDetails(
         @Query("acct_num") acctNum: String
     ): Response<ChartAccountItem>
+
+    @GET("api/trialBalance")
+    suspend fun getTrialBalanceList(
+        @Query("formmode") formmode: String = "list"
+    ): Response<com.example.bgls.DataModels.TrialBalanceResponse>
+
+    @GET("api/trialBalanceReports1")
+    suspend fun getTrialBalanceReports(
+        @Query("balancedate") balancedate: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/BGLS/ghlslistdata")
+    suspend fun getGLSHListData(
+        @Query("glshCode") glshCode: String
+    ): Response<List<ChartAccountApiItem>>
 }
