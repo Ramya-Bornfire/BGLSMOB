@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ChartAccountApiItem
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
+import com.example.bgls.DataModels.MassEntryModel
 import com.example.bgls.DataModels.MassEntryRequest
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient

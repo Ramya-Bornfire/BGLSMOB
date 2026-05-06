@@ -265,6 +265,13 @@
                 <Button android:id="@+id/btnDetNext" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Next" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="12sp" android:minHeight="0dp" android:textAllCaps="false"/>
             </LinearLayout>
             
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
             <!-- Bottom Summary Table -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -288,11 +295,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="1000" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="1500" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:text="SCR" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="0.00" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical|end" android:background="@drawable/table_cell_bg"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="Credit" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:id="@+id/tvGlCode" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:id="@+id/tvGlshCode" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:id="@+id/tvGlCurrency" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:text="" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:id="@+id/tvGlAccountBal" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical|end" android:background="@drawable/table_cell_bg"/>
+                    <TextView android:id="@+id/tvGlBalanceInd" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="" android:padding="12dp" android:textSize="12sp" android:textColor="#333333" android:gravity="center_vertical" android:background="@drawable/table_cell_bg"/>
                 </LinearLayout>
             </LinearLayout>
 

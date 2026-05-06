@@ -538,4 +538,39 @@ interface ServiceApi {
     suspend fun getPointingDetail(
         @Query("accountNum") accountNum: String
     ): Response<String>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // ACCOUNT LEDGER POSTING APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/accountLedgerPost")
+    suspend fun getAccountLedgerPostingList(
+        @Query("formmode") formmode: String = "list"
+    ): Response<JournalEntryViewResponse>
+
+    @GET("api/accountLedgerPost")
+    suspend fun getAccountLedgerPostingDetail(
+        @Query("formmode") formmode: String = "verify",
+        @Query("tran_id") tranId: String,
+        @Query("part_tran_id") partTranId: String,
+        @Query("acct_num") acctNum: String
+    ): Response<JournalEntryViewResponse>
+
+    @GET("api/validateAccountStatus")
+    suspend fun validateAccountStatus(
+        @Query("tran_id") tranId: String
+    ): Response<ResponseBody>
+
+    @GET("api/postedTrmRecords")
+    suspend fun postLedgerRecords(
+        @Query("tran_id") tranId: String,
+        @Query("part_tran_id") partTranId: String,
+        @Query("acct_num") acctNum: String,
+        @Query("entry_user") entryUser: String
+    ): Response<ResponseBody>
+
+    @GET("api/transactionaccountdetails")
+    suspend fun getGLAccountDetails(
+        @Query("acct_num") acctNum: String
+    ): Response<ChartAccountItem>
 }

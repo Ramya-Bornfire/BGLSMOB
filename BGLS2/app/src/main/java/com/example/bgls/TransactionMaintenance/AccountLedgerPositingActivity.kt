@@ -1,6 +1,7 @@
 package com.example.bgls.TransactionMaintenance
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -8,12 +9,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.AccountLedgerPostingModel
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
 
 class AccountLedgerPositingActivity : AppCompatActivity() {
 
     private lateinit var rvAccountLedger: RecyclerView
     private lateinit var adapter: AccountLedgerPositingAdapter
+    private lateinit var progressBar: ProgressBar
     private var postingList = mutableListOf<AccountLedgerPostingModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +34,12 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
         }
 
         initViews()
-        loadMockData()
+        loadDataFromAPI()
     }
 
     private fun initViews() {
         rvAccountLedger = findViewById(R.id.rvAccountLedger)
+        progressBar = findViewById(R.id.progressBar)
 
         // ✅ Fix 1: Disable item change animation — prevents visual left-shift on selection
         rvAccountLedger.itemAnimator = null
@@ -63,23 +71,38 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
         rvAccountLedger.adapter = adapter
     }
 
-    private fun loadMockData() {
-        val mockData = listOf(
-            AccountLedgerPostingModel("27-04-2026", "TR8798", "1", "Debit",  "SCR", "500,000.00", "LA0019", "PRAKASH", "LA0019 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("27-04-2026", "TR8798", "2", "Credit", "SCR", "500,000.00", "WA0019", "PRAKASH", "LA0019 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("27-04-2026", "TR8799", "1", "Debit",  "SCR", "600,000.00", "LA0024", "SOWMIYA", "LA0024 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("27-04-2026", "TR8799", "2", "Credit", "SCR", "600,000.00", "WA0024", "SOWMIYA", "LA0024 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("27-04-2026", "TR8806", "1", "Debit",  "SCR", "300,000.00", "LA0025", "VINAY",   "LA0025 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("27-04-2026", "TR8806", "2", "Credit", "SCR", "300,000.00", "WA0025", "VINAY",   "LA0025 Loan Disbursement", "ENTERED"),
-            AccountLedgerPostingModel("29-04-2026", "TR8842", "1", "Credit", "SCR", "100,000.00", "TD0039", "",        "TD0039 Principal Deposit",  "ENTERED"),
-            AccountLedgerPostingModel("29-04-2026", "TR8842", "2", "Debit",  "SCR", "100,000.00", "TD0039", "",        "TD0039 Principal Deposit",  "ENTERED"),
-            AccountLedgerPostingModel("30-04-2026", "TR8853", "1", "Credit", "SCR", "500,000.00", "TD0046", "SHASHA",  "TD0046 Principal Deposit",  "ENTERED"),
-            AccountLedgerPostingModel("30-04-2026", "TR8901", "1", "Credit", "SCR", "400,000.00", "TD0049", "MOHAN",   "TD0049 Principal Deposit",  "ENTERED")
-        )
-        postingList.addAll(mockData)
-
-        // ✅ Fix 4: Use notifyItemRangeInserted instead of notifyDataSetChanged
-        // — avoids a full rebind + scroll reset when data is first loaded
-        adapter.notifyItemRangeInserted(0, mockData.size)
+    private fun loadDataFromAPI() {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getAccountLedgerPostingList()
+                if (response.isSuccessful && response.body() != null) {
+                    val jour = response.body()?.jour ?: emptyList()
+                    val newData = jour.filter { it.tran_status == "ENTERED" }.map { item ->
+                        AccountLedgerPostingModel(
+                            tranDate = item.tran_date ?: "",
+                            tranId = item.tran_id ?: "",
+                            partTranId = item.part_tran_id?.toString() ?: "",
+                            partTranType = item.part_tran_type ?: "",
+                            currency = item.acct_crncy ?: "",
+                            amount = String.format("%.2f", item.tran_amt ?: 0.0),
+                            acctId = item.acct_num ?: "",
+                            acctName = item.acct_name ?: "",
+                            tranParticular = item.tran_particular ?: "",
+                            status = item.tran_status ?: ""
+                        )
+                    }
+                    postingList.clear()
+                    postingList.addAll(newData)
+                    adapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(this@AccountLedgerPositingActivity, "Failed to load ledger data", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@AccountLedgerPositingActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 }

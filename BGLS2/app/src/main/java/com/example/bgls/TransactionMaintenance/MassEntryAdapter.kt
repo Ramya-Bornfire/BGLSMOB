@@ -10,29 +10,17 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.MassEntryModel
+import com.example.bgls.DataModels.MassEntryRequest
 import com.example.bgls.R
 
-data class MassEntryModel(
-    var tranId: String = "TR8868",
-    var partTranId: String = "",
-    var accountNo: String = "",
-    var accountName: String = "",
-    var partTranType: String = "Select",
-    var tranAmount: String = "",
-    var tranParticular: String = "",
-    var remarks: String = "",
-    var rateCode: String = "",
-    var rate: String = "",
-    var additionalRemarks: String = ""
-)
-
 class MassEntryAdapter(
-    private var dataList: MutableList<MassEntryModel>,
-    private val onAccountSearchRequested: (position: Int) -> Unit,
-    private val onTotalCalculated: (credit: Double, debit: Double) -> Unit
+    private val list: MutableList<MassEntryModel>,
+    private val onAccountSearchRequested: (Int) -> Unit,
+    private val onTotalCalculated: (Double, Double) -> Unit
 ) : RecyclerView.Adapter<MassEntryAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val etTranId: EditText = view.findViewById(R.id.etTranId)
         val etPartTranId: EditText = view.findViewById(R.id.etPartTranId)
         val etAccountNo: EditText = view.findViewById(R.id.etAccountNo)
@@ -41,121 +29,111 @@ class MassEntryAdapter(
         val etTranAmount: EditText = view.findViewById(R.id.etTranAmount)
         val etTranParticular: EditText = view.findViewById(R.id.etTranParticular)
         val etRemarks: EditText = view.findViewById(R.id.etRemarks)
-        val etRateCode: EditText = view.findViewById(R.id.etRateCode)
-        val etRate: EditText = view.findViewById(R.id.etRate)
-        val etAdditionalRemarks: EditText = view.findViewById(R.id.etAdditionalRemarks)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_mass_entry_row, parent, false)
-        return ViewHolder(view)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_mass_entry_row, parent, false)
+        return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = dataList[position]
+        val item = list[position]
+        
+        holder.etTranId.setText(item.tran_id)
+        holder.etPartTranId.setText(item.part_tran_id)
+        holder.etAccountNo.setText(item.acct_num)
+        holder.etAccountName.setText(item.acct_name)
+        holder.etTranAmount.setText(if (item.tran_amt == 0.0) "" else item.tran_amt.toString())
+        holder.etTranParticular.setText(item.tran_particular)
+        holder.etRemarks.setText(item.tran_remarks)
 
-        // Remove previous listeners to prevent recursive loops when recycling views
-        holder.etTranAmount.tag = null
-        holder.spinnerPartTranType.onItemSelectedListener = null
-
-        holder.etTranId.setText(item.tranId)
-        holder.etPartTranId.setText(item.partTranId)
-        holder.etAccountNo.setText(item.accountNo)
-        holder.etAccountName.setText(item.accountName)
-        holder.etTranAmount.setText(item.tranAmount)
-        holder.etTranParticular.setText(item.tranParticular)
-        holder.etRemarks.setText(item.remarks)
-        holder.etRateCode.setText(item.rateCode)
-        holder.etRate.setText(item.rate)
-        holder.etAdditionalRemarks.setText(item.additionalRemarks)
-
-        val spinnerOptions = arrayOf("Select", "Credit", "Debit")
-        val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_dropdown_item, spinnerOptions)
+        val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, arrayOf("Credit", "Debit"))
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.spinnerPartTranType.adapter = adapter
-        holder.spinnerPartTranType.setSelection(spinnerOptions.indexOf(item.partTranType).takeIf { it >= 0 } ?: 0)
+        holder.spinnerPartTranType.setSelection(if (item.part_tran_type == "Credit") 0 else 1)
 
-        // Setup Account Search triggers
+        // Account Search click
         holder.etAccountNo.setOnClickListener { onAccountSearchRequested(position) }
-        holder.etAccountName.setOnClickListener { onAccountSearchRequested(position) }
 
-        // Setup Amount listener
-        val textWatcher = object : TextWatcher {
+        // Text Watchers to update model
+        holder.etPartTranId.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { item.part_tran_id = s.toString() }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                item.tranAmount = s.toString()
+        })
+
+        holder.etTranAmount.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { 
+                item.tran_amt = s.toString().toDoubleOrNull() ?: 0.0
                 calculateTotals()
             }
-        }
-        holder.etTranAmount.addTextChangedListener(textWatcher)
-        holder.etTranAmount.tag = textWatcher // Store to remove later if needed
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
-        // Setup Spinner listener
+        holder.etTranParticular.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { item.tran_particular = s.toString() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         holder.spinnerPartTranType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                item.partTranType = spinnerOptions[pos]
+                item.part_tran_type = if (pos == 0) "Credit" else "Debit"
                 calculateTotals()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
-    override fun getItemCount(): Int = dataList.size
+    override fun getItemCount() = list.size
 
-    fun addRow(tranId: String = "TR0000") {
-        val nextPartId = (dataList.size + 1).toString()
-        dataList.add(MassEntryModel(tranId = tranId, partTranId = nextPartId))
-        notifyItemInserted(dataList.size - 1)
+    fun addRow(tranId: String) {
+        val nextPartId = (list.size + 1).toString()
+        list.add(MassEntryModel(tran_id = tranId, part_tran_id = nextPartId))
+        notifyItemInserted(list.size - 1)
         calculateTotals()
     }
 
     fun removeRow() {
-        if (dataList.isNotEmpty()) {
-            dataList.removeAt(dataList.size - 1)
-            notifyItemRemoved(dataList.size)
+        if (list.isNotEmpty()) {
+            list.removeAt(list.size - 1)
+            notifyItemRemoved(list.size)
             calculateTotals()
         }
     }
 
-    fun updateAccount(position: Int, accountNo: String, accountName: String) {
-        if (position in dataList.indices) {
-            dataList[position].accountNo = accountNo
-            dataList[position].accountName = accountName
-            notifyItemChanged(position)
+    fun updateAccount(position: Int, acctNo: String, acctName: String) {
+        list[position].acct_num = acctNo
+        list[position].acct_name = acctName
+        notifyItemChanged(position)
+    }
+
+    fun getEntries(): List<MassEntryRequest> {
+        return list.map {
+            MassEntryRequest(
+                tran_id = it.tran_id,
+                part_tran_id = it.part_tran_id,
+                acct_num = it.acct_num,
+                acct_name = it.acct_name,
+                part_tran_type = it.part_tran_type,
+                tran_amt = it.tran_amt,
+                tran_particular = it.tran_particular,
+                tran_remarks = it.tran_remarks,
+                rate_code = null,
+                rate = null,
+                add_details = null
+            )
         }
     }
 
     private fun calculateTotals() {
-        var totalCredit = 0.0
-        var totalDebit = 0.0
-
-        for (item in dataList) {
-            val amount = item.tranAmount.toDoubleOrNull() ?: 0.0
-            if (item.partTranType == "Credit") {
-                totalCredit += amount
-            } else if (item.partTranType == "Debit") {
-                totalDebit += amount
-            }
+        var credit = 0.0
+        var debit = 0.0
+        list.forEach {
+            if (it.part_tran_type == "Credit") credit += it.tran_amt
+            else debit += it.tran_amt
         }
-        onTotalCalculated(totalCredit, totalDebit)
-    }
-
-    fun getEntries(): List<com.example.bgls.DataModels.MassEntryRequest> {
-        return dataList.map { item ->
-            com.example.bgls.DataModels.MassEntryRequest(
-                tran_id = item.tranId,
-                part_tran_id = item.partTranId,
-                acct_num = item.accountNo,
-                acct_name = item.accountName,
-                part_tran_type = item.partTranType,
-                tran_amt = item.tranAmount.toDoubleOrNull() ?: 0.0,
-                tran_particular = item.tranParticular,
-                tran_remarks = item.remarks,
-                rate_code = item.rateCode,
-                rate = item.rate.toDoubleOrNull(),
-                add_details = item.additionalRemarks
-            )
-        }
+        onTotalCalculated(credit, debit)
     }
 }

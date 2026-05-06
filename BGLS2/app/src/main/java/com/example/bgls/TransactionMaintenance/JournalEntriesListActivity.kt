@@ -1,11 +1,11 @@
 package com.example.bgls.TransactionMaintenance
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,66 +18,43 @@ class JournalEntriesListActivity : AppCompatActivity() {
 
     private lateinit var rvJournalList: RecyclerView
     private lateinit var adapter: JournalEntriesListAdapter
+    private val journalList = mutableListOf<JournalEntryListModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_journal_entries_list)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        setupRecyclerView()
-        loadEntries()
+        initViews()
+        loadData()
     }
 
-    private fun setupRecyclerView() {
+    private fun initViews() {
         rvJournalList = findViewById(R.id.rvJournalList)
         rvJournalList.layoutManager = LinearLayoutManager(this)
-
-        adapter = JournalEntriesListAdapter(emptyList()) { action, item ->
-            when (action) {
-                "View" -> {
-                    val intent = android.content.Intent(this, JournalEntriesViewActivity::class.java)
-                    intent.putExtra("tran_id", item.tranId.split("/")[0])
-                    intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "1")
-                    intent.putExtra("acct_num", item.acctId)
-                    startActivity(intent)
-                }
-                "Delete" -> {
-                    lifecycleScope.launch {
-                        try {
-                            val tranIdMain = item.tranId.split("/")[0]
-                            val partTranId = item.tranId.split("/").getOrNull(1) ?: "1"
-                            val response = RetrofitClient.api.deleteJournalEntry(tranIdMain, partTranId, item.acctId)
-                            if (response.isSuccessful) {
-                                Toast.makeText(this@JournalEntriesListActivity, "Deleted", Toast.LENGTH_SHORT).show()
-                                loadEntries()
-                            } else {
-                                Toast.makeText(this@JournalEntriesListActivity, "Delete failed", Toast.LENGTH_SHORT).show()
-                            }
-                        } catch (e: Exception) {
-                            Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
+        adapter = JournalEntriesListAdapter(journalList) { action, item ->
+            handleAction(action, item)
         }
         rvJournalList.adapter = adapter
+
+        findViewById<Button>(R.id.btnFilter).setOnClickListener {
+            loadData() // Reload as simple filter for now
+        }
     }
 
-    private fun loadEntries() {
+    private fun loadData() {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getJournalEntriesList()
+                val response = RetrofitClient.api.getJournalEntriesList("list1")
                 if (response.isSuccessful && response.body() != null) {
-                    val apiList = response.body()?.jour ?: emptyList()
-                    val modelList = apiList.map {
+                    val body = response.body()!!
+                    // Try to get list from jour or tableparttran
+                    val items = body.jour ?: body.tableparttran ?: emptyList()
+                    
+                    journalList.clear()
+                    journalList.addAll(items.map {
                         JournalEntryListModel(
                             tranDate = it.tran_date ?: "",
-                            tranId = "${it.tran_id}/${it.part_tran_id}",
+                            tranId = it.tran_id ?: "",
                             paTranTy = it.part_tran_type ?: "",
                             currency = it.acct_crncy ?: "",
                             amount = DecimalFormat("#,##0.00").format(it.tran_amt ?: 0.0),
@@ -86,13 +63,54 @@ class JournalEntriesListActivity : AppCompatActivity() {
                             tranParticular = it.tran_particular ?: "",
                             status = it.tran_status ?: ""
                         )
+                    })
+                    adapter.notifyDataSetChanged()
+                    
+                    if (journalList.isEmpty()) {
+                        Toast.makeText(this@JournalEntriesListActivity, "No journal entries found", Toast.LENGTH_SHORT).show()
                     }
-                    adapter.updateData(modelList)
                 } else {
                     Toast.makeText(this@JournalEntriesListActivity, "Failed to load list", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@JournalEntriesListActivity, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun handleAction(action: String, item: JournalEntryListModel) {
+        when (action) {
+            "View" -> {
+                val intent = Intent(this, JournalEntriesViewActivity::class.java)
+                intent.putExtra("tran_id", item.tranId)
+                intent.putExtra("acct_num", item.acctId)
+                intent.putExtra("part_tran_id", "1") // Default to first leg
+                startActivity(intent)
+            }
+            "Delete" -> {
+                deleteEntry(item)
+            }
+        }
+    }
+
+    private fun deleteEntry(item: JournalEntryListModel) {
+        lifecycleScope.launch {
+            try {
+                // For delete, we need the actual part_tran_id if possible. 
+                // Using "1" as a fallback or trying to parse it from tranId if it was composite.
+                val response = RetrofitClient.api.deleteJournalEntry(
+                    tranId = item.tranId,
+                    partTranId = "1", 
+                    acctNum = item.acctId
+                )
+                if (response.isSuccessful) {
+                    Toast.makeText(this@JournalEntriesListActivity, "Deleted successfully", Toast.LENGTH_SHORT).show()
+                    loadData()
+                } else {
+                    Toast.makeText(this@JournalEntriesListActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

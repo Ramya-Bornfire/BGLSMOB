@@ -5,13 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.DataModels.JournalEntryDetailModel
+import com.example.bgls.DataModels.ChartAccountItem
+import com.example.bgls.DataModels.JournalEntryItem
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import java.util.Locale
 
 
 class AccountLedgerDetailActivity : AppCompatActivity() {
@@ -29,13 +38,21 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
     private lateinit var layoutTableContainer: android.widget.LinearLayout
     private lateinit var rvRelatedEntries: RecyclerView
     private lateinit var relatedAdapter: RelatedEntriesAdapter
-    private var entriesList = mutableListOf<JournalEntryDetailModel>()
+    private lateinit var progressBar: ProgressBar
+    private var entriesList = mutableListOf<JournalEntryItem>()
     private var currentIndex = 0
+
+    // Stored current transaction identifiers
+    private var currentTranId: String = ""
+    private var currentPartTranId: String = ""
+    private var currentAcctNum: String = ""
+    private var currentEntryUser: String = ""
 
     private fun initViews() {
         tvPage = findViewById(R.id.tvDetPage)
         layoutTableContainer = findViewById(R.id.layoutTableContainer)
         rvRelatedEntries = findViewById(R.id.rvRelatedEntries)
+        progressBar = findViewById(R.id.progressBar)
         
         setupRecyclerView()
     }
@@ -53,111 +70,218 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         findViewById<Button>(R.id.btnDetView).setOnClickListener {
-            loadTableData()
-            layoutTableContainer.visibility = View.VISIBLE
+            layoutTableContainer.visibility = if (layoutTableContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
         findViewById<Button>(R.id.btnDetValidate).setOnClickListener {
-            // Placeholder for validate logic
+            validateTransaction()
         }
         findViewById<Button>(R.id.btnDetPost).setOnClickListener {
-            // Placeholder for post logic
+            postTransaction()
         }
         findViewById<Button>(R.id.btnDetPrevious).setOnClickListener {
             if (currentIndex > 0) {
-                currentIndex--
-                updateDisplayFromItem(entriesList[currentIndex])
-                relatedAdapter.setSelected(currentIndex)
-                tvPage.text = "${currentIndex + 1} / ${entriesList.size}"
+                navigateToEntry(currentIndex - 1)
+            } else {
+                Toast.makeText(this, "First record", Toast.LENGTH_SHORT).show()
             }
         }
         findViewById<Button>(R.id.btnDetNext).setOnClickListener {
             if (currentIndex < entriesList.size - 1) {
-                currentIndex++
-                updateDisplayFromItem(entriesList[currentIndex])
-                relatedAdapter.setSelected(currentIndex)
-                tvPage.text = "${currentIndex + 1} / ${entriesList.size}"
+                navigateToEntry(currentIndex + 1)
+            } else {
+                Toast.makeText(this, "Last record", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun loadTableData() {
-        entriesList.clear()
-        // Mocking data based on screenshot
-        entriesList.add(JournalEntryDetailModel(
-            "TR8798", "1", "LA0019", "PRAKASH", "TRANSFER", "Debit", "SCR", "500,000.00", 
-            "LA0019 Loan Disbursement", "LA0019 Loan Disbursement", "DISBT", "27-04-2026", "27-04-2026", "27-04-2026", 
-            "EMP04", "ENTERED", "N"
-        ))
-        entriesList.add(JournalEntryDetailModel(
-            "TR8798", "2", "WA0019", "PRAKASH", "TRANSFER", "Credit", "SCR", "500,000.00", 
-            "LA0019 Loan Disbursement", "LA0019 Loan Disbursement", "DISBT", "27-04-2026", "27-04-2026", "27-04-2026", 
-            "EMP04", "ENTERED", "N"
-        ))
-        relatedAdapter.notifyDataSetChanged()
-        tvPage.text = "1 / ${entriesList.size}"
+    private fun loadDataFromAPI(tranId: String, partTranId: String, acctNum: String) {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getAccountLedgerPostingDetail(
+                    formmode = "verify",
+                    tranId = tranId,
+                    partTranId = partTranId,
+                    acctNum = acctNum
+                )
+
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    
+                    // Update main details
+                    body.ledgervalues?.let { leg ->
+                        updateDisplayFromItem(leg)
+                    }
+
+                    // Update related entries list
+                    body.jour?.let { legs ->
+                        entriesList.clear()
+                        entriesList.addAll(legs)
+                        relatedAdapter.notifyDataSetChanged()
+                        
+                        currentIndex = entriesList.indexOfFirst { it.part_tran_id?.toString() == partTranId }
+                        if (currentIndex != -1) {
+                            relatedAdapter.setSelected(currentIndex)
+                            tvPage.text = "${currentIndex + 1} / ${entriesList.size}"
+                        }
+                    }
+                    
+                    // Fetch GL details
+                    fetchGLDetails(acctNum)
+                    
+                } else {
+                    Toast.makeText(this@AccountLedgerDetailActivity, "Failed to load details", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@AccountLedgerDetailActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
     }
 
-    private fun updateDisplayFromItem(item: JournalEntryDetailModel) {
-        findViewById<TextView>(R.id.tvDetTranId).text = item.tranId
-        findViewById<TextView>(R.id.tvDetPartTranId).text = item.partTranId
-        findViewById<TextView>(R.id.tvDetAcctId).text = item.acctId
-        findViewById<TextView>(R.id.tvDetAcctName).text = item.acctName
-        findViewById<TextView>(R.id.tvDetTranAmt).text = item.amount
-        findViewById<TextView>(R.id.tvDetTranDate).text = item.tranDate
-        findViewById<TextView>(R.id.tvDetPartTranType).text = item.partTranType
-        findViewById<TextView>(R.id.tvDetAcctCcy).text = item.currency
-        findViewById<TextView>(R.id.tvDetTranParticulars).text = item.particulars
-        findViewById<TextView>(R.id.tvDetTranRemarks).text = item.remarks
-        findViewById<TextView>(R.id.tvDetFlowCode).text = item.flowCode
-        findViewById<TextView>(R.id.tvDetFlowDate).text = item.flowDate
-        findViewById<TextView>(R.id.tvDetValueDate).text = item.valueDate
-        findViewById<TextView>(R.id.tvDetEntryUser).text = item.entryUser
-        findViewById<TextView>(R.id.tvDetEntryTime).text = item.tranDate
-        findViewById<TextView>(R.id.tvDetTranStatus).text = item.tranStatus
-        findViewById<TextView>(R.id.tvDetDeleted).text = item.deleted
+    private fun fetchGLDetails(acctNum: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getGLAccountDetails(acctNum)
+                if (response.isSuccessful && response.body() != null) {
+                    val gl = response.body()!!
+                    findViewById<TextView>(R.id.tvGlCode).text = gl.gl_code
+                    findViewById<TextView>(R.id.tvGlshCode).text = gl.glsh_code
+                    findViewById<TextView>(R.id.tvGlCurrency).text = gl.acct_crncy
+                    findViewById<TextView>(R.id.tvGlAccountBal).text = gl.acct_bal
+                    findViewById<TextView>(R.id.tvGlBalanceInd).text = if (gl.add_det_flg == "C" || gl.add_det_flg == "N") "Credit" else "Debit"
+                }
+            } catch (e: Exception) {
+                // handle silently
+            }
+        }
+    }
+
+    private fun validateTransaction() {
+        if (currentTranId.isEmpty()) return
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.validateAccountStatus(currentTranId)
+                val msg = response.body()?.string() ?: "Validation request failed"
+                showResultDialog("Validation Result", msg)
+            } catch (e: Exception) {
+                Toast.makeText(this@AccountLedgerDetailActivity, "Validation Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun postTransaction() {
+        if (currentTranId.isEmpty()) return
+        
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Posting")
+            .setMessage("Are you sure you want to post this transaction?")
+            .setPositiveButton("Yes") { _, _ ->
+                performPosting()
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    private fun performPosting() {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.postLedgerRecords(
+                    tranId = currentTranId,
+                    partTranId = currentPartTranId,
+                    acctNum = currentAcctNum,
+                    entryUser = currentEntryUser
+                )
+                val msg = response.body()?.string() ?: "Posting failed"
+                showResultDialog("Posting Result", msg)
+            } catch (e: Exception) {
+                Toast.makeText(this@AccountLedgerDetailActivity, "Posting Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showResultDialog(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun navigateToEntry(index: Int) {
+        val item = entriesList[index]
+        currentTranId = item.tran_id ?: ""
+        currentPartTranId = item.part_tran_id?.toString() ?: ""
+        currentAcctNum = item.acct_num ?: ""
+        
+        updateDisplayFromItem(item)
+        relatedAdapter.setSelected(index)
+        currentIndex = index
+        tvPage.text = "${currentIndex + 1} / ${entriesList.size}"
+        
+        fetchGLDetails(currentAcctNum)
+    }
+
+    private fun updateDisplayFromItem(item: JournalEntryItem) {
+        currentTranId = item.tran_id ?: ""
+        currentPartTranId = item.part_tran_id?.toString() ?: ""
+        currentAcctNum = item.acct_num ?: ""
+        currentEntryUser = item.entry_user ?: "SYSTEM"
+
+        findViewById<TextView>(R.id.tvDetTranId).text = item.tran_id
+        findViewById<TextView>(R.id.tvDetPartTranId).text = item.part_tran_id?.toString()
+        findViewById<TextView>(R.id.tvDetAcctId).text = item.acct_num
+        findViewById<TextView>(R.id.tvDetAcctName).text = item.acct_name
+        findViewById<TextView>(R.id.tvDetTranType).text = item.tran_type
+        findViewById<TextView>(R.id.tvDetPartTranType).text = item.part_tran_type
+        findViewById<TextView>(R.id.tvDetAcctCcy).text = item.acct_crncy
+        findViewById<TextView>(R.id.tvDetTranAmt).text = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0)
+        findViewById<TextView>(R.id.tvDetTranParticulars).text = item.tran_particular
+        findViewById<TextView>(R.id.tvDetTranRemarks).text = item.tran_remarks
+        findViewById<TextView>(R.id.tvDetFlowCode).text = item.flow_code
+        findViewById<TextView>(R.id.tvDetFlowDate).text = item.flow_date
+        findViewById<TextView>(R.id.tvDetTranDate).text = item.tran_date
+        findViewById<TextView>(R.id.tvDetValueDate).text = item.value_date
+        findViewById<TextView>(R.id.tvDetTranCode).text = item.tran_code
+        findViewById<TextView>(R.id.tvDetTranReportCode).text = item.tran_rpt_code
+        findViewById<TextView>(R.id.tvDetTranRefNo).text = item.tran_ref_no
+        findViewById<TextView>(R.id.tvDetAdditionalDetails).text = item.add_details
+        findViewById<TextView>(R.id.tvDetPartitionType).text = item.partition_type
+        findViewById<TextView>(R.id.tvDetPartitionDetails).text = item.partition_det
+        findViewById<TextView>(R.id.tvDetInstrumentNo).text = item.instr_num
+        findViewById<TextView>(R.id.tvDetInstrumentDate).text = item.instr_date
+        findViewById<TextView>(R.id.tvDetRefCcy).text = item.ref_crncy
+        findViewById<TextView>(R.id.tvDetRefCcyAmt).text = String.format(Locale.US, "%,.2f", item.ref_crncy_amt ?: 0.0)
+        findViewById<TextView>(R.id.tvDetRateCode).text = item.rate_code
+        findViewById<TextView>(R.id.tvDetRate).text = item.rate?.toString()
+        findViewById<TextView>(R.id.tvDetEntryUser).text = item.entry_user
+        findViewById<TextView>(R.id.tvDetEntryTime).text = item.entry_time
+        findViewById<TextView>(R.id.tvDetPostUser).text = item.post_user
+        findViewById<TextView>(R.id.tvDetPostTime).text = item.post_time
+        findViewById<TextView>(R.id.tvDetTranStatus).text = item.tran_status
+        findViewById<TextView>(R.id.tvDetDeleted).text = item.del_flg
+        findViewById<TextView>(R.id.tvDetailHeaderDate).text = item.tran_date
     }
 
     private fun loadDataFromIntent() {
-        val tranId = intent.getStringExtra("tranId") ?: ""
-        val partTranId = intent.getStringExtra("partTranId") ?: ""
-        val acctId = intent.getStringExtra("acctId") ?: ""
-        val acctName = intent.getStringExtra("acctName") ?: ""
-        val amount = intent.getStringExtra("amount") ?: ""
-        val tranDate = intent.getStringExtra("tranDate") ?: ""
-        val partTranType = intent.getStringExtra("partTranType") ?: ""
-        val currency = intent.getStringExtra("currency") ?: ""
-        val tranParticular = intent.getStringExtra("tranParticular") ?: ""
-        val status = intent.getStringExtra("status") ?: ""
+        currentTranId = intent.getStringExtra("tranId") ?: ""
+        currentPartTranId = intent.getStringExtra("partTranId") ?: ""
+        currentAcctNum = intent.getStringExtra("acctId") ?: ""
 
-        findViewById<TextView>(R.id.tvDetTranId).text = tranId
-        findViewById<TextView>(R.id.tvDetPartTranId).text = partTranId
-        findViewById<TextView>(R.id.tvDetAcctId).text = acctId
-        findViewById<TextView>(R.id.tvDetAcctName).text = acctName
-        findViewById<TextView>(R.id.tvDetTranAmt).text = amount
-        findViewById<TextView>(R.id.tvDetTranDate).text = tranDate
-        findViewById<TextView>(R.id.tvDetPartTranType).text = partTranType
-        findViewById<TextView>(R.id.tvDetAcctCcy).text = currency
-        findViewById<TextView>(R.id.tvDetTranParticulars).text = tranParticular
-        findViewById<TextView>(R.id.tvDetTranStatus).text = status
-        findViewById<TextView>(R.id.tvDetailHeaderDate).text = tranDate
-        
-        // Mocking some other fields that were in the image but might not be in the model yet
-        findViewById<TextView>(R.id.tvDetFlowCode).text = "DISBT"
-        findViewById<TextView>(R.id.tvDetFlowDate).text = tranDate
-        findViewById<TextView>(R.id.tvDetValueDate).text = tranDate
-        findViewById<TextView>(R.id.tvDetEntryUser).text = "EMP04"
-        findViewById<TextView>(R.id.tvDetEntryTime).text = tranDate
-        findViewById<TextView>(R.id.tvDetDeleted).text = "N"
-        
-        // Additional fields from JournalEntriesView style
-        findViewById<TextView>(R.id.tvDetTranRemarks).text = tranParticular
-        findViewById<TextView>(R.id.tvDetValueDate).text = tranDate
-        
-        tvPage.text = "1 / 1"
+        if (currentTranId.isNotEmpty()) {
+            loadDataFromAPI(currentTranId, currentPartTranId, currentAcctNum)
+        }
     }
 
     inner class RelatedEntriesAdapter(
-        private val list: List<JournalEntryDetailModel>,
+        private val list: List<JournalEntryItem>,
         private val onItemClick: (Int) -> Unit
     ) : RecyclerView.Adapter<RelatedEntriesAdapter.ViewHolder>() {
         
@@ -167,16 +291,6 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
 
         fun setSelected(index: Int) {
             selectedIndex = index
-            notifyDataSetChanged()
-        }
-
-        fun setValidated(index: Int) {
-            validatedIndex = index
-            notifyDataSetChanged()
-        }
-
-        fun setAcctBal(index: Int) {
-            acctBalIndex = index
             notifyDataSetChanged()
         }
 
@@ -201,14 +315,14 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = list[position]
-            holder.tvTranDate.text = item.tranDate
-            holder.tvTranId.text = "${item.tranId}/${item.partTranId}"
-            holder.tvPaTranTy.text = item.partTranType
-            holder.tvCurrency.text = item.currency
-            holder.tvAmount.text = item.amount
-            holder.tvAcctId.text = item.acctId
-            holder.tvAcctName.text = item.acctName
-            holder.tvStatus.text = item.tranStatus
+            holder.tvTranDate.text = item.tran_date
+            holder.tvTranId.text = "${item.tran_id}/${item.part_tran_id}"
+            holder.tvPaTranTy.text = item.part_tran_type
+            holder.tvCurrency.text = item.acct_crncy
+            holder.tvAmount.text = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0)
+            holder.tvAcctId.text = item.acct_num
+            holder.tvAcctName.text = item.acct_name
+            holder.tvStatus.text = item.tran_status
             
             holder.rbSelect.isChecked = (position == selectedIndex)
             holder.rbValidate.isChecked = (position == validatedIndex)
@@ -218,8 +332,16 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
                 setSelected(position)
                 onItemClick(position)
             }
-            holder.rbValidate.setOnClickListener { setValidated(position) }
-            holder.rbAccountBal.setOnClickListener { setAcctBal(position) }
+            holder.rbValidate.setOnClickListener { 
+                validatedIndex = position
+                notifyDataSetChanged()
+                validateTransaction() 
+            }
+            holder.rbAccountBal.setOnClickListener { 
+                acctBalIndex = position
+                notifyDataSetChanged()
+                fetchGLDetails(item.acct_num ?: "") 
+            }
             
             holder.itemView.setOnClickListener { 
                 setSelected(position)
