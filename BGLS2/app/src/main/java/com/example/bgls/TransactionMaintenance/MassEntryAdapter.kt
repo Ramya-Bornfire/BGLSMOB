@@ -28,6 +28,7 @@ data class MassEntryModel(
 
 class MassEntryAdapter(
     private var dataList: MutableList<MassEntryModel>,
+    private val onAccountSearchRequested: (position: Int) -> Unit,
     private val onTotalCalculated: (credit: Double, debit: Double) -> Unit
 ) : RecyclerView.Adapter<MassEntryAdapter.ViewHolder>() {
 
@@ -74,6 +75,10 @@ class MassEntryAdapter(
         holder.spinnerPartTranType.adapter = adapter
         holder.spinnerPartTranType.setSelection(spinnerOptions.indexOf(item.partTranType).takeIf { it >= 0 } ?: 0)
 
+        // Setup Account Search triggers
+        holder.etAccountNo.setOnClickListener { onAccountSearchRequested(position) }
+        holder.etAccountName.setOnClickListener { onAccountSearchRequested(position) }
+
         // Setup Amount listener
         val textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -98,9 +103,9 @@ class MassEntryAdapter(
 
     override fun getItemCount(): Int = dataList.size
 
-    fun addRow() {
+    fun addRow(tranId: String = "TR0000") {
         val nextPartId = (dataList.size + 1).toString()
-        dataList.add(MassEntryModel(partTranId = nextPartId))
+        dataList.add(MassEntryModel(tranId = tranId, partTranId = nextPartId))
         notifyItemInserted(dataList.size - 1)
         calculateTotals()
     }
@@ -110,6 +115,14 @@ class MassEntryAdapter(
             dataList.removeAt(dataList.size - 1)
             notifyItemRemoved(dataList.size)
             calculateTotals()
+        }
+    }
+
+    fun updateAccount(position: Int, accountNo: String, accountName: String) {
+        if (position in dataList.indices) {
+            dataList[position].accountNo = accountNo
+            dataList[position].accountName = accountName
+            notifyItemChanged(position)
         }
     }
 
