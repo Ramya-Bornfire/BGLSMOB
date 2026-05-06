@@ -43,13 +43,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="#E8EAED">
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llIncomeFilters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:paddingHorizontal="4dp"
+                        android:paddingBottom="4dp">
+                        <EditText android:id="@+id/etFilterIncomeGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -91,13 +111,20 @@
                     <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="EXPENDITURE" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333"/>
                     
                     <LinearLayout
+                        android:id="@+id/llDatePicker"
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:background="@drawable/spinner_background"
                         android:paddingHorizontal="8dp"
                         android:gravity="center_vertical"
                         android:layout_marginEnd="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="02-May-2026" android:textSize="10sp" android:layout_marginEnd="4dp"/>
+                        <TextView
+                            android:id="@+id/tvSelectedDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="02-May-2026"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="4dp"/>
                         <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@android:drawable/ic_menu_my_calendar" android:tint="#666666"/>
                     </LinearLayout>
                     
@@ -108,13 +135,33 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:background="#E8EAED">
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACCT ID" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="CUR" android:textSize="10sp" android:padding="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="AMOUNT" android:textSize="10sp" android:padding="8dp" android:gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llExpenditureFilters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:paddingHorizontal="4dp"
+                        android:paddingBottom="4dp">
+                        <EditText android:id="@+id/etFilterExpGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -153,7 +200,7 @@
         </LinearLayout>
 
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="4dp">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profit Amount: " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+            <TextView android:id="@+id/tvProfitAmountLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profit Amount: " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
             <TextView android:id="@+id/tvProfitAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="22,557,592.73" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
         </LinearLayout>
     </LinearLayout>

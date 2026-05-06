@@ -589,4 +589,14 @@ interface ServiceApi {
     suspend fun getGLSHListData(
         @Query("glshCode") glshCode: String
     ): Response<List<ChartAccountApiItem>>
+
+    @GET("api/profitAndLossAccount")
+    suspend fun getProfitAndLossAccount(
+        @Query("formmode") formmode: String = "list"
+    ): Response<com.example.bgls.DataModels.ProfitAndLossAccountResponse>
+
+    @GET("api/incomexpenditure")
+    suspend fun getIncomeExpenditure(
+        @Query("balancedate") balancedate: String
+    ): Response<com.example.bgls.DataModels.IncomeExpenditureResponse>
 }
