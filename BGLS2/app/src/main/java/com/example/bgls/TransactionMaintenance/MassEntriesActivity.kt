@@ -8,9 +8,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.MassEntryRequest
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MassEntriesActivity : AppCompatActivity() {
 
@@ -32,18 +38,12 @@ class MassEntriesActivity : AppCompatActivity() {
         setupRecyclerView()
         setupButtons()
 
-        // Load Initial Dummy Rows matching screenshot
-        if (massEntryList.isEmpty()) {
-            massEntryList.add(MassEntryModel(partTranId = "1"))
-            massEntryList.add(MassEntryModel(partTranId = "2"))
-            massEntryAdapter.notifyDataSetChanged()
-        }
     }
 
     private fun setupRecyclerView() {
         val rvMassEntries = findViewById<RecyclerView>(R.id.rvMassEntries)
         rvMassEntries.layoutManager = LinearLayoutManager(this)
-        
+
         massEntryAdapter = MassEntryAdapter(massEntryList) { totalCredit, totalDebit ->
             tvMassTotal.text = String.format("Total Credit: %.2f  |  Total Debit: %.2f", totalCredit, totalDebit)
         }
@@ -51,18 +51,33 @@ class MassEntriesActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        findViewById<Button>(R.id.btnAddRow).setOnClickListener {
-            massEntryAdapter.addRow()
+        findViewById<Button>(R.id.btnAddRow).setOnClickListener { massEntryAdapter.addRow() }
+        findViewById<Button>(R.id.btnRemoveRow).setOnClickListener { massEntryAdapter.removeRow() }
+        findViewById<Button>(R.id.btnSubmit).setOnClickListener { submitMassEntries() }
+    }
+    private fun submitMassEntries() {
+        val entries = massEntryAdapter.getEntries()
+        if (entries.isEmpty()) {
+            Toast.makeText(this, "No entries to submit", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        findViewById<Button>(R.id.btnRemoveRow).setOnClickListener {
-            massEntryAdapter.removeRow()
-        }
+        val tranDate = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date())
+        val tranType = "Transfer"  // you may allow user selection
 
-        findViewById<Button>(R.id.btnSubmit).setOnClickListener {
-            // Trigger API Call here
-            Toast.makeText(this, "Mass Entries Submitted Successfully", Toast.LENGTH_SHORT).show()
-            finish() // Close Activity and return to previous
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.addMassEntries(entries, tranDate, tranType)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@MassEntriesActivity, "Mass entries submitted", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@MassEntriesActivity, "Submission failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MassEntriesActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
+
 }

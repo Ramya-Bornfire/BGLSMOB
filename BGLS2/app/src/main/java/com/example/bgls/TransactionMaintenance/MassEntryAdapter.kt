@@ -127,4 +127,22 @@ class MassEntryAdapter(
         }
         onTotalCalculated(totalCredit, totalDebit)
     }
+
+    fun getEntries(): List<com.example.bgls.DataModels.MassEntryRequest> {
+        return dataList.map { item ->
+            com.example.bgls.DataModels.MassEntryRequest(
+                tran_id = item.tranId,
+                part_tran_id = item.partTranId,
+                acct_num = item.accountNo,
+                acct_name = item.accountName,
+                part_tran_type = item.partTranType,
+                tran_amt = item.tranAmount.toDoubleOrNull() ?: 0.0,
+                tran_particular = item.tranParticular,
+                tran_remarks = item.remarks,
+                rate_code = item.rateCode,
+                rate = item.rate.toDoubleOrNull(),
+                add_details = item.additionalRemarks
+            )
+        }
+    }
 }

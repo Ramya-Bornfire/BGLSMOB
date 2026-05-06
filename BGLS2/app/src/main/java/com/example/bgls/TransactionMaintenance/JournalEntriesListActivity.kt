@@ -6,9 +6,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 class JournalEntriesListActivity : AppCompatActivity() {
 
@@ -26,40 +30,70 @@ class JournalEntriesListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView()
+        loadEntries()
     }
 
     private fun setupRecyclerView() {
         rvJournalList = findViewById(R.id.rvJournalList)
         rvJournalList.layoutManager = LinearLayoutManager(this)
 
-        val mockData = getMockData()
-        
-        adapter = JournalEntriesListAdapter(mockData) { action, item ->
+        adapter = JournalEntriesListAdapter(emptyList()) { action, item ->
             when (action) {
                 "View" -> {
-                    val intent = android.content.Intent(this@JournalEntriesListActivity, JournalEntriesViewActivity::class.java)
+                    val intent = android.content.Intent(this, JournalEntriesViewActivity::class.java)
+                    intent.putExtra("tran_id", item.tranId.split("/")[0])
+                    intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "1")
+                    intent.putExtra("acct_num", item.acctId)
                     startActivity(intent)
                 }
                 "Delete" -> {
-                    Toast.makeText(this, "Deleting: ${item.tranId}", Toast.LENGTH_SHORT).show()
-                    // Add API delete call here later
+                    lifecycleScope.launch {
+                        try {
+                            val tranIdMain = item.tranId.split("/")[0]
+                            val partTranId = item.tranId.split("/").getOrNull(1) ?: "1"
+                            val response = RetrofitClient.api.deleteJournalEntry(tranIdMain, partTranId, item.acctId)
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@JournalEntriesListActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                loadEntries()
+                            } else {
+                                Toast.makeText(this@JournalEntriesListActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                            }
+                        } catch (e: Exception) {
+                            Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
-        
         rvJournalList.adapter = adapter
     }
 
-    private fun getMockData(): List<JournalEntryListModel> {
-        return listOf(
-            JournalEntryListModel("27-04-2026", "TR8798/1", "Debit", "SCR", "500,000.00", "LA0019", "PRAKASH", "LA0019 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("27-04-2026", "TR8798/2", "Credit", "SCR", "500,000.00", "WA0019", "PRAKASH", "LA0019 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("27-04-2026", "TR8799/1", "Debit", "SCR", "600,000.00", "LA0024", "SOWMIYA", "LA0024 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("27-04-2026", "TR8799/2", "Credit", "SCR", "600,000.00", "WA0024", "SOWMIYA", "LA0024 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("27-04-2026", "TR8806/1", "Debit", "SCR", "300,000.00", "LA0025", "VINAY", "LA0025 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("27-04-2026", "TR8806/2", "Credit", "SCR", "300,000.00", "WA0025", "VINAY", "LA0025 Loan Disbursement", "ENTERED"),
-            JournalEntryListModel("29-04-2026", "TR8842/1", "Credit", "SCR", "100,000.00", "TD0039", "", "TD0039 Principal Deposit", "ENTERED"),
-            JournalEntryListModel("29-04-2026", "TR8842/2", "Debit", "SCR", "100,000.00", "TD0039", "", "TD0039 Principal Deposit", "ENTERED")
-        )
+    private fun loadEntries() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getJournalEntriesList()
+                if (response.isSuccessful && response.body() != null) {
+                    val apiList = response.body()?.jour ?: emptyList()
+                    val modelList = apiList.map {
+                        JournalEntryListModel(
+                            tranDate = it.tran_date ?: "",
+                            tranId = "${it.tran_id}/${it.part_tran_id}",
+                            paTranTy = it.part_tran_type ?: "",
+                            currency = it.acct_crncy ?: "",
+                            amount = DecimalFormat("#,##0.00").format(it.tran_amt ?: 0.0),
+                            acctId = it.acct_num ?: "",
+                            acctName = it.acct_name ?: "",
+                            tranParticular = it.tran_particular ?: "",
+                            status = it.tran_status ?: ""
+                        )
+                    }
+                    adapter.updateData(modelList)
+                } else {
+                    Toast.makeText(this@JournalEntriesListActivity, "Failed to load list", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@JournalEntriesListActivity, "Network error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

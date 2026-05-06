@@ -1,25 +1,34 @@
 package com.example.bgls.TransactionMaintenance
 
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
-import android.net.Uri
-import androidx.activity.result.contract.ActivityResultContracts
-import android.provider.OpenableColumns
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.io.FileOutputStream
 
 class JournalEntriesActivity : AppCompatActivity() {
 
     private var selectedFileUri: Uri? = null
-    private var tvDialogFileName: android.widget.TextView? = null
+    private var tvDialogFileName: TextView? = null
 
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             selectedFileUri = it
-            val fileName = getFileName(it)
-            tvDialogFileName?.text = fileName
+            tvDialogFileName?.text = getFileName(it)
         }
     }
 
@@ -32,150 +41,135 @@ class JournalEntriesActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         setupSpinners()
     }
 
     private fun setupSpinners() {
         val options = arrayOf("Select", "Add", "Mass Entries", "List", "Upload")
-        val adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
-        
-        val spinnerFunction = findViewById<android.widget.Spinner>(R.id.spinnerFunction)
-        spinnerFunction?.adapter = adapter
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
+        val spinner = findViewById<Spinner>(R.id.spinnerFunction)
+        spinner.adapter = adapter
 
-        spinnerFunction?.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                val selectedOption = options[position]
-                
-                if (selectedOption.equals("Mass Entries", ignoreCase = true)) {
-                    // Launch new Activity
-                    val intent = android.content.Intent(this@JournalEntriesActivity, MassEntriesActivity::class.java)
-                    startActivity(intent)
-                    
-                    // Reset spinner back to "Select" so it doesn't get stuck
-                    spinnerFunction.setSelection(0)
-                } else if (selectedOption.equals("List", ignoreCase = true)) {
-                    // Launch List Activity
-                    val intent = android.content.Intent(this@JournalEntriesActivity, JournalEntriesListActivity::class.java)
-                    startActivity(intent)
-                    
-                    // Reset spinner back to "Select"
-                    spinnerFunction.setSelection(0)
-                } else if (selectedOption.equals("Upload", ignoreCase = true)) {
-                    showUploadDialog()
-                    spinnerFunction.setSelection(0)
-                } else if (selectedOption.equals("Add", ignoreCase = true)) {
-                    populateDefaultValues()
-                } else {
-                    clearValues()
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                when (options[position].lowercase()) {
+                    "mass entries" -> {
+                        startActivity(android.content.Intent(this@JournalEntriesActivity, MassEntriesActivity::class.java))
+                        spinner.setSelection(0)
+                    }
+                    "list" -> {
+                        startActivity(android.content.Intent(this@JournalEntriesActivity, JournalEntriesListActivity::class.java))
+                        spinner.setSelection(0)
+                    }
+                    "upload" -> {
+                        showUploadDialog()
+                        spinner.setSelection(0)
+                    }
+                    "add" -> loadAddScreenData()
+                    else -> clearForm()
                 }
             }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
 
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+    private fun loadAddScreenData() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getJournalEntryAddScreen()
+                if (response.isSuccessful && response.body() != null) {
+                    val data = response.body()!!
+                    findViewById<EditText>(R.id.etTranId).setText(data.plusonetran2)
+                    findViewById<EditText>(R.id.etPartTranId).setText(data.partTranId)
+                    findViewById<EditText>(R.id.etEntryUser).setText(data.user)
+                    findViewById<EditText>(R.id.etTranStatus).setText(data.tranStatus)
+                    findViewById<EditText>(R.id.etTranDate).setText(data.currentDate)
+                    findViewById<EditText>(R.id.etValueDate).setText(data.currentDate)
+                    findViewById<EditText>(R.id.etEntryTime).setText(data.currentDate)
+                    // Also update the header date if present
+                    findViewById<EditText>(R.id.etHeaderDate)?.setText(data.currentDate)
+                } else {
+                    Toast.makeText(this@JournalEntriesActivity, "Failed to load default values", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@JournalEntriesActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun showUploadDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_upload_files, null)
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(true)
             .create()
-
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         tvDialogFileName = dialogView.findViewById(R.id.tvFileName)
-        val btnChoose = dialogView.findViewById<android.widget.Button>(R.id.btnChooseFile)
-        
-        btnChoose.setOnClickListener {
-            filePickerLauncher.launch("*/*") // Allow picking any file type
-        }
+        val btnChoose = dialogView.findViewById<Button>(R.id.btnChooseFile)
+        val btnClose = dialogView.findViewById<Button>(R.id.btnCloseUpload)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmitUpload)
 
-        val btnClose = dialogView.findViewById<android.widget.Button>(R.id.btnCloseUpload)
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        val btnSubmit = dialogView.findViewById<android.widget.Button>(R.id.btnSubmitUpload)
+        btnChoose.setOnClickListener { filePickerLauncher.launch("*/*") }
+        btnClose.setOnClickListener { dialog.dismiss() }
         btnSubmit.setOnClickListener {
-            if (selectedFileUri != null) {
-                // Handle upload logic here (e.g., Multipart upload)
-                android.widget.Toast.makeText(this, "File ${tvDialogFileName?.text} submitted successfully", android.widget.Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            } else {
-                android.widget.Toast.makeText(this, "Please choose a file first", android.widget.Toast.LENGTH_SHORT).show()
-            }
+            selectedFileUri?.let { uri ->
+                uploadFile(uri, dialog)
+            } ?: Toast.makeText(this, "Select a file first", Toast.LENGTH_SHORT).show()
         }
-
         dialog.show()
     }
 
-    private fun getFileName(uri: Uri): String {
-        var result: String? = null
-        if (uri.scheme == "content") {
-            val cursor = contentResolver.query(uri, null, null, null, null)
+    private fun uploadFile(uri: Uri, dialog: AlertDialog) {
+        val file = uriToFile(uri)
+        val requestFile = file.asRequestBody("application/vnd.ms-excel".toMediaTypeOrNull())
+        val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        lifecycleScope.launch {
             try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                    if (index != -1) {
-                        result = cursor.getString(index)
-                    }
+                val response = RetrofitClient.api.uploadFile(part)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@JournalEntriesActivity, "Upload successful", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(this@JournalEntriesActivity, "Upload failed", Toast.LENGTH_SHORT).show()
                 }
-            } finally {
-                cursor?.close()
+            } catch (e: Exception) {
+                Toast.makeText(this@JournalEntriesActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
-        if (result == null) {
-            result = uri.path
-            val cut = result?.lastIndexOf('/') ?: -1
-            if (cut != -1) {
-                result = result?.substring(cut + 1)
+    }
+
+    private fun uriToFile(uri: Uri): File {
+        val inputStream = contentResolver.openInputStream(uri)!!
+        val tempFile = File(cacheDir, "temp_upload_${System.currentTimeMillis()}")
+        FileOutputStream(tempFile).use { output ->
+            inputStream.copyTo(output)
+        }
+        inputStream.close()
+        return tempFile
+    }
+
+    private fun getFileName(uri: Uri): String {
+        var fileName: String? = null
+        if (uri.scheme == "content") {
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (nameIndex != -1) fileName = cursor.getString(nameIndex)
+                }
             }
         }
-        return result ?: "Unknown file"
+        return fileName ?: uri.path?.substringAfterLast('/') ?: "unknown"
     }
 
-    // Data model representing the API response for single entry
-    data class JournalEntryResponse(
-        val tranId: String,
-        val tranDate: String,
-        val entryUser: String,
-        val entryTime: String,
-        val tranStatus: String,
-        val partTranId: String,
-        val valueDate: String
-    )
-
-    private fun populateDefaultValues() {
-        val mockApiResponse = JournalEntryResponse(
-            tranId = "TR8866",
-            tranDate = "30/04/2026",
-            entryUser = "EMP04",
-            entryTime = "30/04/2026",
-            tranStatus = "ENTERED",
-            partTranId = "1",
-            valueDate = "30/04/2026"
-        )
-        bindDataToView(mockApiResponse)
-    }
-
-    private fun bindDataToView(data: JournalEntryResponse) {
-        findViewById<android.widget.EditText>(R.id.etTranId)?.setText(data.tranId)
-        findViewById<android.widget.EditText>(R.id.etTranDate)?.setText(data.tranDate)
-        findViewById<android.widget.EditText>(R.id.etEntryUser)?.setText(data.entryUser)
-        findViewById<android.widget.EditText>(R.id.etEntryTime)?.setText(data.entryTime)
-        findViewById<android.widget.EditText>(R.id.etTranStatus)?.setText(data.tranStatus)
-        findViewById<android.widget.EditText>(R.id.etPartTranId)?.setText(data.partTranId)
-        findViewById<android.widget.EditText>(R.id.etValueDate)?.setText(data.valueDate)
-    }
-
-    private fun clearValues() {
-        findViewById<android.widget.EditText>(R.id.etTranId)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etTranDate)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etEntryUser)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etEntryTime)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etTranStatus)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etPartTranId)?.setText("")
-        findViewById<android.widget.EditText>(R.id.etValueDate)?.setText("")
+    private fun clearForm() {
+        findViewById<EditText>(R.id.etTranId)?.setText("")
+        findViewById<EditText>(R.id.etPartTranId)?.setText("")
+        findViewById<EditText>(R.id.etEntryUser)?.setText("")
+        findViewById<EditText>(R.id.etTranStatus)?.setText("")
+        findViewById<EditText>(R.id.etTranDate)?.setText("")
+        findViewById<EditText>(R.id.etValueDate)?.setText("")
+        findViewById<EditText>(R.id.etEntryTime)?.setText("")
     }
 }

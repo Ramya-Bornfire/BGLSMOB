@@ -23,9 +23,14 @@ data class JournalEntryListModel(
 )
 
 class JournalEntriesListAdapter(
-    private val dataList: List<JournalEntryListModel>,
+    private var dataList: List<JournalEntryListModel>,
     private val onActionSelected: (String, JournalEntryListModel) -> Unit
 ) : RecyclerView.Adapter<JournalEntriesListAdapter.ViewHolder>() {
+
+    fun updateData(newList: List<JournalEntryListModel>) {
+        dataList = newList
+        notifyDataSetChanged()
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTranDate: TextView = view.findViewById(R.id.tvTranDate)

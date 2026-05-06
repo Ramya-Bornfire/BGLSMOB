@@ -52,3 +52,49 @@ data class TransactionMigrationResponse(
     val recovery: List<TransactionDto>?,
     val booking: List<BookingDto>?
 )
+// TransactionRequest.kt – used for add / modify
+data class TransactionRequest(
+    val tran_id: String,
+    val part_tran_id: String,
+    val acct_num: String,
+    val acct_name: String,
+    val tran_type: String,
+    val part_tran_type: String,    // "Debit" or "Credit"
+    val acct_crncy: String,
+    val tran_amt: Double,
+    val tran_particular: String,
+    val tran_remarks: String,
+    val flow_code: String?,
+    val flow_date: String?,        // format "dd-MM-yyyy"
+    val tran_date: String?,
+    val value_date: String?,
+    val tran_code: String?,
+    val tran_rpt_code: String?,
+    val tran_ref_no: String?,
+    val add_details: String?,
+    val partition_type: String?,
+    val partition_det: String?,
+    val instr_num: String?,
+    val instr_date: String?,
+    val ref_crncy: String?,
+    val ref_crncy_amt: Double?,
+    val rate_code: String?,
+    val rate: Double?,
+    val entry_user: String?,
+    val post_user: String?,
+    val entry_time: String?,
+    val post_time: String?,
+    val tran_status: String,
+    val del_flg: String,
+    val srl_no: String?
+)
+
+data class TransactionPointingEntity(
+    @SerializedName("org_tran_date") val orgTranDate: String?,
+    @SerializedName("org_tran_id") val orgTranId: String?,
+    @SerializedName("org_part_tran_id") val orgPartTranId: String?,
+    @SerializedName("org_tran_ref_no") val orgTranRefNo: String?,
+    @SerializedName("org_tran_amt") val orgTranAmt: Double?,
+    @SerializedName("bal_outstd_amt") val balOutstdAmt: Double?,
+    @SerializedName("org_add_details") val orgAddDetails: String?
+)

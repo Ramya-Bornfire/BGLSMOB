@@ -6,8 +6,9 @@ data class JournalEntryViewResponse(
     val ledgervalues: JournalEntryItem? = null,
     val currentPartTran: Int? = null,
     val maxPartTran: Int? = null,
-    val gldetails: Any? = null,   // optional, if needed later
-    val jour: Any? = null          // optional
+    val gldetails: Any? = null,
+    val jour: List<JournalEntryItem>? = null,
+    val tableparttran: List<JournalEntryItem>? = null
 )
 
 data class JournalEntryDetailModel(
@@ -31,7 +32,7 @@ data class JournalEntryDetailModel(
 )
 data class JournalEntryItem(
     val tran_id: String?,
-    val part_tran_id: String?,
+    val part_tran_id: Int?,
     val acct_num: String?,
     val acct_name: String?,
     val tran_type: String?,
@@ -68,4 +69,25 @@ data class JournalEntryItem(
 )
 data class TransactionDetailsResponse(
     val ledgervalues: JournalEntryItem?
+)
+data class JournalEntryListResponse(
+    val tran_date: String?,
+    val tran_id: String,
+    val part_tran_id: Int,
+    val part_tran_type: String,
+    val acct_crncy: String,
+    val tran_amt: Double,
+    val acct_num: String,
+    val acct_name: String,
+    val tran_particular: String,
+    val tran_status: String
+)
+data class JournalEntryAddScreenResponse(
+    val plusonetran2: String,
+    val partTranId: String,
+    val user: String,
+    val tranStatus: String,
+    val currentDate: String,  // date as string, format dd-MM-yyyy
+    val popup: List<ChartAccountItem>, // for account search modal
+    // other fields if needed
 )

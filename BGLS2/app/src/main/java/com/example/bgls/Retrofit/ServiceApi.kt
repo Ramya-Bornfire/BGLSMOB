@@ -8,7 +8,10 @@ import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
+import com.example.bgls.DataModels.JournalEntryAddScreenResponse
+import com.example.bgls.DataModels.JournalEntryListResponse
 import com.example.bgls.DataModels.JournalEntryViewResponse
+import com.example.bgls.DataModels.MassEntryRequest
 import com.example.bgls.DataModels.OrganizationResponse
 import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
@@ -18,9 +21,11 @@ import com.example.bgls.DataModels.TransactionAccountsResponse
 import com.example.bgls.DataModels.TransactionDetailsResponse
 import com.example.bgls.DataModels.TransactionDto
 import com.example.bgls.DataModels.TransactionMigrationResponse
+import com.example.bgls.DataModels.TransactionRequest
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
 import com.example.bgls.TransactionMaintenance.JournalEntriesActivity
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -435,13 +440,13 @@ interface ServiceApi {
         val moduleId: String
     )
 
-    @GET("api/journalEntries")   // ✅ added "/api/"
-    suspend fun getJournalEntry(
-        @Query("formmode") formmode: String,
-        @Query("tran_id") tran_id: String,
-        @Query("part_tran_id") part_tran_id: String,
-        @Query("acct_num") acct_num: String
-    ): Response<JournalEntriesActivity.JournalEntryResponse>
+//    @GET("api/journalEntries")   // ✅ added "/api/"
+//    suspend fun getJournalEntry(
+//        @Query("formmode") formmode: String,
+//        @Query("tran_id") tran_id: String,
+//        @Query("part_tran_id") part_tran_id: String,
+//        @Query("acct_num") acct_num: String
+//    ): Response<JournalEntriesActivity.JournalEntryResponse>
     @GET("api/journalEntries")
     suspend fun getJournalEntryView(
         @Query("formmode") formmode: String = "view",
@@ -471,4 +476,66 @@ interface ServiceApi {
     @GET("api/DisplayExcel")
     @Streaming
     suspend fun downloadExcel(@Query("type") type: String): Response<ResponseBody>
+
+    // Add these to ServiceApi.kt
+
+    @GET("api/journalEntries")
+    suspend fun getJournalEntryAddScreen(
+        @Query("formmode") formmode: String = "add"
+    ): Response<JournalEntryAddScreenResponse>
+
+    @GET("api/journalEntries")
+    suspend fun getJournalEntriesList(
+        @Query("formmode") formmode: String = "list1"
+    ): Response<JournalEntryViewResponse>
+
+    @GET("api/journalEntries")
+    suspend fun getJournalEntriesListForTran(
+        @Query("formmode") formmode: String = "modify1",
+        @Query("tran_id") tranId: String
+    ): Response<JournalEntryViewResponse>  // returns jour and tableparttran
+
+
+    @POST("api/addtransactiondata")
+    suspend fun addTransaction(
+        @Body transactions: List<TransactionRequest>
+    ): Response<ResponseBody>
+
+    @POST("api/addtransactiondatamodiy")
+    suspend fun modifyTransaction(
+        @Body transactions: List<TransactionRequest>,
+        @Query("tran_id") tranId: String,
+        @Query("part_tran_id") partTranId: String
+    ): Response<ResponseBody>
+
+    @POST("api/multilinejournalentries")
+    suspend fun addMassEntries(
+        @Body entries: List<MassEntryRequest>,
+        @Query("tran_date") tranDate: String,
+        @Query("tran_type") tranType: String
+    ): Response<ResponseBody>
+
+    @POST("api/deletescreen")
+    @FormUrlEncoded
+    suspend fun deleteJournalEntry(
+        @Field("tran_id") tranId: String,
+        @Field("part_tran_id") partTranId: String,
+        @Field("acct_num") acctNum: String
+    ): Response<ResponseBody>
+
+    @Multipart
+    @POST("api/uploadxml")
+    suspend fun uploadFile(
+        @Part file: MultipartBody.Part
+    ): Response<ResponseBody>
+
+    @GET("api/getPartitionFlag")
+    suspend fun getPartitionFlag(
+        @Query("accountNum") accountNum: String
+    ): Response<String>
+
+    @GET("api/getPointingDetail")
+    suspend fun getPointingDetail(
+        @Query("accountNum") accountNum: String
+    ): Response<String>
 }

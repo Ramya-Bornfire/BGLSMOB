@@ -6,16 +6,20 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.JournalEntryItem
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
-
+import android.view.LayoutInflater
+import android.view.ViewGroup
 class JournalEntriesViewActivity : AppCompatActivity() {
 
+    // All EditText fields as defined in your layout (you already have them)
     private lateinit var etTranId: EditText
     private lateinit var etPartTranId: EditText
     private lateinit var etAcctId: EditText
@@ -53,12 +57,18 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     private lateinit var btnPrev: Button
     private lateinit var btnNext: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var btnView: Button
+    private lateinit var layoutTableContainer: LinearLayout
+    private lateinit var rvRelatedEntries: RecyclerView
+    private lateinit var relatedEntriesAdapter: RelatedEntriesAdapter
+    private val relatedEntriesList = mutableListOf<JournalEntryItem>()
 
     private var currentTranId = ""
     private var currentAcctNum = ""
     private var currentPartTranId = ""
     private var currentPartIndex = 1
     private var maxPartIndex = 1
+    private var isTableVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,12 +84,13 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         if (currentTranId.isNotEmpty() && currentAcctNum.isNotEmpty()) {
             loadJournalEntry(currentPartTranId)
         } else {
-            Toast.makeText(this, "Missing transaction parameters", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Missing parameters", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
 
     private fun initViews() {
+        // Bind all EditTexts (same as your existing code - keep it)
         etTranId = findViewById(R.id.etTranId)
         etPartTranId = findViewById(R.id.etPartTranId)
         etAcctId = findViewById(R.id.etAcctId)
@@ -117,23 +128,27 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         btnPrev = findViewById(R.id.btnPrev)
         btnNext = findViewById(R.id.btnNext)
         progressBar = findViewById(R.id.progressBar)
+        btnView = findViewById(R.id.btnView)
+        layoutTableContainer = findViewById(R.id.layoutTableContainer)
+        rvRelatedEntries = findViewById(R.id.rvRelatedEntries)
+        rvRelatedEntries.layoutManager = LinearLayoutManager(this)
+        relatedEntriesAdapter = RelatedEntriesAdapter(relatedEntriesList)
+        rvRelatedEntries.adapter = relatedEntriesAdapter
     }
 
     private fun setupButtons() {
         btnPrev.setOnClickListener {
-            if (currentPartIndex > 1) {
-                loadJournalEntry((currentPartIndex - 1).toString())
-            } else {
-                Toast.makeText(this, "This is the first entry", Toast.LENGTH_SHORT).show()
-            }
+            if (currentPartIndex > 1) loadJournalEntry((currentPartIndex - 1).toString())
+            else Toast.makeText(this, "First entry", Toast.LENGTH_SHORT).show()
         }
-
         btnNext.setOnClickListener {
-            if (currentPartIndex < maxPartIndex) {
-                loadJournalEntry((currentPartIndex + 1).toString())
-            } else {
-                Toast.makeText(this, "This is the last entry", Toast.LENGTH_SHORT).show()
-            }
+            if (currentPartIndex < maxPartIndex) loadJournalEntry((currentPartIndex + 1).toString())
+            else Toast.makeText(this, "Last entry", Toast.LENGTH_SHORT).show()
+        }
+        btnView.setOnClickListener {
+            isTableVisible = !isTableVisible
+            layoutTableContainer.visibility = if (isTableVisible) View.VISIBLE else View.GONE
+            if (isTableVisible && relatedEntriesList.isEmpty()) loadAllLegs()
         }
     }
 
@@ -154,46 +169,57 @@ class JournalEntriesViewActivity : AppCompatActivity() {
                     maxPartIndex = result.maxPartTran ?: 1
                     updatePaginationInfo()
                 } else {
-                    Toast.makeText(this@JournalEntriesViewActivity,
-                        "Failed to load entry: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@JournalEntriesViewActivity, "Failed to load entry", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Log.e("JournalEntries", "API error", e)
-                Toast.makeText(this@JournalEntriesViewActivity,
-                    "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@JournalEntriesViewActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
                 progressBar.visibility = View.GONE
             }
         }
     }
 
+    private fun loadAllLegs() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getJournalEntriesListForTran(tranId = currentTranId)
+                if (response.isSuccessful && response.body() != null) {
+                    val result = response.body()!!
+                    val legs = result.tableparttran as? List<JournalEntryItem> ?: emptyList()
+                    relatedEntriesAdapter.updateData(legs)
+                }
+            } catch (e: Exception) {
+                Log.e("JournalEntries", "Error loading legs", e)
+            }
+        }
+    }
+
     private fun populateUI(entry: JournalEntryItem) {
-        // Column 1
         etTranId.setText(entry.tran_id ?: "")
+        etPartTranId.setText(entry.part_tran_id?.toString() ?: "")
         etAcctId.setText(entry.acct_num ?: "")
+        etAcctName.setText(entry.acct_name ?: "")
         etTranType.setText(entry.tran_type ?: "")
+        etPartTranType.setText(entry.part_tran_type ?: "")
         etAcctCurrency.setText(entry.acct_crncy ?: "")
+        etTranAmt.setText(formatAmount(entry.tran_amt))
         etTranParticulars.setText(entry.tran_particular ?: "")
+        etTranRemarks.setText(entry.tran_remarks ?: "")
         etFlowCode.setText(entry.flow_code ?: "")
+        etFlowDate.setText(formatDate(entry.flow_date))
         etTranDate.setText(formatDate(entry.tran_date))
+        etValueDate.setText(formatDate(entry.value_date))
+        etEntryUser.setText(entry.entry_user ?: "")
+        etEntryTime.setText(formatDate(entry.entry_time))
+        etTranStatus.setText(entry.tran_status ?: "")
+        etDeleted.setText(entry.del_flg ?: "")
         etTranCode.setText(entry.tran_code ?: "")
         etTranRefNo.setText(entry.tran_ref_no ?: "")
         etPartitionType.setText(entry.partition_type ?: "")
         etInstrumentNo.setText(entry.instr_num ?: "")
         etAccountCurrency2.setText(entry.ref_crncy ?: "")
         etRateCode.setText(entry.rate_code ?: "")
-        etEntryUser.setText(entry.entry_user ?: "")
-        etEntryTime.setText(formatDate(entry.entry_time))
-        etTranStatus.setText(entry.tran_status ?: "")
-
-        // Column 2
-        etPartTranId.setText(entry.part_tran_id ?: "")
-        etAcctName.setText(entry.acct_name ?: "")
-        etPartTranType.setText(entry.part_tran_type ?: "")
-        etTranAmt.setText(formatAmount(entry.tran_amt))
-        etTranRemarks.setText(entry.tran_remarks ?: "")
-        etFlowDate.setText(formatDate(entry.flow_date))
-        etValueDate.setText(formatDate(entry.value_date))
         etTranReportCode.setText(entry.tran_rpt_code ?: "")
         etAdditionalDetails.setText(entry.add_details ?: "")
         etPartitionDetails.setText(entry.partition_det ?: "")
@@ -202,7 +228,6 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         etRate.setText(formatAmount(entry.rate))
         etPostUser.setText(entry.post_user ?: "")
         etPostTime.setText(formatDate(entry.post_time))
-        etDeleted.setText(entry.del_flg ?: "")
     }
 
     private fun updatePaginationInfo() {
@@ -232,5 +257,66 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     private fun formatAmount(amount: Double?): String {
         if (amount == null) return ""
         return DecimalFormat("#,##0.00").format(amount)
+    }
+}
+
+// Adapter for the related entries table
+class RelatedEntriesAdapter(private var entries: List<JournalEntryItem>) :
+    RecyclerView.Adapter<RelatedEntriesAdapter.ViewHolder>() {
+
+    fun updateData(newList: List<JournalEntryItem>) {
+        entries = newList
+        notifyDataSetChanged()
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvTranDate: TextView = view.findViewById(R.id.tvTranDate)
+        val tvTranId: TextView = view.findViewById(R.id.tvTranId)
+        val tvPaTranTy: TextView = view.findViewById(R.id.tvPaTranTy)
+        val tvCurrency: TextView = view.findViewById(R.id.tvCurrency)
+        val tvAmount: TextView = view.findViewById(R.id.tvAmount)
+        val tvAcctId: TextView = view.findViewById(R.id.tvAcctId)
+        val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
+        val tvStatus: TextView = view.findViewById(R.id.tvStatus)
+        val rbSelect: android.widget.RadioButton = view.findViewById(R.id.rbSelect)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_journal_entry_related, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = entries[position]
+        holder.tvTranDate.text = formatDate(item.tran_date)
+        holder.tvTranId.text = "${item.tran_id}/${item.part_tran_id}"
+        holder.tvPaTranTy.text = item.part_tran_type
+        holder.tvCurrency.text = item.acct_crncy
+        holder.tvAmount.text = DecimalFormat("#,##0.00").format(item.tran_amt ?: 0.0)
+        holder.tvAcctId.text = item.acct_num
+        holder.tvAcctName.text = item.acct_name
+        holder.tvStatus.text = item.tran_status
+        holder.rbSelect.isChecked = false
+    }
+
+    override fun getItemCount(): Int = entries.size
+
+    private fun formatDate(dateString: String?): String {
+        if (dateString.isNullOrEmpty()) return ""
+        return try {
+            val epoch = dateString.toLongOrNull()
+            if (epoch != null) {
+                val date = Date(epoch)
+                SimpleDateFormat("dd-MM-yyyy", Locale.US).format(date)
+            } else {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                val date = inputFormat.parse(dateString)
+                date?.let { outputFormat.format(it) } ?: dateString
+            }
+        } catch (e: Exception) {
+            dateString
+        }
     }
 }
