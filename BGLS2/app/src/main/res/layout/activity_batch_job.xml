@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Title Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:elevation="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batch Job"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Date Fields Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#F8F9FA"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Current Date*"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:gravity="end"
+                    android:layout_marginEnd="16dp"/>
+
+                <EditText
+                    android:id="@+id/etCurrentDate"
+                    android:layout_width="120dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/edittext_border"
+                    android:paddingHorizontal="8dp"
+                    android:textSize="14sp"
+                    android:text="07-05-2026"
+                    android:enabled="false"
+                    android:textColor="#555555"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Next Working Date*"
+                    android:textSize="14sp"
+                    android:textColor="#333333"
+                    android:gravity="end"
+                    android:layout_marginEnd="16dp"/>
+
+                <EditText
+                    android:id="@+id/etNextWorkingDate"
+                    android:layout_width="120dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/edittext_border"
+                    android:paddingHorizontal="8dp"
+                    android:textSize="14sp"
+                    android:text="08-05-2026"
+                    android:enabled="true"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:textColor="#555555"/>
+
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DEE2E6"/>
+
+            <!-- Job List -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:id="@+id/rowHolidayCheck"
+                    style="@style/BatchJobRow"
+                    android:text="Holiday Check"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowDailyAccountBalance"
+                    style="@style/BatchJobRow"
+                    android:text="Daily Account Balance"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowConsistencyCheck"
+                    style="@style/BatchJobRow"
+                    android:text="Consistency Check"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowDateChange"
+                    style="@style/BatchJobRow"
+                    android:text="Date Change Process"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowGlUpdation"
+                    style="@style/BatchJobRow"
+                    android:text="GL Updation"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowPenaltyAccrual"
+                    style="@style/BatchJobRow"
+                    android:text="Penalty Accrual"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+                <TextView
+                    android:id="@+id/rowInterestAccrual"
+                    style="@style/BatchJobRow"
+                    android:text="Interest Accrual"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#F8F9FA">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Home"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Refresh"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>

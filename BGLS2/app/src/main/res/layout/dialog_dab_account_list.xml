@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="800dp"
+    android:layout_height="500dp"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="0dp">
+
+    <!-- Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DAB Date Selection"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_centerVertical="true"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Filter"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+
+    <!-- Table Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#F1F3F5"
+        android:padding="8dp">
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="@drawable/table_cell_bg">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Number"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+            
+            <EditText
+                android:id="@+id/etFilterAccountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="8dp"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="@drawable/table_cell_bg">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Name"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:textColor="#555555"/>
+
+            <EditText
+                android:id="@+id/etFilterAccountName"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:background="@drawable/edittext_border"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="8dp"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Account List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        
+        <TableLayout
+            android:id="@+id/tableAccounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1">
+            
+            <!-- Rows will be added dynamically or just a few static ones for mock -->
+            <!-- Static Mock Rows -->
+            <TableRow android:background="@drawable/table_cell_bg">
+                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115552307" android:textSize="13sp" android:textColor="#333333"/>
+                <TextView android:padding="12dp" android:text="ARNOLD KEMBOI" android:textSize="13sp" android:textColor="#333333"/>
+            </TableRow>
+            <TableRow android:background="@drawable/table_cell_bg">
+                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115600973" android:textSize="13sp" android:textColor="#333333"/>
+                <TextView android:padding="12dp" android:text="ELVIS KIPKEMOI" android:textSize="13sp" android:textColor="#333333"/>
+            </TableRow>
+            <TableRow android:background="@drawable/table_cell_bg">
+                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115610551" android:textSize="13sp" android:textColor="#333333"/>
+                <TextView android:padding="12dp" android:text="LILIAN JEROTICH" android:textSize="13sp" android:textColor="#333333"/>
+            </TableRow>
+            <TableRow android:background="@drawable/table_cell_bg">
+                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115619913" android:textSize="13sp" android:textColor="#333333"/>
+                <TextView android:padding="12dp" android:text="LYDIA CHEROTICH" android:textSize="13sp" android:textColor="#333333"/>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+    <!-- Footer Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+        
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+        
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Close"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>

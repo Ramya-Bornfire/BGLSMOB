@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="0dp">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Penalty Accrual Run"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:padding="16dp"/>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+
+    <!-- Content -->
+    <LinearLayout
+        android:id="@+id/layoutDialogContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accrual Date : "
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:gravity="end"
+                android:layout_marginEnd="8dp"/>
+
+            <EditText
+                android:id="@+id/etAccrualDate"
+                android:layout_width="160dp"
+                android:layout_height="36dp"
+                android:background="@drawable/edittext_border"
+                android:paddingHorizontal="8dp"
+                android:textSize="14sp"
+                android:text="07-05-2026"
+                android:focusable="false"
+                android:textColor="#555555"/>
+        </LinearLayout>
+
+        <!-- Success Message (Hidden initially) -->
+        <TextView
+            android:id="@+id/tvSuccessMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Penalty Accrual Runned Successfully"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginVertical="24dp"/>
+
+    </LinearLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Submit"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Close"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>
