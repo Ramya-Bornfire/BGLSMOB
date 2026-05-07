@@ -65,6 +65,9 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
     private lateinit var etPenaltyDue: EditText
     private lateinit var etPenaltyPaid: EditText
     private lateinit var etPenaltyBalance: EditText
+    private lateinit var etAsOnDate: EditText
+    private lateinit var etAccruedInterest: EditText
+    private lateinit var etAccruedPenalty: EditText
 
     private lateinit var etSalesProcessedBy: EditText
     private lateinit var etSalesProcessedFor: EditText
@@ -162,6 +165,10 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
         etPenaltyDue = findViewById(R.id.etPenaltyDue)
         etPenaltyPaid = findViewById(R.id.etPenaltyPaid)
         etPenaltyBalance = findViewById(R.id.etPenaltyBalance)
+
+        etAsOnDate = findViewById(R.id.etAsOnDate)
+        etAccruedInterest = findViewById(R.id.etAccruedInterest)
+        etAccruedPenalty = findViewById(R.id.etAccruedPenalty)
 
         etSalesProcessedBy = findViewById(R.id.etSalesProcessedBy)
         etSalesProcessedFor = findViewById(R.id.etSalesProcessedFor)
@@ -317,6 +324,10 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
         etPenaltyDue.setText(formatDecimal(view.penaltyDue))
         etPenaltyPaid.setText(formatDecimal(view.penaltyPaid))
         etPenaltyBalance.setText(formatDecimal(view.penaltyBalance))
+
+        etAsOnDate.setText(formatDate(view.asOnDate))
+        etAccruedInterest.setText(formatDecimal(view.accruedInterest))
+        etAccruedPenalty.setText(formatDecimal(view.accruedPenalty))
 
         // Additional
         etSalesProcessedBy.setText(view.saleProcessedByVgId ?: "")
