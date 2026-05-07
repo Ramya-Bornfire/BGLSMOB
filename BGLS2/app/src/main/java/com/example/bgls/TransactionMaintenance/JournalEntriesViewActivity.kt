@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
+
 class JournalEntriesViewActivity : AppCompatActivity() {
 
     // All EditText fields as defined in your layout (you already have them)
@@ -58,9 +59,19 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     private lateinit var btnNext: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var btnView: Button
+
+    private lateinit var relatedEntriesAdapter: RelatedEntriesAdapter
+
+    private lateinit var tvFooterEntryUser: TextView
+    private lateinit var tvFooterEntryTime: TextView
+    private lateinit var tvFooterModifyUser: TextView
+    private lateinit var tvFooterModifyTime: TextView
+    private lateinit var tvFooterVerifyUser: TextView
+    private lateinit var tvFooterVerifyTime: TextView
+
     private lateinit var layoutTableContainer: LinearLayout
     private lateinit var rvRelatedEntries: RecyclerView
-    private lateinit var relatedEntriesAdapter: RelatedEntriesAdapter
+
     private val relatedEntriesList = mutableListOf<JournalEntryItem>()
 
     private var currentTranId = ""
@@ -69,6 +80,8 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     private var currentPartIndex = 1
     private var maxPartIndex = 1
     private var isTableVisible = false
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,9 +144,18 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         btnView = findViewById(R.id.btnView)
         layoutTableContainer = findViewById(R.id.layoutTableContainer)
         rvRelatedEntries = findViewById(R.id.rvRelatedEntries)
+
         rvRelatedEntries.layoutManager = LinearLayoutManager(this)
         relatedEntriesAdapter = RelatedEntriesAdapter(relatedEntriesList)
         rvRelatedEntries.adapter = relatedEntriesAdapter
+
+        tvFooterEntryUser = findViewById(R.id.tvEntryUser)
+        tvFooterEntryTime = findViewById(R.id.tvEntryTime)
+        tvFooterModifyUser = findViewById(R.id.tvModifyUser)
+        tvFooterModifyTime = findViewById(R.id.tvModifyTime)
+        tvFooterVerifyUser = findViewById(R.id.tvVerifyUser)
+        tvFooterVerifyTime = findViewById(R.id.tvVerifyTime)
+
     }
 
     private fun setupButtons() {

@@ -74,7 +74,13 @@ class JournalEntriesListAdapter(
             }
             popup.show()
         }
+        holder.tvTranId.setOnClickListener {
+            onActionSelected("View", item)
+        }
+
+
     }
+
 
     override fun getItemCount(): Int {
         return dataList.size

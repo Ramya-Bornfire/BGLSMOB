@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- ─── TOP HEADER ─── -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="12dp"
+        android:elevation="1dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LEASE LOAN - VIEW"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- ─── TABS ─── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#F0F0F0"
+                android:padding="2dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tabLoanDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="#007BFF"
+                    android:gravity="center"
+                    android:text="Loan Details"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tabRepaymentDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Repayment Details"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tabFlows"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Flows"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tabLoanPosition"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Loan Position"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tabAccountLedger"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Account Ledger"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- ─── LOAN DETAILS CONTAINER ─── -->
+            <LinearLayout
+                android:id="@+id/layoutLoanDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="1,3,5"
+                        android:padding="5dp">
+
+                        <!-- ROW 1 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Customer Id" style="@style/LabelStyle" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                                <EditText android:id="@+id/etCustomerId" style="@style/ValueStyle" android:layout_weight="1"/>
+                                <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_dialog_info" android:layout_marginStart="2dp" android:alpha="0.7"/>
+                            </LinearLayout>
+
+                            <TextView android:text="Customer Name" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etCustomerName" style="@style/ValueStyle" />
+
+                            <TextView android:text="Loan Type" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etLoanType" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 2 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Branch Id" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etBranchId" style="@style/ValueStyle" />
+
+                            <TextView android:text="Branch Name" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etBranchName" style="@style/ValueStyle" />
+
+                            <TextView android:text="Date Of loan" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etDateOfLoan" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 3 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="GL code" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etGlCode" style="@style/ValueStyle" />
+
+                            <TextView android:text="GL Des" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etGlDes" style="@style/ValueStyle" />
+
+                            <TextView android:text="GLSH Code" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etGlshCode" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 4 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="GLSH Des" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etGlshDes" style="@style/ValueStyle" />
+
+                            <TextView android:text="Scheme Code" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etSchemeCode" style="@style/ValueStyle" />
+
+                            <TextView android:text="Scheme Type" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etSchemeType" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 5 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Loan Acct No" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etLoanAcctNo" style="@style/ValueStyle" />
+
+                            <TextView android:text="Loan Currency" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etLoanCurrency" style="@style/ValueStyle" />
+
+                            <TextView android:text="Interest Rate" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInterestRate" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 6 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Loan Sanctioned" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etLoanSanctioned" style="@style/ValueStyle" />
+
+                            <TextView android:text="Margin limit (%)" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etMarginLimit" style="@style/ValueStyle" />
+
+                            <TextView android:text="Drawing Limit" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etDrawingLimit" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 7 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Disbursement" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etDisbursement" style="@style/ValueStyle" />
+
+                            <TextView android:text="Loan Outstanding" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etLoanOutstanding" style="@style/ValueStyle" />
+
+                            <TextView android:text="Loan Period" style="@style/LabelStyle" />
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                                <EditText android:id="@+id/etLoanPeriodYears" style="@style/ValueStyle" android:layout_weight="1" android:text="00" />
+                                <EditText android:id="@+id/etLoanPeriodMonths" style="@style/ValueStyle" android:layout_weight="1" android:text="6" />
+                                <EditText android:id="@+id/etLoanPeriodDays" style="@style/ValueStyle" android:layout_weight="1" android:text="00" />
+                            </LinearLayout>
+                        </TableRow>
+
+                        <!-- ROW 8 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Expiry Date" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etExpiryDate" style="@style/ValueStyle" />
+
+                            <TextView android:text="Repayment terms" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepaymentTerms" style="@style/ValueStyle" />
+
+                            <TextView android:text="Recovery Method" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRecoveryMethod" style="@style/ValueStyle" />
+                        </TableRow>
+
+                    </TableLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- ─── REPAYMENT DETAILS CONTAINER ─── -->
+            <LinearLayout
+                android:id="@+id/layoutRepaymentDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="1,3,5"
+                        android:padding="5dp">
+
+                        <!-- ROW 1 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Customer Id" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayCustomerId" style="@style/ValueStyle" />
+
+                            <TextView android:text="Customer Name" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayCustomerName" style="@style/ValueStyle" />
+
+                            <TextView android:text="Date Of loan" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayDateOfLoan" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 2 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Loan Acct No" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayLoanAcctNo" style="@style/ValueStyle" />
+
+                            <TextView android:text="Loan Currency" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayLoanCurrency" style="@style/ValueStyle" />
+
+                            <TextView android:text="Interest Rate" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etRepayInterestRate" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 3 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Installment ID" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInstallmentId" style="@style/ValueStyle" />
+
+                            <TextView android:text="Installment Start Date" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInstallmentStartDate" style="@style/ValueStyle" />
+
+                            <TextView android:text="No of Installment" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etNoOfInstallment" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 4 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Cap At Maturity ?" style="@style/LabelStyle" />
+                            <RadioGroup
+                                android:id="@+id/rgCapAtMaturity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <RadioButton android:id="@+id/rbYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="12sp" android:enabled="false"/>
+                                <RadioButton android:id="@+id/rbNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="12sp" android:enabled="false" android:checked="true"/>
+                            </RadioGroup>
+
+                            <TextView android:text="Principal Installment Freq" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etPrincipalFreq" style="@style/ValueStyle" />
+
+                            <TextView android:text="Interest Installment Freq" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInterestFreq" style="@style/ValueStyle" />
+                        </TableRow>
+
+                        <!-- ROW 5 -->
+                        <TableRow android:layout_marginBottom="5dp">
+                            <TextView android:text="Installment Amount" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInstallmentAmount" style="@style/ValueStyle" />
+
+                            <TextView android:text="Installment (%)" style="@style/LabelStyle" />
+                            <EditText android:id="@+id/etInstallmentPercent" style="@style/ValueStyle" />
+
+                            <TextView android:text="Record" style="@style/LabelStyle" />
+                            <CheckBox android:id="@+id/cbDelete" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Delete" android:textSize="12sp" android:enabled="false"/>
+                        </TableRow>
+
+                    </TableLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+            <!-- ─── LOAN POSITION FIELDS ─── -->
+            <LinearLayout
+                android:id="@+id/layoutLoanPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1,3,5"
+                    android:padding="5dp">
+
+                    <TableRow android:layout_marginBottom="5dp">
+                        <TextView android:text="Customer Id" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosCustomerId" style="@style/ValueStyle" />
+                        <TextView android:text="Customer Name" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosCustomerName" style="@style/ValueStyle" />
+                        <TextView android:text="Date Of loan" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosDateOfLoan" style="@style/ValueStyle" />
+                    </TableRow>
+
+                    <TableRow android:layout_marginBottom="5dp">
+                        <TextView android:text="Loan Acct No" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosLoanAcctNo" style="@style/ValueStyle" />
+                        <TextView android:text="Loan Currency" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosLoanCurrency" style="@style/ValueStyle" />
+                        <TextView android:text="Interest Rate" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etPosInterestRate" style="@style/ValueStyle" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+            <!-- ─── LOAN POSITION TABLE SECTION ─── -->
+            <LinearLayout
+                android:id="@+id/layoutLoanPositionTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#DDDDDD"
+                    android:padding="1dp">
+
+                    <!-- HEADER ROW -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#F8F9FA"
+                        android:paddingVertical="10dp">
+
+                        <TextView android:text="Flow Date" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:paddingStart="8dp"/>
+                        <TextView android:text="Flow Code" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Flow Amt" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:gravity="center"/>
+                        <TextView android:text="Coll Amt" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:gravity="center"/>
+                        <TextView android:text="Coll Date" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:gravity="center"/>
+                        <TextView android:text="OverDue Amt" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:gravity="end" android:paddingEnd="12dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No records available"
+                        android:padding="16dp"
+                        android:gravity="start"
+                        android:background="#FFFFFF"
+                        android:textColor="#666666"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ─── ACCOUNT LEDGER SECTION ─── -->
+            <LinearLayout
+                android:id="@+id/layoutAccountLedger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <!-- LEDGER HEADER -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#F8F9FA"
+                    android:padding="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="16dp"
+                    android:elevation="2dp">
+                    
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ACCOUNT LEDGER"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:paddingStart="8dp"/>
+
+                    <Button
+                        android:id="@+id/btnDownload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Download"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#007BFF"
+                        android:textSize="11sp"
+                        android:textAllCaps="false"
+                        android:drawableEnd="@android:drawable/arrow_down_float"
+                        android:paddingHorizontal="12dp"/>
+                </LinearLayout>
+
+                <!-- LEDGER FORM -->
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1,3,5"
+                    android:padding="12dp"
+                    android:background="#FFFFFF">
+
+                    <!-- ROW 1 -->
+                    <TableRow android:layout_marginBottom="8dp">
+                        <TextView android:text="Acct ID" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctId" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="Acct Name" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctName" style="@style/ValueStyle" />
+                        <TextView android:text="Acct CCY" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctCcy" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                    </TableRow>
+
+                    <!-- ROW 2 -->
+                    <TableRow android:layout_marginBottom="8dp">
+                        <TextView android:text="Acct Bal" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctBal" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="Gen Led" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedGenLed" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="GL Des" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedGlDes" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                    </TableRow>
+
+                    <!-- ROW 3 -->
+                    <TableRow android:layout_marginBottom="8dp">
+                        <TextView android:text="GL Sub Head" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedGlSubHead" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="GLSH Des" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedGlshDes" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="Account Currency" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAccountCurrency" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                    </TableRow>
+
+                    <!-- ROW 4 -->
+                    <TableRow android:layout_marginBottom="8dp">
+                        <TextView android:text="Home Currency Bal" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedHomeCurrencyBal" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="Acct Open Date" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctOpenDate" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                        <TextView android:text="Acct Close Date" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctCloseDate" style="@style/ValueStyle" android:backgroundTint="#F0F0F0"/>
+                    </TableRow>
+
+                    <!-- ROW 5 -->
+                    <TableRow>
+                        <TextView android:text="From Date" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedFromDate" style="@style/ValueStyle" android:text="06-05-2026"/>
+                        <TextView android:text="To Date" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedToDate" style="@style/ValueStyle" android:text="06-05-2026"/>
+                        <TextView android:text="Acct Status" style="@style/LabelStyle" />
+                        <EditText android:id="@+id/etLedAcctStatus" style="@style/ValueStyle" android:text="INACTIVE" android:backgroundTint="#F0F0F0"/>
+                    </TableRow>
+                </TableLayout>
+
+                <!-- LEDGER TABLE -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#DDDDDD"
+                    android:padding="1dp"
+                    android:layout_marginTop="8dp">
+
+                    <!-- HEADER ROW -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#F8F9FA"
+                        android:paddingVertical="10dp">
+
+                        <TextView android:text="Tran Date" android:layout_width="0dp" android:layout_weight="1.2" style="@style/TableHeaderStyle" android:paddingStart="8dp"/>
+                        <TextView android:text="Tran Id" android:layout_width="0dp" android:layout_weight="1.2" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Tran Particulars" android:layout_width="0dp" android:layout_weight="2.2" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Currency" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Credits" android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="end" />
+                        <TextView android:text="Debits" android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="end" />
+                        <TextView android:text="Balance" android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="end" android:paddingEnd="12dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No records"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        android:background="#FFFFFF"
+                        android:textColor="#666666"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ─── MIDDLE BUTTONS ─── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="16dp"
+                android:background="#F8F9FA"
+                android:layout_marginTop="24dp">
+
+                <Button
+                    android:id="@+id/btnHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#007BFF"
+                    android:layout_marginEnd="8dp"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnSchedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Schedule"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#007BFF"
+                    android:layout_marginEnd="8dp"
+                    android:textAllCaps="false"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnFlows"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flows"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#007BFF"
+                    android:layout_marginEnd="8dp"
+                    android:textAllCaps="false"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Back"
+                    android:textColor="#FFFFFF"
+                    android:backgroundTint="#007BFF"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <!-- ─── SCHEDULE TABLE SECTION ─── -->
+            <LinearLayout
+                android:id="@+id/layoutSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#DDDDDD"
+                        android:padding="1dp">
+
+                        <!-- HEADER ROW -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#F8F9FA"
+                            android:paddingVertical="10dp">
+
+                            <TextView android:text="Srl. No." android:layout_width="0dp" android:layout_weight="0.8" style="@style/TableHeaderStyle" android:paddingStart="4dp"/>
+                            <TextView android:text="Installment Date" android:layout_width="0dp" android:layout_weight="1.2" style="@style/TableHeaderStyle" />
+                            <TextView android:text="Installment Description" android:layout_width="0dp" android:layout_weight="2" style="@style/TableHeaderStyle" />
+                            <TextView android:text="Installment Amt." android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="center"/>
+                            <TextView android:text="Principal Amt." android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="center"/>
+                            <TextView android:text="Interest Amt." android:layout_width="0dp" android:layout_weight="1.5" style="@style/TableHeaderStyle" android:gravity="center"/>
+                            <TextView android:text="Charges Amt." android:layout_width="0dp" android:layout_weight="1.2" style="@style/TableHeaderStyle" android:gravity="center"/>
+                            <TextView android:text="Principal Outstanding" android:layout_width="0dp" android:layout_weight="1.8" style="@style/TableHeaderStyle" android:gravity="center"/>
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvLoanSchedule"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- ─── FLOWS TABLE SECTION ─── -->
+            <LinearLayout
+                android:id="@+id/layoutFlows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#DDDDDD"
+                    android:padding="1dp">
+
+                    <!-- HEADER ROW -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#F8F9FA"
+                        android:paddingVertical="10dp">
+
+                        <TextView android:text="Flow Date" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:paddingStart="8dp"/>
+                        <TextView android:text="Flow Code" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Flow Freq." android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" />
+                        <TextView android:text="Flow Amt" android:layout_width="0dp" android:layout_weight="1" style="@style/TableHeaderStyle" android:gravity="end" android:paddingEnd="12dp"/>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvLoanFlows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ─── BOTTOM AUDIT SECTION ─── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="1dp"
+                android:background="#DDDDDD"
+                android:layout_marginTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#FFFFFF"
+                    android:padding="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="4dp">
+                        <TextView android:text="Entry User :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvEntryUser" android:text="EMP02" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                        <TextView android:text="Modify User :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvModifyUser" android:text="EMP02" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                        <TextView android:text="Verify User :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvVerifyUser" android:text="EMP02" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="4dp">
+                        <TextView android:text="Entry Time :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvEntryTime" android:text="24-04-2026" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                        <TextView android:text="Modify Time :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvModifyTime" android:text="24-04-2026" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                        <TextView android:text="Verify Time :" style="@style/AuditLabel" android:layout_width="100dp"/>
+                        <TextView android:id="@+id/tvVerifyTime" android:text="24-04-2026" style="@style/AuditValue" android:layout_width="0dp" android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

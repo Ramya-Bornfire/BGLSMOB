@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvFlowDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="24-06-2026"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:paddingStart="8dp"/>
+
+    <TextView
+        android:id="@+id/tvFlowCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="RIDEM"
+        android:textColor="#333333"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tvFlowFreq"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Monthly"
+        android:textColor="#333333"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tvFlowAmt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="2,867.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="12dp"/>
+
+</LinearLayout>

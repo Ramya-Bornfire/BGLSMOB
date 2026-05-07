@@ -13,6 +13,12 @@ import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+import android.app.DatePickerDialog
+
+import android.widget.EditText
+import java.util.Calendar
+
+
 
 class JournalEntriesListActivity : AppCompatActivity() {
 
@@ -24,7 +30,10 @@ class JournalEntriesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_journal_entries_list)
 
-        initViews()
+       fun setupRecyclerView() {
+            setupButtons()}
+
+      initViews()
         loadData()
     }
 
@@ -49,7 +58,7 @@ class JournalEntriesListActivity : AppCompatActivity() {
                     val body = response.body()!!
                     // Try to get list from jour or tableparttran
                     val items = body.jour ?: body.tableparttran ?: emptyList()
-                    
+
                     journalList.clear()
                     journalList.addAll(items.map {
                         JournalEntryListModel(
@@ -65,15 +74,27 @@ class JournalEntriesListActivity : AppCompatActivity() {
                         )
                     })
                     adapter.notifyDataSetChanged()
-                    
+
                     if (journalList.isEmpty()) {
-                        Toast.makeText(this@JournalEntriesListActivity, "No journal entries found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@JournalEntriesListActivity,
+                            "No journal entries found",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this@JournalEntriesListActivity, "Failed to load list", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@JournalEntriesListActivity,
+                        "Failed to load list",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@JournalEntriesListActivity,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -81,17 +102,24 @@ class JournalEntriesListActivity : AppCompatActivity() {
     private fun handleAction(action: String, item: JournalEntryListModel) {
         when (action) {
             "View" -> {
-                val intent = Intent(this, JournalEntriesViewActivity::class.java)
-                intent.putExtra("tran_id", item.tranId)
+                val intent = android.content.Intent(
+                    this@JournalEntriesListActivity,
+                    JournalEntriesViewActivity::class.java
+                )
+                val parts = item.tranId.split("/")
+                intent.putExtra("tran_id", parts[0])
+                intent.putExtra("part_tran_id", if (parts.size > 1) parts[1] else "1")
                 intent.putExtra("acct_num", item.acctId)
-                intent.putExtra("part_tran_id", "1") // Default to first leg
                 startActivity(intent)
             }
+
+
             "Delete" -> {
                 deleteEntry(item)
             }
         }
     }
+
 
     private fun deleteEntry(item: JournalEntryListModel) {
         lifecycleScope.launch {
@@ -100,18 +128,52 @@ class JournalEntriesListActivity : AppCompatActivity() {
                 // Using "1" as a fallback or trying to parse it from tranId if it was composite.
                 val response = RetrofitClient.api.deleteJournalEntry(
                     tranId = item.tranId,
-                    partTranId = "1", 
+                    partTranId = "1",
                     acctNum = item.acctId
                 )
                 if (response.isSuccessful) {
-                    Toast.makeText(this@JournalEntriesListActivity, "Deleted successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@JournalEntriesListActivity,
+                        "Deleted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     loadData()
                 } else {
-                    Toast.makeText(this@JournalEntriesListActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@JournalEntriesListActivity,
+                        "Delete failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@JournalEntriesListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@JournalEntriesListActivity,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
+
+    private fun setupButtons() {
+        findViewById<Button>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        val etFilterDate = findViewById<EditText>(R.id.etFilterDate)
+        etFilterDate.setOnClickListener {
+            val c = Calendar.getInstance()
+            val datePickerDialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+                etFilterDate.setText(String.format("%02d-%02d-%d", dayOfMonth, month + 1, year))
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog.show()
+        }
+
+    }
+
 }

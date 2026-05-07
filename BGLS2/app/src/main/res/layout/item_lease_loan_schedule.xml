@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvSrlNo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="1"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:paddingStart="4dp"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="24-05-2026"
+        android:textColor="#333333"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Regular Installment"
+        android:textColor="#333333"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tvInstallmentAmt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="2,867.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/tvPrincipalAmt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="1,667.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/tvInterestAmt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="1,200.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/tvChargesAmt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:text="0.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/tvPrincipalOutstanding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.8"
+        android:text="8,333.00"
+        android:textColor="#333333"
+        android:textSize="11sp"
+        android:gravity="end"
+        android:paddingEnd="8dp"/>
+
+</LinearLayout>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- ─── HEADER ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lease Loan Interest Summary"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TRAN DATE"
+                android:textColor="#333333"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvTranDate"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:background="#E9ECEF"
+                android:gravity="center"
+                android:text="06-05-2026"
+                android:textColor="#333333"
+                android:textSize="12sp"
+                android:padding="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD" />
+
+    <!-- ─── TABLE CONTENT ─── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- TABLE HEADER -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E9ECEF"
+                android:paddingVertical="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="LOAN NO"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:paddingStart="8dp" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="NAME"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="DATE OF LOAN"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="LOAN AMT"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="INTEREST RATE"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="LIABILITY"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ACCRUED INTEREST"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="BOOKED INTEREST"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="APPLIED INTEREST"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:paddingEnd="8dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInterestSummary"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- ─── BOTTOM BUTTONS ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#007BFF"
+            android:layout_marginEnd="8dp"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#007BFF"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+</LinearLayout>

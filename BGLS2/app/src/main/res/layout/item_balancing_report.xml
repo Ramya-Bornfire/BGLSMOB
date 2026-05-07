@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView android:id="@+id/tvHead"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvGl"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvSchemeCode"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvAcctId"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#2196F3"/>
+
+    <TextView android:id="@+id/tvAcctName"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="2.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvCurrency"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvCredits"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvDebits"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvBalance"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:textSize="10sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvStatus"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:padding="8dp"
+        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|center"
+        android:textSize="10sp" android:textColor="#4CAF50"
+        android:textStyle="bold"/>
+
+    <Spinner android:id="@+id/spinnerAction"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:background="@drawable/table_cell_bg"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"/>
+
+</LinearLayout>

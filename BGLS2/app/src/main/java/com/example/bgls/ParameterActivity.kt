@@ -38,6 +38,8 @@ import com.example.bgls.DataModels.TransactionAccountsResponse
 import okhttp3.ResponseBody
 class ParameterActivity : AppCompatActivity() {
 
+    private var moduleFromIntent: String = "Reference Code Maintenance"
+
     private lateinit var binding:  ActivityParameterBinding
 
     private lateinit var tableLayout: TableLayout
@@ -121,6 +123,8 @@ class ParameterActivity : AppCompatActivity() {
     private var currentModule: String = "Reference Code Maintenance"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         binding =  ActivityParameterBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -132,7 +136,10 @@ class ParameterActivity : AppCompatActivity() {
         menuIcon = findViewById(R.id.menuIcon)
 
         createModuleButtons()
-        loadModuleData("Reference Code Maintenance")
+        moduleFromIntent = intent.getStringExtra("MODULE_NAME")
+            ?: "Reference Code Maintenance"
+
+        loadModuleData(moduleFromIntent)
 
         setupHeaderActions()
 
@@ -228,6 +235,7 @@ class ParameterActivity : AppCompatActivity() {
     }
 
     private fun createModuleButtons() {
+
         val modules = listOf(
             "Reference Code Maintenance",
             "GL Structure",
@@ -237,21 +245,16 @@ class ParameterActivity : AppCompatActivity() {
             "Transaction Accounts"
         )
 
+        binding.moduleButtonsContainer.removeAllViews()
+
         for (module in modules) {
             val button = Button(this).apply {
                 text = module
                 background = ContextCompat.getDrawable(context, R.drawable.tab_unselected)
-                isAllCaps = false // Matches the image style better
-                
-                // Set initial selection state for the first button
-                if (module == "Reference Code Maintenance") {
-                    background = ContextCompat.getDrawable(context, R.drawable.tab_selected)
-                    setTextColor(Color.WHITE)
-                } else {
-                    setTextColor(Color.BLACK)
-                }
+                setTextColor(Color.BLACK)
+                isAllCaps = false
 
-                setPadding(60, 20, 60, 20) // More padding for capsule look
+                setPadding(60, 20, 60, 20)
 
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -259,12 +262,25 @@ class ParameterActivity : AppCompatActivity() {
                 ).apply {
                     marginEnd = 24
                 }
+
                 setOnClickListener {
                     loadModuleData(module)
                     updateButtonSelection(this)
                 }
             }
+
             binding.moduleButtonsContainer.addView(button)
+        }
+
+        // ✅ SELECT BUTTON AFTER ALL BUTTONS ADDED
+        binding.moduleButtonsContainer.post {
+            for (i in 0 until binding.moduleButtonsContainer.childCount) {
+                val btn = binding.moduleButtonsContainer.getChildAt(i) as Button
+                if (btn.text.toString() == moduleFromIntent) {
+                    updateButtonSelection(btn)
+                    break
+                }
+            }
         }
     }
     private fun updateButtonSelection(selectedButton: Button) {

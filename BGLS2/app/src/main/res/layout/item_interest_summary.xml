@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="12dp"
+    android:background="@android:color/white"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvLoanNo"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="LA0001"
+        android:textColor="#007BFF"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingStart="8dp" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:text="TIM DAVID"
+        android:textColor="#333333"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvDateOfLoan"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="22-05-2026"
+        android:textColor="#666666"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvLoanAmt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="10,000.00"
+        android:gravity="end"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:paddingEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tvInterestRate"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:text="12"
+        android:gravity="center"
+        android:textColor="#333333"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvLiability"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0.00"
+        android:gravity="end"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:paddingEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tvAccruedInterest"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:gravity="end"
+        android:textColor="#28A745"
+        android:textSize="12sp"
+        android:paddingEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tvBookedInterest"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:gravity="end"
+        android:textColor="#28A745"
+        android:textSize="12sp"
+        android:paddingEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tvAppliedInterest"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="0"
+        android:gravity="end"
+        android:textColor="#28A745"
+        android:textSize="12sp"
+        android:paddingEnd="8dp" />
+
+</LinearLayout>
+

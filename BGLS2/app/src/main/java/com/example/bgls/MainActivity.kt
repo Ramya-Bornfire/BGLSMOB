@@ -30,6 +30,10 @@ import com.example.bgls.TransactionMaintenance.ProfileAndLossAccountActivity
 import com.example.bgls.TransactionMaintenance.TransAccountLedgerActivity
 import com.example.bgls.TransactionMaintenance.TrialBalanceActivity
 import com.example.bgls.UserControl.UserControlActivity
+import com.example.bgls.TransactionInquiries.AccountBalanceActivity
+import com.example.bgls.TransactionInquiries.InterestSummaryActivity
+import com.example.bgls.TransactionInquiries.BalanceSheetActivity
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -257,6 +261,35 @@ class MainActivity : AppCompatActivity() {
                 "Failed Reversal"->{
                     startActivity(Intent(this,FailedReversalActivity::class.java))
                 }
+                "Account Leader" -> {
+
+                    val intent = Intent(this, ParameterActivity::class.java)
+                    intent.putExtra("MODULE_NAME", "Account Ledger")
+                    startActivity(intent)
+
+                }
+
+                "Account Ledger"->{
+                    startActivity(Intent(this, TransAccountLedgerActivity::class.java))
+
+                }
+
+                "Account Balances" -> {
+                    startActivity(Intent(this, AccountBalanceActivity::class.java))
+                }
+                "Interest Summary" -> {
+                    startActivity(Intent(this, InterestSummaryActivity::class.java))
+                }
+                "Journal Book" -> {
+                    startActivity(Intent(this, com.example.bgls.TransactionMaintenance.JournalEntriesListActivity::class.java))
+                }
+                "Balance Sheet" -> {
+                    startActivity(Intent(this, BalanceSheetActivity::class.java))
+                }
+                "Balancing Report" -> {
+                    startActivity(Intent(this, com.example.bgls.TransactionInquiries.BalancingReportActivity::class.java))
+                }
+
 
                 else -> {
                     Toast.makeText(this, "$subItem Clicked", Toast.LENGTH_SHORT).show()

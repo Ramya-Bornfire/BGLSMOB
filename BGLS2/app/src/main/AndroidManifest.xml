@@ -252,6 +252,22 @@
         <activity
             android:name=".ReversalTransaction.TransactionsReversalViewActivity"
             android:exported="false" />
+        <activity
+            android:name=".TransactionInquiries.AccountBalanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionInquiries.InterestSummaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionInquiries.LeaseLoanViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionInquiries.BalanceSheetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TransactionInquiries.BalancingReportActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
