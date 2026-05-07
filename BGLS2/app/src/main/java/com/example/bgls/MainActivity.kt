@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                 listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
             Transaction("Collection Process",
                 listOf("Loan Collection")),
-            Transaction("Batch Job Execution"),
+            Transaction("Batch Job Execution",listOf("Batch Job")),
             Transaction("Transaction Reports",
                 listOf("Credit Facility Report",
                         "End Of Month Report",
@@ -289,6 +289,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Balancing Report" -> {
                     startActivity(Intent(this, com.example.bgls.TransactionInquiries.BalancingReportActivity::class.java))
+                }
+                "Batch Job" -> {
+                    startActivity(Intent(this, com.example.bgls.BatchJobExecution.BatchJobActivity::class.java))
                 }
 
 
