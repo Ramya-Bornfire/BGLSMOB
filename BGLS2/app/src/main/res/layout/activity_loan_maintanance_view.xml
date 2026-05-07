@@ -288,11 +288,15 @@
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Paid" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:id="@+id/etPenaltyPaid" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text=""/></LinearLayout>
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Penalty Balance" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:id="@+id/etPenaltyBalance" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text=""/></LinearLayout>
             </LinearLayout>
+
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="24dp">
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="As On Date" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:id="@+id/etAsOnDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text=""/></LinearLayout>
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="16dp" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Accrued Interest" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:id="@+id/etAccruedInterest" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text=""/></LinearLayout>
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center_vertical"><TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Accrued Penalty" android:textSize="12sp" android:textColor="#FF0000"/><EditText android:id="@+id/etAccruedPenalty" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="#FFAA00" android:padding="6dp" android:textSize="12sp" android:textColor="#111111" android:enabled="false" android:text=""/></LinearLayout>
             </LinearLayout>
+
+
+
             <!-- ADDITIONAL DETAILS -->
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ADDITIONAL DETAILS" android:textStyle="bold" android:textColor="#111111" android:layout_marginBottom="16dp" android:textSize="14sp"/>
 
@@ -352,4 +356,17 @@
 
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify"/>
+
+    </LinearLayout>
 </LinearLayout>

@@ -16,6 +16,7 @@ import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.ChartOfAccounts.ChartOfAccountsActivity
 import com.example.bgls.CustomerMaintenance.CustomerMaintenanceActivity
 import com.example.bgls.CustomerMaster.CustomerMasterActivity
+import com.example.bgls.LoanMaintenance.LoanMaintananceListActivity
 import com.example.bgls.LoanMaintenance.LoanMaintenanceActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
@@ -171,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 "Loan Maintenance"->{
-                    startActivity(Intent(this, LoanMaintenanceActivity::class.java))
+                    startActivity(Intent(this, LoanMaintananceListActivity::class.java))
                 }
 
                 "Journal Entries"->{

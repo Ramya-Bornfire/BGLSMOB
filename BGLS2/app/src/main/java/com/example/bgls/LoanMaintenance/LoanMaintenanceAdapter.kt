@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.CustomerMaster.LoanMasterViewActivity
 import com.example.bgls.DataModels.LoanMaintenanceModel
 import com.example.bgls.R
 
@@ -48,7 +47,10 @@ class LoanMaintenanceAdapter(
         holder.tvLoanId.setTextColor(Color.parseColor("#2196F3"))
 
         holder.tvLoanId.setOnClickListener {
-            val intent = Intent(context, LoanMasterViewActivity::class.java)
+            val intent = Intent(context, LoanMaintananceViewActivity::class.java)
+            intent.putExtra("loanId", item.loanId)
+            intent.putExtra("holderKey", "8a81878d91c781030191c95350901e14") // Dummy holderKey for testing
+            intent.putExtra("branchKey", "8a81878d91c781030191c95350901e14") // Dummy branchKey for testing
             intent.putExtra("source", "LoanMaintenance")
             context.startActivity(intent)
         }
