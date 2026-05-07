@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
 
 
                 }
-                "Account Leader"->{
+                "Account Ledger"->{
                     startActivity(Intent(this, TransAccountLedgerActivity::class.java))
 
 
