@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- TITLE BAR -->
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E9ECEF"
+        android:padding="12dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wallet Account Master - Add"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- MAIN DATA AREA (Two Columns) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <!-- Left Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Wallet Category"/>
+                        <EditText style="@style/LoanField" android:text="Wallet" android:background="@drawable/edittext_background"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Branch Id"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Wallet Type"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Number"/>
+                        <EditText style="@style/LoanField" android:text="WA0112" android:background="@drawable/edittext_background"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Currency"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Close Flag"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Balance"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Available Balance"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Customer Limit"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="SMS Flag"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Email Flag"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Right Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Customer Id"/>
+                        <RelativeLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border" android:paddingEnd="32dp"/>
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_search" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="4dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Branch Name"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Debit Limit"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Name"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Open Date"/>
+                        <RelativeLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border" android:hint="mm/dd/yyyy" android:paddingEnd="32dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_calendar" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="8dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Account Close Date"/>
+                        <RelativeLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border" android:hint="mm/dd/yyyy" android:paddingEnd="32dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_calendar" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="8dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Balance Date"/>
+                        <RelativeLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border" android:hint="mm/dd/yyyy" android:paddingEnd="32dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_calendar" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="8dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Current Date"/>
+                        <RelativeLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1">
+                            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border" android:hint="mm/dd/yyyy" android:paddingEnd="32dp"/>
+                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_calendar" android:layout_alignParentEnd="true" android:layout_centerVertical="true" android:layout_marginEnd="8dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Wallet Limit"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Mobile No"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/rowStyle" android:gravity="center_vertical">
+                        <TextView style="@style/LoanLabel" android:text="Email Id"/>
+                        <EditText style="@style/LoanField" android:enabled="true" android:background="@drawable/edittext_border"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#E9ECEF">
+        
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+    <!-- AUDIT FOOTER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:layout_margin="12dp"
+        android:elevation="2dp">
+
+        <!-- Col 1 -->
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Entry User"/>
+                <TextView style="@style/AuditValue" android:text="EMP02" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Entry Time"/>
+                <TextView style="@style/AuditValue" android:text="08-05-2026 15:15" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Col 2 -->
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Modify User"/>
+                <TextView style="@style/AuditValue" android:text="EMP02" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Modify Time"/>
+                <TextView style="@style/AuditValue" android:text="08-05-2026 15:15" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Col 3 -->
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Verify User"/>
+                <TextView style="@style/AuditValue" android:text="" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Verify Time"/>
+                <TextView style="@style/AuditValue" android:text="" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

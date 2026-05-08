@@ -286,6 +286,18 @@
         <activity
             android:name=".BatchJobExecution.BatchJobActivity"
             android:exported="false" />
+        <activity
+            android:name=".DepositAccount.WalletMaintenanceListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DepositAccount.WalletAccountAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DepositAccount.WalletAccountFlowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DepositAccount.WalletInquiryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
