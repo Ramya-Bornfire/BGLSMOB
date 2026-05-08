@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             Transaction("Loan Operation",
                 listOf("Loan Operation","Loan Closure")),
             Transaction("Deposit Maintanance"),
+            Transaction("Wallet Maintanances",listOf("Wallet Maintanance","Wallet Inquries")),
             Transaction("Transaction Maintanance",
                 listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
             Transaction("Reversal Transactions",
@@ -247,6 +248,12 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, com.example.bgls.TransactionReports.GenericReportActivity::class.java)
                     intent.putExtra("REPORT_TITLE", "Penalty Accrual - Reports")
                     startActivity(intent)
+                }
+                "Wallet Maintanance" -> {
+                    startActivity(Intent(this, com.example.bgls.DepositAccount.WalletMaintenanceListActivity::class.java))
+                }
+                "Wallet Inquries" -> {
+                    startActivity(Intent(this, com.example.bgls.DepositAccount.WalletInquiryActivity::class.java))
                 }
 //                "Account Opening" -> {
 //                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountOpeningActivity::class.java))
