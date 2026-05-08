@@ -26,6 +26,12 @@ import com.example.bgls.DataModels.TransactionRequest
 import com.example.bgls.DataModels.UserProfile
 import com.example.bgls.DataModels.UserProfileResponse
 import com.example.bgls.TransactionMaintenance.JournalEntriesActivity
+import com.example.bgls.DataModels.LoanClosureDataResponse
+import com.example.bgls.DataModels.LoanFlowDetail
+import com.example.bgls.DataModels.LoanFlowTransactionRequest
+import com.example.bgls.DataModels.LoanOperationResponse
+import com.example.bgls.DataModels.MultipleTransactionRequest
+import com.example.bgls.DataModels.SettlementRecord
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -612,4 +618,161 @@ interface ServiceApi {
     suspend fun verifyLoanMain(
         @Query("id") id: String
     ): Response<ResponseBody>
+
+    @GET("api/loanOperation")
+    suspend fun loanOperation(
+        @Query("formmode") formmode: String?
+    ): Response<LoanOperationResponse>
+
+    @GET("api/leasecollection")
+    suspend fun leaseCollection(
+        @Query("formmode") formmode: String?
+    ): Response<LoanOperationResponse>
+
+    @Multipart
+    @POST("api/leaseuploadexcel")
+    suspend fun leaseUploadExcel(
+        @Part file: MultipartBody.Part,
+        @Query("screenId") screenId: String,
+        @Query("userid") userid: String
+    ): Response<ResponseBody>
+
+    @POST("api/saveMultipleTransactions1")
+    suspend fun saveMultipleTransactions1(
+        @Body transactions: List<MultipleTransactionRequest>
+    ): Response<Map<String, Any>>
+
+    @Multipart
+    @POST("api/UploadFileData")
+    suspend fun uploadFileData(
+        @Part file: MultipartBody.Part,
+        @Query("fileInput") fileInput: String,
+        @Query("overwrite") overwrite: Boolean
+    ): Response<Map<String, Any>>
+
+    @POST("api/settlementCollection")
+    suspend fun settlementCollection(
+        @Body request: List<SettlementRecord>
+    ): Response<String>
+
+    @GET("api/loanClosure")
+    suspend fun loanClosure(
+        @Query("formmode") formmode: String?
+    ): Response<LoanOperationResponse>
+
+    @POST("api/saveLoanpreClosureDetails")
+    suspend fun saveLoanpreClosureDetails(
+        @Body data: Map<String, Any>
+    ): Response<String>
+
+    @POST("api/saveLoanClosureDetails")
+    suspend fun saveLoanClosureDetails(
+        @Body data: Map<String, Any>
+    ): Response<String>
+
+    @POST("api/transactionInterest")
+    suspend fun transactionInterest(
+        @Query("flow_code") flowCode: String,
+        @Query("flow_date") flowDate: String,
+        @Query("flow_amount") flowAmount: String,
+        @Query("flow_id") flowId: String,
+        @Query("account_no") accountNo: String,
+        @Query("accountName") accountName: String,
+        @Query("operation") operation: String
+    ): Response<Map<String, Any>>
+
+    @GET("api/fetchacctbalance")
+    suspend fun fetchAccountBalance(
+        @Query("acctnum") acctnum: String
+    ): Response<String>
+
+    @GET("api/getloanclosetdatas5214")
+    suspend fun getLoanClosureDatas(
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    @GET("api/search")
+    suspend fun search(
+        @Query("value") value: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/loanflowDetails11")
+    suspend fun loanFlowDetails11(
+        @Query("todate") toDate: String,
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    @GET("api/loanflowDetails")
+    suspend fun loanFlowDetails(
+        @Query("fromDate") fromDate: String,
+        @Query("todate") toDate: String,
+        @Query("accountNumber") accountNumber: String
+    ): Response<List<LoanFlowDetail>>
+
+    @GET("api/loanflowDetailsfees")
+    suspend fun loanFlowDetailsFees(
+        @Query("fromDate") fromDate: String,
+        @Query("todate") toDate: String,
+        @Query("accountNumber") accountNumber: String
+    ): Response<List<LoanFlowDetail>>
+
+    @GET("api/loanflowDetailspenalty")
+    suspend fun loanFlowDetailsPenalty(
+        @Query("fromDate") fromDate: String,
+        @Query("todate") toDate: String,
+        @Query("accountNumber") accountNumber: String
+    ): Response<List<LoanFlowDetail>>
+
+    @GET("api/FlowForDateloan")
+    suspend fun loanFlowDetailsBooking(
+        @Query("actno1") actno1: String,
+        @Query("dateFrom") dateFrom: String,
+        @Query("todate") toDate: String
+    ): Response<Map<String, Any>>
+
+    @POST("api/updateFlowAllocation")
+    suspend fun updateFlowAllocation(
+        @Query("remainingBalance") remainingBalance: Double,
+        @Query("todate") toDate: String,
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // LOAN CLOSURE / PRE-CLOSURE APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("preclosure")
+    suspend fun searchPreclosureAccounts(
+        @Query("value") value: String = ""
+    ): Response<List<List<Any>>>
+
+    @GET("closure")
+    suspend fun searchClosureAccounts(
+        @Query("value") value: String = ""
+    ): Response<List<List<Any>>>
+
+    @GET("fetchacctbalancedisbursement")
+    suspend fun fetchDisbursementBalance(
+        @Query("acctnum") acctnum: String
+    ): Response<String>
+
+    @GET("getloanclosetdatas5211")
+    suspend fun getPreclosureFlowData(
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    @GET("getloanclosetdatas521")
+    suspend fun getClosureFlowData(
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    @GET("getloanclosetdatas511")
+    suspend fun getClosureAddRowData(
+        @Query("accountNumber") accountNumber: String
+    ): Response<LoanClosureDataResponse>
+
+    @GET("FetchLoanDetails")
+    suspend fun fetchLoanDetails(
+        @Query("id") id: String
+    ): Response<Map<String, Any>>
 }

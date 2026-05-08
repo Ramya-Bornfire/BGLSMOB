@@ -130,7 +130,7 @@
                     android:orientation="horizontal">
                     <RadioButton android:id="@+id/rbCash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cash" android:textSize="10sp" android:checked="true" android:paddingEnd="16dp"/>
                     <RadioButton android:id="@+id/rbOfficeRouting" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Office Routing A/C" android:textSize="10sp" android:paddingEnd="16dp"/>
-                    <RadioButton android:id="@+id/rbStandingInstruction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Standing Insection" android:textSize="10sp" android:paddingEnd="16dp"/>
+                    <RadioButton android:id="@+id/rbStandingInstruction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Standing Instruction" android:textSize="10sp" android:paddingEnd="16dp"/>
 
                     <RadioButton
                         android:id="@+id/rbMultipleEntries"
@@ -476,6 +476,7 @@
 
     <!-- BOTTOM ACTION BUTTONS -->
     <LinearLayout
+        android:id="@+id/layoutBottomButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -483,6 +484,18 @@
         android:padding="16dp"
         android:background="#FFFFFF"
         android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/btnHome"
             android:layout_width="wrap_content"
