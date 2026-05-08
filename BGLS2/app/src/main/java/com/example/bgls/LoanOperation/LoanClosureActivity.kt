@@ -46,7 +46,7 @@ class LoanClosureActivity : AppCompatActivity() {
     private var currentAccountNo = ""
     private var totalFlowAmtFromDb = 0.0
     private val TAG = "LoanClosure"
-    private val sdfUI = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    private val sdfUI = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
     private var initialCollection: List<List<Any>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,8 +94,21 @@ class LoanClosureActivity : AppCompatActivity() {
     }
 
     private fun setMode(isPreClosure: Boolean) {
+        val savedId = currentAccountNo
+        val savedName = etAccountName.text.toString()
+        
         isPreClosureMode = isPreClosure
         clearForm()
+        
+        // Restore account if it was selected
+        if (savedId.isNotEmpty()) {
+            currentAccountNo = savedId
+            etAccountId.setText(savedId)
+            etAccountName.setText(savedName)
+            btnSubmit.visibility = View.VISIBLE
+            fetchAccountData(savedId)
+        }
+
         if (isPreClosure) {
             tvTitle.text = "LOAN PRE - CLOSURE"
             tvAccountLabel.text = "Account ID"
@@ -135,12 +148,26 @@ class LoanClosureActivity : AppCompatActivity() {
     private fun fetchInitialData() {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.loanClosure("list")
+                // loanOperation("list") returns the 'collection' of accounts in the response
+                val response = RetrofitClient.api.loanOperation("list")
                 if (response.isSuccessful) {
                     val data = response.body()
-                    Log.d(TAG, "Initial data loaded: formmode=${data?.formmode}")
-                    initialCollection = data?.collection
-                    Log.d(TAG, "Collection size: ${initialCollection?.size}")
+                    Log.d(TAG, "Initial collection loaded from loanOperation")
+                    // The collection is a List of account numbers or objects
+                    val collectionObj = data?.collection
+                    if (collectionObj != null) {
+                        // Transform to List<List<Any>> correctly by extracting inner elements
+                        initialCollection = collectionObj.map { inner ->
+                            if (inner is List<*> && inner.size >= 2) {
+                                listOf(inner[0].toString(), inner[1].toString())
+                            } else if (inner is List<*> && inner.isNotEmpty()) {
+                                listOf(inner[0].toString(), "")
+                            } else {
+                                listOf(inner.toString(), "")
+                            }
+                        }
+                        Log.d(TAG, "Collection size: ${initialCollection?.size}")
+                    }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "fetchInitialData error: ${e.message}")
@@ -233,17 +260,40 @@ class LoanClosureActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.api
+
+                // If empty search, always use initialCollection if available
+                if (value.isEmpty() && !initialCollection.isNullOrEmpty()) {
+                    callback(initialCollection!!)
+                    return@launch
+                }
+
+                // If search query exists, use the verified 'search' endpoint
                 val response = api.search(value)
+
                 if (response.isSuccessful) {
-                    val list = response.body() ?: emptyList()
-                    Log.d(TAG, "Search returned ${list.size} results")
-                    callback(list)
+                    val result = response.body()
+                    if (result != null) {
+                        // The search endpoint returns List<Any> or List<String>, we wrap it for the table
+                        val formattedList = result.map { item ->
+                            if (item is List<*>) item.filterNotNull()
+                            else listOf(item.toString(), "")
+                        }
+                        callback(formattedList)
+                        return@launch
+                    }
+                }
+
+                // Fallback to specific endpoints if search is empty or fails
+                val modeResponse = if (isPreClosureMode) api.searchPreclosureAccounts(value)
+                else api.searchClosureAccounts(value)
+
+                if (modeResponse.isSuccessful && !modeResponse.body().isNullOrEmpty()) {
+                    callback(modeResponse.body()!!)
                 } else {
-                    Log.e(TAG, "Search failed: ${response.code()} ${response.errorBody()?.string()}")
                     callback(emptyList())
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Account search error: ${e.message}", e)
+                Log.e(TAG, "loadAccounts error: ${e.message}")
                 callback(emptyList())
             }
         }
@@ -251,11 +301,14 @@ class LoanClosureActivity : AppCompatActivity() {
 
     // ── Account Selected ───────────────────────────────────────────────────
     private fun onAccountSelected(accountNo: String, accountName: String) {
-        currentAccountNo = accountNo
-        etAccountId.setText(accountNo)
+        // Isolate ID if it's combined (e.g., "1001 / JOHN DOE")
+        val isolatedId = accountNo.split(" / ").firstOrNull()?.trim() ?: accountNo.split(" - ").firstOrNull()?.trim() ?: accountNo.trim()
+        
+        currentAccountNo = isolatedId
+        etAccountId.setText(isolatedId)
         etAccountName.setText(accountName)
         btnSubmit.visibility = View.VISIBLE
-        fetchAccountData(accountNo)
+        fetchAccountData(isolatedId)
     }
 
     private fun fetchAccountData(accountNo: String) {
@@ -266,15 +319,35 @@ class LoanClosureActivity : AppCompatActivity() {
                 // 1. Fetch account balance
                 val balResp = api.fetchAccountBalance(accountNo)
                 if (balResp.isSuccessful) {
-                    val bal = balResp.body()?.toDoubleOrNull() ?: 0.0
+                    val rawBal = balResp.body()?.replace(",", "")?.replace("RM", "")?.trim()
+                    val bal = rawBal?.toDoubleOrNull() ?: 0.0
                     etBalance.setText(String.format("%.2f", bal))
                 }
 
                 // 2. Fetch disbursement balance
                 val disbResp = api.fetchDisbursementBalance(accountNo)
-                if (disbResp.isSuccessful) {
-                    val disb = disbResp.body()?.toDoubleOrNull() ?: 0.0
-                    etDisbursement.setText(String.format("%.2f", disb))
+                if (disbResp.isSuccessful && !disbResp.body().isNullOrEmpty()) {
+                    val rawDisb = disbResp.body()?.replace(",", "")?.replace("RM", "")?.trim()
+                    val disb = rawDisb?.toDoubleOrNull() ?: 0.0
+                    etDisbursement.setText(formatCurrency(disb))
+                } else {
+                    // Fallback 1: Try fetchLoanDetails
+                    val loanDetailResp = api.fetchLoanDetails(accountNo)
+                    if (loanDetailResp.isSuccessful && loanDetailResp.body() != null) {
+                        val data = loanDetailResp.body()
+                        val amt = data?.get("loan_amount")?.toString() 
+                            ?: data?.get("disbursement_amt")?.toString() 
+                            ?: "0.00"
+                        val disb = amt.replace(",", "").toDoubleOrNull() ?: 0.0
+                        etDisbursement.setText(formatCurrency(disb))
+                    } else {
+                        // Fallback 2: Try getLoanMaintenanceView (Reliable in this project)
+                        val mntResp = api.getLoanMaintenanceView(id = accountNo)
+                        if (mntResp.isSuccessful && mntResp.body()?.view != null) {
+                            val disb = mntResp.body()?.view?.loanAmount ?: 0.0
+                            etDisbursement.setText(formatCurrency(disb))
+                        }
+                    }
                 }
 
                 // 3. Fetch flow data
@@ -286,10 +359,19 @@ class LoanClosureActivity : AppCompatActivity() {
 
                 if (flowResp.isSuccessful) {
                     val data = flowResp.body()
-                    if (data != null) {
-                        totalFlowAmtFromDb = data.flowTotalAmt
-                        etClosureBalance.setText(String.format("%.2f", data.flowTotalAmt))
-                        populateTable(data.loanFlows)
+                    totalFlowAmtFromDb = data?.flowTotalAmt ?: 0.0
+                    etClosureBalance.setText(formatCurrency(totalFlowAmtFromDb))
+                    updateFlowTable(data?.loanFlows)
+                } else {
+                    // Fallback to 5214 if 521/5211 fails
+                    val fallbackResp = RetrofitClient.api.getLoanClosureDatas(accountNo)
+                    if (fallbackResp.isSuccessful) {
+                        val data = fallbackResp.body()
+                        totalFlowAmtFromDb = data?.flowTotalAmt ?: 0.0
+                        etClosureBalance.setText(formatCurrency(totalFlowAmtFromDb))
+                        updateFlowTable(data?.loanFlows)
+                    } else {
+                        Toast.makeText(this@LoanClosureActivity, "Error loading flow data", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
@@ -300,7 +382,7 @@ class LoanClosureActivity : AppCompatActivity() {
     }
 
     // ── Populate Table ─────────────────────────────────────────────────────
-    private fun populateTable(flows: List<LoanFlowDetail>?) {
+    private fun updateFlowTable(flows: List<LoanFlowDetail>?) {
         llRows.removeAllViews()
         if (flows.isNullOrEmpty()) return
 
@@ -631,21 +713,29 @@ class LoanClosureActivity : AppCompatActivity() {
     // ── Helpers ─────────────────────────────────────────────────────────────
     private fun formatFlowDate(dateStr: String?): String {
         if (dateStr.isNullOrEmpty()) return ""
-        return try {
-            // Try ISO format first (yyyy-MM-dd)
-            val isoFmt = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date = isoFmt.parse(dateStr)
-            if (date != null) sdfUI.format(date) else dateStr
-        } catch (e: Exception) {
+        val input = dateStr.split(" ").firstOrNull() ?: dateStr // Remove time if present
+        
+        val formats = listOf(
+            SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH),
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH),
+            SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH),
+            SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH),
+            SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH)
+        )
+
+        for (fmt in formats) {
             try {
-                // Try backend date format (dd-MMM-yyyy)
-                val backendFmt = SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH)
-                val date = backendFmt.parse(dateStr)
-                if (date != null) sdfUI.format(date) else dateStr
-            } catch (e2: Exception) {
-                dateStr
+                val date = fmt.parse(input)
+                if (date != null) return sdfUI.format(date)
+            } catch (e: Exception) {
+                // Try next format
             }
         }
+        return dateStr // Return original if all fail
+    }
+
+    private fun formatCurrency(amount: Double): String {
+        return java.text.DecimalFormat("#,##0.00").format(amount)
     }
 
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()

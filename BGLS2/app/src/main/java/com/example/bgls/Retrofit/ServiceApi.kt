@@ -51,15 +51,15 @@ interface ServiceApi {
         @Query("branch_code") branchCode: String
     ): Response<OrganizationViewResponse>
 
-    @POST("tab2modify")
+    @POST("api/tab2modify")
     suspend fun updateBranch(@Body body: RequestBody): Response<ResponseBody>
 
     @FormUrlEncoded
-    @POST("tab2Del")
+    @POST("api/tab2Del")
     suspend fun deleteBranch(@Field("branch_code") branchCode: String): Response<ResponseBody>
 
     @FormUrlEncoded
-    @POST("OrgBranchAdd")
+    @POST("api/OrgBranchAdd")
     suspend fun addBranch(@FieldMap params: Map<String, String>): Response<ResponseBody>
 
     @GET("api/userProfile")
@@ -200,13 +200,13 @@ interface ServiceApi {
 
 
     @FormUrlEncoded
-    @POST("verifyUserById")
+    @POST("api/verifyUserById")
     fun verifyCustomerById(@Field("UserId") userId: String): Call<ResponseBody>
     // ─────────────────────────────────────────────────────────────────────────
     // GL STRUCTURE MAINTENANCE APIs
     // ─────────────────────────────────────────────────────────────────────────
     @FormUrlEncoded
-    @POST("modifySubmit")
+    @POST("api/modifySubmit")
     suspend fun modifyCustomer(@FieldMap fields: Map<String, String>): Response<ResponseBody>
     @GET("api/glcode")
     fun getGLCode(
@@ -390,8 +390,8 @@ interface ServiceApi {
     suspend fun getLoanMaintenanceView(
         @Query("formmode") formmode: String = "view",
         @Query("id") id: String,
-        @Query("holder_key") holderKey: String,
-        @Query("branch_key") branchKey: String
+        @Query("holder_key") holderKey: String = "",
+        @Query("branch_key") branchKey: String = ""
     ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterViewResponse>
 
     /** Search by Loan ID (partial match) */
@@ -447,7 +447,7 @@ interface ServiceApi {
         @Query("acct_num") acctNum: String
     ): retrofit2.Response<com.example.bgls.DataModels.AccountLedgerViewResponse>
 
-    @GET("getTypeDescription")
+    @GET("api/getTypeDescription")
     suspend fun getTypeDescription(@Query("refType") refType: String): Response<TypeDescriptionResponse>
 
     data class TypeDescriptionResponse(
@@ -470,7 +470,7 @@ interface ServiceApi {
         @Query("acct_num") acctNum: String
     ): Response<JournalEntryViewResponse>
 
-    @GET("transactionValues")
+    @GET("api/transactionValues")
     suspend fun getTransactionDetails(
         @Query("tran_id") tranId: String,
         @Query("part_tran_id") partTranId: String
@@ -660,15 +660,8 @@ interface ServiceApi {
         @Query("formmode") formmode: String?
     ): Response<LoanOperationResponse>
 
-    @POST("api/saveLoanpreClosureDetails")
-    suspend fun saveLoanpreClosureDetails(
-        @Body data: Map<String, Any>
-    ): Response<String>
 
-    @POST("api/saveLoanClosureDetails")
-    suspend fun saveLoanClosureDetails(
-        @Body data: Map<String, Any>
-    ): Response<String>
+
 
     @POST("api/transactionInterest")
     suspend fun transactionInterest(
@@ -741,38 +734,48 @@ interface ServiceApi {
     // LOAN CLOSURE / PRE-CLOSURE APIs
     // ─────────────────────────────────────────────────────────────────────────
 
-    @GET("preclosure")
+    @GET("api/preclosure")
     suspend fun searchPreclosureAccounts(
         @Query("value") value: String = ""
     ): Response<List<List<Any>>>
 
-    @GET("closure")
+    @GET("api/closure")
     suspend fun searchClosureAccounts(
         @Query("value") value: String = ""
     ): Response<List<List<Any>>>
 
-    @GET("fetchacctbalancedisbursement")
+    @GET("api/fetchacctbalancedisbursement")
     suspend fun fetchDisbursementBalance(
         @Query("acctnum") acctnum: String
     ): Response<String>
 
-    @GET("getloanclosetdatas5211")
+    @GET("api/getloanclosetdatas5211")
     suspend fun getPreclosureFlowData(
         @Query("accountNumber") accountNumber: String
     ): Response<LoanClosureDataResponse>
 
-    @GET("getloanclosetdatas521")
+    @GET("api/getloanclosetdatas521")
     suspend fun getClosureFlowData(
         @Query("accountNumber") accountNumber: String
     ): Response<LoanClosureDataResponse>
 
-    @GET("getloanclosetdatas511")
+    @GET("api/getloanclosetdatas511")
     suspend fun getClosureAddRowData(
         @Query("accountNumber") accountNumber: String
     ): Response<LoanClosureDataResponse>
 
-    @GET("FetchLoanDetails")
+    @GET("api/fetchLoanDetails")
     suspend fun fetchLoanDetails(
         @Query("id") id: String
     ): Response<Map<String, Any>>
+
+    @POST("api/saveLoanpreClosureDetails")
+    suspend fun saveLoanpreClosureDetails(
+        @Body request: Map<String, Any>
+    ): Response<String>
+
+    @POST("api/saveLoanClosureDetails")
+    suspend fun saveLoanClosureDetails(
+        @Body request: Map<String, Any>
+    ): Response<String>
 }
