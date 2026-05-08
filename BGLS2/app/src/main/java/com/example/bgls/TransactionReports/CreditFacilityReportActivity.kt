@@ -1,6 +1,7 @@
 package com.example.bgls.TransactionReports
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
@@ -114,9 +115,14 @@ class CreditFacilityReportActivity : AppCompatActivity() {
                 val response = RetrofitClient.api.getCreditFacilityReport()
                 if (response.isSuccessful) {
                     val body = response.body()
-                    loanvalues  = body?.loanvalues  ?: emptyList()   // Schedule list
-                    loanDetails = body?.loanDetails ?: emptyList()   // Details list
+                    loanvalues  = body?.loanvalues  ?: emptyList()
+                    loanDetails = body?.loanDetails ?: emptyList()
+                    
+                    val total = loanvalues.size + loanDetails.size
+                    android.util.Log.d("CreditFacility", "Loaded $total accounts (Schedule: ${loanvalues.size}, Details: ${loanDetails.size})")
+                    toast("Loaded $total accounts")
                 } else {
+                    android.util.Log.e("CreditFacility", "API Error: ${response.code()}")
                     toast("Failed to load accounts: ${response.code()}")
                 }
             } catch (e: Exception) {
@@ -132,16 +138,13 @@ class CreditFacilityReportActivity : AppCompatActivity() {
     // ------------------------------------------------------------------
 
     private fun openAccountSearchDialog() {
-        // Pick the correct list depending on current tab
         val accounts: List<Pair<String, String>> = if (isDetailsMode) {
-            // Details tab uses loanDetails  (maps to myModal2 / openModal1 in web)
             loanDetails.map { row ->
                 val no   = row.getOrNull(0)?.toString() ?: ""
                 val name = row.getOrNull(1)?.toString() ?: ""
                 Pair(no, name)
             }
         } else {
-            // Schedule tab uses loanvalues  (maps to myModal / openModal in web)
             loanvalues.map { row ->
                 val no   = row.getOrNull(0)?.toString() ?: ""
                 val name = row.getOrNull(1)?.toString() ?: ""
@@ -150,7 +153,8 @@ class CreditFacilityReportActivity : AppCompatActivity() {
         }
 
         if (accounts.isEmpty()) {
-            toast("No accounts loaded yet. Please wait…")
+            toast("No accounts loaded. Re-fetching...")
+            loadAccountLists()
             return
         }
 
@@ -158,33 +162,58 @@ class CreditFacilityReportActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).setView(dialogView).create()
 
         val etSearchAccNo   = dialogView.findViewById<EditText>(R.id.etSearchAccNo)
+        val etSearchAccName = dialogView.findViewById<EditText>(R.id.etSearchAccName)
         val btnFilter       = dialogView.findViewById<Button>(R.id.btnFilter)
         val btnClose        = dialogView.findViewById<Button>(R.id.btnCloseDialog)
         val tlAccounts      = dialogView.findViewById<TableLayout>(R.id.tlAccounts)
 
-        var filterEnabled = false
-
         fun populateTable(list: List<Pair<String, String>>) {
             tlAccounts.removeAllViews()
-            list.forEach { acc ->
-                val row = TableRow(this)
+            
+            // Add Header Row
+            val header = TableRow(this).apply {
+                setBackgroundColor(Color.LTGRAY)
+                setPadding(2, 2, 2, 2)
+            }
+            header.addView(TextView(this).apply { 
+                text = "Acc No"
+                setPadding(8, 8, 8, 8)
+                setTypeface(null, Typeface.BOLD)
+                textSize = 12f
+                layoutParams = TableRow.LayoutParams(0, -2, 1f) 
+            })
+            header.addView(TextView(this).apply { 
+                text = "Acc Name"
+                setPadding(8, 8, 8, 8)
+                setTypeface(null, Typeface.BOLD)
+                textSize = 12f
+                layoutParams = TableRow.LayoutParams(0, -2, 2f) 
+            })
+            tlAccounts.addView(header)
 
-                val tvNo = TextView(this).apply {
-                    text = acc.first
+            // Limit results to prevent UI freeze (e.g., first 50)
+            val displayList = list.take(100)
+            if (list.size > 100) {
+                tlAccounts.addView(TextView(this).apply {
+                    text = "Showing first 100 of ${list.size} accounts. Please use filter."
+                    setTextColor(Color.RED)
+                    setPadding(16, 8, 16, 8)
                     textSize = 10f
-                    setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
-                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    setTypeface(null, Typeface.ITALIC)
+                })
+            }
+
+            displayList.forEach { acc ->
+                val row = TableRow(this).apply {
+                    setPadding(2, 2, 2, 2)
+                    isClickable = true
+                    isFocusable = true
+                    setBackgroundResource(android.R.drawable.list_selector_background)
                 }
-                val tvName = TextView(this).apply {
-                    text = acc.second
-                    textSize = 10f
-                    setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
-                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
-                }
-                row.addView(tvNo)
-                row.addView(tvName)
+
+                row.addView(TextView(this).apply { text = acc.first; setPadding(12, 12, 12, 12); textSize = 11f; layoutParams = TableRow.LayoutParams(0, -2, 1f) })
+                row.addView(TextView(this).apply { text = acc.second; setPadding(12, 12, 12, 12); textSize = 11f; layoutParams = TableRow.LayoutParams(0, -2, 2f) })
+                
                 row.setOnClickListener {
                     etAccountNo.setText(acc.first)
                     etAccountName.setText(acc.second)
@@ -196,29 +225,32 @@ class CreditFacilityReportActivity : AppCompatActivity() {
 
         populateTable(accounts)
 
-        // Filter button toggles search field (mirrors web Filter button)
-        btnFilter.setOnClickListener {
-            filterEnabled = !filterEnabled
-            etSearchAccNo.isEnabled = filterEnabled
-            btnFilter.text = if (filterEnabled) "Clear Filter" else "Filter"
-            if (filterEnabled) etSearchAccNo.requestFocus()
-            else {
-                etSearchAccNo.setText("")
-                populateTable(accounts)
+        fun filterAction() {
+            val qNo = etSearchAccNo.text.toString().trim().lowercase()
+            val qName = etSearchAccName.text.toString().trim().lowercase()
+            
+            val filtered = if (qNo.isEmpty() && qName.isEmpty()) {
+                accounts
+            } else {
+                accounts.filter {
+                    it.first.lowercase().contains(qNo) || it.second.lowercase().contains(qName)
+                }
             }
+            populateTable(filtered)
         }
 
-        // Live filter as user types
+        btnFilter.setOnClickListener { filterAction() }
+
         etSearchAccNo.addTextChangedListener(object : android.text.TextWatcher {
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: android.text.Editable?) { filterAction() }
             override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
-            override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {
-                val query = s.toString().lowercase()
-                val filtered = accounts.filter {
-                    it.first.lowercase().contains(query) || it.second.lowercase().contains(query)
-                }
-                populateTable(filtered)
-            }
+            override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
+        })
+
+        etSearchAccName.addTextChangedListener(object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) { filterAction() }
+            override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
+            override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
         })
 
         btnClose.setOnClickListener { dialog.dismiss() }
@@ -245,11 +277,17 @@ class CreditFacilityReportActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
-                        val fileName = if (isDetailsMode) "Details_$acctNo.pdf" else "Schedule_$acctNo.pdf"
+                        // Check if server returned PDF or Excel (based on your backend code)
+                        val contentType = response.headers()["Content-Type"] ?: ""
+                        val isExcel = contentType.contains("spreadsheet") || contentType.contains("excel")
+                        val extension = if (isExcel) ".xlsx" else ".pdf"
+                        val mimeType = if (isExcel) "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" else "application/pdf"
+
+                        val fileName = if (isDetailsMode) "Details_$acctNo$extension" else "Schedule_$acctNo$extension"
                         val saved = saveFile(body, fileName)
                         if (saved != null) {
                             toast("Saved: $fileName")
-                            openPdf(saved)
+                            openFile(saved, mimeType)
                         } else {
                             toast("Error: Could not save file to storage")
                         }
@@ -299,20 +337,20 @@ class CreditFacilityReportActivity : AppCompatActivity() {
             }
         }
 
-    // Open the PDF with device viewer
-    private fun openPdf(file: File) {
+    // Open the file with device viewer
+    private fun openFile(file: File, mimeType: String) {
         try {
             val authority = "${applicationContext.packageName}.provider"
             val uri = androidx.core.content.FileProvider.getUriForFile(this, authority, file)
             
             val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "application/pdf")
+                setDataAndType(uri, mimeType)
                 addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            startActivity(android.content.Intent.createChooser(intent, "Open PDF"))
+            startActivity(android.content.Intent.createChooser(intent, "Open Report"))
         } catch (e: Exception) {
-            toast("No PDF viewer found. File saved in Downloads.")
+            toast("No app found to open this file. File saved in Downloads.")
         }
     }
 

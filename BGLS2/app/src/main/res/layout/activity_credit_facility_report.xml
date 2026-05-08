@@ -140,7 +140,9 @@
                         android:background="@drawable/edittext_background"
                         android:textSize="11sp"
                         android:paddingStart="8dp"
-                        android:inputType="textPersonName"/>
+                        android:hint="Account Name"
+                        android:focusable="false"
+                        android:inputType="none"/>
 
                 </LinearLayout>
                 <ProgressBar
