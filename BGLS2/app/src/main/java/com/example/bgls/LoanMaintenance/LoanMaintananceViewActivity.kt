@@ -127,6 +127,7 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
         btnLedger = findViewById(R.id.btnLedger)
         btnWallet = findViewById(R.id.btnWallet)
         btnVerify = findViewById(R.id.btnVerify)
+        btnVerify.visibility = android.view.View.GONE
 
         etCustomerId = findViewById(R.id.etCustomerId)
         etCustomerName = findViewById(R.id.etCustomerName)
@@ -221,17 +222,52 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
             val intent = Intent(this, WalletActivity::class.java)
             startActivity(intent)
         }
+
+        btnVerify.setOnClickListener {
+            if (loanId.isNotEmpty()) {
+                verifyLoan(loanId)
+            } else {
+                Toast.makeText(this, "Loan ID is missing", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun verifyLoan(id: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.verifyLoanMain(id)
+                if (response.isSuccessful) {
+                    val message = response.body()?.string() ?: "Verified Successfully"
+                    Toast.makeText(this@LoanMaintananceViewActivity, message, Toast.LENGTH_LONG).show()
+                    // Optionally refresh the data or finish the activity
+                    fetchLoanDetails(loanId, holderKey, branchKey)
+                } else {
+                    Log.e(TAG, "Verification failed: ${response.code()}")
+                    Toast.makeText(this@LoanMaintananceViewActivity, "Verification failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Network error during verification", e)
+                Toast.makeText(this@LoanMaintananceViewActivity, "Network error", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun fetchLoanDetails(id: String, holderKey: String, branchKey: String) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getLoanMasterView(id = id, holderKey = holderKey, branchKey = branchKey)
+                val response = RetrofitClient.api.getLoanMaintenanceView(id = id, holderKey = holderKey, branchKey = branchKey)
                 if (response.isSuccessful && response.body() != null) {
                     val data = response.body()!!
                     populateUI(data)
-                    encodedKey = data.view?.encodedKey ?: ""   // <-- FIX HERE
+                    encodedKey = data.view?.encodedKey ?: ""
                     Log.d(TAG, "Encoded key from API: $encodedKey")
+
+                    // Manage Verify button visibility
+                    if (data.isUnverified == true) {
+                        btnVerify.visibility = android.view.View.VISIBLE
+                    } else {
+                        btnVerify.visibility = android.view.View.GONE
+                    }
                 } else {
                     Log.e(TAG, "API error: ${response.code()}")
                     Toast.makeText(this@LoanMaintananceViewActivity, "Failed to load loan details", Toast.LENGTH_SHORT).show()

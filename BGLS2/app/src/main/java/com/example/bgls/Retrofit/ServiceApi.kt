@@ -380,6 +380,14 @@ interface ServiceApi {
         @Query("branch_key") branchKey: String
     ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterViewResponse>
 
+    @GET("api/Loan_Maintenance")
+    suspend fun getLoanMaintenanceView(
+        @Query("formmode") formmode: String = "view",
+        @Query("id") id: String,
+        @Query("holder_key") holderKey: String,
+        @Query("branch_key") branchKey: String
+    ): retrofit2.Response<com.example.bgls.DataModels.LoanMasterViewResponse>
+
     /** Search by Loan ID (partial match) */
     @GET("api/loan/search")
     suspend fun searchLoanById(
@@ -599,4 +607,9 @@ interface ServiceApi {
     suspend fun getIncomeExpenditure(
         @Query("balancedate") balancedate: String
     ): Response<com.example.bgls.DataModels.IncomeExpenditureResponse>
+
+    @POST("api/Verifyloanmain")
+    suspend fun verifyLoanMain(
+        @Query("id") id: String
+    ): Response<ResponseBody>
 }

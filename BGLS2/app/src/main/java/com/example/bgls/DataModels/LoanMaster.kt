@@ -129,5 +129,6 @@ data class LoanMasterViewResponse(
     @SerializedName("branchName1")    val branchName1: String? = null,
     @SerializedName("acct_bal")       val acctBal: Double? = null,
     @SerializedName("user")           val user: String? = null,
-    @SerializedName("encoded_key")    val encodedKey: String? = null
+    @SerializedName("encoded_key")    val encodedKey: String? = null,
+    @SerializedName("Boolean")        val isUnverified: Boolean? = null
 )

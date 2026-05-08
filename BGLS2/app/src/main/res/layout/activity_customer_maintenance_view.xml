@@ -60,29 +60,62 @@
                 android:baselineAligned="false">
 
             <!-- Left Column -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingEnd="16dp">
 
-                <include layout="@layout/item_form_row" android:id="@+id/rowCustomerId" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowFirstName" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowGender" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowBranch" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowCreationDate" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowLastModificationDate" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowMobileNo" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowAddress1" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowCity" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowLoanCycle" />
-                <include layout="@layout/item_form_row" android:id="@+id/rowAssignedUser" />
+                <!-- Right Column -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingEnd="16dp">
 
-            </LinearLayout>
+                    <include
+                        android:id="@+id/rowCustomerId"
+                        layout="@layout/item_form_row" />
 
-            <!-- Right Column -->
-            <LinearLayout
+                    <include
+                        android:id="@+id/rowFirstName"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowGender"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowBranch"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowCreationDate"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowLastModificationDate"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowMobileNo"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowAddress1"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowCity"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowLoanCycle"
+                        layout="@layout/item_form_row" />
+
+                    <include
+                        android:id="@+id/rowAssignedUser"
+                        layout="@layout/item_form_row" />
+
+                </LinearLayout>
+
+                <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
