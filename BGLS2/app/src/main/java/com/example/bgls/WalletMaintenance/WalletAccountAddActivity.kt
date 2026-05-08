@@ -1,4 +1,4 @@
-package com.example.bgls.DepositAccount
+package com.example.bgls.WalletMaintenance
 
 import android.content.Intent
 import android.os.Bundle

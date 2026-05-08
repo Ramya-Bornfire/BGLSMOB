@@ -35,6 +35,8 @@ import com.example.bgls.UserControl.UserControlActivity
 import com.example.bgls.TransactionInquiries.AccountBalanceActivity
 import com.example.bgls.TransactionInquiries.InterestSummaryActivity
 import com.example.bgls.TransactionInquiries.BalanceSheetActivity
+import com.example.bgls.WalletMaintenance.WalletInquiryActivity
+import com.example.bgls.WalletMaintenance.WalletMaintenanceListActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -250,10 +252,10 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 "Wallet Maintanance" -> {
-                    startActivity(Intent(this, com.example.bgls.DepositAccount.WalletMaintenanceListActivity::class.java))
+                    startActivity(Intent(this, WalletMaintenanceListActivity::class.java))
                 }
                 "Wallet Inquries" -> {
-                    startActivity(Intent(this, com.example.bgls.DepositAccount.WalletInquiryActivity::class.java))
+                    startActivity(Intent(this, WalletInquiryActivity::class.java))
                 }
 //                "Account Opening" -> {
 //                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountOpeningActivity::class.java))

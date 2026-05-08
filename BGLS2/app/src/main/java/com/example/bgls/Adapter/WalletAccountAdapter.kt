@@ -64,12 +64,7 @@ class WalletAccountAdapter(
         }
 
         holder.rbSelect.isChecked = position == selectedPosition
-
-        holder.itemView.setOnClickListener {
-            selectedPosition = position
-            notifyDataSetChanged()
-            onItemClick(account)
-        }
+        
 
         holder.rbSelect.setOnClickListener {
             selectedPosition = position
