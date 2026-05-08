@@ -7,6 +7,7 @@ import com.example.bgls.DataModels.ChartAccountItem
 import com.example.bgls.DataModels.ChartOfAccountsAddResponse
 import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
+import com.example.bgls.DataModels.CreditFacilityResponse
 import com.example.bgls.DataModels.EmployeeListResponse
 import com.example.bgls.DataModels.EmployeeProfile
 import com.example.bgls.DataModels.JournalEntryAddScreenResponse
@@ -778,4 +779,81 @@ interface ServiceApi {
     suspend fun saveLoanClosureDetails(
         @Body request: Map<String, Any>
     ): Response<String>
+
+    // Add these two endpoints to your existing ServiceApi interface
+
+    @GET("api/credit_facility_report")
+    suspend fun getCreditFacilityReport(
+        @Query("formmode") formmode: String = "list"
+    ): Response<CreditFacilityResponse>
+
+    @GET("api/downloadDetailsPdf")
+    @Streaming
+    suspend fun downloadDetailsPdf(
+        @Query("filetype") filetype: String = "pdf",
+        @Query("acctNo") acctNo: String
+    ): Response<ResponseBody>
+
+    @GET("api/downloadShedulePdf")
+    @Streaming
+    suspend fun downloadSchedulePdf(
+        @Query("filetype") filetype: String = "pdf",
+        @Query("acctNo") acctNo: String
+    ): Response<ResponseBody>
+
+    @GET("api/EndOfMonthLoanReportDownload")
+    @Streaming
+    suspend fun downloadEndOfMonthReport(
+        @Query("dueDate") dueDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/DABReportDownload")
+    @Streaming
+    suspend fun downloadDABReport(
+        @Query("tranDate") tranDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/ConsolidatedLoanReportDownload")
+    @Streaming
+    suspend fun downloadConsolidatedLoanReport(
+        @Query("dueDate") dueDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/TransactionPDFReportDownload")
+    @Streaming
+    suspend fun downloadTransactionReport(
+        @Query("dueDate") dueDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/TransactionPDFReport2Download")
+    @Streaming
+    suspend fun downloadRecoveryReport(
+        @Query("dueDate") dueDate: String,
+        @Query("reportType") reportType: String,
+        @Query("DType") dType: String
+    ): Response<ResponseBody>
+
+    @GET("api/TransactionPDFReport3Download")
+    @Streaming
+    suspend fun downloadDemandGenerationReport(
+        @Query("dueDate") dueDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/LoanAccrualReportDownload")
+    @Streaming
+    suspend fun downloadInterestAccrualReport(
+        @Query("accrualDate") accrualDate: String
+    ): Response<ResponseBody>
+
+    @GET("api/LoanDailyPenaltyReportDownload")
+    @Streaming
+    suspend fun downloadPenaltyAccrualReport(
+        @Query("tranDate") tranDate: String
+    ): Response<ResponseBody>
+    @FormUrlEncoded
+    @POST("login")   // or whatever your login endpoint is
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<ResponseBody>
 }
