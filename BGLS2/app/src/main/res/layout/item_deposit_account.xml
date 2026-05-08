@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:textSize="11sp"
-        android:textColor="#333333"
+        android:textColor="#007BFF"
         android:ellipsize="end"
         android:maxLines="1"/>
 
@@ -62,10 +62,13 @@
         android:textSize="11sp"
         android:textStyle="bold"/>
 
-    <Spinner
-        android:id="@+id/spinnerAction"
+    <RadioButton
+        android:id="@+id/rbSelect"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/edittext_background"/>
+        android:gravity="center"
+        android:buttonTint="#007BFF"
+        android:scaleX="0.8"
+        android:scaleY="0.8"/>
 </LinearLayout>

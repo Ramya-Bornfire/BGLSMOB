@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- TITLE BAR -->
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cyanblue"
+        android:padding="12dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACCOUNT LEDGER"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"/>
+
+        <Spinner
+            android:id="@+id/spnDownload"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/spinner_blue_background"
+            android:paddingHorizontal="8dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- DETAILS CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/table_border"
+                android:padding="16dp"
+                android:layout_marginBottom="20dp"
+                android:baselineAligned="false">
+
+                <!-- Col 1 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="Acct ID" android:textSize="10sp"/>
+                        <EditText android:id="@+id/etAcctId" android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="TD0088" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="Acct Bal" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="0.00" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="GL Sub Head" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="2500" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="Home Currency Bal" android:textSize="9sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="0.00" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="From Date" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="08-05-2026" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Col 2 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1.2"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Acct Name" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="LALITH KUMAR" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Gen Led" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="2000" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="GLSH Des" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="DEPOSITS" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Acct Open Date" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="05-05-2026" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="To Date" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="08-05-2026" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Col 3 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Acct CCY" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="SCR" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="GL Des" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="Liability" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Account Currency" android:textSize="9sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="SCR" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Acct Close Date" android:textSize="9sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="90dp" android:layout_height="wrap_content" android:text="Acct Status" android:textSize="10sp"/>
+                        <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="ACTIVE" android:padding="4dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- TRANSACTIONS TABLE -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:fillViewport="true">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E9ECEF"
+                        android:paddingVertical="8dp">
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="100dp" android:text="Tran Date"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="Tran Id"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="150dp" android:text="Tran Particulars"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="Currency"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="100dp" android:text="Credits" android:gravity="end" android:paddingEnd="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="100dp" android:text="Debits" android:gravity="end" android:paddingEnd="8dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="Balance" android:gravity="end" android:paddingEnd="8dp"/>
+                    </LinearLayout>
+                    
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No records"
+                            android:textSize="12sp"
+                            android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#E9ECEF">
+        
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="8dp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>

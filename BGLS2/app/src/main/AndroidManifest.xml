@@ -230,6 +230,9 @@
             android:name=".DepositAccount.DepositAccountMaintenanceFlowActivity"
             android:exported="false" />
         <activity
+            android:name=".DepositAccount.AccountLedgerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ReversalTransaction.FailedReversalActivity"
             android:exported="false" />
         <activity

@@ -15,6 +15,8 @@ class DepositAccountAdapter(
     private val onActionClick: (DepositAccountModel) -> Unit
 ) : RecyclerView.Adapter<DepositAccountAdapter.AccountViewHolder>() {
 
+    private var selectedPosition = -1
+
     class AccountViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvCustId: TextView = view.findViewById(R.id.tvCustId)
         val tvCustName: TextView = view.findViewById(R.id.tvCustName)
@@ -22,7 +24,7 @@ class DepositAccountAdapter(
         val tvDateOfDeposit: TextView = view.findViewById(R.id.tvDateOfDeposit)
         val tvDepositAmount: TextView = view.findViewById(R.id.tvDepositAmount)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val spinnerAction: android.widget.Spinner = view.findViewById(R.id.spinnerAction)
+        val rbSelect: android.widget.RadioButton = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
@@ -45,18 +47,16 @@ class DepositAccountAdapter(
             holder.tvStatus.setTextColor(Color.parseColor("#DC3545")) // Red
         }
 
-        val options = arrayOf("Action", "View", "Modify")
-        val adapter = android.widget.ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_dropdown_item, options)
-        holder.spinnerAction.adapter = adapter
+        holder.rbSelect.isChecked = position == selectedPosition
 
-        holder.spinnerAction.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                if (pos == 1) { // "View" selected
-                    onActionClick(account)
-                    holder.spinnerAction.setSelection(0) // Reset to "Action"
-                }
-            }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        holder.rbSelect.setOnClickListener {
+            selectedPosition = holder.adapterPosition
+            notifyDataSetChanged()
+            onActionClick(account)
+        }
+
+        holder.tvCustId.setOnClickListener {
+            onActionClick(account)
         }
     }
 

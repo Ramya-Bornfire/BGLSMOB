@@ -1,5 +1,6 @@
 package com.example.bgls
 
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -102,8 +103,7 @@ class MainActivity : AppCompatActivity() {
             Transaction("Loan Maintenance",listOf("Loan Maintenance")),
             Transaction("Loan Operation",
                 listOf("Loan Operation","Loan Closure")),
-            Transaction("Deposit Accounts",
-                listOf("Account Opening","Account Maintenace")),
+            Transaction("Deposit Maintanance"),
             Transaction("Transaction Maintanance",
                 listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
             Transaction("Reversal Transactions",
@@ -134,8 +134,14 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = TransactionAdapter(list) { subItem ->
+        binding.recyclerView.adapter = TransactionAdapter(list) {name,subItem ->
 
+            when (name){
+                "Deposit Maintanance" -> {
+                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountMaintenanceListActivity::class.java))
+                }
+
+            }
             when (subItem) {
 
                 "Organization Details" -> {
@@ -242,15 +248,13 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("REPORT_TITLE", "Penalty Accrual - Reports")
                     startActivity(intent)
                 }
-                "Account Opening" -> {
-                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountOpeningActivity::class.java))
-                }
+//                "Account Opening" -> {
+//                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountOpeningActivity::class.java))
+//                }
                 "Loan Collection" -> {
                     startActivity(Intent(this, com.example.bgls.LoanCollectionActivity::class.java))
                 }
-                "Account Maintenace" -> {
-                    startActivity(Intent(this, com.example.bgls.DepositAccount.DepositAccountMaintenanceListActivity::class.java))
-                }
+
 
                 "Transaction Reversal"->{
                     startActivity(Intent(this, TransactionsReversalActivity::class.java))

@@ -14,7 +14,7 @@ import com.example.bgls.databinding.ItemTransactionBinding
 
 class TransactionAdapter(
     private val list: List<Transaction>,
-    private val onSubItemClick: (String) -> Unit
+    private val onSubItemClick: (String,String) -> Unit
 ) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     private var expandedPosition = -1   // track opened item
@@ -56,7 +56,7 @@ class TransactionAdapter(
 
                 // 👉 Click action
                 textView.setOnClickListener {
-                    onSubItemClick(subItem)
+                    onSubItemClick(item.name, subItem)
                 }
 //                textView.setOnClickListener {
 //
@@ -98,7 +98,23 @@ class TransactionAdapter(
         }
 
         // 👉 Expand / Collapse
+//        holder.itemView.setOnClickListener {
+//            val previousExpanded = expandedPosition
+//            expandedPosition = if (isExpanded) -1 else position
+//
+//            if (previousExpanded != -1) notifyItemChanged(previousExpanded)
+//            notifyItemChanged(position)
+//        }
+
         holder.itemView.setOnClickListener {
+
+            // 👉 No subitems means direct click
+            if (item.subItems.isEmpty()) {
+                onSubItemClick(item.name, "")
+                return@setOnClickListener
+            }
+
+            // 👉 Expand / Collapse
             val previousExpanded = expandedPosition
             expandedPosition = if (isExpanded) -1 else position
 
