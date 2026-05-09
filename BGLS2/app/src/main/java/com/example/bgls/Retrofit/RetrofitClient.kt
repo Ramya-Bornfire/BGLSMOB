@@ -28,6 +28,7 @@ object RetrofitClient {
             .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
             .addInterceptor(logging)
             .cookieJar(cookieJar)// 👈 ADD THIS
+            .addInterceptor(UppercaseInterceptor())
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", authHeader)

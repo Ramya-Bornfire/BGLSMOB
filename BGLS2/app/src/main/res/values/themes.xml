@@ -12,6 +12,10 @@
         <item name="android:statusBarColor">@color/cyanblue</item>
         <item name="android:windowBackground">@color/colorBackground</item>
 
+        <item name="android:textViewStyle">@style/UppercaseTextView</item>
+        <item name="android:editTextStyle">@style/UppercaseEditText</item>
+        <item name="editTextStyle">@style/UppercaseEditText</item>
+
     </style>
 
     <!-- REQUIRED if referenced -->
@@ -22,6 +26,14 @@
     <style name="Theme.BGLS.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="UppercaseTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="UppercaseEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

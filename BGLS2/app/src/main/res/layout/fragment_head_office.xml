@@ -31,7 +31,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Enter name"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -56,7 +55,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="e.g. NGO, Pvt Ltd"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -88,7 +86,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="YYYY-MM-DD"
                 android:inputType="date"
                 android:textSize="14sp"
                 android:padding="12dp"
@@ -113,7 +110,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Reg. number"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -145,7 +141,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Card number"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -169,7 +164,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="VAT number"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -202,7 +196,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
-                android:hint="Number"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -226,7 +219,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Date"
                 android:inputType="date"
                 android:textSize="14sp"
                 android:padding="12dp"
@@ -259,7 +251,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Address line 1"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -283,7 +274,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Address line 2"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -315,7 +305,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Address line 1"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -339,7 +328,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Address line 2"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -371,7 +359,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="textUri"
-                android:hint="https://"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
@@ -396,7 +383,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="textEmailAddress"
-                android:hint="name@example.com"
                 android:textSize="14sp"
                 android:padding="12dp"
                 android:background="@drawable/edittext_bg"/>
