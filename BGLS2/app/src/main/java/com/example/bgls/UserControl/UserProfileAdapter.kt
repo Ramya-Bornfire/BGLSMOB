@@ -49,6 +49,13 @@ class UserProfileAdapter(
             else context.getColor(android.R.color.holo_orange_dark)
         )
 
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
+
         holder.tvUserId.setOnClickListener { listener.onView(user) }
         holder.tvAction.setOnClickListener { anchor ->
             showPopupMenu(anchor, user, position)

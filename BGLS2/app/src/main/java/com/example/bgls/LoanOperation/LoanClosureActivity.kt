@@ -189,17 +189,19 @@ class LoanClosureActivity : AppCompatActivity() {
             tlAccounts.removeAllViews()
             for (acc in list) {
                 if (acc.size < 2) continue
-                val row = TableRow(this)
-                val tvNo = TextView(this).apply {
+                val rowIndex = tlAccounts.childCount
+                val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+                val row = TableRow(this@LoanClosureActivity).apply { setBackgroundColor(bgColor) }
+                val tvNo = TextView(this@LoanClosureActivity).apply {
                     text = acc[0].toString(); textSize = 10f
                     setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
+                    setBackgroundColor(Color.TRANSPARENT)
                     layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
                 }
-                val tvName = TextView(this).apply {
+                val tvName = TextView(this@LoanClosureActivity).apply {
                     text = acc[1].toString(); textSize = 10f
                     setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
+                    setBackgroundColor(Color.TRANSPARENT)
                     layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
                 }
                 row.addView(tvNo); row.addView(tvName)
@@ -409,6 +411,8 @@ class LoanClosureActivity : AppCompatActivity() {
         tranAmtStr: String, waiverStr: String, additionalStr: String,
         isEditable: Boolean, isDeletable: Boolean
     ): LinearLayout {
+        val rowIndex = llRows.childCount
+        val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -416,6 +420,7 @@ class LoanClosureActivity : AppCompatActivity() {
             )
             orientation = LinearLayout.HORIZONTAL
             tag = "data_row"
+            setBackgroundColor(bgColor)
         }
 
         val weights = listOf(1f, 1f, 1.2f, 1.2f, 1.2f, 1.5f)
@@ -424,7 +429,7 @@ class LoanClosureActivity : AppCompatActivity() {
         for ((index, w) in weights.withIndex()) {
             val et = EditText(this).apply {
                 layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), w)
-                setBackgroundResource(R.drawable.table_cell_bg)
+                setBackgroundColor(Color.TRANSPARENT)
                 textSize = 10f
                 setPadding(4.dpToPx(), 4.dpToPx(), 4.dpToPx(), 4.dpToPx())
                 gravity = if (index >= 2) Gravity.END else Gravity.CENTER

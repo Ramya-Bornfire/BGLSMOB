@@ -137,18 +137,19 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="#E8E8E8">
 
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="S.NO" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW ID" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW DATE" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW CODE" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="120dp" android:text="FLOW AMOUNT" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp" android:gravity="end|center_vertical" android:paddingEnd="12dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NUMBER" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NAME" android:background="@drawable/table_cell_bg" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="S.NO" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW ID" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW DATE" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW CODE" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="120dp" android:text="FLOW AMOUNT" android:paddingTop="10dp" android:paddingBottom="10dp" android:gravity="end|center_vertical" android:paddingEnd="12dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NUMBER" android:paddingTop="10dp" android:paddingBottom="10dp"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NAME" android:paddingTop="10dp" android:paddingBottom="10dp"/>
                 </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+
 
                 <!-- TABLE ROWS -->
                 <androidx.recyclerview.widget.RecyclerView

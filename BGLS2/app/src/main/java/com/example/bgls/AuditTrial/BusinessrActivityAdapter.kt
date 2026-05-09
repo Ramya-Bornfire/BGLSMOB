@@ -43,6 +43,13 @@ class BusinessActivityAdapter(
         holder.tvAuthorizer.text = item.auth_user ?: ""
         holder.tvAuthorizerTime.text = item.auth_time?: ""
         holder.tvRemarks.text = item.remarks ?: ""
+
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
     }
 
     override fun getItemCount(): Int = activityList.size

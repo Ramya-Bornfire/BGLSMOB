@@ -395,17 +395,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Due Date" android:gravity="center_vertical"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Expenses" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Expenses" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Expenses" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Expenses" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Repaid Date" android:gravity="center_vertical"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Paid" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Paid" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Paid" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Paid" android:gravity="center_vertical|end"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Total Dues" android:gravity="center_vertical|end"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Due Date" android:gravity="center"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Expenses" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Expenses" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Expenses" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Expenses" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="Repaid Date" android:gravity="center"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Principal Paid" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Interest Paid" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Fee Paid" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Penalty Paid" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Total Dues" android:gravity="center_vertical|end" android:paddingEnd="12dp"/>
             </LinearLayout>
 
             <!-- RECYCLER VIEW -->
