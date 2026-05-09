@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7F9">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LIST FOR KYC - VIEW"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvAppRefNoHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Ref No : ARN0586"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:layout_marginEnd="16dp"/>
+        <TextView
+            android:id="@+id/tvRecordNoHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="| Record No : 1"
+            android:textColor="@color/white"
+            android:textSize="11sp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- MINIMAL DATA SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="MINIMAL DATA"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Grid Rows -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Primary Branch" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPrimaryBranch" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="103" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Branch Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvBranchName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Al Salam Bank Seychelles Limited" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Group" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCustomerGroup" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="RETAIL" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="First Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvFirstName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Middle Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvMiddleName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Last Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvLastName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Short Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvShortName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Full Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvFullName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Date of Birth" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDateOfBirth" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="14-02-2002" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Mobile Number" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:orientation="horizontal">
+                            <TextView android:id="@+id/tvMobileCode" android:layout_width="40dp" android:layout_height="match_parent" android:background="@drawable/readonly_background" android:gravity="center" android:text="91" android:textSize="10sp" android:textColor="#333333"/>
+                            <View android:layout_width="4dp" android:layout_height="1dp"/>
+                            <TextView android:id="@+id/tvMobileNumber" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="7985462" android:textSize="10sp" android:textColor="#333333"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Passport Number" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPassportNumber" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="748596528566" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="National Id" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvNationalId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="785412369" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- PERSONAL DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="PERSONAL DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- PERSONAL DETAILS ROWS (First 5 shown in screenshot) -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Type" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCustomerTypeP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="INDIVIDUAL" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Cif Id" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCifId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="CUST0000038401" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Primary Branch" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPrimaryBranchP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="103" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Branch Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvBranchNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Al Salam Bank Seychelles Limited" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Salutation" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvSalutation" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="MS" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="First Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvFirstNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Middle Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvMiddleNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Last Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvLastNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Full Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvFullNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Short Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvShortNameP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="GIVI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- Continuing Personal Details based on screenshot list -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Occupation" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvOccupation" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="SELF EMPLOYED" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Gender" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvGender" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="MALE" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Marital Status" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvMaritalStatus" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="SINGLE" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Date Of Birth" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDateOfBirthP" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="14-02-2002" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Annual Income" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAnnualIncome" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="8,00,000.00" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Monthly Income" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvMonthlyIncome" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="66,666.67" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Obligations" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvLoanObligations" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Family Maintenance" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvFamilyMaintenance" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Email ID" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvEmailId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="givi@gmail.com" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Mobile No" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:orientation="horizontal">
+                            <TextView android:id="@+id/tvMobileCodeP" android:layout_width="40dp" android:layout_height="match_parent" android:background="@drawable/readonly_background" android:gravity="center" android:text="91" android:textSize="10sp" android:textColor="#333333"/>
+                            <View android:layout_width="4dp" android:layout_height="1dp"/>
+                            <TextView android:id="@+id/tvMobileNumberP" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="7985462" android:textSize="10sp" android:textColor="#333333"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ADDRESS DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="ADDRESS DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Address Type" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAddressType" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="PERMANENT" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="House No" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvHouseNo" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="45" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Street No" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvStreetNo" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="84" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Street Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvStreetName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="NILLA" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Country" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCountry" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="India" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="State" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvState" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="TAMIL NADU" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="City" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCity" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="CHENNAI" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Postal Code" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPostalCode" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="600042" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Address Valid From" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAddressValidFrom" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="01-04-2026" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Nationality" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvNationality" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="INDIAN" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Country of Birth" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCountryOfBirth" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="INDIA" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Country of Origin" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvCountryOfOrigin" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="INDIA" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ACCOUNT DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="ACCOUNT DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Scheme Type" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvSchemeType" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="LA" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Scheme Code" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvSchemeCode" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="LSRET" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Branch Id" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAccBranchId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="103" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Branch Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAccBranchName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Al Salam Bank Seychelles Limited" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GL Code" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvGlCode" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="1000" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GL Desc" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvGlDesc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Asset" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GLSH Code" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvGlshCode" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="1500" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="GLSH Desc" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvGlshDesc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="LOANS AND ADVANCES" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Account No" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvLoanAccNo" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="LA0010" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Date of Loan" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDateOfLoan" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="25-04-2026" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Currency" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvAccCurrency" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="SCR" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Interest Rate" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvInterestRate" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="2" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Sanctioned" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvLoanSanctioned" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="600,000.00" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Loan Period" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:orientation="horizontal">
+                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center" android:text="dd" android:textSize="10sp" android:textColor="#666666"/>
+                            <View android:layout_width="4dp" android:layout_height="1dp"/>
+                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center" android:text="mm" android:textSize="10sp" android:textColor="#666666"/>
+                            <View android:layout_width="4dp" android:layout_height="1dp"/>
+                            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center" android:text="yyyy" android:textSize="10sp" android:textColor="#666666"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Margin %" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvMarginPercent" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="5" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Drawing Limit" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDrawingLimit" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="30,000.00" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Outstanding" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvOutstanding" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Disbursement" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDisbursement" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="600,000.00" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Repayment Terms" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvRepaymentTerms" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Recovery Method" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvRecoveryMethod" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Cash" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Expiry date" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvExpiryDate" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="18-11-2027" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/tvRemarksAcc" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                            <Button android:layout_width="100dp" android:layout_height="32dp" android:text="DTI Validation" android:textAllCaps="false" android:textSize="10sp" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:layout_marginStart="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Repayment Details"
+                    android:textColor="#000080"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Installment ID" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvInstallmentId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Installment Start Date" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvInstStartDate" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="25-05-2026" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="No of Installment" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvNoOfInst" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Cap At Maturity ?" android:textSize="11sp" android:textColor="#333333"/>
+                        <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <RadioButton android:id="@+id/rbCapMaturityYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF"/>
+                            <RadioButton android:id="@+id/rbCapMaturityNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF" android:checked="true"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Principal Installment Freq" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPrincInstFreq" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Monthly" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Interest Installment Freq" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvIntInstFreq" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="Monthly" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Installment Amount" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvInstAmount" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Installment (%)" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                            <TextView android:id="@+id/tvInstPercent" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="" android:textSize="10sp" android:textColor="#333333"/>
+                            <Button android:layout_width="100dp" android:layout_height="32dp" android:text="Schedule" android:textAllCaps="false" android:textSize="10sp" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:layout_marginStart="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="8dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- IDENTIFICATION SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="IDENTIFICATION"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="National ID" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvNationalIdIden" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="785412369" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Issue Date" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvIssueDate" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="18-06-2025" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Passport No" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvPassportNoIden" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="748596528566" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Expiry Date" android:textSize="11sp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvExpiryDateIden" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="28-05-2026" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- OTHER DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="OTHER DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Non-Resident" android:textSize="11sp" android:textColor="#333333"/>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbNonResidentYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF"/>
+                        <RadioButton android:id="@+id/rbNonResidentNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Staff Indicator" android:textSize="11sp" android:textColor="#333333"/>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbStaffIndicatorYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF"/>
+                        <RadioButton android:id="@+id/rbStaffIndicatorNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Trade Finance" android:textSize="11sp" android:textColor="#333333"/>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbTradeFinanceYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF"/>
+                        <RadioButton android:id="@+id/rbTradeFinanceNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Minor Indicator" android:textSize="11sp" android:textColor="#333333"/>
+                    <RadioGroup android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbMinorIndicatorYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF"/>
+                        <RadioButton android:id="@+id/rbMinorIndicatorNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:textColor="#333333" android:buttonTint="#007BFF" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- DOCUMENT DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="DOCUMENT DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Document Table -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#E0E5E9" android:padding="8dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Document Type" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Document Code" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Document Description" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Place of issue" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Unique Id" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Issue Date" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Expiry Date" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Document View" android:textStyle="bold" android:textSize="10sp" android:textColor="#333333" android:gravity="center"/>
+                </LinearLayout>
+
+                <!-- Sample Row 1 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="8dp" android:background="@drawable/table_cell_bg">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="ADM" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="ADM" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="AGREEMENT" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="CHENNAI" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="85214" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="2026-04-01" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="2026-05-29" android:textSize="10sp" android:textColor="#333333"/>
+                    <ImageView android:layout_width="0dp" android:layout_height="16dp" android:layout_weight="1" android:src="@drawable/ic_eye"
+                    android:tint="#007BFF" android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <!-- Sample Row 2 -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="8dp" android:background="@drawable/table_cell_bg">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="DOC" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="DOC" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="DOCUMENT" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="CHENNAI" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="96325" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="2026-03-11" android:textSize="10sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="2026-05-28" android:textSize="10sp" android:textColor="#333333"/>
+                    <ImageView android:layout_width="0dp" android:layout_height="16dp" android:layout_weight="1" android:src="@drawable/ic_eye"
+                    android:tint="#007BFF" android:layout_gravity="center"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- SIGNATURE DETAILS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="SIGNATURE DETAILS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:orientation="horizontal"
+                    android:background="#F0F0F0"
+                    android:padding="16dp">
+                    
+                    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center_horizontal">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NAME :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:layout_marginBottom="16dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="givi" android:textSize="11sp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <ImageView android:id="@+id/ivPhoto" android:layout_width="80dp" android:layout_height="80dp" android:background="#FFFFFF" android:layout_marginEnd="32dp" android:scaleType="centerInside" android:layout_gravity="center_vertical"
+                        android:src="@drawable/conormcgregor"/>
+                    <ImageView android:id="@+id/ivSignature" android:layout_width="120dp" android:layout_height="60dp" android:background="#FFFFFF" android:scaleType="centerInside" android:layout_gravity="center_vertical"/>
+                    
+                    <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- CUSTOMER CHECKS SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="CUSTOMER CHECKS"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1.Duplicate List" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:layout_marginBottom="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No Result found on Customer Check" android:textSize="11sp" android:textColor="#666666" android:layout_marginBottom="12dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2.Black List" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:layout_marginBottom="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No Result found on Customer Check" android:textSize="11sp" android:textColor="#666666" android:layout_marginBottom="12dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3.Negative List" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:layout_marginBottom="4dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No Result found on Customer Check" android:textSize="11sp" android:textColor="#666666" android:layout_marginBottom="8dp"/>
+            </LinearLayout>
+
+            <!-- UPLOAD CHECKBOX -->
+            <CheckBox
+                android:id="@+id/cbUploadForm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload Account Opening Form"
+                android:textSize="11sp"
+                android:textColor="#333333"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- KYC COMPLIANCE SECTION -->
+            <LinearLayout
+                android:id="@+id/llKycComplianceSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="KYC COMPLIANCE"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="KYC Date" android:textSize="11sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="07-May-2026" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="KYC Officer" android:textSize="11sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="EMP04" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="KYC Compliance" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spKycCompliance" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="KYC Review Date" android:textSize="11sp" android:textColor="#333333"/>
+                    <TextView android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/readonly_background" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:text="07-May-2029" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="top">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks" android:textSize="11sp" android:textColor="#333333" android:layout_marginTop="6dp"/>
+                    <EditText android:layout_width="160dp" android:layout_height="48dp" android:background="@drawable/edittext_background" android:gravity="top" android:padding="8dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- COMPLIANCE DEPARTMENT SECTION (Hidden by default) -->
+            <LinearLayout
+                android:id="@+id/llComplianceDeptSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:text="COMPLIANCE DEPARTMENT"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Row 1: Customer Details -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Customer Details" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCompCustomerDetails" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <!-- Row 2: Account Details -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Details" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCompAccountDetails" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <!-- Row 3: Documents -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Documents" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCompDocuments" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <!-- Row 4: Photo -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Photo" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCompPhoto" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <!-- Row 5: Signature -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Signature" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCompSignature" android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+
+                <!-- Row 6: General Remarks -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="General Remarks" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_bg" android:paddingHorizontal="8dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <!-- Row 7: Compliance Date -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Compliance Date" android:textSize="11sp" android:textColor="#333333"/>
+                <LinearLayout 
+                    android:id="@+id/llComplianceDate"
+                    android:layout_width="160dp" android:layout_height="32dp" android:background="@drawable/edittext_bg" android:gravity="center_vertical" android:paddingHorizontal="8dp" android:orientation="horizontal">
+                    <TextView 
+                        android:id="@+id/tvComplianceDate"
+                        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="07-May-2026" android:textSize="10sp" android:textColor="#333333"/>
+                    <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ic_calendar"/>
+                </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bottom Action Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="32dp">
+                
+                <Button
+                    android:id="@+id/btnHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Home"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:minHeight="0dp"
+                    android:minWidth="80dp"
+                    android:layout_marginEnd="8dp"/>
+                
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:minHeight="0dp"
+                    android:minWidth="80dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnHold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Hold"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:minHeight="0dp"
+                    android:minWidth="80dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnReject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Reject"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:minHeight="0dp"
+                    android:minWidth="80dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Back"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:minHeight="0dp"
+                    android:minWidth="80dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

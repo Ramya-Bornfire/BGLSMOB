@@ -298,6 +298,27 @@
         <activity
             android:name=".WalletMaintenance.WalletInquiryActivity"
             android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.DisbursementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.ComplianceDepartmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.KYCComplianceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.KYCComplianceViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.ApprovalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.MinimalDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerOnBoarding.CustomerAccountOpeningActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

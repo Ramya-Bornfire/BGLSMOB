@@ -306,6 +306,23 @@ class MainActivity : AppCompatActivity() {
                 "Batch Job" -> {
                     startActivity(Intent(this, com.example.bgls.BatchJobExecution.BatchJobActivity::class.java))
                 }
+                "Minimal Data"->{
+                    startActivity(Intent(this,com.example.bgls.CustomerOnBoarding.MinimalDataActivity::class.java))
+                }
+
+                "Approval"->{
+                    startActivity(Intent(this,com.example.bgls.CustomerOnBoarding.ApprovalActivity::class.java))
+                }
+                "Disbursement"->{
+                    startActivity(Intent(this,com.example.bgls.CustomerOnBoarding.DisbursementActivity::class.java))
+                }
+                "KYC Compliance"->{
+                    startActivity(Intent(this,com.example.bgls.CustomerOnBoarding.KYCComplianceActivity::class.java))
+                }
+                "Compliance Department"->{
+                    startActivity(Intent(this,com.example.bgls.CustomerOnBoarding.ComplianceDepartmentActivity::class.java))
+                }
+
 
 
                 else -> {

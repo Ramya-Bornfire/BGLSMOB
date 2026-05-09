@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7F9"
+    tools:context=".CustomerOnBoarding.ComplianceDepartmentActivity">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="COMPLIANCE DEPARTMENT- LIST"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:minHeight="0dp"
+            android:minWidth="60dp"
+            android:paddingHorizontal="12dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp">
+
+        <!-- Table Header Container -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <!-- Default Table Header -->
+            <LinearLayout
+                android:id="@+id/layoutDefaultHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                android:background="#E0E5E9"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:paddingStart="8dp"
+                    android:text="Sr No"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Customer Group"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Appl Ref No"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Account Type"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="Customer Name"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="National ID"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="Select"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Filter Table Header -->
+            <LinearLayout
+                android:id="@+id/layoutFilterHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="5dp"
+                android:background="#E0E5E9"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etFilterSrNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:hint="Sr No"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/etFilterCustomerGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:hint="Group"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/etFilterApplRefNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:hint="Appl Ref"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/etFilterAccountType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:hint="Ac Type"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/etFilterCustomerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:hint="Name"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/etFilterNationalId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:hint="Nat ID"
+                    android:textSize="10sp"
+                    android:padding="5dp"
+                    android:background="@android:color/white"
+                    android:layout_marginHorizontal="2dp"
+                    android:inputType="textCapCharacters"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:text="Select"
+                    android:textStyle="bold"
+                    android:textSize="10sp"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"/>
+
+    </LinearLayout>
+</LinearLayout>

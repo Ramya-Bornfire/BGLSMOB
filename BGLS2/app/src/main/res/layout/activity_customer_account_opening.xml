@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".CustomerOnBoarding.CustomerAccountOpeningActivity">
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal">
+        <TextView
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CUSTOMER ACCOUNT OPENING - RETAIL"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/tvAppRefNoHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="APP REF NO : ARN0936"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <com.google.android.material.tabs.TabLayout android:id="@+id/tabLayout" android:layout_width="match_parent" android:layout_height="48dp" android:background="#F8F9FA" app:tabIndicatorColor="#1976D2" app:tabSelectedTextColor="#1976D2" app:tabTextColor="#666666" app:tabMode="fixed">
+        <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PERSONAL DETAILS"/>
+        <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ACCOUNT DETAILS"/>
+        <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DOCUMENT MASTER"/>
+        <com.google.android.material.tabs.TabItem android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SIGNATURE UPLOAD"/>
+    </com.google.android.material.tabs.TabLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:padding="12dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:id="@+id/layoutPersonalDetails" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="visible">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Personal Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelCustomerType" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Customer Type *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etCustomerType" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Cif Id" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etCifId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="CUST0000059801" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelPrimaryBranch" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Primary Branch *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etPrimaryBranch" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelBranchName" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Branch Name *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etBranchName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelAccountOpenDate" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Account Open Date *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountOpenDate" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-mm-yyyy"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Remarks" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etRemarks" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelSalutation" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Salutation *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spSalutation" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelFirstName" android:layout_width="100dp" android:layout_height="wrap_content" android:text="First Name *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etFirstName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Middle Name" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etMiddleName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Last Name" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etLastName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelFullName" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Full Name *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etFullName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Short Name" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etShortName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelGender" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Gender *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spGender" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelMartialStatus" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Martial Status *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spMartialStatus" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelOccupation" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Occupation *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spOccupation" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelDateOfBirth" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Date of Birth *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etDateOfBirth" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelHomeCurrency" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Home Currency *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etHomeCurrency" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="SCR" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Income Currency" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etIncomeCurrency" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="SCR" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelAnnualIncome" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Annual Income *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAnnualIncome" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelMonthlyIncome" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Monthly Income *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etMonthlyIncome" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Loan Obligations" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etLoanObligations" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Family Maintenance Expenses" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etFamilyExpenses" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <TextView android:id="@+id/tvLabelEmailId" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Email Id *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etEmailIdAO" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelMobileNo" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Mobile No *" android:textSize="11sp" android:textColor="#333333"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView 
+                            android:id="@+id/tvMobilePrefix" 
+                            android:layout_width="wrap_content" 
+                            android:layout_height="30dp" 
+                            android:background="#EDF1F5" 
+                            android:gravity="center"
+                            android:text="+248" 
+                            android:paddingHorizontal="8dp" 
+                            android:textSize="10sp" 
+                            android:textColor="#333333"/>
+                        <EditText android:id="@+id/etMobileNoAO" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:inputType="phone"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Address Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelAddressType" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Address Type *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spAddressType" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelHouseNo" android:layout_width="100dp" android:layout_height="wrap_content" android:text="House no *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etHouseNo" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelStreetNo" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Street No *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etStreetNo" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelStreetName" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Street Name *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etStreetName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelCountry" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Country *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etCountry" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="India" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="State" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etState" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelCity" android:layout_width="120dp" android:layout_height="wrap_content" android:text="City *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCity" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Postal Code" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etPostalCode" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelAddressValidFrom" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Address Valid From *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAddressValidFrom" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-mm-yyyy"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelNationality" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Nationality *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spNationality" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <TextView android:id="@+id/tvLabelCountryOfBirth" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Country of Birth *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCountryOfBirth" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Country of Origin" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spCountryOfOrigin" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layoutAccountDetails" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Account Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelSchemeType" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Scheme Type *" android:textSize="11sp" android:textColor="#333333"/>
+                    <Spinner android:id="@+id/spSchemeType" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/spinner_with_arrow"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Scheme Code" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etSchemeCode" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <TextView android:id="@+id/tvLabelAccountBranchId" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Account Branch Id *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountBranchId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="103" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Account Branch Name" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etAccountBranchName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/readonly_background" android:enabled="false" android:text="Al Salam Bank Seychelles Limited" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Identification" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <TextView android:id="@+id/tvLabelNationalIdAO" android:layout_width="120dp" android:layout_height="wrap_content" android:text="National Id *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etNationalIdAO" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelIssueDate" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Issue Date *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etIssueDate" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-mm-yyyy"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <TextView android:id="@+id/tvLabelPassportNoAO" android:layout_width="120dp" android:layout_height="wrap_content" android:text="Passport No *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etPassportNoAO" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <TextView android:id="@+id/tvLabelExpiryDate" android:layout_width="100dp" android:layout_height="wrap_content" android:text="Expiry Date *" android:textSize="11sp" android:textColor="#333333"/>
+                    <EditText android:id="@+id/etExpiryDate" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-mm-yyyy"/>
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Other Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Non Resident" android:textSize="11sp" android:textColor="#333333"/>
+                        <RadioGroup android:id="@+id/rgNonResident" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <RadioButton android:id="@+id/rbNonResidentYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp"/>
+                            <RadioButton android:id="@+id/rbNonResidentNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:checked="true"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Staff Indicator" android:textSize="11sp" android:textColor="#333333"/>
+                        <RadioGroup android:id="@+id/rgStaffIndicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <RadioButton android:id="@+id/rbStaffYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp"/>
+                            <RadioButton android:id="@+id/rbStaffNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:checked="true"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Trade Finance" android:textSize="11sp" android:textColor="#333333"/>
+                        <RadioGroup android:id="@+id/rgTradeFinance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <RadioButton android:id="@+id/rbTradeYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp"/>
+                            <RadioButton android:id="@+id/rbTradeNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:checked="true"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                    <View android:layout_width="16dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Monitor Indicator" android:textSize="11sp" android:textColor="#333333"/>
+                        <RadioGroup android:id="@+id/rgMonitorIndicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+                            <RadioButton android:id="@+id/rbMonitorYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp"/>
+                            <RadioButton android:id="@+id/rbMonitorNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:checked="true"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layoutDocumentMaster" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:fillViewport="true">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <!-- Table Header -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#F0F0F0" android:padding="4dp">
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Document Type" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Document Code" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Document Description" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Unique Id" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Place of Issue" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Issue Date" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Expiry Date" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Document Upload" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        </LinearLayout>
+
+                        <!-- Table Rows Container -->
+                        <LinearLayout android:id="@+id/containerDocumentRows" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                            <!-- Reference row with weights -->
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="4dp">
+                                <Spinner android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/spinner_with_arrow" android:layout_margin="2dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.5" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp" android:hint="dd-mm-yyyy" android:focusable="false"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp" android:hint="dd-mm-yyyy" android:focusable="false"/>
+                                <LinearLayout android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.5" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:paddingHorizontal="4dp">
+                                    <Button android:layout_width="wrap_content" android:layout_height="24dp" android:text="Choose file" android:textAllCaps="false" android:textSize="8sp" android:padding="0dp" android:minHeight="0dp" android:minWidth="0dp" android:backgroundTint="#E0E0E0" android:textColor="#333333"/>
+                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No file" android:textSize="7sp" android:layout_marginStart="2dp" android:textColor="#666666" android:maxLines="1" android:ellipsize="end"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center" android:layout_marginTop="16dp">
+                    <Button android:id="@+id/btnAddDoc" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Add" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                    <Button android:id="@+id/btnRemoveDoc" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Remove" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                    <Button android:id="@+id/btnSubmitDoc" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Submit" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/layoutSignatureUpload" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:fillViewport="true">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <!-- Table Header -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#F0F0F0" android:padding="4dp">
+                            <TextView android:id="@+id/tvLabelImageAccessGroup" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Image Access Group *" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Group" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Keyword" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:id="@+id/tvLabelPhoto" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Photo *" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                            <TextView android:id="@+id/tvLabelSignature" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Signature *" android:gravity="center" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        </LinearLayout>
+
+                        <!-- Table Rows Container -->
+                        <LinearLayout android:id="@+id/containerSignatureRows" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="4dp" android:gravity="center_vertical">
+                                <Spinner android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.5" android:background="@drawable/spinner_with_arrow" android:layout_margin="2dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <EditText android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.5" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:textSize="10sp" android:paddingHorizontal="4dp"/>
+                                <FrameLayout android:layout_width="0dp" android:layout_height="100dp" android:layout_weight="1.2" android:layout_margin="4dp" android:background="@drawable/edittext_background">
+                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CHOOSE IMAGE" android:textSize="8sp" android:layout_gravity="center" android:textColor="#666666" android:gravity="center"/>
+                                </FrameLayout>
+                                <FrameLayout android:layout_width="0dp" android:layout_height="100dp" android:layout_weight="1.2" android:layout_margin="4dp" android:background="@drawable/edittext_background">
+                                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Draw signature / click to sms" android:textSize="8sp" android:layout_gravity="center" android:textColor="#666666" android:gravity="center"/>
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center" android:layout_marginTop="16dp">
+                    <Button android:id="@+id/btnAddSig" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Add" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                    <Button android:id="@+id/btnRemoveSig" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Remove" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                    <Button android:id="@+id/btnSubmitSig" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Submit" android:textAllCaps="false" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginHorizontal="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:background="#FFFFFF" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:orientation="horizontal" android:elevation="8dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Record : 1 / 1" android:textColor="#333333" android:textSize="11sp" android:textStyle="bold" android:gravity="end" android:layout_marginEnd="16dp"/>
+        <Button android:id="@+id/btnPrevious" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Previous" android:textAllCaps="false" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp" android:layout_marginEnd="8dp"/>
+        <Button android:id="@+id/btnNext" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Next" android:textAllCaps="false" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="11sp" android:minHeight="0dp" android:minWidth="80dp"/>
+    </LinearLayout>
+</LinearLayout>
