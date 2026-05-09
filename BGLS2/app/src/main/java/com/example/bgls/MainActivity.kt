@@ -296,7 +296,10 @@ class MainActivity : AppCompatActivity() {
             "Loan Maintenance"          -> Intent(this, LoanMaintananceListActivity::class.java)
             "Journal Entries"           -> Intent(this, JournalEntriesActivity::class.java)
             "Account Ledger Positing"   -> Intent(this, AccountLedgerPositingActivity::class.java)
-            "Account Leader"            -> Intent(this, TransAccountLedgerActivity::class.java)
+            "Account Leader" ->
+                Intent(this, ParameterActivity::class.java).apply {
+                    putExtra("MODULE_NAME", "Account Ledger")
+                }
             "Trial Balance"             -> Intent(this, TrialBalanceActivity::class.java)
             "Profile and Loss Account"  -> Intent(this, ProfileAndLossAccountActivity::class.java)
             "Loan Operation"            -> Intent(this, LoanOperationActivity::class.java)

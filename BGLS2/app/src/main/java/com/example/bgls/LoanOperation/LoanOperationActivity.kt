@@ -514,9 +514,13 @@ class LoanOperationActivity : AppCompatActivity() {
         tvColTranAmt.visibility = if (isCollection) View.VISIBLE else View.GONE
 
         flows.forEach { flow ->
+            val rowIndex = tlTableContent.childCount - 2
+            val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+            
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                setBackgroundColor(bgColor)
             }
             
             val fields = mutableListOf(
@@ -536,7 +540,7 @@ class LoanOperationActivity : AppCompatActivity() {
                     textSize = 10f
                     setPadding(10, 12, 10, 12)
                     gravity = if (value.toDoubleOrNull() != null) Gravity.END else Gravity.CENTER
-                    setBackgroundResource(R.drawable.table_cell_bg)
+                    setBackgroundColor(Color.TRANSPARENT)
                     setTextColor(Color.BLACK)
                 })
             }
@@ -580,9 +584,13 @@ class LoanOperationActivity : AppCompatActivity() {
     }
 
     private fun addBulkRow(data: Map<String, Any>? = null) {
+        val rowIndex = llBulkRows.childCount
+        val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             orientation = LinearLayout.HORIZONTAL
+            setBackgroundColor(bgColor)
         }
 
         val weights = listOf(1f, 1.5f, 1f, 1.2f, 1f, 1f, 1.2f, 1.2f)
@@ -600,7 +608,7 @@ class LoanOperationActivity : AppCompatActivity() {
         for (i in weights.indices) {
             val et = EditText(this).apply {
                 layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), weights[i])
-                setBackgroundResource(R.drawable.table_cell_bg)
+                setBackgroundColor(Color.TRANSPARENT)
                 textSize = 10f
                 setPadding(4.dpToPx(), 4.dpToPx(), 4.dpToPx(), 4.dpToPx())
                 setText(defaultValues[i])
@@ -611,7 +619,7 @@ class LoanOperationActivity : AppCompatActivity() {
 
         val rb = RadioButton(this).apply {
             layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), 0.8f)
-            setBackgroundResource(R.drawable.table_cell_bg)
+            setBackgroundColor(Color.TRANSPARENT)
             gravity = Gravity.CENTER
             isChecked = (data?.get("status")?.toString() == "ALLOCATED")
         }
@@ -703,19 +711,21 @@ class LoanOperationActivity : AppCompatActivity() {
             tlAccounts.removeAllViews()
             for (acc in list) {
                 if (acc.size < 2) continue
-                val row = TableRow(this)
-                val tvNo = TextView(this).apply {
+                val rowIndex = tlAccounts.childCount
+                val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+                val row = TableRow(this@LoanOperationActivity).apply { setBackgroundColor(bgColor) }
+                val tvNo = TextView(this@LoanOperationActivity).apply {
                     text = acc[0].toString()
                     textSize = 10f
                     setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
+                    setBackgroundColor(Color.TRANSPARENT)
                     layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
                 }
                 val tvName = TextView(this).apply {
                     text = acc[1].toString()
                     textSize = 10f
                     setPadding(16, 16, 16, 16)
-                    setBackgroundResource(R.drawable.table_cell_bg)
+                    setBackgroundColor(Color.TRANSPARENT)
                     layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
                 }
                 row.addView(tvNo); row.addView(tvName)

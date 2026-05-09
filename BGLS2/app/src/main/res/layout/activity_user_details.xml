@@ -155,11 +155,7 @@
                         android:text="REMARKS" />
                 </LinearLayout>
 
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#CCCCCC" />
+
 
                 <!-- DATA LIST -->
                 <androidx.recyclerview.widget.RecyclerView

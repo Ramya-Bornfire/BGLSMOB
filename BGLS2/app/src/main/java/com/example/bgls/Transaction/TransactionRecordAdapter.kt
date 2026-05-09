@@ -37,6 +37,13 @@ class TransactionRecordAdapter(
         holder.tvFlowAmount.text = record.flowAmount
         holder.tvAccountNumber.text = record.accountNumber
         holder.tvAccountName.text = record.accountName
+
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
     }
 
     override fun getItemCount(): Int = transactionList.size
