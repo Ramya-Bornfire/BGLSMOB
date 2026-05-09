@@ -29,91 +29,120 @@
         </provider>
         <activity
             android:name=".LoanMaintenance.LoanMaintananceListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanMaintenance.LoanMaintananceViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanCollectionActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.ProfileAndLossAccountActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.TrialBalanceActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.TransAccountLedgerActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".SchemeCodeAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".GLStructureAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReferenceDetailAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.TransactionAccountAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.TransactionAccountViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.TransactionAccountModifyActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.ChartOfAccountsAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.ChartOfAccountsDetailActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ChartOfAccounts.ChartOfAccountsActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanSchedule.LoanScheduleListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanSchedule.LoanScheduleActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanMaster.LoanMasterListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanMaster.LoanMasterActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.CustomerMasterViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.CustomerMasterListActivity"
+            android:screenOrientation="landscape"
             android:exported="true" />
         <activity
             android:name=".CustomerMaster.CustomerMasterActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.ViewBranchActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.AddBranchActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ParameterActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.DeleteBranchActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.EditBranchActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".OrganizationDetails.OrganizationDetialsActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
+            android:screenOrientation="landscape"
             android:label="@string/app_name"
             android:theme="@style/Theme.BGLS">
             <intent-filter>
@@ -126,198 +155,263 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
+            android:screenOrientation="landscape"
             android:theme="@style/Theme.BGLS.NoActionBar" />
         <activity
             android:name=".UserControl.EmployeProfileAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".UserControl.UserProfileAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".UserControl.UserControlActivity"
+            android:screenOrientation="landscape"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".NotificationAndLogsActivity" -->
         <!-- android:exported="true" /> -->
         <activity
             android:name=".AuditTrial.BusinessActivityDetailsActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".AuditTrial.UserActivityDetailsActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".AuditTrial.AuditTrailDetailsActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.LoanMasterViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.LoanScheduleViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.AccountLedgerActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaster.WalletActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".Transaction.TransactionActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".GLStructureDeleteActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".GLStructureModifyActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".GLStructureViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReferenceDetailDeleteActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReferenceDetailModifyActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReferenceDetailViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
-        <activity android:name=".ReferenceDetailActivity" />
+        <activity android:name=".ReferenceDetailActivity"
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".SchemeCodeViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaintenance.CustomerMaintenanceActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerMaintenance.CustomerMaintenanceViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.AccountLedgerPositingActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.AccountLedgerDetailActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.JournalEntriesActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.MassEntriesActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.JournalEntriesListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionMaintenance.JournalEntriesViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanMaintenance.LoanMaintenanceActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanOperation.LoanOperationActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".LoanOperation.LoanClosureActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionReports.CreditFacilityReportActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionReports.EndOfMonthReportActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionReports.DABReportActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionReports.GenericReportActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".DepositAccount.DepositAccountOpeningActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".DepositAccount.DepositAccountMaintenanceListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".DepositAccount.DepositAccountMaintenanceFlowActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".DepositAccount.AccountLedgerActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.FailedReversalActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.FailedReversalViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.FailedReversalEditActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.RecoveryReversalActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.RecoveryReversalViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.RecoveryReversalEditActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.TransactionsReversalActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.TransactionsReversalEditActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".ReversalTransaction.TransactionsReversalViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionInquiries.AccountBalanceActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionInquiries.InterestSummaryActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionInquiries.LeaseLoanViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionInquiries.BalanceSheetActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".TransactionInquiries.BalancingReportActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".BatchJobExecution.BatchJobActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".WalletMaintenance.WalletMaintenanceListActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".WalletMaintenance.WalletAccountAddActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".WalletMaintenance.WalletAccountFlowActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".WalletMaintenance.WalletInquiryActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.DisbursementActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.ComplianceDepartmentActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.KYCComplianceActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.KYCComplianceViewActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.ApprovalActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.MinimalDataActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
         <activity
             android:name=".CustomerOnBoarding.CustomerAccountOpeningActivity"
+            android:screenOrientation="landscape"
             android:exported="false" />
     </application>
 
