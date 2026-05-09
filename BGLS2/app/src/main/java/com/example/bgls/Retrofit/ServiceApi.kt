@@ -946,4 +946,39 @@ interface ServiceApi {
         @Query("acct_num") acctNum: String? = null,
         @Query("keyword") keyword: String? = null
     ): Response<BalancingReportResponse>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // WALLET APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/walletMaintenance")
+    suspend fun getWalletMaintenance(
+        @Query("formmode") formmode: String,
+        @Query("acct_num") acctNum: String? = null
+    ): Response<com.example.bgls.DataModels.WalletMaintenanceResponse>
+
+    @GET("api/walletinquries")
+    suspend fun getWalletInquiries(
+        @Query("formmode") formmode: String,
+        @Query("acctId") acctId: String? = null
+    ): Response<com.example.bgls.DataModels.WalletInquiryResponse>
+
+    @FormUrlEncoded
+    @POST("api/AddScreensdata")
+    suspend fun addWalletScreenData(
+        @FieldMap fields: Map<String, String>
+    ): Response<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/ModifyScreensdata")
+    suspend fun modifyWalletScreenData(
+        @Query("acct_num") acctNum: String,
+        @FieldMap fields: Map<String, String>
+    ): Response<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/VerifyScreensdata")
+    suspend fun verifyWalletScreenData(
+        @Field("wallet_acct_num") walletAcctNum: String
+    ): Response<ResponseBody>
 }

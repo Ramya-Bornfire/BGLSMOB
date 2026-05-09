@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingVertical="8dp"
+    android:paddingVertical="4dp"
     android:gravity="center_vertical">
 
     <TextView
@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
         android:minWidth="60dp"
-        android:text="Wallet"/>
+        android:text="Wallet"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCustId"
@@ -23,7 +24,8 @@
         android:layout_weight="1.2"
         android:minWidth="100dp"
         android:text="CUST001"
-        android:textColor="#007BFF"/>
+        android:textColor="#007BFF"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvAccNo"
@@ -32,7 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:minWidth="80dp"
-        android:text="TD001"/>
+        android:text="TD001"
+        android:textColor="#007BFF"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvName"
@@ -41,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:minWidth="120dp"
-        android:text="Name"/>
+        android:text="Name"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvOpenDate"
@@ -50,7 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:minWidth="80dp"
-        android:text="01-01-2026"/>
+        android:text="01-01-2026"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCloseDate"
@@ -59,7 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:minWidth="80dp"
-        android:text=""/>
+        android:text=""
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCurrency"
@@ -68,7 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
         android:minWidth="60dp"
-        android:text="SCR"/>
+        android:text="SCR"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvBalance"
@@ -79,7 +87,8 @@
         android:minWidth="80dp"
         android:text="0.00"
         android:gravity="end"
-        android:paddingEnd="8dp"/>
+        android:paddingEnd="8dp"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvStatus"
@@ -89,7 +98,8 @@
         android:layout_weight="0.8"
         android:minWidth="70dp"
         android:text="Verified"
-        android:textColor="#28A745"/>
+        android:textColor="#28A745"
+        android:textSize="11sp"/>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -97,15 +107,15 @@
         android:layout_weight="0.8"
         android:minWidth="60dp"
         android:gravity="center">
-        <TextView
+
+        <RadioButton
             android:id="@+id/rbSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Action"
             android:textColor="#007BFF"
             android:textSize="11sp"
             android:textStyle="normal"
-            android:clickable="false"
-            android:focusable="false"/>
+            android:buttonTint="#007BFF"/>
+
     </RelativeLayout>
 </LinearLayout>

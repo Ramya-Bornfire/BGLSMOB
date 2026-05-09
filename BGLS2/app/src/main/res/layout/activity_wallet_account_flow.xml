@@ -11,8 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E9ECEF"
-        android:padding="12dp"
+        android:padding="8dp"
         android:elevation="2dp">
+
+
 
         <TextView
             android:id="@+id/tvTitle"
@@ -22,9 +24,10 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="#333333"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"/>
+
+      >
     </RelativeLayout>
 
     <ScrollView
@@ -178,91 +181,15 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- BOTTOM ACTION BAR -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnAction"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#E9ECEF">
-        
-        <Button
-            android:id="@+id/btnHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:backgroundTint="#007BFF"
-            android:textColor="#FFFFFF"
-            android:layout_marginEnd="8dp"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btnAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Modify"
-            android:backgroundTint="#007BFF"
-            android:textColor="#FFFFFF"
-            android:layout_marginEnd="8dp"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:backgroundTint="#007BFF"
-            android:textColor="#FFFFFF"
-            android:textAllCaps="false"/>
-    </LinearLayout>
-
-    <!-- AUDIT FOOTER -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
-        android:padding="12dp"
-        android:layout_margin="12dp"
-        android:elevation="2dp">
-
-        <!-- Col 1 -->
-        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Entry User"/>
-                <TextView style="@style/AuditValue" android:text="EMP02" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Entry Time"/>
-                <TextView style="@style/AuditValue" android:text="08-05-2026 15:17" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Col 2 -->
-        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Modify User"/>
-                <TextView style="@style/AuditValue" android:text="EMP02" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Modify Time"/>
-                <TextView style="@style/AuditValue" android:text="08-05-2026 15:17" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Col 3 -->
-        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Verify User"/>
-                <TextView style="@style/AuditValue" android:text="" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <TextView style="@style/AuditLabel" android:layout_width="80dp" android:text="Verify Time"/>
-                <TextView style="@style/AuditValue" android:text="" android:background="#F0F2F5" android:padding="4dp" android:minWidth="100dp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_margin="16dp"
+        android:text="Modify"
+        android:backgroundTint="#007BFF"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"/>
 
 </LinearLayout>
