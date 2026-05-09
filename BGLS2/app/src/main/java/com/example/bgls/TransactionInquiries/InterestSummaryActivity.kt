@@ -61,7 +61,7 @@ class InterestSummaryActivity : AppCompatActivity() {
         rvInterestSummary.layoutManager = LinearLayoutManager(this)
         adapter = InterestSummaryAdapter(emptyList()) { item ->
             val intent = Intent(this, LeaseLoanViewActivity::class.java)
-            intent.putExtra("loanNo", item.loanNo)
+            intent.putExtra("id", item.loanNo)
             startActivity(intent)
         }
         rvInterestSummary.adapter = adapter
@@ -97,7 +97,7 @@ class InterestSummaryActivity : AppCompatActivity() {
                         InterestSummaryModel(
                             loanNo = entity?.get("loan_accountno")?.toString() ?: "",
                             name = entity?.get("customer_name")?.toString() ?: "",
-                            dateOfLoan = entity?.get("date_of_loan")?.toString() ?: "",
+                            dateOfLoan = formatApiDate(entity?.get("date_of_loan")?.toString() ?: ""),
                             loanAmt = entity?.get("loan_sanctioned")?.toString() ?: "0.00",
                             interestRate = entity?.get("effective_interest_rate")?.toString() ?: "0",
                             liability = balance,
@@ -109,6 +109,19 @@ class InterestSummaryActivity : AppCompatActivity() {
                     adapter.updateData(summaryList)
                 }
             } catch (e: Exception) {}
+        }
+    }
+
+    private fun formatApiDate(rawDate: String): String {
+        return try {
+            if (rawDate.contains("T")) {
+                val parts = rawDate.split("T")[0].split("-")
+                "${parts[2]}-${parts[1]}-${parts[0]}"
+            } else {
+                rawDate
+            }
+        } catch (e: Exception) {
+            rawDate
         }
     }
 }

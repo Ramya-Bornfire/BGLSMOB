@@ -212,7 +212,30 @@ class LeaseLoanViewActivity : AppCompatActivity() {
                         findViewById<EditText>(R.id.etLoanCurrency).setText(details["loan_currency"]?.toString() ?: "")
                         findViewById<EditText>(R.id.etInterestRate).setText(details["effective_interest_rate"]?.toString() ?: "")
                         findViewById<EditText>(R.id.etLoanSanctioned).setText(details["loan_sanctioned"]?.toString() ?: "0.00")
+                        findViewById<EditText>(R.id.etMarginLimit).setText(details["margin_limit"]?.toString() ?: "0")
+                        findViewById<EditText>(R.id.etDrawingLimit).setText(details["drawing_limit"]?.toString() ?: "0.00")
                         findViewById<EditText>(R.id.etDisbursement).setText(details["disbursement_amt"]?.toString() ?: "0.00")
+                        findViewById<EditText>(R.id.etLoanOutstanding).setText(details["loan_outstanding"]?.toString() ?: "0.00")
+                        findViewById<EditText>(R.id.etLoanPeriodMonths).setText(details["loan_period"]?.toString() ?: "0")
+                        findViewById<EditText>(R.id.etExpiryDate).setText(formatApiDate(details["expiry_date"]?.toString() ?: ""))
+                        findViewById<EditText>(R.id.etRepaymentTerms).setText(details["repayment_terms"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etRecoveryMethod).setText(details["recovery_method"]?.toString() ?: "")
+
+                        // Repayment Details - fields from loanDetails
+                        findViewById<EditText>(R.id.etRepayCustomerId).setText(details["customer_id"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etRepayCustomerName).setText(details["customer_name"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etRepayDateOfLoan).setText(formatApiDate(details["date_of_loan"]?.toString() ?: ""))
+                        findViewById<EditText>(R.id.etRepayLoanAcctNo).setText(details["loan_accountno"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etRepayLoanCurrency).setText(details["loan_currency"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etRepayInterestRate).setText(details["effective_interest_rate"]?.toString() ?: "")
+
+                        // Loan Position - fields from loanDetails
+                        findViewById<EditText>(R.id.etPosCustomerId).setText(details["customer_id"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etPosCustomerName).setText(details["customer_name"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etPosDateOfLoan).setText(formatApiDate(details["date_of_loan"]?.toString() ?: ""))
+                        findViewById<EditText>(R.id.etPosLoanAcctNo).setText(details["loan_accountno"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etPosLoanCurrency).setText(details["loan_currency"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etPosInterestRate).setText(details["effective_interest_rate"]?.toString() ?: "")
                     }
 
                     if (payment != null) {
@@ -222,6 +245,7 @@ class LeaseLoanViewActivity : AppCompatActivity() {
                         findViewById<EditText>(R.id.etPrincipalFreq).setText(payment["inst_freq"]?.toString() ?: "")
                         findViewById<EditText>(R.id.etInterestFreq).setText(payment["interest_frequency"]?.toString() ?: "")
                         findViewById<EditText>(R.id.etInstallmentAmount).setText(payment["inst_amount"]?.toString() ?: "0.00")
+                        findViewById<EditText>(R.id.etInstallmentPercent).setText(payment["inst_pct"]?.toString() ?: "")
                     }
 
                     // Pre-fetch other tab data

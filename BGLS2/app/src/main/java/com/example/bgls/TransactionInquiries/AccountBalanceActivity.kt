@@ -93,18 +93,18 @@ class AccountBalanceActivity : AppCompatActivity() {
             emptyList(),
             onCustomerClick = { item ->
                 val intent = Intent(this, CustomerMasterViewActivity::class.java)
-                intent.putExtra("id", item.customerId)
-                intent.putExtra("holder_key", item.holderKey)
-                intent.putExtra("branch_key", item.branchKey)
+                intent.putExtra("customerId", item.customerId)
+                intent.putExtra("holderKey", item.holderKey)
+                intent.putExtra("branchKey", item.branchKey)
                 intent.putExtra("module", "module1")
                 intent.putExtra("formmode", "view")
                 startActivity(intent)
             },
             onAccountClick = { item ->
                 val intent = Intent(this, LoanMasterViewActivity::class.java)
-                intent.putExtra("id", item.id)
-                intent.putExtra("holder_key", item.holderKey)
-                intent.putExtra("branch_key", item.branchKey)
+                intent.putExtra("loanId", item.id)
+                intent.putExtra("holderKey", item.holderKey)
+                intent.putExtra("branchKey", item.branchKey)
                 intent.putExtra("formmode", "viewloan")
                 startActivity(intent)
             }
