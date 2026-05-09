@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F7F9">
+
+    <!-- ─── HEADER ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2084A9"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <ImageView
+            android:id="@+id/btnBackArrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TRANSACTION MAINTENANCE"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- ─── FILTERS ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#E9ECEF"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etReportDate"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:hint="Select Date"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:background="@drawable/edittext_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1.5"
+            android:hint="Search ID/Acct..."
+            android:textSize="13sp"
+            android:background="@drawable/edittext_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:visibility="gone"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Filter"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#2084A9"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <!-- ─── TABLE HEADER ─── -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Sticky Columns Header -->
+            <LinearLayout
+                android:layout_width="1100dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:background="#E9ECEF">
+
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN DATE"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN ID"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="TYPE"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CCY"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:text="ACCT ID"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="PARTICULAR"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
+                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACTION"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvJournalBook"
+                android:layout_width="1100dp"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"/>
+            
+            <TextView
+                android:id="@+id/tvNoData"
+                android:layout_width="1100dp"
+                android:layout_height="100dp"
+                android:text="No data available"
+                android:gravity="center"
+                android:textColor="#FF0000"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- ─── PROGRESS BAR ─── -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginTop="-300dp"/>
+
+    <!-- ─── FOOTER BUTTONS ─── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="#E9ECEF"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Home"
+            android:backgroundTint="#2084A9"
+            android:textColor="@color/white"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Back"
+            android:backgroundTint="#2084A9"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

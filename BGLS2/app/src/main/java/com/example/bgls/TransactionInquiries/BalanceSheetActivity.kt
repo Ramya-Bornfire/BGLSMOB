@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.example.bgls.Retrofit.ServiceApi
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.R
+import kotlinx.coroutines.launch
 
 data class BalanceSheetModel(
     val glHead: String,
@@ -34,8 +38,6 @@ class BalanceSheetActivity : AppCompatActivity() {
         rvAsset = findViewById(R.id.rvAsset)
         rvLiability = findViewById(R.id.rvLiability)
 
-        loadMockData()
-
         assetAdapter = BalanceSheetAdapter(assetList)
         rvAsset.layoutManager = LinearLayoutManager(this)
         rvAsset.adapter = assetAdapter
@@ -43,7 +45,9 @@ class BalanceSheetActivity : AppCompatActivity() {
         liabilityAdapter = BalanceSheetAdapter(liabilityList)
         rvLiability.layoutManager = LinearLayoutManager(this)
         rvLiability.adapter = liabilityAdapter
-        
+
+        loadData()
+
         val layoutFilterAsset = findViewById<View>(R.id.layoutFilterAsset)
         val btnFilterAsset = findViewById<View>(R.id.btnFilterAsset)
         btnFilterAsset.setOnClickListener {
@@ -66,6 +70,53 @@ class BalanceSheetActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btnHome).setOnClickListener { finish() }
         findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
+    }
+
+    private fun loadData() {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.api
+                val response = api.getBalanceSheet("list")
+
+                if (response.isSuccessful && response.body() != null) {
+                    val data = response.body()!!
+                    
+                    data.balancesheet1?.let { list ->
+                        assetList.clear()
+                        list.forEach { row ->
+                            val rowList = row as? List<*>
+                            if (rowList != null) {
+                                assetList.add(BalanceSheetModel(
+                                    glHead = rowList.getOrNull(0)?.toString() ?: "",
+                                    glDesc = rowList.getOrNull(1)?.toString() ?: "",
+                                    noOfAc = rowList.getOrNull(3)?.toString() ?: "0",
+                                    currency = rowList.getOrNull(2)?.toString() ?: "",
+                                    amount = rowList.getOrNull(4)?.toString() ?: "0.00"
+                                ))
+                            }
+                        }
+                        assetAdapter.notifyDataSetChanged()
+                    }
+
+                    data.balancesheet2?.let { list ->
+                        liabilityList.clear()
+                        list.forEach { row ->
+                            val rowList = row as? List<*>
+                            if (rowList != null) {
+                                liabilityList.add(BalanceSheetModel(
+                                    glHead = rowList.getOrNull(0)?.toString() ?: "",
+                                    glDesc = rowList.getOrNull(1)?.toString() ?: "",
+                                    noOfAc = rowList.getOrNull(3)?.toString() ?: "0",
+                                    currency = rowList.getOrNull(2)?.toString() ?: "",
+                                    amount = rowList.getOrNull(4)?.toString() ?: "0.00"
+                                ))
+                            }
+                        }
+                        liabilityAdapter.notifyDataSetChanged()
+                    }
+                }
+            } catch (e: Exception) {}
+        }
     }
 
     private fun loadMockData() {

@@ -33,6 +33,14 @@ import com.example.bgls.DataModels.LoanFlowTransactionRequest
 import com.example.bgls.DataModels.LoanOperationResponse
 import com.example.bgls.DataModels.MultipleTransactionRequest
 import com.example.bgls.DataModels.SettlementRecord
+import com.example.bgls.DataModels.AccountBalancesResponse
+import com.example.bgls.DataModels.AssetLiabilityResponse
+import com.example.bgls.DataModels.BalanceSheetResponse
+import com.example.bgls.DataModels.BalancingReportResponse
+import com.example.bgls.DataModels.InterestSummaryResponse
+import com.example.bgls.DataModels.JournalBookResponse
+import com.example.bgls.DataModels.LoanMaintenanceViewResponse
+import com.example.bgls.DataModels.ProfitLossResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -856,4 +864,86 @@ interface ServiceApi {
         @Field("username") username: String,
         @Field("password") password: String
     ): Response<ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // TRANSACTION INQUIRIES APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/Account_Balances")
+    suspend fun getAccountBalances(
+        @Query("formmode") formmode: String? = null
+    ): Response<AccountBalancesResponse>
+
+    @GET("api/LeaseBalance")
+    suspend fun getLeaseBalance(
+        @Query("date_of_loan") dateOfLoan: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/DepositBalance")
+    suspend fun getDepositBalance(
+        @Query("deposit_period") depositPeriod: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/interest_summary")
+    suspend fun getInterestSummary(
+        @Query("formmode") formmode: String? = null
+    ): Response<InterestSummaryResponse>
+
+    @GET("api/drawDownLoanMaintanace")
+    suspend fun getDrawDownLoanMaintenance(
+        @Query("formmode") formmode: String?,
+        @Query("loan_accountno") loanAccountNo: String? = null
+    ): Response<LoanMaintenanceViewResponse>
+
+    @GET("api/getInterestDetailsView")
+    suspend fun getInterestDetailsView(
+        @Query("accountNo") accountNo: String
+    ): Response<List<Map<String, Any>>>
+
+    @GET("api/getdemandflow")
+    suspend fun getDemandFlow(
+        @Query("accountNo") accountNo: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/getLoanPosition")
+    suspend fun getLoanPosition(
+        @Query("accountNum") accountNum: String
+    ): Response<List<List<Any>>>
+
+    @GET("api/journalbook")
+    suspend fun getJournalBook(
+        @Query("formmode") formmode: String? = null
+    ): Response<JournalBookResponse>
+
+    @GET("api/journalbook2")
+    suspend fun getJournalBook2(
+        @Query("formmode") formmode: String?,
+        @Query("selectedDate") selectedDate: String?
+    ): Response<List<List<Any>>>
+
+    @GET("api/profitAndLossAccountReports")
+    suspend fun getProfitAndLossReports(
+        @Query("formmode") formmode: String?,
+        @Query("tran") tran: String? = null
+    ): Response<ProfitLossResponse>
+
+    @GET("api/balanceSheet")
+    suspend fun getBalanceSheet(
+        @Query("formmode") formmode: String?,
+        @Query("emp_id") empId: String? = null
+    ): Response<BalanceSheetResponse>
+
+    @GET("api/assetliability")
+    suspend fun getAssetLiability(
+        @Query("formmode") formmode: String?,
+        @Query("balancedate") balancedate: String?,
+        @Query("tran") tran: String? = null
+    ): Response<AssetLiabilityResponse>
+
+    @GET("api/Balancing_report")
+    suspend fun getBalancingReport(
+        @Query("formmode") formmode: String?,
+        @Query("acct_num") acctNum: String? = null,
+        @Query("keyword") keyword: String? = null
+    ): Response<BalancingReportResponse>
 }

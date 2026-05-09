@@ -7,5 +7,8 @@ data class AccountBalanceLeaseModel(
     val accountName: String,
     val dateOfLoan: String,
     val loanAmount: String,
-    val disbursedAmount: String
+    val disbursedAmount: String,
+    val holderKey: String = "",
+    val branchKey: String = "",
+    val id: String = ""
 )

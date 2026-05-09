@@ -12,23 +12,41 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.MainActivity
 import com.example.bgls.R
-import android.graphics.Color
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.Adapter.LoanFlowAdapter
 import com.example.bgls.Adapter.LoanScheduleAdapter
 import com.example.bgls.DataModels.LoanFlowModel
 import com.example.bgls.DataModels.LoanScheduleModel
+import com.example.bgls.Retrofit.RetrofitClient
+import com.example.bgls.Retrofit.ServiceApi
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import java.util.Locale
+import android.graphics.Color
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class LeaseLoanViewActivity : AppCompatActivity() {
+
+    private var loanId = ""
+    private var holderKey = ""
+    private var branchKey = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lease_loan_view)
 
+        loanId = intent.getStringExtra("id") ?: ""
+        holderKey = intent.getStringExtra("holder_key") ?: ""
+        branchKey = intent.getStringExtra("branch_key") ?: ""
+
         setupButtons()
         setupTabs()
-        populateDummyData()
+        
+        if (loanId.isNotEmpty()) {
+            fetchLoanDetails()
+        } else {
+            populateDummyData()
+        }
     }
 
     private fun setupTabs() {
@@ -165,6 +183,100 @@ class LeaseLoanViewActivity : AppCompatActivity() {
                 true
             }
             popup.show()
+        }
+    }
+
+    private fun fetchLoanDetails() {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.api
+                val response = api.getDrawDownLoanMaintenance("view", loanId)
+
+                if (response.isSuccessful && response.body() != null) {
+                    val data = response.body()!!
+                    val details = data.loanDetails
+                    val payment = data.paymentDetails
+
+                    if (details != null) {
+                        findViewById<EditText>(R.id.etCustomerId).setText(details["customer_id"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etCustomerName).setText(details["customer_name"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etLoanType).setText(details["loan_type"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etBranchId).setText(details["branch_id"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etBranchName).setText(details["branch_name"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etDateOfLoan).setText(formatApiDate(details["date_of_loan"]?.toString() ?: ""))
+                        findViewById<EditText>(R.id.etGlCode).setText(details["gl_code"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etGlDes).setText(details["gl_desc"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etGlshCode).setText(details["glsh_code"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etGlshDes).setText(details["glsh_desc"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etLoanAcctNo).setText(details["loan_accountno"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etLoanCurrency).setText(details["loan_currency"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etInterestRate).setText(details["effective_interest_rate"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etLoanSanctioned).setText(details["loan_sanctioned"]?.toString() ?: "0.00")
+                        findViewById<EditText>(R.id.etDisbursement).setText(details["disbursement_amt"]?.toString() ?: "0.00")
+                    }
+
+                    if (payment != null) {
+                        findViewById<EditText>(R.id.etInstallmentId).setText(payment["inst_id"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etInstallmentStartDate).setText(formatApiDate(payment["inst_start_dt"]?.toString() ?: ""))
+                        findViewById<EditText>(R.id.etNoOfInstallment).setText(payment["no_of_inst"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etPrincipalFreq).setText(payment["inst_freq"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etInterestFreq).setText(payment["interest_frequency"]?.toString() ?: "")
+                        findViewById<EditText>(R.id.etInstallmentAmount).setText(payment["inst_amount"]?.toString() ?: "0.00")
+                    }
+
+                    // Pre-fetch other tab data
+                    fetchFlows()
+                    fetchLoanPosition()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LeaseLoanViewActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun fetchFlows() {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.api
+                val response = api.getDemandFlow(loanId)
+                if (response.isSuccessful && response.body() != null) {
+                    val rawFlows: List<List<Any>> = response.body()!!
+                    val flowData = rawFlows.map { row: List<Any> ->
+                        LoanFlowModel(
+                            flowDate = formatApiDate(row.getOrNull(2)?.toString() ?: ""),
+                            flowCode = row.getOrNull(4)?.toString() ?: "",
+                            flowFreq = row.getOrNull(1)?.toString() ?: "",
+                            flowAmt = row.getOrNull(3)?.toString() ?: "0.00"
+                        )
+                    }
+                    val rvFlows = findViewById<RecyclerView>(R.id.rvLoanFlows)
+                    rvFlows.layoutManager = LinearLayoutManager(this@LeaseLoanViewActivity)
+                    rvFlows.adapter = LoanFlowAdapter(flowData)
+                }
+            } catch (e: Exception) {}
+        }
+    }
+
+    private fun fetchLoanPosition() {
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.api
+                val response = api.getLoanPosition(loanId)
+                // Position logic here if needed
+            } catch (e: Exception) {}
+        }
+    }
+
+    private fun formatApiDate(rawDate: String): String {
+        return try {
+            if (rawDate.contains("T")) {
+                val parts = rawDate.split("T")[0].split("-")
+                "${parts[2]}-${parts[1]}-${parts[0]}"
+            } else {
+                rawDate
+            }
+        } catch (e: Exception) {
+            rawDate
         }
     }
 

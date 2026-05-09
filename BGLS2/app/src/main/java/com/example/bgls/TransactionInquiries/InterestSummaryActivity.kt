@@ -12,6 +12,10 @@ import com.example.bgls.Adapter.InterestSummaryAdapter
 import com.example.bgls.DataModels.InterestSummaryModel
 import com.example.bgls.MainActivity
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.example.bgls.Retrofit.ServiceApi
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class InterestSummaryActivity : AppCompatActivity() {
@@ -76,13 +80,35 @@ class InterestSummaryActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        val dummyData = listOf(
-            InterestSummaryModel("LA0001", "TIM DAVID", "22-05-2026", "10,000.00", "12", "0.00", "0", "0", "0"),
-            InterestSummaryModel("LA0002", "JOHN DOE", "22-05-2026", "15,000.00", "10", "0.00", "0", "0", "0"),
-            InterestSummaryModel("LA0003", "SARAH CONNOR", "22-05-2026", "20,000.00", "14", "0.00", "0", "0", "0"),
-            InterestSummaryModel("LA0004", "MICHAEL JORDAN", "22-05-2026", "30,000.00", "11", "0.00", "0", "0", "0"),
-            InterestSummaryModel("LA0005", "SERENA WILLIAMS", "22-05-2026", "25,000.00", "13", "0.00", "0", "0", "0")
-        )
-        adapter.updateData(dummyData)
+        lifecycleScope.launch {
+            try {
+                val api = RetrofitClient.api
+                val response = api.getInterestSummary("list")
+
+                if (response.isSuccessful && response.body() != null) {
+                    val data = response.body()!!
+                    val listValues = data.fewvalues ?: emptyList<Any>()
+                    val accBalances = data.allAccBalances ?: emptyList<Any>()
+
+                    val summaryList = listValues.mapIndexed { index: Int, row: Any ->
+                        val entity = row as? Map<*, *>
+                        val balance = accBalances.getOrNull(index)?.toString() ?: "0.00"
+                        
+                        InterestSummaryModel(
+                            loanNo = entity?.get("loan_accountno")?.toString() ?: "",
+                            name = entity?.get("customer_name")?.toString() ?: "",
+                            dateOfLoan = entity?.get("date_of_loan")?.toString() ?: "",
+                            loanAmt = entity?.get("loan_sanctioned")?.toString() ?: "0.00",
+                            interestRate = entity?.get("effective_interest_rate")?.toString() ?: "0",
+                            liability = balance,
+                            accruedInterest = "0.00",
+                            bookedInterest = "0.00",
+                            appliedInterest = "0.00"
+                        )
+                    }
+                    adapter.updateData(summaryList)
+                }
+            } catch (e: Exception) {}
+        }
     }
 }
