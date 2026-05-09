@@ -42,6 +42,13 @@ class TabTransactionAdapter(
         holder.tvCreditAccName.text = item.creditAccName
         holder.tvTranParticular.text = item.tranParticular
         holder.tvType.text = item.type
+        
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
+        }
 
         // Event Click -> Navigate to TransactionAccountViewActivity (VIEW MODE)
         holder.tvEvent.paintFlags = holder.tvEvent.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG

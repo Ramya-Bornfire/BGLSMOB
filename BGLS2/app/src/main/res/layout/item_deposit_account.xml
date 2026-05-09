@@ -4,8 +4,7 @@
     android:layout_height="48dp"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground">
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/tvCustId"
@@ -62,13 +61,15 @@
         android:textSize="11sp"
         android:textStyle="bold"/>
 
-    <RadioButton
+    <TextView
         android:id="@+id/rbSelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:buttonTint="#007BFF"
-        android:scaleX="0.8"
-        android:scaleY="0.8"/>
+        android:text="Action"
+        android:textColor="#007BFF"
+        android:textSize="11sp"
+        android:clickable="false"
+        android:focusable="false"/>
 </LinearLayout>

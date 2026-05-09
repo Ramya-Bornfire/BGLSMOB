@@ -45,6 +45,13 @@ class JournalBookAdapter(
         holder.tvAcctName.text = item.acctName
         holder.tvParticular.text = item.particular
         holder.tvStatus.text = item.status
+        
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
+        }
 
         holder.tvAction.setOnClickListener {
             // Show popup menu for View/Delete

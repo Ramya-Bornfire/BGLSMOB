@@ -63,6 +63,13 @@ class JournalEntriesListAdapter(
         holder.tvTranParticular.text = item.tranParticular
         holder.tvStatus.text = item.status
 
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
+
         holder.tvAction.setOnClickListener { view ->
             val popup = android.widget.PopupMenu(view.context, view)
             popup.menu.add("View")

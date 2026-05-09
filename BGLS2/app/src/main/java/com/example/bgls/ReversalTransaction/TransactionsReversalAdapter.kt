@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,7 @@ class TransactionsReversalAdapter(
         val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
         val tvTranParticular: TextView = view.findViewById(R.id.tvTranParticular)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
+        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,7 +50,12 @@ class TransactionsReversalAdapter(
         holder.tvTranParticular.text = item.tranParticular
         holder.tvStatus.text = item.status
         
-        holder.rbSelect.isChecked = (position == selectedIndex)
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
 
         // Make ACCT ID clickable as a link
         holder.tvAcctId.paintFlags = holder.tvAcctId.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -65,7 +69,7 @@ class TransactionsReversalAdapter(
             notifyDataSetChanged()
         }
 
-        // Handle Radio Button Click to navigate to Edit Screen
+        // Handle Action Click
         holder.rbSelect.setOnClickListener {
             selectedIndex = position
             notifyDataSetChanged()

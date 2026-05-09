@@ -8,70 +8,70 @@
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.0" android:minWidth="100dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvTranId"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.2" android:minWidth="120dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvPaTranTy"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="0.9" android:minWidth="90dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvCurrency"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="0.8" android:minWidth="80dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvAmount"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.2" android:minWidth="120dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:gravity="center_vertical|end"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvAcctId"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.5" android:minWidth="150dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#2196F3"/>
 
     <TextView android:id="@+id/tvAcctName"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.8" android:minWidth="180dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvTranParticular"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="2.2" android:minWidth="220dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvStatus"
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="1.0" android:minWidth="100dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <LinearLayout
         android:layout_width="0dp" android:layout_height="match_parent"
         android:layout_weight="0.8" android:minWidth="80dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center">
-        <RadioButton android:id="@+id/rbSelect" android:layout_width="wrap_content" android:layout_height="wrap_content" android:clickable="true" android:focusable="true"/>
+        android:gravity="center">
+        <TextView android:id="@+id/rbSelect" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Action" android:textColor="#007BFF" android:textSize="11sp" android:clickable="false" android:focusable="false"/>
     </LinearLayout>
 
 </LinearLayout>

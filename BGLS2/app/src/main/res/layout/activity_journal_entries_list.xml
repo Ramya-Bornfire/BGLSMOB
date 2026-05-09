@@ -79,7 +79,7 @@
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.3" android:text="ACCT NAME"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:text="TRAN PARTICULAR"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.1" android:text="SELECT" android:gravity="center"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.1" android:text="ACTION" android:gravity="center"/>
             </LinearLayout>
 
             <!-- ─── ROWS ─── -->

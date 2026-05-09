@@ -102,23 +102,14 @@
                 android:background="#E9ECEF">
 
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN DATE"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN ID"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="TYPE"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CCY"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:text="ACCT ID"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCT NAME"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="PARTICULAR"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
-                <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#AAAAAA"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACTION"/>
             </LinearLayout>
 

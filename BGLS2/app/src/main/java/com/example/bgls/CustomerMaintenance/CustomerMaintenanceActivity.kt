@@ -307,6 +307,13 @@ class CustomerMaintenanceAdapter(
         holder.tvMobileNo.text = item.mobileNo
         holder.tvEmail.text = item.email
         holder.tvStatus.text = item.status
+        
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
+        }
 
         // Make Customer ID look like a clickable link
         holder.tvCustomerId.paintFlags = holder.tvCustomerId.paintFlags or Paint.UNDERLINE_TEXT_FLAG

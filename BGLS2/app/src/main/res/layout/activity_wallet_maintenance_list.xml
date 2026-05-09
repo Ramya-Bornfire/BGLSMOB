@@ -72,10 +72,9 @@
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Currency"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Balance" android:gravity="center"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="70dp" android:text="Status"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Select" android:gravity="center"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Action" android:gravity="center"/>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
 
             <!-- RecyclerView for the List -->
             <androidx.recyclerview.widget.RecyclerView

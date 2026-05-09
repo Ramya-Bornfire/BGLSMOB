@@ -3,7 +3,6 @@ package com.example.bgls.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.DepositFlowModel
@@ -29,7 +28,7 @@ class DepositFlowAdapter(
         val tvFlowDate: TextView = view.findViewById(R.id.tvFlowDate)
         val tvFlowAmount: TextView = view.findViewById(R.id.tvFlowAmount)
         val tvOutstandingBalance: TextView = view.findViewById(R.id.tvOutstandingBalance)
-        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
+        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlowViewHolder {
@@ -50,8 +49,12 @@ class DepositFlowAdapter(
         // Show radio button only in operations mode
         holder.rbSelect.visibility = if (isOperationsMode) View.VISIBLE else View.GONE
 
-        holder.rbSelect.isChecked = position == selectedPosition
-
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
+        }
         holder.rbSelect.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()

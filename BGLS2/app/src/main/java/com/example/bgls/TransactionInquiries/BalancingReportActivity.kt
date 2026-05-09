@@ -135,6 +135,13 @@ class BalancingReportActivity : AppCompatActivity() {
             holder.tvBalance.text = item.balance
             holder.tvStatus.text = item.status
 
+            // Zebra striping
+            if (position % 2 == 0) {
+                holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+            } else {
+                holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+            }
+
             // Setup Action Spinner
             val actions = listOf("Action", "Modify", "Verify", "Delete", "View")
             val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, actions)

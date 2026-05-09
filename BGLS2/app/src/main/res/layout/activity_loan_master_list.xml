@@ -121,9 +121,6 @@
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="STATUS"/>
             </LinearLayout>
 
-            <!-- Divider -->
-            <View android:layout_width="match_parent" android:layout_height="1dp"
-                android:background="#CCCCCC"/>
 
             <!-- TABLE ROWS -->
             <androidx.recyclerview.widget.RecyclerView

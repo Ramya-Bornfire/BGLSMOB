@@ -245,6 +245,13 @@ class TrialBalanceActivity : AppCompatActivity() {
             holder.tvNetChange.text = decimalFormat.format(item.netChange)
             holder.tvClosingBal.text = decimalFormat.format(item.closingBal)
             
+            // Zebra striping
+            if (position % 2 == 0) {
+                holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+            } else {
+                holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+            }
+            
             holder.tvGlCode.setOnClickListener { onItemClick(item) }
         }
 
@@ -279,6 +286,13 @@ class TrialBalanceActivity : AppCompatActivity() {
             } else {
                 holder.tvCredit.text = "0.00"
                 holder.tvDebit.text = decimalFormat.format(Math.abs(bal))
+            }
+            
+            // Zebra striping
+            if (position % 2 == 0) {
+                holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+            } else {
+                holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
             }
         }
 

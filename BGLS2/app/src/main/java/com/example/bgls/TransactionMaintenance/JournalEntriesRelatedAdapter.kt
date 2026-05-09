@@ -3,14 +3,12 @@ package com.example.bgls.TransactionMaintenance
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
 
 class JournalEntriesRelatedAdapter(
     private val dataList: List<JournalEntryListModel>,
-    private val selectedIndex: Int = 0
 ) : RecyclerView.Adapter<JournalEntriesRelatedAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -22,7 +20,7 @@ class JournalEntriesRelatedAdapter(
         val tvAcctId: TextView = view.findViewById(R.id.tvAcctId)
         val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
+        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,7 +39,13 @@ class JournalEntriesRelatedAdapter(
         holder.tvAcctId.text = item.acctId
         holder.tvAcctName.text = item.acctName
         holder.tvStatus.text = item.status
-        holder.rbSelect.isChecked = (position == selectedIndex)
+
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
     }
 
     override fun getItemCount(): Int = dataList.size

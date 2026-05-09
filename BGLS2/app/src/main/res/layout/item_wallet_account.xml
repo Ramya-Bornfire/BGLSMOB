@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#FFFFFF"
     android:paddingVertical="8dp"
     android:gravity="center_vertical">
 
@@ -98,10 +97,14 @@
         android:layout_weight="0.8"
         android:minWidth="60dp"
         android:gravity="center">
-        <RadioButton
+        <TextView
             android:id="@+id/rbSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Action"
+            android:textColor="#007BFF"
+            android:textSize="11sp"
+            android:textStyle="normal"
             android:clickable="false"
             android:focusable="false"/>
     </RelativeLayout>

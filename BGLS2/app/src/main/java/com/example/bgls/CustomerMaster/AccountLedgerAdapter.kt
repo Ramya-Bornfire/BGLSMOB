@@ -50,6 +50,13 @@ class AccountLedgerAdapter(
         holder.tvCredits.text         = item.credits
         holder.tvDebits.text          = item.debits
         holder.tvBalance.text         = item.balance
+        
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
         holder.tvTranId.setOnClickListener {
             onTranIdClick(item)
         }

@@ -2,36 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@android:color/white">
+    android:orientation="horizontal">
 
     <TextView android:id="@+id/tvTranDate" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.2" android:text="Date"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvTranId" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.2" android:text="ID" android:textColor="#2084A9"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvType" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="0.8" android:text="Type"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvCurrency" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="0.8" android:text="CCY"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvAmount" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.2" android:text="Amt" android:gravity="end"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvAcctNum" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.8" android:text="Acct No"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvAcctName" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="2.0" android:text="Name"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvParticular" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.5" android:text="Particular"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvStatus" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.0" android:text="Status"/>
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#DDDDDD"/>
-    
+
     <TextView android:id="@+id/tvAction" style="@style/TableCell" android:layout_width="0dp" android:layout_weight="1.0" android:text="Action" android:textColor="#2084A9" android:textStyle="bold"/>
 
 </LinearLayout>

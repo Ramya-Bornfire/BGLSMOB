@@ -24,7 +24,7 @@ class DepositAccountAdapter(
         val tvDateOfDeposit: TextView = view.findViewById(R.id.tvDateOfDeposit)
         val tvDepositAmount: TextView = view.findViewById(R.id.tvDepositAmount)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: android.widget.RadioButton = view.findViewById(R.id.rbSelect)
+        val rbSelect: android.widget.TextView = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
@@ -47,7 +47,12 @@ class DepositAccountAdapter(
             holder.tvStatus.setTextColor(Color.parseColor("#DC3545")) // Red
         }
 
-        holder.rbSelect.isChecked = position == selectedPosition
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
+        }
 
         holder.rbSelect.setOnClickListener {
             selectedPosition = holder.adapterPosition

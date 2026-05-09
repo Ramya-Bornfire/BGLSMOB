@@ -3,7 +3,6 @@ package com.example.bgls.TransactionMaintenance
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.AccountLedgerPostingModel
@@ -14,7 +13,6 @@ class AccountLedgerPositingAdapter(
     private val onItemSelected: (Int) -> Unit
 ) : RecyclerView.Adapter<AccountLedgerPositingAdapter.ViewHolder>() {
 
-    private var selectedPosition = -1
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTranDate: TextView = view.findViewById(R.id.tvTranDate)
@@ -26,7 +24,7 @@ class AccountLedgerPositingAdapter(
         val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
         val tvTranParticular: TextView = view.findViewById(R.id.tvTranParticular)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
+        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,14 +43,18 @@ class AccountLedgerPositingAdapter(
         holder.tvAcctName.text = item.acctName
         holder.tvTranParticular.text = item.tranParticular
         holder.tvStatus.text = item.status
-        
-        holder.rbSelect.isChecked = position == selectedPosition
+        // Zebra striping
+        if (position % 2 == 0) {
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+        } else {
+            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
+        }
 
+        holder.rbSelect.setOnClickListener {
+            onItemSelected(position)
+        }
+        
         holder.itemView.setOnClickListener {
-            val oldPos = selectedPosition
-            selectedPosition = position
-            notifyItemChanged(oldPos)
-            notifyItemChanged(selectedPosition)
             onItemSelected(position)
         }
     }

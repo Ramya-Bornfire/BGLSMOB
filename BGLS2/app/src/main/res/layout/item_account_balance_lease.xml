@@ -19,7 +19,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvCustomerId"
@@ -35,7 +35,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvAccountId"
@@ -51,7 +51,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvAccountName"
@@ -67,7 +67,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvDateOfLoan"
@@ -81,7 +81,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvLoanAmount"
@@ -95,7 +95,7 @@
         android:paddingStart="4dp"
         android:paddingEnd="6dp"/>
 
-    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="#CCCCCC"/>
+
 
     <TextView
         android:id="@+id/tvDisbAmount"
