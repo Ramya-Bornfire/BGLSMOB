@@ -11,107 +11,118 @@ class LoanCollectionActivity : AppCompatActivity() {
 
     private lateinit var layoutBulkCollection: LinearLayout
     private lateinit var llBulkRows: LinearLayout
-
-    private lateinit var tvFileName: TextView
-
     private lateinit var btnBulkAdd: Button
-    //private lateinit var btnBulkSubmit: Button
-
     private lateinit var btnBulkUpload: Button
-    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            val path = it.path ?: ""
-            val fileName = if (path.contains("/")) path.substring(path.lastIndexOf("/") + 1) else "Selected File"
-            tvFileName.text = fileName
-            Toast.makeText(this, "Selected: $fileName", Toast.LENGTH_SHORT).show()
+
+    // ✅ Weights — must match XML header exactly
+    // TranId=1.2, Names=1.5, Ref=1.2, Mobile=1.5,
+    // Amount=1.0, AllocAmt=1.2, Time=1.5, Status=1.2,
+    // AllocRB=0.8, Delete=0.6
+    private val W_TRAN_ID   = 1.2f
+    private val W_NAMES     = 1.5f
+    private val W_REF       = 1.2f
+    private val W_MOBILE    = 1.5f
+    private val W_AMOUNT    = 1.0f
+    private val W_ALLOC_AMT = 1.2f
+    private val W_TIME      = 1.5f
+    private val W_STATUS    = 1.2f
+    private val W_ALLOC_RB  = 0.8f
+    private val W_DELETE    = 0.6f
+
+    private val filePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                val path = it.path ?: ""
+                val fileName = if (path.contains("/"))
+                    path.substring(path.lastIndexOf("/") + 1)
+                else "Selected File"
+                Toast.makeText(this, "Selected: $fileName", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_collection)
 
-        // View Binding (findViewById)
         layoutBulkCollection = findViewById(R.id.layoutBulkCollection)
-        llBulkRows = findViewById(R.id.llBulkRows)
+        llBulkRows            = findViewById(R.id.llBulkRows)
+        btnBulkAdd            = findViewById(R.id.btnBulkAdd)
+        btnBulkUpload         = findViewById(R.id.btnBulkUpload)
 
-        btnBulkAdd = findViewById(R.id.btnBulkAdd)
-        //btnBulkSubmit = findViewById(R.id.btnBulkSubmit)
-
-        btnBulkUpload = findViewById(R.id.btnBulkUpload)
-
-
-        // Show layout
         layoutBulkCollection.visibility = LinearLayout.VISIBLE
 
-        // ➕ Add row
-        btnBulkAdd.setOnClickListener {
-            addRow()
-        }
-
-        // 📤 Upload click
-        btnBulkUpload.setOnClickListener {
-            filePickerLauncher.launch("*/*")
-        }
-
-        // ✅ Submit
-//        btnBulkSubmit.setOnClickListener {
-//            Toast.makeText(this, "Submitted", Toast.LENGTH_SHORT).show()
-//        }
-
-
+        btnBulkAdd.setOnClickListener { addRow() }
+        btnBulkUpload.setOnClickListener { filePickerLauncher.launch("*/*") }
     }
 
-    // 🔥 Dynamic Row Add
     private fun addRow() {
         val row = LinearLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(40))
             orientation = LinearLayout.HORIZONTAL
+            setBackgroundColor(Color.WHITE)
         }
 
-        // Weights: 1, 1.5, 1, 1.2, 1, 1, 1.2, 1.2, 0.8
-        val fields = listOf(
-            Triple(1f, "", Gravity.CENTER), Triple(1.5f, "", Gravity.CENTER),
-            Triple(1f, "", Gravity.CENTER), Triple(1.2f, "", Gravity.CENTER),
-            Triple(1f, "", Gravity.CENTER), Triple(1f, "0", Gravity.CENTER),
-            Triple(1.2f, "01-05-2026 13:00", Gravity.CENTER), Triple(1.2f, "UNALLOCATED", Gravity.CENTER)
+        // Column definitions: Pair(weight, defaultText)
+        val columns = listOf(
+            Pair(W_TRAN_ID,   ""),
+            Pair(W_NAMES,     ""),
+            Pair(W_REF,       ""),
+            Pair(W_MOBILE,    ""),
+            Pair(W_AMOUNT,    ""),
+            Pair(W_ALLOC_AMT, "0"),
+            Pair(W_TIME,      "01-05-2026 13:00"),
+            Pair(W_STATUS,    "UNALLOCATED")
         )
 
-        for (field in fields) {
+        // ✅ EditText cells — width=0dp + weight so they fill proportionally
+        for ((weight, defaultText) in columns) {
             val et = EditText(this).apply {
-                layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), field.first)
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, weight)
                 setBackgroundResource(R.drawable.table_cell_bg)
-                textSize = 10f
-                setPadding(4.dpToPx(), 10.dpToPx(), 4.dpToPx(), 4.dpToPx())
-                setText(field.second)
-                gravity = field.third
+                textSize = 9f
+                setPadding(dp(4), dp(2), dp(4), dp(2))
+                setText(defaultText)
+                gravity = Gravity.CENTER
             }
             row.addView(et)
         }
 
-        // RadioButton for Allocated
-        val rb = RadioButton(this).apply {
-            layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), 0.8f)
+        // ✅ RadioButton cell
+        val rbCell = LinearLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, W_ALLOC_RB)
             setBackgroundResource(R.drawable.table_cell_bg)
             gravity = Gravity.CENTER
+            addView(RadioButton(this@LoanCollectionActivity).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT)
+                minHeight = 0
+                minWidth  = 0
+            })
         }
-        row.addView(rb)
+        row.addView(rbCell)
 
-        // Delete button (Trash icon)
-        val ivDelete = ImageView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(40.dpToPx(), 40.dpToPx())
-            setImageResource(android.R.drawable.ic_menu_delete)
-            setPadding(8.dpToPx(), 8.dpToPx(), 8.dpToPx(), 8.dpToPx())
-            setColorFilter(Color.RED)
-            setOnClickListener {
-                llBulkRows.removeView(row)
-            }
+        // ✅ Delete cell — same weight as header "Del" column
+        val deleteCell = LinearLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, W_DELETE)
+            setBackgroundResource(R.drawable.table_cell_bg)
+            gravity = Gravity.CENTER
+            addView(ImageView(this@LoanCollectionActivity).apply {
+                layoutParams = LinearLayout.LayoutParams(dp(20), dp(20))
+                setImageResource(android.R.drawable.ic_menu_delete)
+                setPadding(dp(2), dp(2), dp(2), dp(2))
+                setColorFilter(Color.RED)
+                setOnClickListener {
+                    llBulkRows.removeView(row)
+                }
+            })
         }
-        row.addView(ivDelete)
+        row.addView(deleteCell)
 
         llBulkRows.addView(row)
     }
-    private fun Int.dpToPx(): Int {
-        return (this * resources.displayMetrics.density).toInt()
-    }
+
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density).toInt()
 }
