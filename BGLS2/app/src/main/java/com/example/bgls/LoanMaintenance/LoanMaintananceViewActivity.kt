@@ -281,6 +281,7 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
 
     private fun formatDate(dateString: String?): String {
         if (dateString.isNullOrEmpty()) return ""
+        if (dateString.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return dateString
         return try {
             val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", java.util.Locale.getDefault())
             val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
@@ -311,8 +312,25 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
 
     private fun populateUI(data: LoanMasterViewResponse) {
         // Customer Header
-        etCustomerId.setText(data.customerId?.firstOrNull() ?: "")
-        etCustomerName.setText(data.customerName?.firstOrNull() ?: "")
+        var custId = data.customerId?.firstOrNull() ?: ""
+        var custName = data.customerName?.firstOrNull() ?: ""
+
+        if (custId.isEmpty() && data.customerData != null) {
+            val cData = data.customerData
+            if (cData is List<*>) {
+                val firstItem = cData.firstOrNull()
+                if (firstItem is List<*>) {
+                    custName = firstItem.getOrNull(0)?.toString() ?: ""
+                    custId = firstItem.getOrNull(1)?.toString() ?: ""
+                } else if (firstItem is String) {
+                    custName = cData.getOrNull(0)?.toString() ?: ""
+                    custId = cData.getOrNull(1)?.toString() ?: ""
+                }
+            }
+        }
+
+        etCustomerId.setText(custId)
+        etCustomerName.setText(custName)
 
         val view = data.view
         if (view == null) return

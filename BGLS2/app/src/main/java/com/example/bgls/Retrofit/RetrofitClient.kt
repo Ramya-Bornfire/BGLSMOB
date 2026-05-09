@@ -28,7 +28,6 @@ object RetrofitClient {
             .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
             .addInterceptor(logging)
             .cookieJar(cookieJar)// 👈 ADD THIS
-            .addInterceptor(UppercaseInterceptor())
             .addInterceptor(Interceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", authHeader)
@@ -41,10 +40,14 @@ object RetrofitClient {
     }
 
     val api: ServiceApi by lazy {
+        val gson = com.google.gson.GsonBuilder()
+            .registerTypeAdapter(String::class.java, GsonStringAdapter())
+            .create()
+
         retrofit2.Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create(gson))
             .build()
             .create(ServiceApi::class.java)
     }

@@ -238,6 +238,7 @@ class LoanMasterViewActivity : AppCompatActivity() {
 
     private fun formatDate(dateString: String?): String {
         if (dateString.isNullOrEmpty()) return ""
+        if (dateString.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return dateString
         return try {
             val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", java.util.Locale.getDefault())
             val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
