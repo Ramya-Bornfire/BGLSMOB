@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         Module("Loan Operation",        "💼",  "#AD1457", listOf("Loan Operation","Loan Closure")),
         Module("Deposit Maintenance",   "🏦",  "#00838F", listOf("Deposit Maintenance")),
         Module("Wallet Maintenance",    "👛",  "#4527A0", listOf("Wallet Maintanance","Wallet Inquries")),
-        Module("Transaction Maint.",    "💳",  "#558B2F", listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
+        Module("Transaction Maintenance",    "💳",  "#558B2F", listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
         Module("Reversal Transactions", "↩️",  "#BF360C", listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
         Module("Collection Process",    "📥",  "#0277BD", listOf("Loan Collection")),
         Module("Batch Job",             "⚡",  "#37474F", listOf("Batch Job")),
