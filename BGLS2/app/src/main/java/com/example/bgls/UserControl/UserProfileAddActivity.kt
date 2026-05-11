@@ -276,6 +276,13 @@ class UserProfileAddActivity : AppCompatActivity() {
             }
         }
         btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
     }
 
     private fun validateForm(): Boolean {
