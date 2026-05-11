@@ -29,10 +29,6 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
 
     private lateinit var tvCurrentDate: TextView
     private lateinit var recyclerView: RecyclerView
-    //private lateinit var btnBack: ImageView
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
     private lateinit var adapter: BusinessActivityAdapter
 
     private val activityList = mutableListOf<BusinessActivityItem>()
@@ -40,34 +36,16 @@ class BusinessActivityDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_details)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
+        setContentView(R.layout.activity_business_details)
 
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
         }
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Navigate back to MainActivity (or any home screen)
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> {
-                    // TODO: Open Profile activity if needed
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_logout -> {
-                    // TODO: Implement logout logic (clear session, go to login)
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         initViews()

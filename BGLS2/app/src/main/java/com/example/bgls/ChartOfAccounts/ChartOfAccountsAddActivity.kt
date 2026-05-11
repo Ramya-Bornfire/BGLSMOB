@@ -23,6 +23,8 @@ class ChartOfAccountsAddActivity : AppCompatActivity() {
     private lateinit var spinAccountStatus: Spinner
     private lateinit var spinOwnership: Spinner
     private lateinit var btnSubmitAdd: Button
+    private lateinit var btnBack: ImageView
+    private lateinit var btnHome: ImageView
 
     // Data holders
     private var chart1List = listOf<RefCodeItem>()
@@ -52,6 +54,8 @@ class ChartOfAccountsAddActivity : AppCompatActivity() {
         spinAccountStatus = findViewById(R.id.spinAccountStatus)
         spinOwnership = findViewById(R.id.spinOwnership)
         btnSubmitAdd = findViewById(R.id.btnSubmitAdd)
+        btnBack = findViewById(R.id.btnBack)
+        btnHome = findViewById(R.id.btnHome)
     }
 
     private fun loadDropdowns() {
@@ -109,6 +113,13 @@ class ChartOfAccountsAddActivity : AppCompatActivity() {
     }
 
     private fun setupSubmit() {
+        btnBack.setOnClickListener { finish() }
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+
         btnSubmitAdd.setOnClickListener {
             val acctNum = findViewById<EditText>(R.id.etAccountID).text.toString()
             if (acctNum.isEmpty()) {

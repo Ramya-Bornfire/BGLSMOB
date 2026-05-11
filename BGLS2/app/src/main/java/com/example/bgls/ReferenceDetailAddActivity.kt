@@ -1,4 +1,4 @@
-package com.example.bgls
+﻿package com.example.bgls
 
 import android.os.Bundle
 import android.view.View
@@ -27,12 +27,7 @@ class ReferenceDetailAddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reference_detail_add) // 👈 உங்கள் XML file name
-
-        // Toolbar setup
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        setContentView(R.layout.activity_reference_detail_add) // ðŸ‘ˆ à®‰à®™à¯à®•à®³à¯ XML file name
 
         // Initialize views
         btnBack = findViewById(R.id.btnBack)
@@ -52,6 +47,14 @@ class ReferenceDetailAddActivity : AppCompatActivity() {
         // Back button
         btnBack.setOnClickListener {
             finish()
+        }
+
+        // Home button
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         // Submit button
@@ -138,7 +141,7 @@ class ReferenceDetailAddActivity : AppCompatActivity() {
             "A31", "A32", "EMP_PRO_01", "EMP_PRO_02", "EMP_PRO_03", "EMP_PRO_04",
             "EMP_PRO_05", "EMP_PRO_06", "EMP_PRO_07", "EMP_PRO_08", "EMP_PRO_09", "EMP_PRO_10"
         )
-        // Map type to description & module (simplified – you can expand)
+        // Map type to description & module (simplified â€“ you can expand)
         val refCodeList = staticRefTypes.map { refType ->
             com.example.bgls.DataModels.ReferenceCode(
                 ref_type = refType,

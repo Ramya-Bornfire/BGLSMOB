@@ -1,56 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- Header - Updated with View, Validate, Post buttons -->
-    <LinearLayout
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="#2196F3"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="ACCOUNT LEDGER POSTING"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="18sp"
-            android:textColor="#FFFFFF"/>
-        
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
-            <Button android:id="@+id/btnDetView" android:layout_width="wrap_content" android:layout_height="36dp" android:text="View" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
-            <Button android:id="@+id/btnDetValidate" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Validate" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
-            <Button android:id="@+id/btnDetPost" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Post" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="16dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
-            
-            <TextView
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
-                android:textSize="14sp"
-                android:textColor="#FFFFFF"
-                android:layout_marginEnd="8dp"/>
-            <TextView
-                android:id="@+id/tvDetailHeaderDate"
-                android:layout_width="120dp"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:background="#FFFFFF"
-                android:text="27-04-2026"
-                android:padding="6dp"
-                android:gravity="center"
-                android:textSize="12sp"
-                android:textColor="#333333"/>
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
         </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
+        
+        <Button android:id="@+id/btnDetView" android:layout_width="wrap_content" android:layout_height="36dp" android:text="View" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+        <Button android:id="@+id/btnDetValidate" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Validate" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+        <Button android:id="@+id/btnDetPost" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Post" android:textAllCaps="false" android:backgroundTint="#FFFFFF" android:textColor="#2196F3" android:textSize="12sp" android:layout_marginEnd="16dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+        <TextView
+            android:id="@+id/tvDetailHeaderDate"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:background="#FFFFFF"
+            android:text="27-04-2026"
+            android:padding="6dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#333333"/>
     </LinearLayout>
 
     <!-- Main Content Box -->

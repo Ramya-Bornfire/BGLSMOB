@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
+import android.widget.ImageView
 
 class AccountLedgerPositingActivity : AppCompatActivity() {
 
@@ -22,6 +23,8 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
     private lateinit var adapter: AccountLedgerPositingAdapter
     private lateinit var progressBar: ProgressBar
     private var postingList = mutableListOf<AccountLedgerPostingModel>()
+    private lateinit var btnBack: ImageView
+    private lateinit var btnHome: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,15 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
     private fun initViews() {
         rvAccountLedger = findViewById(R.id.rvAccountLedger)
         progressBar = findViewById(R.id.progressBar)
+        btnBack = findViewById(R.id.btnBack)
+        btnHome = findViewById(R.id.btnHome)
+
+        btnBack.setOnClickListener { finish() }
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
 
         // ✅ Fix 1: Disable item change animation — prevents visual left-shift on selection
         rvAccountLedger.itemAnimator = null

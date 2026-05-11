@@ -114,7 +114,8 @@ class SchemeCodeAddActivity : AppCompatActivity() {
 
     private lateinit var btnModify: Button
 
-    private lateinit var btnBack: Button
+    private lateinit var btnBack: android.widget.ImageView
+    private lateinit var btnHome: android.widget.ImageView
 
     // Mode flag - true for Add mode, false for View mode
     private var isAddMode = true
@@ -238,6 +239,7 @@ class SchemeCodeAddActivity : AppCompatActivity() {
         btnModify = findViewById(R.id.btnModify)
 
         btnBack = findViewById(R.id.btnBack)
+        btnHome = findViewById(R.id.btnHome)
     }
 
     private fun clearAllFields() {
@@ -321,7 +323,13 @@ class SchemeCodeAddActivity : AppCompatActivity() {
       
 
         btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
     }
 

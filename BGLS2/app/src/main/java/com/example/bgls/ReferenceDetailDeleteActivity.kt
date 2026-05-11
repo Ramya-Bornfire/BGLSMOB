@@ -1,4 +1,4 @@
-package com.example.bgls
+﻿package com.example.bgls
 
 import android.os.Bundle
 import android.widget.*
@@ -20,12 +20,7 @@ class ReferenceDetailDeleteActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reference_detail_delete) // உங்கள் XML file name
-
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        setContentView(R.layout.activity_reference_detail_delete) // à®‰à®™à¯à®•à®³à¯ XML file name
 
         // Views
         btnBack = findViewById(R.id.btnBack)
@@ -42,6 +37,14 @@ class ReferenceDetailDeleteActivity: AppCompatActivity() {
         // Back button click
         btnBack.setOnClickListener {
             finish()
+        }
+
+        // Home button
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         // Populate fields from Intent

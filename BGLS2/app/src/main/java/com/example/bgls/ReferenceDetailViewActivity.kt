@@ -1,4 +1,4 @@
-package com.example.bgls
+﻿package com.example.bgls
 
 import android.os.Bundle
 import android.widget.*
@@ -21,11 +21,6 @@ class ReferenceDetailViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reference_detail_view)
 
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
         // Views
         btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)
@@ -40,6 +35,14 @@ class ReferenceDetailViewActivity : AppCompatActivity() {
         // Back button
         btnBack.setOnClickListener {
             finish()
+        }
+
+        // Home button
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         // Get data from Intent

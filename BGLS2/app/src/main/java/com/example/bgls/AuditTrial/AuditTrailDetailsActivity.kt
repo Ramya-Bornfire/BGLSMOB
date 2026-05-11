@@ -18,40 +18,18 @@ class AuditTrailDetailsActivity : AppCompatActivity() {
 
     private lateinit var tvUserActivity: TextView
     private lateinit var tvBusinessActivity: TextView
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audit_trail_details)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
 
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
         }
-        navigationView.setNavigationItemSelectedListener { item ->
 
-            when (item.itemId) {
-
-                R.id.nav_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(intent)
-                }
-
-                R.id.nav_profile -> {
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-
-                R.id.nav_logout -> {
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         initViews()

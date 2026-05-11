@@ -1,4 +1,4 @@
-package com.example.bgls.OrganizationDetails
+﻿package com.example.bgls.OrganizationDetails
 
 import android.content.Intent
 import android.os.Bundle

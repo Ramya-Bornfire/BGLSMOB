@@ -1,4 +1,4 @@
-package com.example.bgls.OrganizationDetails
+﻿package com.example.bgls.OrganizationDetails
 
 import android.os.Bundle
 import android.view.View
@@ -45,10 +45,6 @@ class EditBranchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_branch)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Initialize views
         btnBack = findViewById(R.id.btnBack)

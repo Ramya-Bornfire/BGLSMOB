@@ -51,9 +51,11 @@ class SchemeCodeViewActivity : AppCompatActivity() {
             }
         }
 
-//        findViewById<Button>(R.id.btnHome).setOnClickListener {
-//            finish()
-//        }
+        findViewById<android.widget.ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
 
         val btnModify = findViewById<Button>(R.id.btnModify)
         btnModify.setOnClickListener {
@@ -81,9 +83,9 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 .show()
         }
 
-//        findViewById<Button>(R.id.btnBack).setOnClickListener {
-//            finish()
-//        }
+        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
 
         populateTransactionSettings()
         populateProductFees()

@@ -14,11 +14,13 @@ import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import com.example.bgls.TransactionMaintenance.JournalEntriesViewActivity
 import kotlinx.coroutines.launch
+import android.widget.ImageView
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import com.example.bgls.MainActivity
 
 class AccountLedgerActivity : AppCompatActivity() {
 
@@ -79,6 +81,16 @@ class AccountLedgerActivity : AppCompatActivity() {
         etFromDate = findViewById(R.id.etFromDate)
         etToDate = findViewById(R.id.etToDate)
         etAcctStatus = findViewById(R.id.etAcctStatus)
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
     }
 
     private fun fetchAccountLedger(num: String) {

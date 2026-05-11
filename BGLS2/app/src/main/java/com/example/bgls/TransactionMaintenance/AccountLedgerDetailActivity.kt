@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
@@ -53,6 +54,16 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
         layoutTableContainer = findViewById(R.id.layoutTableContainer)
         rvRelatedEntries = findViewById(R.id.rvRelatedEntries)
         progressBar = findViewById(R.id.progressBar)
+        
+        val btnBack = findViewById<ImageView>(R.id.btnBack)
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        
+        btnBack.setOnClickListener { finish() }
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
         
         setupRecyclerView()
     }

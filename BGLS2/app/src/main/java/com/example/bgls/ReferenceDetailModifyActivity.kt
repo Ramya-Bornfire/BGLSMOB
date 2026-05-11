@@ -1,4 +1,4 @@
-package com.example.bgls
+﻿package com.example.bgls
 
 import android.os.Bundle
 import android.view.View
@@ -29,10 +29,6 @@ class ReferenceDetailModifyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reference_detail_modify)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
         // Init views
         btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)
@@ -46,6 +42,14 @@ class ReferenceDetailModifyActivity : AppCompatActivity() {
         etRemark = findViewById(R.id.etremark)
 
         btnBack.setOnClickListener { finish() }
+
+        // Home button
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
 
         // Populate fields from Intent (original data)
         etType.setText(intent.getStringExtra("typeDesc"))
@@ -142,12 +146,12 @@ class ReferenceDetailModifyActivity : AppCompatActivity() {
                 if (position == 0) return
 
                 if (isFirstSelection) {
-                    // First load – do not overwrite original fields
+                    // First load â€“ do not overwrite original fields
                     isFirstSelection = false
                     return
                 }
 
-                // User changed the type – update description and module from map
+                // User changed the type â€“ update description and module from map
                 val selectedType = typeStrings[position - 1]
                 val pair = typeToDescriptionMap[selectedType]
                 if (pair != null) {

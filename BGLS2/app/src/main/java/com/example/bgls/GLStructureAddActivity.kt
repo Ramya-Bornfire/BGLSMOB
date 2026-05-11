@@ -1,4 +1,4 @@
-package com.example.bgls
+﻿package com.example.bgls
 
 import android.os.Bundle
 import android.widget.*
@@ -26,12 +26,7 @@ class GLStructureAddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_glstructure_add) // 👈 உங்கள் XML name
-
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        setContentView(R.layout.activity_glstructure_add) // ðŸ‘ˆ à®‰à®™à¯à®•à®³à¯ XML name
 
         // Init Views
         btnBack = findViewById(R.id.btnBack)
@@ -56,6 +51,14 @@ class GLStructureAddActivity : AppCompatActivity() {
             finish()
         }
 
+        // Home button
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+
         // Submit button
         btnUpdate.setOnClickListener {
 
@@ -78,7 +81,7 @@ class GLStructureAddActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🔥 Debug / Success
+            // ðŸ”¥ Debug / Success
             // API call here
             val fields = mapOf(
                 "branch_id" to branchId,

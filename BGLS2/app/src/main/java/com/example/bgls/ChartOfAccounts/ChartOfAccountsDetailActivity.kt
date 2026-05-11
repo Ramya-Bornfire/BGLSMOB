@@ -115,7 +115,12 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
         btnSubmit.setOnClickListener { submitModify() }
         btnVerify.setOnClickListener { verifyAccount() }
         btnDelete.setOnClickListener { confirmDelete() }
-        findViewById<Button>(R.id.btnBack)?.setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnBack)?.setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnHome)?.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
     }
 
     private fun setupModeUI() {

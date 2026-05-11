@@ -1,5 +1,6 @@
 package com.example.bgls.TransactionMaintenance
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
+
+import com.example.bgls.MainActivity
+import android.widget.ImageView
 
 class JournalEntriesViewActivity : AppCompatActivity() {
 
@@ -55,8 +59,6 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     private lateinit var etEntryTime: EditText
 
     private lateinit var tvPageInfo: TextView
-    private lateinit var btnPrev: Button
-    private lateinit var btnNext: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var btnView: Button
 
@@ -138,10 +140,18 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         etEntryTime = findViewById(R.id.etEntryTime)
 
         tvPageInfo = findViewById(R.id.tvPageInfo)
-        btnPrev = findViewById(R.id.btnPrev)
-        btnNext = findViewById(R.id.btnNext)
         progressBar = findViewById(R.id.progressBar)
         btnView = findViewById(R.id.btnView)
+        
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
         layoutTableContainer = findViewById(R.id.layoutTableContainer)
         rvRelatedEntries = findViewById(R.id.rvRelatedEntries)
 
@@ -159,11 +169,11 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        btnPrev.setOnClickListener {
+        findViewById<Button>(R.id.btnPrev).setOnClickListener {
             if (currentPartIndex > 1) loadJournalEntry((currentPartIndex - 1).toString())
             else Toast.makeText(this, "First entry", Toast.LENGTH_SHORT).show()
         }
-        btnNext.setOnClickListener {
+        findViewById<Button>(R.id.btnNext).setOnClickListener {
             if (currentPartIndex < maxPartIndex) loadJournalEntry((currentPartIndex + 1).toString())
             else Toast.makeText(this, "Last entry", Toast.LENGTH_SHORT).show()
         }
@@ -254,8 +264,8 @@ class JournalEntriesViewActivity : AppCompatActivity() {
 
     private fun updatePaginationInfo() {
         tvPageInfo.text = "$currentPartIndex / $maxPartIndex"
-        btnPrev.isEnabled = currentPartIndex > 1
-        btnNext.isEnabled = currentPartIndex < maxPartIndex
+        findViewById<Button>(R.id.btnPrev).isEnabled = currentPartIndex > 1
+        findViewById<Button>(R.id.btnNext).isEnabled = currentPartIndex < maxPartIndex
     }
 
     private fun formatDate(dateString: String?): String {
