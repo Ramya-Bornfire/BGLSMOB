@@ -30,7 +30,7 @@ class TransactionsReversalAdapter(
         val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
         val tvTranParticular: TextView = view.findViewById(R.id.tvTranParticular)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
+        val rbSelect: android.widget.RadioButton = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,6 +50,8 @@ class TransactionsReversalAdapter(
         holder.tvTranParticular.text = item.tranParticular
         holder.tvStatus.text = item.status
         
+        holder.rbSelect.isChecked = (selectedIndex == position)
+        
         // Zebra striping
         if (position % 2 == 0) {
             holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
@@ -67,9 +69,10 @@ class TransactionsReversalAdapter(
         holder.itemView.setOnClickListener {
             selectedIndex = position
             notifyDataSetChanged()
+            onSelectClick(position)
         }
 
-        // Handle Action Click
+        // Handle Radio Button Click directly
         holder.rbSelect.setOnClickListener {
             selectedIndex = position
             notifyDataSetChanged()

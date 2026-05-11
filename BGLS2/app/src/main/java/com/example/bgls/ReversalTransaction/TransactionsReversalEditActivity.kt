@@ -4,10 +4,18 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.JournalEntryItem
 import com.example.bgls.DataModels.ReversalDetailModel
+import com.example.bgls.DataModels.ReversalSubmissionPayload
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 class TransactionsReversalEditActivity : AppCompatActivity() {
 
@@ -23,13 +31,22 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
     private var reversalList = mutableListOf<ReversalDetailModel>()
     private var newList = mutableListOf<ReversalDetailModel>()
 
+    // Store original JournalEntryItems for submission
+    private var originalEntries = mutableListOf<JournalEntryItem>()
+    private var reversalEntries = mutableListOf<JournalEntryItem>()
+    private var newEntries = mutableListOf<JournalEntryItem>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_reversal_edit)
 
+        val tranId = intent.getStringExtra("tran_id") ?: ""
+        val partTranId = intent.getStringExtra("part_tran_id") ?: ""
+        val acctNum = intent.getStringExtra("acct_num") ?: ""
+
         initViews()
-        fetchDataFromApi("TR00001") // TODO: Pass actual transaction ID from Intent
         setupTables()
+        fetchDataFromApi(tranId, partTranId, acctNum)
 
         findViewById<Button>(R.id.btnEditHome).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnEditSubmit).setOnClickListener {
@@ -49,52 +66,135 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
         rvNewTransaction = findViewById(R.id.rvNewTransaction)
     }
 
-    // ==========================================
-    // API INTEGRATION POINTS
-    // ==========================================
+    private fun fetchDataFromApi(tranId: String, partTranId: String, acctNum: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getReversalTransactions("view1", tranId, partTranId, acctNum)
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    val gson = Gson()
+                    
+                    // Parse 'jour' as list of JournalEntryItem
+                    val jourJson = gson.toJson(body["jour"])
+                    val type = object : TypeToken<List<JournalEntryItem>>() {}.type
+                    val items: List<JournalEntryItem>? = gson.fromJson(jourJson, type)
+                    
+                    originalEntries.clear()
+                    originalList.clear()
+                    reversalList.clear()
+                    reversalEntries.clear()
+                    newList.clear()
+                    newEntries.clear()
 
-    /**
-     * TODO: Replace with actual API call (e.g., Retrofit or Volley)
-     * Once you receive the response, parse it into `ReversalDetailModel` lists 
-     * and call setupTables() or notifyDataSetChanged().
-     */
-    private fun fetchDataFromApi(tranId: String) {
-        // Example logic for when you get the API:
-        // ApiService.getTransactionDetails(tranId).enqueue(...)
-        
-        // Temporarily loading mock data so the UI continues to work for now
-        loadMockData()
+                    if (items != null) {
+                        originalEntries.addAll(items)
+                        items.forEach { originalList.add(mapToDetailModel(it)) }
+                        
+                        items.forEach { reversalList.add(mapToDetailModel(it, isReversal = true)) }
+                        items.forEach { reversalEntries.add(it.copy(part_tran_type = if (it.part_tran_type == "Debit") "Credit" else "Debit")) }
+
+                        newList.addAll(originalList) // Or map as needed
+                        newEntries.addAll(items)
+                    } else {
+                        Toast.makeText(this@TransactionsReversalEditActivity, "No details found", Toast.LENGTH_SHORT).show()
+                    }
+
+                    originalAdapter.notifyDataSetChanged()
+                    reversalAdapter.notifyDataSetChanged()
+                    newTransactionAdapter.notifyDataSetChanged()
+                    
+                } else {
+                    Toast.makeText(this@TransactionsReversalEditActivity, "Failed to fetch details", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@TransactionsReversalEditActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    /**
-     * TODO: Replace with actual API call to submit the edited/new transactions.
-     * Gather data from originalList, reversalList, and newList to send to the backend.
-     */
+    private fun mapToDetailModel(item: JournalEntryItem, isReversal: Boolean = false): ReversalDetailModel {
+        val type = if (isReversal) {
+            if (item.part_tran_type == "Debit") "Credit" else "Debit"
+        } else {
+            item.part_tran_type ?: ""
+        }
+        
+        return ReversalDetailModel(
+            tranId = item.tran_id ?: "",
+            partTranId = item.part_tran_id?.toString() ?: "",
+            acctId = item.acct_num ?: "",
+            acctName = item.acct_name ?: "",
+            tranType = item.tran_type ?: "",
+            partTranType = type,
+            currency = item.acct_crncy ?: "",
+            amount = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0),
+            particulars = item.tran_particular ?: "",
+            remarks = item.tran_remarks ?: "",
+            flowCode = item.flow_code ?: "",
+            flowDate = formatDate(item.flow_date),
+            tranDate = formatDate(item.tran_date),
+            valueDate = formatDate(item.value_date),
+            tranReportCode = item.tran_rpt_code ?: "",
+            additionalDetails = item.add_details ?: "",
+            partitionType = item.partition_type ?: "",
+            partitionDetails = item.partition_det ?: "",
+            instrumentNo = item.instr_num ?: "",
+            instrumentDate = formatDate(item.instr_date),
+            homeCurrencyAmount = String.format(Locale.US, "%.2f", item.ref_crncy_amt ?: 0.0),
+            rateCode = item.rate_code ?: "",
+            rate = item.rate?.toString() ?: "",
+            entryUser = item.entry_user ?: "",
+            entryTime = formatDate(item.entry_time),
+            postUser = item.post_user ?: "",
+            postTime = formatDate(item.post_time),
+            tranStatus = item.tran_status ?: "",
+            deleted = item.del_flg ?: ""
+        )
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            if (dateStr.contains(" ")) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else if (dateStr.contains("-") && dateStr.split("-")[0].length == 4) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
+
     private fun submitDataToApi() {
-        // Example logic for when you get the API:
-        // val payload = mapOf("original" to originalList, "new" to newList)
-        // ApiService.submitTransaction(payload).enqueue(...)
-        
-        Toast.makeText(this, "Transactions Submitted to API", Toast.LENGTH_SHORT).show()
-        finish()
-    }
-
-    private fun loadMockData() {
-        // Mock data based on screenshot
-        originalList.add(ReversalDetailModel("TR00001", "1523", "MGJJ129", "HAROLD OPICHO", "TRANSFER", "Debit", "KES", "33,600.00", "", "", "", "", "10-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        originalList.add(ReversalDetailModel("TR00001", "1991", "e01fd50109fb...", "GEOFFREY NGUI", "TRANSFER", "Debit", "KES", "82,500.00", "", "", "", "", "17-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        originalList.add(ReversalDetailModel("TR00001", "1017", "8878c9751e39...", "MOSES WACHIRA MWANGI", "TRANSFER", "Debit", "KES", "15,000.00", "", "", "", "", "10-08-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        originalList.add(ReversalDetailModel("TR00001", "677", "NLP1908SiDLY...", "GORDON ODHIAMBO OMOM", "TRANSFER", "Debit", "KES", "45,891.00", "", "", "", "", "21-03-2020", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-
-        reversalList.add(ReversalDetailModel("TR00001", "1523", "MGJJ129", "HAROLD OPICHO", "TRANSFER", "Credit", "KES", "33,600.00", "", "", "", "", "10-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        reversalList.add(ReversalDetailModel("TR00001", "1991", "e01fd50109fb...", "GEOFFREY NGUI", "TRANSFER", "Credit", "KES", "82,500.00", "", "", "", "", "17-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        reversalList.add(ReversalDetailModel("TR00001", "1017", "8878c9751e39...", "MOSES WACHIRA MWANGI", "TRANSFER", "Credit", "KES", "15,000.00", "", "", "", "", "10-08-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        reversalList.add(ReversalDetailModel("TR00001", "677", "NLP1908SiDLY...", "GORDON ODHIAMBO OMOM", "TRANSFER", "Credit", "KES", "45,891.00", "", "", "", "", "21-03-2020", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-
-        newList.add(ReversalDetailModel("TR00001", "1523", "MGJJ129", "HAROLD OPICHO", "TRANSFER", "Debit", "KES", "33,600.00", "", "", "", "", "10-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        newList.add(ReversalDetailModel("TR00001", "1991", "e01fd50109fb...", "GEOFFREY NGUI", "TRANSFER", "Debit", "KES", "82,500.00", "", "", "", "", "17-04-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        newList.add(ReversalDetailModel("TR00001", "1017", "8878c9751e39...", "MOSES WACHIRA MWANGI", "TRANSFER", "Debit", "KES", "15,000.00", "", "", "", "", "10-08-2019", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
-        newList.add(ReversalDetailModel("TR00001", "677", "NLP1908SiDLY...", "GORDON ODHIAMBO OMOM", "TRANSFER", "Debit", "KES", "45,891.00", "", "", "", "", "21-03-2020", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "POSTED", ""))
+        lifecycleScope.launch {
+            try {
+                val payload = ReversalSubmissionPayload(
+                    originalTransactions = originalEntries,
+                    reversalTransactions = reversalEntries,
+                    newTransactions = newEntries
+                )
+                
+                val response = RetrofitClient.api.submitReversalData(payload)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@TransactionsReversalEditActivity, "Transactions Reversal Submitted Successfully", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@TransactionsReversalEditActivity, "Submission Failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@TransactionsReversalEditActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupTables() {
@@ -120,6 +220,7 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
             },
             onDeleteClick = { index ->
                 newList.removeAt(index)
+                newEntries.removeAt(index)
                 newTransactionAdapter.notifyItemRemoved(index)
                 newTransactionAdapter.notifyItemRangeChanged(index, newList.size)
             }
@@ -138,6 +239,10 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
         val spinnerAdapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_item, flowCodes)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter
+        
+        // Select current flow code
+        val flowPos = flowCodes.indexOf(data.flowCode).coerceAtLeast(0)
+        spinner.setSelection(flowPos)
 
         // Populate fields
         dialog.findViewById<android.widget.TextView>(R.id.diagTranId).text = data.tranId
@@ -184,8 +289,9 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
         dialog.findViewById<android.widget.ImageView>(R.id.ivCloseDialog).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnDiagClose).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnDiagSubmit).setOnClickListener {
-            // Logic for submit
-            Toast.makeText(this, "Transaction Updated", Toast.LENGTH_SHORT).show()
+            // Logic for submit - update the list item
+            Toast.makeText(this, "Transaction Updated Locally", Toast.LENGTH_SHORT).show()
+            // Here you would normally update the corresponding entry in newEntries or originalEntries
             dialog.dismiss()
         }
 

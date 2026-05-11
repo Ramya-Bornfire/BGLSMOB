@@ -4,18 +4,27 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalTransactionModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 class FailedReversalActivity : AppCompatActivity() {
 
     private lateinit var rvFailedReversal: RecyclerView
     private lateinit var adapter: TransactionsReversalAdapter
     private val dataList = mutableListOf<ReversalTransactionModel>()
+
+    private var currentPage = 1
+    private val pageSize = 10
+    private var totalPages = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +33,21 @@ class FailedReversalActivity : AppCompatActivity() {
         rvFailedReversal = findViewById(R.id.rvFailedReversal)
 
         setupSpinner()
-        fetchDataFromApi()
         setupRecyclerView()
+        fetchDataFromApi()
 
-        // Handle pagination buttons (mock behavior)
+        // Handle pagination buttons
         findViewById<Button>(R.id.btnPrev).setOnClickListener {
-            // Logic for previous page
+            if (currentPage > 1) {
+                currentPage--
+                fetchDataFromApi()
+            }
         }
         findViewById<Button>(R.id.btnNext).setOnClickListener {
-            // Logic for next page
+            if (currentPage < totalPages) {
+                currentPage++
+                fetchDataFromApi()
+            }
         }
     }
 
@@ -44,37 +59,38 @@ class FailedReversalActivity : AppCompatActivity() {
         spinner.adapter = spinnerAdapter
     }
 
-    // ==========================================
-    // API INTEGRATION POINTS
-    // ==========================================
-
-    /**
-     * TODO: Replace with actual API call (e.g., Retrofit or Volley) to fetch the list.
-     * Once you receive the response, map it to ReversalTransactionModel, clear `dataList`,
-     * addAll() to `dataList`, and call `adapter.notifyDataSetChanged()`.
-     */
     private fun fetchDataFromApi() {
-        // Example:
-        // ApiService.getFailedTransactionsList().enqueue(...)
-        
-        loadMockData() // Fallback to keep UI working until API is connected
-    }
-
-    private fun loadMockData() {
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09910/1", "Debit", "KES", "14,000.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09910/2", "Credit", "KES", "14,000.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09914/1", "Debit", "KES", "2,000.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09914/2", "Credit", "KES", "2,000.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09952/1", "Debit", "KES", "30,000.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09952/2", "Credit", "KES", "30,000.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09954/1", "Debit", "KES", "5,000.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("01/10/2025", "TR09954/2", "Credit", "KES", "5,000.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("02/10/2025", "TR09982/1", "Debit", "KES", "300.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("02/10/2025", "TR09982/2", "Credit", "KES", "300.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("03/10/2025", "TR10014/1", "Debit", "KES", "200.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("03/10/2025", "TR10014/2", "Credit", "KES", "200.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("03/10/2025", "TR10022/1", "Debit", "KES", "4,000.00", "1704120001", "Paybill Mambu clearing Account", "Receivable Failed Transaction", "POSTED"))
-        dataList.add(ReversalTransactionModel("03/10/2025", "TR10022/2", "Credit", "KES", "4,000.00", "1644000001", "Debtors Adjustment Control", "Receivable Failed Transaction", "POSTED"))
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getFailedTransactions(currentPage, pageSize)
+                if (response.isSuccessful && response.body() != null) {
+                    val reversalResponse = response.body()!!
+                    totalPages = reversalResponse.totalPages
+                    
+                    dataList.clear()
+                    reversalResponse.data.forEach { item ->
+                        dataList.add(ReversalTransactionModel(
+                            tranDate = formatDate(item.tran_date),
+                            tranId = "${item.tran_id}/${item.part_tran_id}",
+                            paTranTy = item.part_tran_type ?: "",
+                            currency = item.acct_crncy ?: "",
+                            amount = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0),
+                            acctId = item.acct_num ?: "",
+                            acctName = item.acct_name ?: "",
+                            tranParticular = item.tran_particular ?: "",
+                            status = item.tran_status ?: ""
+                        ))
+                    }
+                    adapter.notifyDataSetChanged()
+                    findViewById<TextView>(R.id.tvPageInfo).text = "Page $currentPage of $totalPages"
+                } else {
+                    Toast.makeText(this@FailedReversalActivity, "Failed to load failed transactions", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@FailedReversalActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -83,14 +99,43 @@ class FailedReversalActivity : AppCompatActivity() {
             context = this,
             list = dataList,
             onAcctIdClick = { position ->
+                val item = dataList[position]
                 val intent = android.content.Intent(this, FailedReversalViewActivity::class.java)
+                intent.putExtra("tran_id", item.tranId.split("/")[0])
+                intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "")
+                intent.putExtra("acct_num", item.acctId)
                 startActivity(intent)
             },
             onSelectClick = { position ->
+                val item = dataList[position]
                 val intent = android.content.Intent(this, FailedReversalEditActivity::class.java)
+                intent.putExtra("tran_id", item.tranId.split("/")[0])
+                intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "")
+                intent.putExtra("acct_num", item.acctId)
                 startActivity(intent)
             }
         )
         rvFailedReversal.adapter = adapter
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            if (dateStr.contains(" ")) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else if (dateStr.contains("-") && dateStr.split("-")[0].length == 4) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
     }
 }

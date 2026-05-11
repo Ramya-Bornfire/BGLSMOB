@@ -5,11 +5,19 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ExcelTransactionModel
+import com.example.bgls.DataModels.FailedReversalSubmissionPayload
+import com.example.bgls.DataModels.JournalEntryItem
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 class FailedReversalEditActivity : AppCompatActivity() {
 
@@ -22,57 +30,185 @@ class FailedReversalEditActivity : AppCompatActivity() {
     private var originalList = mutableListOf<ReversalDetailModel>()
     private var excelList = mutableListOf<ExcelTransactionModel>()
 
+    private var originalEntries = mutableListOf<JournalEntryItem>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_failed_reversal_edit)
 
+        val tranId = intent.getStringExtra("tran_id") ?: ""
+        val partTranId = intent.getStringExtra("part_tran_id") ?: ""
+        val acctNum = intent.getStringExtra("acct_num") ?: ""
+
         rvOriginalTransaction = findViewById(R.id.rvOriginalTransaction)
         rvExcelTransaction = findViewById(R.id.rvExcelTransaction)
 
-        loadMockData()
         setupRecyclerViews()
+        fetchDataFromApi(tranId, partTranId, acctNum)
 
         findViewById<Button>(R.id.btnHeaderSubmit).setOnClickListener {
             submitDataToApi()
         }
     }
 
-    // ==========================================
-    // API INTEGRATION POINTS
-    // ==========================================
+    private fun fetchDataFromApi(tranId: String, partTranId: String, acctNum: String) {
+        lifecycleScope.launch {
+            try {
+                // view1 formmode returns: jour, jour1, accountdetails, customervalues
+                // This matches the web frontend's reversaluser() which uses formmode=view1
+                val response = RetrofitClient.api.getFailedTransactionsDetails("view1", tranId, partTranId, acctNum)
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    val gson = Gson()
 
-    private fun fetchDataFromApi(tranId: String) {
-        // TODO: Call API to fetch original and excel details
-        loadMockData()
+                    // ── 1. Parse Original Transactions from "jour" ──────────────────
+                    val jourJson = gson.toJson(body["jour"])
+                    val jourType = object : TypeToken<List<JournalEntryItem>>() {}.type
+                    val jourItems: List<JournalEntryItem>? = gson.fromJson(jourJson, jourType)
+
+                    originalEntries.clear()
+                    originalList.clear()
+                    if (jourItems != null) {
+                        originalEntries.addAll(jourItems)
+                        jourItems.forEach { originalList.add(mapToDetailModel(it)) }
+                    }
+
+                    // ── 2. Parse Excel / Multiple-Transaction-History from "accountdetails" ──
+                    // The backend populates this via MULTIPLE_TRANSACTION_HISTORY_REPO
+                    // .getAccountDetailsByRefTranId(tran_id) in the view1 formmode
+                    val accountDetailsJson = gson.toJson(body["accountdetails"])
+                    val accountDetailsType = object : TypeToken<List<Map<String, Any>>>() {}.type
+                    val accountDetailsList: List<Map<String, Any>>? =
+                        gson.fromJson(accountDetailsJson, accountDetailsType)
+
+                    excelList.clear()
+                    accountDetailsList?.forEach { item ->
+                        excelList.add(
+                            ExcelTransactionModel(
+                                tranId          = item["ref_tran_id"]?.toString()
+                                                  ?: item["tran_id"]?.toString() ?: "",
+                                names           = item["customer_name"]?.toString()
+                                                  ?: item["names"]?.toString() ?: "",
+                                reference       = item["reference_no"]?.toString()
+                                                  ?: item["reference"]?.toString() ?: "",
+                                mobileNumber    = item["mobile_number"]?.toString()
+                                                  ?: item["mobileNumber"]?.toString() ?: "",
+                                amount          = item["amount"]?.toString() ?: "",
+                                allocatedAmount = item["allocated_amount"]?.toString()
+                                                  ?: item["alloc_amount"]?.toString() ?: "",
+                                transTime       = item["trans_time"]?.toString()
+                                                  ?: item["tran_date"]?.toString() ?: "",
+                                status          = item["status"]?.toString() ?: ""
+                            )
+                        )
+                    }
+
+                    if ((jourItems == null || jourItems.isEmpty()) &&
+                        (accountDetailsList == null || accountDetailsList.isEmpty())
+                    ) {
+                        Toast.makeText(
+                            this@FailedReversalEditActivity,
+                            "No details found",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    originalAdapter.notifyDataSetChanged()
+                    excelAdapter.notifyDataSetChanged()
+
+                } else {
+                    Toast.makeText(
+                        this@FailedReversalEditActivity,
+                        "Failed to fetch details (HTTP ${response.code()})",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this@FailedReversalEditActivity,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun mapToDetailModel(item: JournalEntryItem): ReversalDetailModel {
+        return ReversalDetailModel(
+            tranId = item.tran_id ?: "",
+            partTranId = item.part_tran_id?.toString() ?: "",
+            acctId = item.acct_num ?: "",
+            acctName = item.acct_name ?: "",
+            tranType = item.tran_type ?: "",
+            partTranType = item.part_tran_type ?: "",
+            currency = item.acct_crncy ?: "",
+            amount = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0),
+            particulars = item.tran_particular ?: "",
+            remarks = item.tran_remarks ?: "",
+            flowCode = item.flow_code ?: "",
+            flowDate = formatDate(item.flow_date),
+            tranDate = formatDate(item.tran_date),
+            valueDate = formatDate(item.value_date),
+            tranReportCode = item.tran_rpt_code ?: "",
+            additionalDetails = item.add_details ?: "",
+            partitionType = item.partition_type ?: "",
+            partitionDetails = item.partition_det ?: "",
+            instrumentNo = item.instr_num ?: "",
+            instrumentDate = formatDate(item.instr_date),
+            homeCurrencyAmount = String.format(Locale.US, "%.2f", item.ref_crncy_amt ?: 0.0),
+            rateCode = item.rate_code ?: "",
+            rate = item.rate?.toString() ?: "",
+            entryUser = item.entry_user ?: "",
+            entryTime = formatDate(item.entry_time),
+            postUser = item.post_user ?: "",
+            postTime = formatDate(item.post_time),
+            tranStatus = item.tran_status ?: "",
+            deleted = item.del_flg ?: ""
+        )
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            if (dateStr.contains(" ")) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else if (dateStr.contains("-") && dateStr.split("-")[0].length == 4) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
     }
 
     private fun submitDataToApi() {
-        // TODO: Call API to submit the reversals
-        Toast.makeText(this, "Failed Transaction Reversal Submitted", Toast.LENGTH_SHORT).show()
-        finish()
-    }
-
-    private fun loadMockData() {
-        // Original Transaction Table
-        originalList.clear()
-        originalList.add(ReversalDetailModel(
-            "TR09910/1", "1", "1704120001", "Paybill Mambu clearing Account", "TRANSFER", "Debit", "KES", "14,000.00",
-            "Receivable Failed Transaction", "0.00", "RECOVERY", "01-10-2025", "01-10-2025", "01-10-2025",
-            "", "TJ15O680BP", "", "", "", "01-10-2025", "0.00", "", "0.00",
-            "EMP04", "09-01-2026", "POST USER", "01-10-2025", "POSTED", "N"
-        ))
-        originalList.add(ReversalDetailModel(
-            "TR09910/2", "2", "1644000001", "Debtors Adjustment Control", "TRANSFER", "Credit", "KES", "14,000.00",
-            "Receivable Failed Transaction", "0.00", "RECOVERY", "01-10-2025", "01-10-2025", "01-10-2025",
-            "", "TJ15O680BP", "", "", "", "01-10-2025", "0.00", "", "0.00",
-            "EMP04", "09-01-2026", "POST USER", "01-10-2025", "POSTED", "N"
-        ))
-
-        // Excel Transaction Table
-        excelList.clear()
-        excelList.add(ExcelTransactionModel(
-            "TJ15O680BP", "", "22998710", "", "14,000.00", "0.00", "01-10-2025", "UNALLOCATED"
-        ))
+        lifecycleScope.launch {
+            try {
+                val payload = FailedReversalSubmissionPayload(
+                    originalTransactions = originalEntries,
+                    excelTransactions = excelList
+                )
+                
+                val response = RetrofitClient.api.submitFailedReversal(payload)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@FailedReversalEditActivity, "Failed Transaction Reversal Submitted Successfully", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@FailedReversalEditActivity, "Submission Failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@FailedReversalEditActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupRecyclerViews() {
@@ -102,11 +238,8 @@ class FailedReversalEditActivity : AppCompatActivity() {
         val rvValues = dialog.findViewById<RecyclerView>(R.id.rvExcelValues)
         rvValues.layoutManager = LinearLayoutManager(this)
 
-        // Mock data
-        val values = listOf(
-            ExcelValueModel("01-10-2025", "F1001", "RECOVERY", "14,000.00", "27917600", "MERCY NYANGOGE"),
-            ExcelValueModel("01-10-2025", "F1002", "PLCREC", "5,000.00", "22187093", "BEATRICE KEMUNTO")
-        )
+        // Mock data or API call for values
+        val values = emptyList<ExcelValueModel>() // Should be fetched via API if needed
 
         val valueAdapter = ExcelValueAdapter(values) { selected ->
             Toast.makeText(this, "Selected Flow: ${selected.flowId}", Toast.LENGTH_SHORT).show()
@@ -116,7 +249,6 @@ class FailedReversalEditActivity : AppCompatActivity() {
 
         dialog.findViewById<Button>(R.id.btnCloseDialog).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnFilter).setOnClickListener {
-            // TODO: API INTEGRATION
             Toast.makeText(this, "Filtering values...", Toast.LENGTH_SHORT).show()
         }
 
@@ -131,19 +263,7 @@ class FailedReversalEditActivity : AppCompatActivity() {
         val rvAccounts = dialog.findViewById<RecyclerView>(R.id.rvExcelAccounts)
         rvAccounts.layoutManager = LinearLayoutManager(this)
         
-        // Mock data from screenshot
-        val accounts = listOf(
-            AccountSearchModel("27917600", "MERCY NYANGOGE"),
-            AccountSearchModel("27917600", "MERCY NYANGOGE"),
-            AccountSearchModel("27917600", "MERCY NYANGOGE"),
-            AccountSearchModel("27917600", "MERCY NYANGOGE"),
-            AccountSearchModel("22187093", "BEATRICE KEMUNTO"),
-            AccountSearchModel("22187093", "BEATRICE KEMUNTO"),
-            AccountSearchModel("22187093", "BEATRICE KEMUNTO"),
-            AccountSearchModel("13667114", "JACKLYNE"),
-            AccountSearchModel("CUST0000045101", "PRAKASH"),
-            AccountSearchModel("22619397", "NJOGU YUNA")
-        )
+        val accounts = emptyList<AccountSearchModel>() // Should be fetched via API
 
         val accountAdapter = ExcelAccountAdapter(accounts) { selected ->
             Toast.makeText(this, "Selected: ${selected.name}", Toast.LENGTH_SHORT).show()
@@ -153,7 +273,6 @@ class FailedReversalEditActivity : AppCompatActivity() {
 
         dialog.findViewById<Button>(R.id.btnCloseDialog).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnFilter).setOnClickListener {
-            // TODO: API INTEGRATION - Filter accounts
             Toast.makeText(this, "Filtering accounts...", Toast.LENGTH_SHORT).show()
         }
 
@@ -207,9 +326,6 @@ class FailedReversalEditActivity : AppCompatActivity() {
         dialog.findViewById<android.widget.ImageView>(R.id.ivCloseDialog).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnDiagClose).setOnClickListener { dialog.dismiss() }
         dialog.findViewById<Button>(R.id.btnDiagSubmit).setOnClickListener {
-            // Update the model with edited values
-            // data.amount = etAmount.text.toString()
-            // data.flowCode = spinner.selectedItem.toString()
             Toast.makeText(this, "Row Updated locally", Toast.LENGTH_SHORT).show()
             originalAdapter.notifyDataSetChanged()
             dialog.dismiss()

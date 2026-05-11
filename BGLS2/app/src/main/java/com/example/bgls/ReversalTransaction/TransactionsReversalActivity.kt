@@ -7,10 +7,14 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
 import com.example.bgls.DataModels.ReversalTransactionModel
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 class TransactionsReversalActivity : AppCompatActivity() {
 
@@ -22,31 +26,58 @@ class TransactionsReversalActivity : AppCompatActivity() {
     private lateinit var adapter: TransactionsReversalAdapter
     private var dataList = mutableListOf<ReversalTransactionModel>()
 
+    private var currentPage = 1
+    private val pageSize = 10
+    private var totalPages = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_reversal)
 
         initViews()
         setupSpinner()
-        loadMockData()
         
         adapter = TransactionsReversalAdapter(
             context = this,
             list = dataList,
             onAcctIdClick = { position ->
+                val item = dataList[position]
                 val intent = android.content.Intent(this, TransactionsReversalViewActivity::class.java)
+                intent.putExtra("tran_id", item.tranId.split("/")[0])
+                intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "")
+                intent.putExtra("acct_num", item.acctId)
                 startActivity(intent)
             },
             onSelectClick = { position ->
+                val item = dataList[position]
                 val intent = android.content.Intent(this, TransactionsReversalEditActivity::class.java)
+                intent.putExtra("tran_id", item.tranId.split("/")[0])
+                intent.putExtra("part_tran_id", item.tranId.split("/").getOrNull(1) ?: "")
+                intent.putExtra("acct_num", item.acctId)
                 startActivity(intent)
             }
         )
         rvTransactionsReversal.layoutManager = LinearLayoutManager(this)
         rvTransactionsReversal.adapter = adapter
 
-        btnPrev.setOnClickListener { Toast.makeText(this, "Previous Page", Toast.LENGTH_SHORT).show() }
-        btnNext.setOnClickListener { Toast.makeText(this, "Next Page", Toast.LENGTH_SHORT).show() }
+        fetchDataFromApi()
+
+        btnPrev.setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                fetchDataFromApi()
+            } else {
+                Toast.makeText(this, "Already on first page", Toast.LENGTH_SHORT).show()
+            }
+        }
+        btnNext.setOnClickListener {
+            if (currentPage < totalPages) {
+                currentPage++
+                fetchDataFromApi()
+            } else {
+                Toast.makeText(this, "No more pages", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun initViews() {
@@ -64,14 +95,58 @@ class TransactionsReversalActivity : AppCompatActivity() {
         spinnerFilter.adapter = spinnerAdapter
     }
 
-    private fun loadMockData() {
-        dataList.add(ReversalTransactionModel("10/04/2019", "TR00001/1523", "Debit", "KES", "33,600.00", "MGJJ129", "HAROLD OPICHO", "Loan Disbursement Amount", "POSTED"))
-        dataList.add(ReversalTransactionModel("17/04/2019", "TR00001/1991", "Debit", "KES", "82,500.00", "e01fd50109fb4c5ca1d0fcc7a209e61e", "GEOFFREY NGUI", "Loan Disbursement Amount", "POSTED"))
-        dataList.add(ReversalTransactionModel("07/05/2019", "TR00005/8493", "Credit", "KES", "2,800.00", "MGJJ129", "HAROLD OPICHO", "Principal Recovery", "POSTED"))
-        dataList.add(ReversalTransactionModel("07/05/2019", "TR00006/8611", "Credit", "KES", "1,344.00", "MGJJ129", "HAROLD OPICHO", "Interest Recovery", "POSTED"))
-        dataList.add(ReversalTransactionModel("11/05/2019", "TR00002/15885", "Debit", "KES", "1,344.00", "MGJJ129", "HAROLD OPICHO", "Interest Applied", "POSTED"))
-        dataList.add(ReversalTransactionModel("18/05/2019", "TR00002/20609", "Debit", "KES", "3,300.00", "e01fd50109fb4c5ca1d0fcc7a209e61e", "GEOFFREY NGUI", "Interest Applied", "POSTED"))
-        dataList.add(ReversalTransactionModel("23/05/2019", "TR00005/8592", "Credit", "KES", "6,875.00", "e01fd50109fb4c5ca1d0fcc7a209e61e", "GEOFFREY NGUI", "Principal Recovery", "POSTED"))
-        dataList.add(ReversalTransactionModel("23/05/2019", "TR00006/8716", "Credit", "KES", "3,300.00", "e01fd50109fb4c5ca1d0fcc7a209e61e", "GEOFFREY NGUI", "Interest Recovery", "POSTED"))
+    private fun fetchDataFromApi() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getReversalList(currentPage, pageSize)
+                if (response.isSuccessful && response.body() != null) {
+                    val reversalResponse = response.body()!!
+                    totalPages = reversalResponse.totalPages
+                    
+                    dataList.clear()
+                    reversalResponse.data.forEach { item ->
+                        dataList.add(ReversalTransactionModel(
+                            tranDate = formatDate(item.tran_date),
+                            tranId = "${item.tran_id}/${item.part_tran_id}",
+                            paTranTy = item.part_tran_type ?: "",
+                            currency = item.acct_crncy ?: "",
+                            amount = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0),
+                            acctId = item.acct_num ?: "",
+                            acctName = item.acct_name ?: "",
+                            tranParticular = item.tran_particular ?: "",
+                            status = item.tran_status ?: ""
+                        ))
+                    }
+                    adapter.notifyDataSetChanged()
+                    tvPageInfo.text = "Page $currentPage of $totalPages"
+                } else {
+                    Toast.makeText(this@TransactionsReversalActivity, "Failed to load data", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@TransactionsReversalActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            if (dateStr.contains(" ")) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else if (dateStr.contains("-") && dateStr.split("-")[0].length == 4) {
+                val sdfInput = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
     }
 }

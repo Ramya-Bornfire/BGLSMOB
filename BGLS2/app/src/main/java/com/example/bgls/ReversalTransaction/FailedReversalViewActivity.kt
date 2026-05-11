@@ -8,11 +8,18 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import com.google.gson.Gson
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import java.util.Locale
+import java.text.SimpleDateFormat
 
 class FailedReversalViewActivity : AppCompatActivity() {
 
@@ -26,9 +33,13 @@ class FailedReversalViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_failed_reversal_view)
 
-        loadMockData()
+        val tranId = intent.getStringExtra("tran_id") ?: ""
+        val partTranId = intent.getStringExtra("part_tran_id") ?: ""
+        val acctNum = intent.getStringExtra("acct_num") ?: ""
+
         setupFields()
         setupBottomTable()
+        fetchDataFromApi(tranId, partTranId, acctNum)
 
         findViewById<Button>(R.id.btnDetailPrev).setOnClickListener {
             if (currentIndex > 0) {
@@ -50,8 +61,6 @@ class FailedReversalViewActivity : AppCompatActivity() {
 
 //        findViewById<Button>(R.id.btnDetailBack).setOnClickListener { finish() }
 //        findViewById<Button>(R.id.btnDetailHome).setOnClickListener { finish() }
-
-        updateDisplay()
     }
 
     private fun setupFields() {
@@ -59,21 +68,94 @@ class FailedReversalViewActivity : AppCompatActivity() {
         layoutTableContainer = findViewById(R.id.layoutTableContainer)
     }
 
-    private fun loadMockData() {
-        // Mock data based on screenshot
-        detailList.add(ReversalDetailModel(
-            "TR09910", "1", "1704120001", "Paybill Mambu clearing Account", "TRANSFER", "Debit", "KES", "14,000.00",
-            "Receivable Failed Transaction", "0.00", "RECOVERY", "01-10-2025", "01-10-2025", "01-10-2025",
-            "", "TJ15O680BP", "", "", "", "01-10-2025", "0.00", "", "0.00",
-            "EMP04", "09-01-2026", "POST USER", "02-10-2025", "POSTED", "N"
-        ))
-        // Add one more for pagination demo
-        detailList.add(ReversalDetailModel(
-            "TR09910", "2", "1644000001", "Debtors Adjustment Control", "TRANSFER", "Credit", "KES", "14,000.00",
-            "Receivable Failed Transaction", "0.00", "RECOVERY", "01-10-2025", "01-10-2025", "01-10-2025",
-            "", "TJ15O680BP", "", "", "", "01-10-2025", "0.00", "", "0.00",
-            "EMP04", "09-01-2026", "POST USER", "02-10-2025", "POSTED", "N"
-        ))
+    private fun fetchDataFromApi(tranId: String, partTranId: String, acctNum: String) {
+        lifecycleScope.launch {
+            try {
+                // view1 returns: jour, jour1, Acctnum, ledgervalues, currentPartTran,
+                // maxPartTran, gldetails, accountdetails, customervalues
+                val response = RetrofitClient.api.getFailedTransactionsDetails("view1", tranId, partTranId, acctNum)
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    val gson = Gson()
+                    
+                    val jourJson = gson.toJson(body["jour"])
+                    val type = object : com.google.gson.reflect.TypeToken<List<com.example.bgls.DataModels.JournalEntryItem>>() {}.type
+                    val items: List<com.example.bgls.DataModels.JournalEntryItem>? = gson.fromJson(jourJson, type)
+                    
+                    detailList.clear()
+                    items?.forEach { detailList.add(mapToDetailModel(it)) }
+                    
+                    if (detailList.isNotEmpty()) {
+                        currentIndex = 0
+                        updateDisplay()
+                    } else {
+                        Toast.makeText(this@FailedReversalViewActivity, "No details found", Toast.LENGTH_SHORT).show()
+                    }
+                    relatedAdapter.notifyDataSetChanged()
+                    
+                } else {
+                    Toast.makeText(this@FailedReversalViewActivity, "Failed to load details", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@FailedReversalViewActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun mapToDetailModel(item: com.example.bgls.DataModels.JournalEntryItem): ReversalDetailModel {
+        return ReversalDetailModel(
+            tranId = item.tran_id ?: "",
+            partTranId = item.part_tran_id?.toString() ?: "",
+            acctId = item.acct_num ?: "",
+            acctName = item.acct_name ?: "",
+            tranType = item.tran_type ?: "",
+            partTranType = item.part_tran_type ?: "",
+            currency = item.acct_crncy ?: "",
+            amount = String.format(Locale.US, "%,.2f", item.tran_amt ?: 0.0),
+            particulars = item.tran_particular ?: "",
+            remarks = item.tran_remarks ?: "",
+            flowCode = item.flow_code ?: "",
+            flowDate = formatDate(item.flow_date),
+            tranDate = formatDate(item.tran_date),
+            valueDate = formatDate(item.value_date),
+            tranReportCode = item.tran_rpt_code ?: "",
+            additionalDetails = item.add_details ?: "",
+            partitionType = item.partition_type ?: "",
+            partitionDetails = item.partition_det ?: "",
+            instrumentNo = item.instr_num ?: "",
+            instrumentDate = formatDate(item.instr_date),
+            homeCurrencyAmount = String.format(Locale.US, "%.2f", item.ref_crncy_amt ?: 0.0),
+            rateCode = item.rate_code ?: "",
+            rate = item.rate?.toString() ?: "",
+            entryUser = item.entry_user ?: "",
+            entryTime = formatDate(item.entry_time),
+            postUser = item.post_user ?: "",
+            postTime = formatDate(item.post_time),
+            tranStatus = item.tran_status ?: "",
+            deleted = item.del_flg ?: ""
+        )
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr.isNullOrEmpty()) return ""
+        return try {
+            if (dateStr.contains(" ")) {
+                val sdfInput = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else if (dateStr.contains("-") && dateStr.split("-")[0].length == 4) {
+                val sdfInput = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = sdfInput.parse(dateStr)
+                val sdfOutput = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                sdfOutput.format(date!!)
+            } else {
+                dateStr
+            }
+        } catch (e: Exception) {
+            dateStr
+        }
     }
 
     private fun setupBottomTable() {

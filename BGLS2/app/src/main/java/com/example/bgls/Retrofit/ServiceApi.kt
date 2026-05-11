@@ -1004,4 +1004,62 @@ interface ServiceApi {
     suspend fun verifyDepositMaintenance(
         @Field("deposit_acct_num") depositAcctNum: String
     ): Response<ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // REVERSAL TRANSACTION APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/getJournalEntries")
+    suspend fun getReversalList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<com.example.bgls.DataModels.ReversalListResponse>
+
+    @GET("api/ReversalTransactions")
+    suspend fun getReversalTransactions(
+        @Query("formmode") formmode: String,
+        @Query("tran_id") tranId: String? = null,
+        @Query("part_tran_id") partTranId: String? = null,
+        @Query("acct_num") acctNum: String? = null,
+        @Query("account_no") accountNo: String? = null,
+        @Query("currency") currency: String? = null,
+        @Query("accountName") accountName: String? = null
+    ): Response<Map<String, Any>>
+
+    @POST("api/submitreversaldata")
+    suspend fun submitReversalData(
+        @Body payload: com.example.bgls.DataModels.ReversalSubmissionPayload
+    ): Response<Map<String, Any>>
+
+    @GET("api/RecoveryReversal")
+    suspend fun getRecoveryReversal(
+        @Query("formmode") formmode: String,
+        @Query("tran_id") tranId: String? = null,
+        @Query("part_tran_id") partTranId: String? = null,
+        @Query("acct_num") acctNum: String? = null
+    ): Response<Map<String, Any>>
+
+    @POST("api/submitrecoveryreversaldata")
+    suspend fun submitRecoveryReversalData(
+        @Body payload: com.example.bgls.DataModels.ReversalSubmissionPayload
+    ): Response<Map<String, Any>>
+
+    @GET("api/getFailedTransactions")
+    suspend fun getFailedTransactions(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<com.example.bgls.DataModels.ReversalListResponse>
+
+    @GET("api/FailedTransactions")
+    suspend fun getFailedTransactionsDetails(
+        @Query("formmode") formmode: String,
+        @Query("tran_id") tranId: String? = null,
+        @Query("part_tran_id") partTranId: String? = null,
+        @Query("acct_num") acctNum: String? = null
+    ): Response<Map<String, Any>>
+
+    @POST("api/failedTransactionPayloadBuild")
+    suspend fun submitFailedReversal(
+        @Body payload: com.example.bgls.DataModels.FailedReversalSubmissionPayload
+    ): Response<Map<String, Any>>
 }
