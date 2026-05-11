@@ -55,6 +55,13 @@ class ViewBranchActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             finish()
         }
+
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
     }
 
     private fun populateUI(branch: BranchDto) {

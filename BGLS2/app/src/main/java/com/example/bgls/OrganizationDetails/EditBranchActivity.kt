@@ -88,6 +88,13 @@ class EditBranchActivity : AppCompatActivity() {
         // Fetch existing branch data
         fetchBranchData()
 
+        val btnHome = findViewById<ImageView>(R.id.btnHome)
+        btnHome.setOnClickListener {
+            val intent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+
         btnBack.setOnClickListener { finish() }
         btnUpdate.setOnClickListener { updateBranch() }
     }
