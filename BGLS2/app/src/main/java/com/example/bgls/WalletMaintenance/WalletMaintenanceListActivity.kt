@@ -81,7 +81,14 @@ class WalletMaintenanceListActivity : AppCompatActivity() {
                             true,
                             { clickedCustId ->
                                 val intent = Intent(this@WalletMaintenanceListActivity, CustomerMasterViewActivity::class.java)
-                                intent.putExtra("customerId", clickedCustId)
+                                val trimmedId = clickedCustId.trim()
+                                intent.putExtra("customerId", trimmedId)
+                                intent.putExtra("CUSTOMER_ID", trimmedId)
+                                
+                                // Find corresponding entity to get branchKey
+                                val entity = entityList.find { it.customer_id == clickedCustId }
+                                intent.putExtra("branchKey", entity?.branch_id ?: "")
+                                
                                 startActivity(intent)
                             },
                             { clickedAccNo ->

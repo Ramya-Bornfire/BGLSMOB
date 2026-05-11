@@ -47,10 +47,6 @@ class WalletAccountAddActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             submitForm()
         }
-
-
-
-       
     }
 
     private fun setupDatePickers() {

@@ -130,7 +130,7 @@
                     </LinearLayout>
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Customer Id" android:textSize="11sp"/>
-                        <EditText android:id="@+id/etCustId" android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="CUST0000058601" android:padding="4dp" android:textSize="11sp"/>
+                        <EditText android:id="@+id/etCustId" android:layout_width="match_parent" android:layout_height="32dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="CUST0000058601" android:padding="4dp" android:textSize="11sp" android:textColor="#007BFF" android:textStyle="bold" android:clickable="true" android:focusable="false"/>
                     </LinearLayout>
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit Type" android:textSize="11sp"/>

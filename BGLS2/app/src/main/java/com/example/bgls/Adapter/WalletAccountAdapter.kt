@@ -3,6 +3,7 @@ package com.example.bgls.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.WalletAccountModel
@@ -27,8 +28,7 @@ class WalletAccountAdapter(
         val tvCloseDate: TextView = view.findViewById(R.id.tvCloseDate)
         val tvCurrency: TextView = view.findViewById(R.id.tvCurrency)
         val tvBalance: TextView = view.findViewById(R.id.tvBalance)
-        val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: TextView = view.findViewById(R.id.rbSelect)
+        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletViewHolder {
@@ -48,20 +48,7 @@ class WalletAccountAdapter(
         holder.tvCloseDate.text = account.closeDate
         holder.tvCurrency.text = account.currency
         holder.tvBalance.text = account.balance
-        holder.tvStatus.text = account.status
         
-        if (showStatus) {
-            holder.tvStatus.visibility = View.VISIBLE
-            // Color coding for status
-            if (account.status.equals("UnVerified", ignoreCase = true)) {
-                holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#DC3545")) // Red
-            } else {
-                holder.tvStatus.setTextColor(android.graphics.Color.parseColor("#28A745")) // Green
-            }
-        } else {
-            holder.tvStatus.visibility = View.GONE
-        }
-
         // Zebra striping
         if (position % 2 == 0) {
             holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))

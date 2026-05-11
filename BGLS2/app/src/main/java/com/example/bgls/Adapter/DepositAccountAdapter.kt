@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.DepositAccountModel
@@ -12,10 +12,10 @@ import com.example.bgls.R
 
 class DepositAccountAdapter(
     private val accountList: List<DepositAccountModel>,
-    private val onActionClick: (DepositAccountModel) -> Unit
+    private val onActionClick: (DepositAccountModel) -> Unit,
+    private val onCustIdClick: (DepositAccountModel) -> Unit,
+    private val onLedgerClick: (String) -> Unit
 ) : RecyclerView.Adapter<DepositAccountAdapter.AccountViewHolder>() {
-
-    private var selectedPosition = -1
 
     class AccountViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvCustId: TextView = view.findViewById(R.id.tvCustId)
@@ -24,7 +24,7 @@ class DepositAccountAdapter(
         val tvDateOfDeposit: TextView = view.findViewById(R.id.tvDateOfDeposit)
         val tvDepositAmount: TextView = view.findViewById(R.id.tvDepositAmount)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
-        val rbSelect: android.widget.TextView = view.findViewById(R.id.rbSelect)
+        val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
@@ -49,20 +49,19 @@ class DepositAccountAdapter(
 
         // Zebra striping
         if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
         } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
+            holder.itemView.setBackgroundColor(Color.parseColor("#F8F9FA"))
         }
 
         holder.rbSelect.setOnClickListener {
-            selectedPosition = holder.adapterPosition
-            notifyDataSetChanged()
             onActionClick(account)
         }
 
         holder.tvCustId.setOnClickListener {
-            onActionClick(account)
+            onCustIdClick(account)
         }
+
     }
 
     override fun getItemCount(): Int = accountList.size

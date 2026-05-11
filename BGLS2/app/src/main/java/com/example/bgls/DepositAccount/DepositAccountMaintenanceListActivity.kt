@@ -8,6 +8,12 @@ import com.example.bgls.Adapter.DepositAccountAdapter
 import com.example.bgls.DataModels.DepositAccountModel
 import com.example.bgls.MainActivity
 import com.example.bgls.databinding.ActivityDepositAccountMaintenanceListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.example.bgls.Retrofit.RetrofitClient
+import android.widget.Toast
 
 class DepositAccountMaintenanceListActivity : AppCompatActivity() {
 
@@ -18,7 +24,7 @@ class DepositAccountMaintenanceListActivity : AppCompatActivity() {
         binding = ActivityDepositAccountMaintenanceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
+        binding.rvDepositAccounts.layoutManager = LinearLayoutManager(this)
 
         binding.btnHome.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -35,33 +41,78 @@ class DepositAccountMaintenanceListActivity : AppCompatActivity() {
             val intent = Intent(this, DepositAccountOpeningActivity::class.java)
             startActivity(intent)
         }
+
+        fetchDepositList()
     }
 
-    private fun setupRecyclerView() {
-        val dummyAccounts = listOf(
-            DepositAccountModel("CUST0000058601", "LALITH KUMAR", "TD0088", "05-05-2026", "100,000.00", "UnVerified"),
-            DepositAccountModel("CUST0000060501", "JAI", "TD0099", "06-05-2026", "500,000.00", "Verified"),
-            DepositAccountModel("CUST0000051301", "SHASHA", "TD0046", "30-04-2026", "500,000.00", "Verified"),
-            DepositAccountModel("CUST0000055401", "VIJI", "TD0059", "04-05-2026", "500,000.00", "Verified"),
-            DepositAccountModel("CUST0000055101", "KUMARAN RAJENDERAN", "TD0058", "02-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000058301", "PON PRASANTH", "TD0087", "05-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000060201", "PON PRASANTH", "TD0098", "06-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000059201", "NILA", "TD0092", "06-05-2026", "300,000.00", "Verified"),
-            DepositAccountModel("CUST0000053401", "JACKIE JHAN", "TD0054", "01-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000052001", "MOHAN", "TD0049", "30-04-2026", "400,000.00", "Verified"),
-            DepositAccountModel("CUST0000053901", "KUMAR RAVI", "TD0056", "01-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000054501", "JEYARAJ JEYA", "TD0057", "02-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000052601", "HARISH KALYAN", "TD0051", "01-05-2026", "100,000.00", "Verified"),
-            DepositAccountModel("CUST0000058901", "GOPIKA PRAKASH", "TD0089", "06-05-2026", "100,000.00", "Verified")
-        )
+    private fun fetchDepositList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.api.getDepositMaintenance("list")
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    val depositList = body?.getdata ?: emptyList()
 
-        binding.rvDepositAccounts.layoutManager = LinearLayoutManager(this)
-        binding.rvDepositAccounts.adapter = DepositAccountAdapter(dummyAccounts) { selectedAccount ->
-            val intent = Intent(this, DepositAccountMaintenanceFlowActivity::class.java)
-            intent.putExtra("CUST_ID", selectedAccount.custId)
-            intent.putExtra("CUST_NAME", selectedAccount.custName)
-            intent.putExtra("STATUS", selectedAccount.status)
-            startActivity(intent)
+                    val mappedList = depositList.map { item ->
+                        DepositAccountModel(
+                            custId = item.cust_id ?: "",
+                            custName = item.cust_name ?: "",
+                            actNo = item.depo_actno ?: "",
+                            dateOfDeposit = formatDate(item.deposit_date),
+                            depositAmount = java.text.DecimalFormat("#,##0.00").format(item.deposit_amt ?: 0.0),
+                            status = if (item.entity_flg == "Y") "Verified" else "UnVerified",
+                            branchId = item.branch_id ?: ""
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        binding.rvDepositAccounts.adapter = DepositAccountAdapter(mappedList,
+                            onActionClick = { selectedAccount ->
+                                val intent = Intent(this@DepositAccountMaintenanceListActivity, DepositAccountMaintenanceFlowActivity::class.java)
+                                intent.putExtra("ACCT_ID", selectedAccount.actNo)
+                                intent.putExtra("CUST_ID", selectedAccount.custId)
+                                intent.putExtra("CUST_NAME", selectedAccount.custName)
+                                intent.putExtra("STATUS", selectedAccount.status)
+                                startActivity(intent)
+                            },
+                            onCustIdClick = { account ->
+                                val intent = Intent(this@DepositAccountMaintenanceListActivity, com.example.bgls.CustomerMaster.CustomerMasterViewActivity::class.java)
+                                val trimmedId = account.custId.trim()
+                                intent.putExtra("customerId", trimmedId)
+                                intent.putExtra("CUSTOMER_ID", trimmedId)
+                                intent.putExtra("branchKey", account.branchId)
+                                startActivity(intent)
+                            },
+                            onLedgerClick = { actNo ->
+                                val intent = Intent(this@DepositAccountMaintenanceListActivity, com.example.bgls.CustomerMaster.AccountLedgerActivity::class.java)
+                                intent.putExtra("acct_num", actNo)
+                                startActivity(intent)
+                            }
+                        )
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@DepositAccountMaintenanceListActivity, "Failed to load deposit list", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@DepositAccountMaintenanceListActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun formatDate(dateStr: String?): String {
+        if (dateStr == null || dateStr == "null" || dateStr.isEmpty()) return ""
+        return if (dateStr.contains("T")) {
+            val parts = dateStr.split("T")[0].split("-")
+            if (parts.size == 3) "${parts[2]}-${parts[1]}-${parts[0]}" else dateStr
+        } else if (dateStr.contains("-") && dateStr.length >= 10) {
+            val parts = dateStr.substring(0, 10).split("-")
+            if (parts.size == 3 && parts[0].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else dateStr
+        } else {
+            dateStr
         }
     }
 }

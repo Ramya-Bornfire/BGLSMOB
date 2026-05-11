@@ -6,5 +6,6 @@ data class DepositAccountModel(
     val actNo: String,
     val dateOfDeposit: String,
     val depositAmount: String,
-    val status: String
+    val status: String,
+    val branchId: String = ""
 )

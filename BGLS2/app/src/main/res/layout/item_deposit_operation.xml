@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/tvTranDate"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvTranId"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minWidth="80dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#007BFF"/>
+
+    <TextView
+        android:id="@+id/tvTranParticulars"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:minWidth="150dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvCurrency"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minWidth="80dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tvCredits"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/tvDebits"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/tvBalance"
+        android:layout_width="0dp"
+        android:layout_weight="1.2"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:paddingHorizontal="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333"
+        android:gravity="end"/>
+
+</LinearLayout>

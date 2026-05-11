@@ -11,7 +11,10 @@ data class WalletInquiryResponse(
     val formmode: String?,
     val walletMaintenanceList: List<Any?>?,
     val wallet: Any?,
-    val dataList: List<Any?>?
+    val dataList: List<Any?>?,
+    val TRMwallet1: String?,
+    val TRMwallet2: String?,
+    val TRMwallet: String?
 )
 
 data class WalletAccountEntity(

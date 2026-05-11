@@ -11,5 +11,7 @@ data class WalletAccountModel(
     val currency: String,
     val balance: String,
     val status: String,
+    val branchKey: String = "",
+    val holderKey: String = "",
     var isSelected: Boolean = false
 )

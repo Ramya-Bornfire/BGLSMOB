@@ -386,6 +386,10 @@
             android:screenOrientation="landscape"
             android:exported="false" />
         <activity
+            android:name=".WalletMaintenance.WalletInquiryDetailActivity"
+            android:screenOrientation="landscape"
+            android:exported="false" />
+        <activity
             android:name=".CustomerOnBoarding.DisbursementActivity"
             android:screenOrientation="landscape"
             android:exported="false" />

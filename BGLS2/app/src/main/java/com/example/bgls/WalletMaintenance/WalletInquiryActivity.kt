@@ -68,14 +68,16 @@ class WalletInquiryActivity : AppCompatActivity() {
                                     val map = item as Map<String, Any?>
                                     WalletAccountModel(
                                         category = map["wallet_category"]?.toString() ?: "Wallet",
-                                        custId = map["customer_id"]?.toString() ?: "",
-                                        accNo = map["bips_acct_num"]?.toString() ?: (map["wallet_acct_num"]?.toString() ?: ""),
+                                        custId = map["bips_acct_num"]?.toString() ?: (map["wallet_acct_num"]?.toString() ?: ""),
+                                        accNo = map["customer_id"]?.toString() ?: "",
                                         walletAcctNum = map["wallet_acct_num"]?.toString() ?: "",
+                                        branchKey = map["branch_id"]?.toString() ?: "",
+                                        holderKey = map["customer_id"]?.toString() ?: "",
                                         name = map["wallet_acct_name"]?.toString() ?: "",
                                         openDate = formatDateForUI(map["acct_open_date"]?.toString()),
                                         closeDate = formatDateForUI(map["act_cls_date"]?.toString()),
                                         currency = map["wallet_crncy"]?.toString() ?: "",
-                                        balance = map["acct_bal"]?.toString() ?: "0.00",
+                                        balance = formatCurrency(map["acct_bal"]?.toString()),
                                         status = if (map["entity_flg"]?.toString() == "Y") "Verified" else "Unverified",
                                         isSelected = false
                                     )
@@ -86,14 +88,16 @@ class WalletInquiryActivity : AppCompatActivity() {
                                     // [category, customer_id, bips_acct_num, name, open_date, cls_date, currency, balance, wallet_acct_num]
                                     WalletAccountModel(
                                         category = list.getOrNull(0)?.toString() ?: "Wallet",
-                                        custId = list.getOrNull(1)?.toString() ?: "",
-                                        accNo = list.getOrNull(2)?.toString() ?: "",
+                                        custId = list.getOrNull(2)?.toString() ?: "",
+                                        accNo = list.getOrNull(1)?.toString() ?: "",
                                         walletAcctNum = list.getOrNull(8)?.toString() ?: "",
+                                        branchKey = list.getOrNull(9)?.toString() ?: "", // Assuming index 9 might be branchId
+                                        holderKey = list.getOrNull(1)?.toString() ?: "", // Cust ID was index 1 originally
                                         name = list.getOrNull(3)?.toString() ?: "",
                                         openDate = formatDateForUI(list.getOrNull(4)?.toString()),
                                         closeDate = formatDateForUI(list.getOrNull(5)?.toString()),
                                         currency = list.getOrNull(6)?.toString() ?: "",
-                                        balance = list.getOrNull(7)?.toString() ?: "0.00",
+                                        balance = formatCurrency(list.getOrNull(7)?.toString()),
                                         status = "Verified",
                                         isSelected = false
                                     )
@@ -107,33 +111,41 @@ class WalletInquiryActivity : AppCompatActivity() {
                     }
 
                     withContext(Dispatchers.Main) {
-                        (binding.rvWalletInquiries.adapter as? WalletAccountAdapter)?.let { adapter ->
-                            binding.rvWalletInquiries.adapter = WalletAccountAdapter(
-                                mappedList, false, { clickedCustId ->
-                                    val intent = Intent(this@WalletInquiryActivity, CustomerMasterViewActivity::class.java)
-                                    intent.putExtra("CUSTOMER_ID", clickedCustId)
-                                    startActivity(intent)
-                                }, { clickedAccNo ->
-                                    if (clickedAccNo.startsWith("TD")) {
-                                        val intent = Intent(this@WalletInquiryActivity, DepositAccountMaintenanceFlowActivity::class.java)
-                                        intent.putExtra("ACCT_ID", clickedAccNo)
-                                        startActivity(intent)
-                                    } else if (clickedAccNo.startsWith("LA")) {
-                                        val intent = Intent(this@WalletInquiryActivity, LoanMasterViewActivity::class.java)
-                                        intent.putExtra("LOAN_ID", clickedAccNo)
-                                        startActivity(intent)
-                                    }
-                                }, { selectedAccount ->
-                                    val intent = Intent(this@WalletInquiryActivity, WalletAccountFlowActivity::class.java)
-                                    intent.putExtra("CUST_ID", selectedAccount.custId)
-                                    intent.putExtra("CUST_NAME", selectedAccount.name)
-                                    intent.putExtra("STATUS", selectedAccount.status)
-                                    intent.putExtra("ACC_NO", selectedAccount.accNo)
-                                    intent.putExtra("INTERNAL_ACC_NO", selectedAccount.walletAcctNum)
+                        binding.rvWalletInquiries.adapter = WalletAccountAdapter(
+                            mappedList, false, { clickedCustId ->
+                                val intent = Intent(this@WalletInquiryActivity, CustomerMasterViewActivity::class.java)
+                                val trimmedId = clickedCustId.trim()
+                                intent.putExtra("customerId", trimmedId)
+                                intent.putExtra("CUSTOMER_ID", trimmedId)
+                                
+                                val account = mappedList.find { it.custId == clickedCustId || it.accNo == clickedCustId }
+                                intent.putExtra("branchKey", account?.branchKey ?: "")
+                                startActivity(intent)
+                            }, { clickedAccNo ->
+                                if (clickedAccNo.startsWith("TD")) {
+                                    val intent = Intent(this@WalletInquiryActivity, DepositAccountMaintenanceFlowActivity::class.java)
+                                    intent.putExtra("ACCT_ID", clickedAccNo)
                                     startActivity(intent)
                                 }
-                            )
-                        }
+                                if (clickedAccNo.startsWith("LA")) {
+                                    val intent = Intent(this@WalletInquiryActivity, LoanMasterViewActivity::class.java)
+                                    val account = mappedList.find { it.accNo == clickedAccNo || it.custId == clickedAccNo }
+                                    
+                                    // account.accNo has the Customer ID (due to swap for display)
+                                    // account.custId has the Account Number (LA...)
+                                    
+                                    intent.putExtra("loanId", clickedAccNo)
+                                    intent.putExtra("holderKey", account?.accNo ?: "")
+                                    intent.putExtra("branchKey", account?.branchKey ?: "")
+                                    
+                                    startActivity(intent)
+                                }
+                            }, { selectedAccount ->
+                                val intent = Intent(this@WalletInquiryActivity, WalletInquiryDetailActivity::class.java)
+                                intent.putExtra("acctId", selectedAccount.walletAcctNum)
+                                startActivity(intent)
+                            }
+                        )
                     }
                 } else {
                     withContext(Dispatchers.Main) {
@@ -148,8 +160,30 @@ class WalletInquiryActivity : AppCompatActivity() {
         }
     }
 
+    private fun formatCurrency(value: String?): String {
+        if (value == null || value == "null" || value.isEmpty()) return "0.00"
+        return try {
+            val amount = value.replace(",", "").toDouble()
+            String.format("%,.2f", amount)
+        } catch (e: Exception) {
+            value
+        }
+    }
+
     private fun formatDateForUI(dateStr: String?): String {
         if (dateStr == null || dateStr == "null" || dateStr.isEmpty()) return ""
+
+        // Handle long timestamps (milliseconds)
+        val timestamp = dateStr.toLongOrNull()
+        if (timestamp != null) {
+            return try {
+                val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                sdf.format(java.util.Date(timestamp))
+            } catch (e: Exception) {
+                dateStr
+            }
+        }
+
         return if (dateStr.contains("T")) {
             val parts = dateStr.split("T")[0].split("-")
             if (parts.size == 3) "${parts[2]}-${parts[1]}-${parts[0]}" else dateStr

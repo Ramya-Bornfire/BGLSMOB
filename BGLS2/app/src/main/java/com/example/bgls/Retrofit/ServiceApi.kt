@@ -981,4 +981,27 @@ interface ServiceApi {
     suspend fun verifyWalletScreenData(
         @Field("wallet_acct_num") walletAcctNum: String
     ): Response<ResponseBody>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // DEPOSIT MAINTENANCE APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @GET("api/deposits")
+    suspend fun getDepositMaintenance(
+        @Query("formmode") formmode: String,
+        @Query("actno") actno: String? = null
+    ): Response<com.example.bgls.DataModels.DepositMaintenanceResponse>
+
+    @FormUrlEncoded
+    @POST("api/ModifyScreensdata1")
+    suspend fun modifyDepositMaintenance(
+        @Query("acct_num") acctNum: String,
+        @FieldMap fields: Map<String, String>
+    ): Response<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/VerifyScreensdata1")
+    suspend fun verifyDepositMaintenance(
+        @Field("deposit_acct_num") depositAcctNum: String
+    ): Response<ResponseBody>
 }

@@ -1,10 +1,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
+    android:minHeight="32dp"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
 
     <TextView
         android:id="@+id/tvCustId"
@@ -14,7 +18,7 @@
         android:textSize="11sp"
         android:textColor="#007BFF"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvCustName"
@@ -24,7 +28,7 @@
         android:textSize="11sp"
         android:textColor="#333333"
         android:ellipsize="end"
-        android:maxLines="1"/>
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvActNo"
@@ -32,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="11sp"
-        android:textColor="#333333"/>
+        android:textColor="#333333"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvDateOfDeposit"
@@ -40,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:textSize="11sp"
-        android:textColor="#333333"/>
+        android:textColor="#333333"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvDepositAmount"
@@ -48,9 +54,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:gravity="end"
-        android:paddingEnd="8dp"
         android:textSize="11sp"
-        android:textColor="#333333"/>
+        android:textColor="#333333"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvStatus"
@@ -59,17 +65,22 @@
         android:layout_weight="1"
         android:gravity="center"
         android:textSize="11sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:maxLines="2"/>
 
-    <TextView
-        android:id="@+id/rbSelect"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
-        android:text="Action"
-        android:textColor="#007BFF"
-        android:textSize="11sp"
-        android:clickable="false"
-        android:focusable="false"/>
+        android:gravity="center">
+        
+        <RadioButton
+            android:id="@+id/rbSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#007BFF"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true" />
+    </RelativeLayout>
 </LinearLayout>

@@ -234,9 +234,20 @@ class CustomerMasterViewActivity : AppCompatActivity() {
     }
 
     private fun fetchAccountDetails() {
-        val customerId = intent.getStringExtra("customerId") ?: return
+        var customerId = intent.getStringExtra("customerId")
+        if (customerId.isNullOrEmpty()) {
+            customerId = intent.getStringExtra("CUSTOMER_ID")
+        }
+        if (customerId.isNullOrEmpty()) {
+            customerId = etCustomerId.text.toString()
+        }
+        
+        if (customerId.isNullOrEmpty()) {
+            android.util.Log.e("AccountDetails", "Customer ID is empty")
+            return
+        }
 
-        // Only fetch if the recycler is empty (avoid duplicate calls)
+        // Only fetch if the recycler is empty
         if (recyclerViewAccountDetails.adapter != null &&
             (recyclerViewAccountDetails.adapter?.itemCount ?: 0) > 0) return
 
@@ -244,9 +255,16 @@ class CustomerMasterViewActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
+                android.util.Log.d("AccountDetails", "Fetching details for ID: $customerId")
                 val response = RetrofitClient.api.getAccDet(customerId)
                 if (response.isSuccessful) {
                     val rawRows = response.body() ?: emptyList()
+                    android.util.Log.d("AccountDetails", "Fetched ${rawRows.size} rows")
+                    
+                    if (rawRows.isEmpty()) {
+                        Toast.makeText(this@CustomerMasterViewActivity, "No accounts found for this customer", Toast.LENGTH_SHORT).show()
+                    }
+
                     // Each row is a List<Any?> with columns:
                     // [0]=holderKey, [1]=accountId, [2]=accountName, [3]=dateOfLoan, [4]=loanAmount, [5]=loanBalance
                     val accounts: List<AccountDetail> = rawRows.map { row ->
@@ -259,6 +277,7 @@ class CustomerMasterViewActivity : AppCompatActivity() {
                             loanBalance = row.getOrNull(5)?.toString() ?: ""
                         )
                     }
+                    recyclerViewAccountDetails.isNestedScrollingEnabled = false
                     recyclerViewAccountDetails.adapter =
                         AccountDetailAdapter(this@CustomerMasterViewActivity, accounts) { account ->
                             val intent = Intent(this@CustomerMasterViewActivity,

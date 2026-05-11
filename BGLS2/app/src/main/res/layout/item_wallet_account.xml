@@ -2,120 +2,108 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="32dp"
     android:orientation="horizontal"
-    android:paddingVertical="4dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
 
     <TextView
         android:id="@+id/tvCategory"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
-        android:minWidth="60dp"
         android:text="Wallet"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvCustId"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.2"
-        android:minWidth="100dp"
         android:text="CUST001"
         android:textColor="#007BFF"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvAccNo"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:minWidth="80dp"
         android:text="TD001"
         android:textColor="#007BFF"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvName"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:minWidth="120dp"
         android:text="Name"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvOpenDate"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:minWidth="80dp"
         android:text="01-01-2026"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvCloseDate"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:minWidth="80dp"
         android:text=""
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvCurrency"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
-        android:minWidth="60dp"
         android:text="SCR"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"/>
 
     <TextView
         android:id="@+id/tvBalance"
-        style="@style/tableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:minWidth="80dp"
         android:text="0.00"
         android:gravity="end"
         android:paddingEnd="8dp"
-        android:textSize="11sp"/>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        style="@style/tableCell"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.8"
-        android:minWidth="70dp"
-        android:text="Verified"
-        android:textColor="#28A745"
-        android:textSize="11sp"/>
+        android:textSize="11sp"
+        android:maxLines="2"/>
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
-        android:minWidth="60dp"
         android:gravity="center">
 
         <RadioButton
             android:id="@+id/rbSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#007BFF"
-            android:textSize="11sp"
-            android:textStyle="normal"
-            android:buttonTint="#007BFF"/>
+            android:buttonTint="#007BFF"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </RelativeLayout>
 </LinearLayout>
