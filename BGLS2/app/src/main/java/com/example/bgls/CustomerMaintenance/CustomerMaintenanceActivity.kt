@@ -35,7 +35,7 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
     private lateinit var adapter: CustomerMaintenanceAdapter
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
+
 
     private var currentStatusFilter: String = "Select Status"
     private var currentPage: Int = 1
@@ -57,10 +57,9 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
-
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        val btnBack = findViewById<ImageView>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish()
         }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
