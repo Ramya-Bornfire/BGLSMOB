@@ -20,9 +20,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 class OrganizationDetialsActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
+    private lateinit var btnBack: ImageView
+    private lateinit var btnHome: ImageView
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,47 +30,32 @@ class OrganizationDetialsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_organization_detials)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
+        btnBack = findViewById(R.id.btnBack)
+        btnHome = findViewById(R.id.btnHome)
+
         val adapter = ViewPagerAdapter(this)
         viewPager.adapter = adapter
 
         val tabTitles = listOf(
             "Head Office",
             "Branches",
-            "Calendar Maintenance",
-
+            "Calendar Maintenance"
         )
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
 
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        // Setup Top Header Navigation
+        btnBack.setOnClickListener {
+            finish()
         }
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Navigate back to MainActivity (or any home screen)
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> {
-                    // TODO: Open Profile activity if needed
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_logout -> {
-                    // TODO: Implement logout logic (clear session, go to login)
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
         }
     }
     }
