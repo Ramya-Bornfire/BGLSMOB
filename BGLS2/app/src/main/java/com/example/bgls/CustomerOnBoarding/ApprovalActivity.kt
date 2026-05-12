@@ -8,29 +8,27 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.ApprovalListResponse
 import com.example.bgls.DataModels.ApprovalModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ApprovalActivity : AppCompatActivity() {
 
     private lateinit var adapter: ApprovalAdapter
     private var allData = mutableListOf<ApprovalModel>()
     private var isFilterVisible = false
-
-    // Track current filter state
-    private var currentStatusFilter = "ALL"
+    private var currentStatusFilter = "NOT APPROVED"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,25 +44,23 @@ class ApprovalActivity : AppCompatActivity() {
         setupRecyclerView()
         setupSpinnerFilter()
         setupColumnFilterLogic()
-        loadMockData()
+        loadDataFromApi()
     }
 
     private fun setupRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         adapter = ApprovalAdapter(emptyList()) { selectedItem ->
-            val intent = Intent(this, KYCComplianceViewActivity::class.java)
-            intent.putExtra("appRefNo", selectedItem.appRefNo)
-            intent.putExtra("customerName", selectedItem.customerName)
-            intent.putExtra("customerGroup", selectedItem.custGroup)
-            intent.putExtra("isFromApproval", true)
+            val intent = Intent(this, KYCComplianceViewActivity::class.java).apply {
+                putExtra("appRefNo", selectedItem.appRefNo)
+                putExtra("customerName", selectedItem.customerName)
+                putExtra("customerGroup", selectedItem.custGroup)
+                putExtra("isFromApproval", true)
+            }
             startActivity(intent)
         }
         recyclerView.adapter = adapter
-        // ✅ Prevents animation jump on radio selection
         recyclerView.itemAnimator = null
-        // ✅ Prevents layout recalculation on item change
         recyclerView.setHasFixedSize(true)
     }
 
@@ -75,16 +71,43 @@ class ApprovalActivity : AppCompatActivity() {
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spFilter.adapter = filterAdapter
 
-        // Spinner selection triggers combined filter
-        spFilter.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+        spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 currentStatusFilter = filters[position]
-                applyCombinedFilter()
+                applyCombinedFilter()   // client‑side filter only
             }
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
+    private fun loadDataFromApi() {
+        RetrofitClient.api.getApprovalList().enqueue(object : Callback<ApprovalListResponse> {
+            override fun onResponse(call: Call<ApprovalListResponse>, response: Response<ApprovalListResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val apiList = response.body()!!.customerRequest
+                    allData = apiList.mapIndexed { idx, item ->
+                        ApprovalModel(
+                            slNo = idx + 1,
+                            custGroup = item.custGroup,
+                            appRefNo = item.applRefNo,
+                            accountType = item.accountType,
+                            customerName = item.preferredName ?: item.fullName ?: "",
+                            nationalId = item.nationalId,
+                            status = item.status
+                        )
+                    }.toMutableList()
+                    applyCombinedFilter()
+                } else {
+                    Toast.makeText(this@ApprovalActivity, "Failed to load data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ApprovalListResponse>, t: Throwable) {
+                Toast.makeText(this@ApprovalActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    // ---------- Column filter logic (unchanged, works on allData) ----------
     private fun setupColumnFilterLogic() {
         val btnFilter = findViewById<Button>(R.id.btnFilter)
         val layoutDefaultHeader = findViewById<LinearLayout>(R.id.layoutDefaultHeader)
@@ -158,16 +181,15 @@ class ApprovalActivity : AppCompatActivity() {
         val etStatus = findViewById<EditText>(R.id.etFilterStatus).text.toString().trim()
 
         val filtered = allData.filter { item ->
-            // Spinner status filter
             val matchesSpinner = currentStatusFilter == "ALL" || item.status == currentStatusFilter
-            // Column-based filter
-            val matchesColumns = (etSrNo.isEmpty() || item.slNo.toString().contains(etSrNo, ignoreCase = true)) &&
-                (etGroup.isEmpty() || item.custGroup.contains(etGroup, ignoreCase = true)) &&
-                (etAppRef.isEmpty() || item.appRefNo.contains(etAppRef, ignoreCase = true)) &&
-                (etType.isEmpty() || item.accountType.contains(etType, ignoreCase = true)) &&
-                (etName.isEmpty() || item.customerName.contains(etName, ignoreCase = true)) &&
-                (etNatId.isEmpty() || item.nationalId.contains(etNatId, ignoreCase = true)) &&
-                (etStatus.isEmpty() || item.status.contains(etStatus, ignoreCase = true))
+
+            val matchesColumns = (etSrNo.isEmpty() || (item.slNo?.toString()?.contains(etSrNo, ignoreCase = true) == true)) &&
+                    (etGroup.isEmpty() || (item.custGroup?.contains(etGroup, ignoreCase = true) == true)) &&
+                    (etAppRef.isEmpty() || (item.appRefNo?.contains(etAppRef, ignoreCase = true) == true)) &&
+                    (etType.isEmpty() || (item.accountType?.contains(etType, ignoreCase = true) == true)) &&
+                    (etName.isEmpty() || (item.customerName?.contains(etName, ignoreCase = true) == true)) &&
+                    (etNatId.isEmpty() || (item.nationalId?.contains(etNatId, ignoreCase = true) == true)) &&
+                    (etStatus.isEmpty() || (item.status?.contains(etStatus, ignoreCase = true) == true))
 
             matchesSpinner && matchesColumns
         }
@@ -182,20 +204,4 @@ class ApprovalActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadMockData() {
-        allData = mutableListOf(
-            ApprovalModel(1, "RETAIL", "ARN0586", "INDIVIDUAL", "GIVI", "785412369", "NOT APPROVED"),
-            ApprovalModel(2, "RETAIL", "ARN0613", "INDIVIDUAL", "LALITH KUMAR", "CUTFTFIUYGFIU", "NOT APPROVED"),
-            ApprovalModel(3, "RETAIL", "ARN0831", "INDIVIDUAL", "HARISH KALYAN", "DIYFUOGOIGOI", "NOT APPROVED"),
-            ApprovalModel(4, "RETAIL", "ARN0625", "INDIVIDUAL", "RAJILAKSHMI", "785421699988", "NOT APPROVED"),
-            ApprovalModel(5, "RETAIL", "ARN0542", "INDIVIDUAL", "ABI", "FCFGGFBKJHJ", "NOT APPROVED"),
-            ApprovalModel(6, "RETAIL", "ARN0644", "INDIVIDUAL", "TIM DAVID", "TDTURYUOOOGO", "NOT APPROVED"),
-            ApprovalModel(7, "RETAIL", "ARN0674", "INDIVIDUAL", "VIGNESH", "CBDHBVIUDENSL", "NOT APPROVED"),
-            ApprovalModel(8, "RETAIL", "ARN0090", "INDIVIDUAL", "PRAKASH", "74172852963", "NOT APPROVED"),
-            ApprovalModel(9, "RETAIL", "ARN0841", "INDIVIDUAL", "JACKIE JHAN", "GHHGPEIGEPHGP", "NOT APPROVED"),
-            ApprovalModel(10, "RETAIL", "ARN0878", "INDIVIDUAL", "VIJAY", "VBCBHIVDAVCHU", "NOT APPROVED"),
-            ApprovalModel(11, "RETAIL", "ARN0863", "INDIVIDUAL", "KUMARAN RAJENDERAN", "YTGIRUFHOIFHR", "NOT APPROVED")
-        )
-        adapter.updateData(allData)
-    }
 }

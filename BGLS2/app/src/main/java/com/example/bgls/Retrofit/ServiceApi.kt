@@ -34,11 +34,16 @@ import com.example.bgls.DataModels.LoanOperationResponse
 import com.example.bgls.DataModels.MultipleTransactionRequest
 import com.example.bgls.DataModels.SettlementRecord
 import com.example.bgls.DataModels.AccountBalancesResponse
+import com.example.bgls.DataModels.ApprovalApiItem
+import com.example.bgls.DataModels.ApprovalDetailResponse
+import com.example.bgls.DataModels.ApprovalListResponse
+import com.example.bgls.DataModels.ApprovalViewResponse
 import com.example.bgls.DataModels.AssetLiabilityResponse
 import com.example.bgls.DataModels.BalanceSheetResponse
 import com.example.bgls.DataModels.BalancingReportResponse
 import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
+import com.example.bgls.DataModels.KycListResponse
 import com.example.bgls.DataModels.LoanMaintenanceViewResponse
 import com.example.bgls.DataModels.ProfitLossResponse
 import okhttp3.MultipartBody
@@ -1120,4 +1125,77 @@ interface ServiceApi {
     suspend fun penaltyAccrual(
         @Body body: Map<String, String>
     ): Response<okhttp3.ResponseBody>
+
+    // Filtered approval lists (as used in web)
+    @GET("api/AllApproved")
+    fun getAllApproved(): Call<List<ApprovalApiItem>>
+
+    @GET("api/Approved")
+    fun getApproved(): Call<List<ApprovalApiItem>>
+
+    @GET("api/NotApproved")
+    fun getNotApproved(): Call<List<ApprovalApiItem>>
+
+    // Approval detail
+    @GET("api/Approval")
+    fun getApprovalDetail(@Query("formmode") formmode: String = "view",
+                          @Query("appl_ref_no") applRefNo: String): Call<ApprovalDetailResponse>
+
+    // KYC list (assumed endpoint – adjust if different)
+    @GET("api/ListForKyc")
+    fun getKycList(@Query("formmode") formmode: String = "list"): Call<KycListResponse>
+
+    // Actions
+    @FormUrlEncoded
+    @POST("api/approvefuncs")
+    fun approveRecord(@Field("formmode") formmode: String = "approveAcc",
+                      @Field("rec_no") recNo: String,
+                      @Field("ApprefNO") appRefNo: String,
+                      @Field("schmtypes") schemeType: String,
+                      @Field("AccountNO") accountNo: String,
+                      @Field("schmcodes") schemeCode: String): Call<Map<String, String>>
+
+    @FormUrlEncoded
+    @POST("api/approvefuncs")
+    fun holdRecord(@Field("formmode") formmode: String = "Holdfin",
+                   @Field("rec_no") recNo: String,
+                   @Field("ApprefNO") appRefNo: String,
+                   @Field("hold_remarks") remarks: String): Call<Map<String, String>>
+
+    @FormUrlEncoded
+    @POST("api/approvefuncs")
+    fun rejectRecord(@Field("formmode") formmode: String = "Reject_acc",
+                     @Field("rec_no") recNo: String,
+                     @Field("ApprefNO") appRefNo: String,
+                     @Field("reject_remarks") remarks: String): Call<Map<String, String>>
+
+    @FormUrlEncoded
+    @POST("api/listkyc")
+    fun submitKycCompliance(@Field("formmode") formmode: String = "kyc_compliance",
+                            @Field("rec_no") recNo: String,
+                            @Field("ApprefNO") appRefNo: String,
+                            @Field("kyc_date") kycDate: String,
+                            @Field("kyc_officer") kycOfficer: String,
+                            @Field("remaks") remarks: String,
+                            @Field("kyc_comp") compliance: String,
+                            @Field("kycreview") reviewDate: String): Call<Map<String, String>>
+    @GET("api/ListForKyc")
+    fun getKycDetail(
+        @Query("formmode") formmode: String = "view",
+        @Query("appl_ref_no") applRefNo: String
+    ): Call<ApprovalDetailResponse>
+    @GET("api/Approval")
+    fun getApprovalView(
+        @Query("formmode") formmode: String = "view",
+        @Query("appl_ref_no") applRefNo: String
+    ): Call<ApprovalViewResponse>
+
+    // For KYC compliance view (same endpoint, but used in compliance flow)
+    @GET("api/ListForKyc")
+    fun getKycView(
+        @Query("formmode") formmode: String = "view",
+        @Query("appl_ref_no") applRefNo: String
+    ): Call<ApprovalViewResponse>
+    @GET("api/Approval")
+    fun getApprovalList(@Query("formmode") formmode: String = "list"): Call<ApprovalListResponse>
 }

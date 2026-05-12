@@ -8,6 +8,9 @@ import okhttp3.Credentials
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
+import com.example.bgls.util.SignatureItemDeserializer
+import com.example.bgls.DataModels.SignatureItem
+
 object RetrofitClient {
 
     // private const val BASE_URL = "http://10.0.2.2:8080/ASPIRA/"
@@ -42,6 +45,11 @@ object RetrofitClient {
     val api: ServiceApi by lazy {
         val gson = com.google.gson.GsonBuilder()
             .registerTypeAdapter(String::class.java, GsonStringAdapter())
+            .registerTypeAdapter(
+                SignatureItem::class.java,
+                SignatureItemDeserializer()
+            )
+            .setLenient()
             .create()
 
         retrofit2.Retrofit.Builder()
