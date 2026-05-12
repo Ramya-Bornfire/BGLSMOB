@@ -15,6 +15,9 @@ import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.util.Locale
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class FailedReversalActivity : AppCompatActivity() {
 
@@ -32,6 +35,7 @@ class FailedReversalActivity : AppCompatActivity() {
 
         rvFailedReversal = findViewById(R.id.rvFailedReversal)
 
+        setupNavigation()
         setupSpinner()
         setupRecyclerView()
         fetchDataFromApi()
@@ -48,6 +52,19 @@ class FailedReversalActivity : AppCompatActivity() {
                 currentPage++
                 fetchDataFromApi()
             }
+        }
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 

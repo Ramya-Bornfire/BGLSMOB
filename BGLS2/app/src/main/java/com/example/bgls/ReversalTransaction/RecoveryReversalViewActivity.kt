@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class RecoveryReversalViewActivity : AppCompatActivity() {
 
@@ -26,6 +29,7 @@ class RecoveryReversalViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery_reversal_view)
 
+        setupNavigation()
         loadMockData()
         setupFields()
         setupBottomTable()
@@ -52,6 +56,19 @@ class RecoveryReversalViewActivity : AppCompatActivity() {
 //        findViewById<Button>(R.id.btnDetailHome).setOnClickListener { finish() }
 
         updateDisplay()
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setupFields() {

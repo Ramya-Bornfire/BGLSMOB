@@ -13,6 +13,9 @@ import com.example.bgls.DataModels.FailedReversalSubmissionPayload
 import com.example.bgls.DataModels.JournalEntryItem
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 import com.example.bgls.Retrofit.RetrofitClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -36,6 +39,7 @@ class FailedReversalEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_failed_reversal_edit)
 
+        setupNavigation()
         val tranId = intent.getStringExtra("tran_id") ?: ""
         val partTranId = intent.getStringExtra("part_tran_id") ?: ""
         val acctNum = intent.getStringExtra("acct_num") ?: ""
@@ -48,6 +52,19 @@ class FailedReversalEditActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnHeaderSubmit).setOnClickListener {
             submitDataToApi()
+        }
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 

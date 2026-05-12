@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 import com.example.bgls.Retrofit.RetrofitClient
 import com.google.gson.Gson
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +36,7 @@ class FailedReversalViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_failed_reversal_view)
 
+        setupNavigation()
         val tranId = intent.getStringExtra("tran_id") ?: ""
         val partTranId = intent.getStringExtra("part_tran_id") ?: ""
         val acctNum = intent.getStringExtra("acct_num") ?: ""
@@ -61,6 +65,19 @@ class FailedReversalViewActivity : AppCompatActivity() {
 
 //        findViewById<Button>(R.id.btnDetailBack).setOnClickListener { finish() }
 //        findViewById<Button>(R.id.btnDetailHome).setOnClickListener { finish() }
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setupFields() {

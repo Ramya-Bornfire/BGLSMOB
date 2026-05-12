@@ -18,6 +18,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import java.util.Locale
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class RecoveryReversalActivity : AppCompatActivity() {
 
@@ -35,6 +38,7 @@ class RecoveryReversalActivity : AppCompatActivity() {
 
         rvRecoveryReversal = findViewById(R.id.rvRecoveryReversal)
 
+        setupNavigation()
         setupSpinner()
         setupRecyclerView()
         fetchDataFromApi()
@@ -51,6 +55,19 @@ class RecoveryReversalActivity : AppCompatActivity() {
                 currentPage++
                 fetchDataFromApi()
             }
+        }
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 

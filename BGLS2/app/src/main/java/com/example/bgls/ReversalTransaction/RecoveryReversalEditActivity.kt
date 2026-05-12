@@ -12,6 +12,9 @@ import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.DataModels.ReversalSubmissionPayload
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
@@ -35,6 +38,7 @@ class RecoveryReversalEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery_reversal_edit)
 
+        setupNavigation()
         val tranId = intent.getStringExtra("tran_id") ?: ""
         val partTranId = intent.getStringExtra("part_tran_id") ?: ""
         val acctNum = intent.getStringExtra("acct_num") ?: ""
@@ -43,11 +47,22 @@ class RecoveryReversalEditActivity : AppCompatActivity() {
         setupTables()
         fetchDataFromApi(tranId, partTranId, acctNum)
 
-        findViewById<Button>(R.id.btnEditHome).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnEditSubmit).setOnClickListener {
             submitDataToApi()
         }
-        findViewById<Button>(R.id.btnEditBack).setOnClickListener { finish() }
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun initViews() {
