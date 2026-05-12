@@ -40,14 +40,6 @@ class DepositAccountOpeningActivity : AppCompatActivity() {
             showGenerateFlow()
         }
 
-        binding.btnFlowHome.setOnClickListener {
-            binding.btnHome.performClick()
-        }
-
-        binding.btnFlowBack.setOnClickListener {
-            binding.btnBack.performClick()
-        }
-
         binding.btnFlowSubmit.setOnClickListener {
             // Logic for submitting the flow
             android.widget.Toast.makeText(this, "Flow Submitted Successfully", android.widget.Toast.LENGTH_SHORT).show()
@@ -57,7 +49,6 @@ class DepositAccountOpeningActivity : AppCompatActivity() {
     private fun showDepositForm() {
         binding.layoutDepositForm.visibility = android.view.View.VISIBLE
         binding.layoutGenerateFlow.visibility = android.view.View.GONE
-        binding.layoutBottomButtons.visibility = android.view.View.VISIBLE
         
         // Update tab styles
         binding.btnDeposit.setBackgroundResource(0) // Clear background
@@ -74,7 +65,6 @@ class DepositAccountOpeningActivity : AppCompatActivity() {
     private fun showGenerateFlow() {
         binding.layoutDepositForm.visibility = android.view.View.GONE
         binding.layoutGenerateFlow.visibility = android.view.View.VISIBLE
-        binding.layoutBottomButtons.visibility = android.view.View.GONE
         
         // Update tab styles
         binding.btnGenerateFlow.setBackgroundResource(0)
