@@ -28,6 +28,17 @@ class WalletAccountFlowActivity : AppCompatActivity() {
         binding = ActivityWalletAccountFlowBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
         val mode = intent.getStringExtra("MODE") ?: "VIEW"
         val custId = intent.getStringExtra("CUST_ID") ?: ""
         val custName = intent.getStringExtra("CUST_NAME") ?: ""
