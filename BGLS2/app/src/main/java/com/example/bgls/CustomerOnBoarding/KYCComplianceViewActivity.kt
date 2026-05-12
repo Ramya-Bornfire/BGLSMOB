@@ -428,9 +428,61 @@ class KYCComplianceViewActivity : AppCompatActivity() {
     }
 
     private fun submitKycCompliance() {
-        Toast.makeText(this, "KYC Compliance submission requires UI fields", Toast.LENGTH_LONG).show()
-    }
+        val tvComplianceDate = findViewById<TextView>(R.id.tvComplianceDate)
+        val complianceDate = tvComplianceDate.text.toString()
+        if (complianceDate.isEmpty()) {
+            Toast.makeText(this, "Please select compliance date", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        // Get spinner selections
+        val spCustomer = findViewById<Spinner>(R.id.spCompCustomerDetails).selectedItem.toString()
+        val spAccount = findViewById<Spinner>(R.id.spCompAccountDetails).selectedItem.toString()
+        val spDocs = findViewById<Spinner>(R.id.spCompDocuments).selectedItem.toString()
+        val spPhoto = findViewById<Spinner>(R.id.spCompPhoto).selectedItem.toString()
+        val spSignature = findViewById<Spinner>(R.id.spCompSignature).selectedItem.toString()
+
+        // Validate that no spinner is left on "SELECT"
+        if (spCustomer == "SELECT" || spAccount == "SELECT" || spDocs == "SELECT" ||
+            spPhoto == "SELECT" || spSignature == "SELECT") {
+            Toast.makeText(this, "Please select status for all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Build a single compliance string (format: "Customer:OKAY;Account:NOT OKAY;...")
+        val compliance = "Customer:$spCustomer;Account:$spAccount;Documents:$spDocs;Photo:$spPhoto;Signature:$spSignature"
+
+        // Compliance officer – ideally get from login, but for now use a default
+        val kycOfficer = "SYSTEM"   // or get from shared preferences
+        val remarks = ""            // optional, can be left empty
+
+        progressDialog.setMessage("Submitting KYC Compliance...")
+        progressDialog.show()
+
+        RetrofitClient.api.submitKycCompliance(
+            recNo = recNo,
+            appRefNo = appRefNo,
+            kycDate = complianceDate,
+            kycOfficer = kycOfficer,
+            remarks = remarks,
+            compliance = compliance,
+            reviewDate = complianceDate   // or use another date
+        ).enqueue(object : Callback<Map<String, String>> {
+            override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    Toast.makeText(this@KYCComplianceViewActivity, "KYC Compliance submitted", Toast.LENGTH_LONG).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@KYCComplianceViewActivity, "Submission failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                progressDialog.dismiss()
+                Toast.makeText(this@KYCComplianceViewActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
     private fun setupComplianceSpinners() {
         val options = arrayOf("SELECT", "OKAY", "NOT OKAY")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)

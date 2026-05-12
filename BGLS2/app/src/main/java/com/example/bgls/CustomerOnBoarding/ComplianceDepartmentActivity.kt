@@ -12,13 +12,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bgls.DataModels.ApprovalListResponse
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ComplianceDepartmentActivity : AppCompatActivity() {
     private lateinit var adapter: KYCComplianceAdapter
@@ -29,39 +35,52 @@ class ComplianceDepartmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_compliance_department)
-        
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        setupData()
         setupRecyclerView()
         setupFilterLogic()
+        loadDataFromApi()   // ✅ replaced hardcoded data
     }
 
-    private fun setupData() {
-        fullData = listOf(
-            KYCItem("1", "RETAIL", "ARN0613", "INDIVIDUAL", "LALITH KUMAR", "CUTFYFIUYGFIU"),
-            KYCItem("2", "RETAIL", "ARN0776", "INDIVIDUAL", "UJWALA", "JGFBEHVFDCB"),
-            KYCItem("3", "RETAIL", "ARN0701", "INDIVIDUAL", "VINAY", "IND7895412663"),
-            KYCItem("4", "RETAIL", "ARN0815", "INDIVIDUAL", "SHASHA", "3456789876543"),
-            KYCItem("5", "RETAIL", "ARN0946", "INDIVIDUAL", "PON PRASANTH", "E7GEOFYHE8IFY"),
-            KYCItem("6", "RETAIL", "ARN0859", "INDIVIDUAL", "IRWIN KUMAR", "IRJIPGGNROGRJ"),
-            KYCItem("7", "RETAIL", "ARN0905", "INDIVIDUAL", "PON PRASANTH", "UHOPRHGPRPIGP"),
-            KYCItem("8", "RETAIL", "ARN0607", "INDIVIDUAL", "VIMAL KUMAR", "RDCUTFCYFVIOU"),
-            KYCItem("9", "RETAIL", "ARN0804", "INDIVIDUAL", "LALITH KUMAR", "FYIRYFYRFIURO"),
-            KYCItem("10", "RETAIL", "ARN0831", "INDIVIDUAL", "HARISH KALYAN", "DIYFUOGOIGOI"),
-            KYCItem("11", "RETAIL", "ARN0851", "INDIVIDUAL", "JAFER SHERIF", "YHEOUHIHFPIEI")
-        )
+    private fun loadDataFromApi() {
+        RetrofitClient.api.getApprovalList().enqueue(object : Callback<ApprovalListResponse> {
+            override fun onResponse(call: Call<ApprovalListResponse>, response: Response<ApprovalListResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val apiList = response.body()!!.customerRequest
+                    fullData = apiList.mapIndexed { idx, item ->
+                        KYCItem(
+                            srNo = (idx + 1).toString(),
+                            customerGroup = item.custGroup,
+                            applRefNo = item.applRefNo,
+                            accountType = item.accountType,
+                            customerName = item.preferredName ?: item.fullName ?: "",
+                            nationalId = item.nationalId
+                        )
+                    }
+                    adapter.updateList(fullData)
+                } else {
+                    Toast.makeText(this@ComplianceDepartmentActivity, "Failed to load data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ApprovalListResponse>, t: Throwable) {
+                Toast.makeText(this@ComplianceDepartmentActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
+    // Everything below this line stays exactly as you had it (setupRecyclerView, setupFilterLogic, performFilter, clearFilters)
+    // Just remove the old setupData() method.
 
     private fun setupRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        adapter = KYCComplianceAdapter(fullData) { item ->
+        adapter = KYCComplianceAdapter(emptyList()) { item ->
             val intent = Intent(this, KYCComplianceViewActivity::class.java).apply {
                 putExtra("appRefNo", item.applRefNo)
                 putExtra("customerName", item.customerName)
