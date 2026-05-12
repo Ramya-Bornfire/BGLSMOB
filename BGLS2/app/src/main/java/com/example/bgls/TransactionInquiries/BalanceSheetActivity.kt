@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.content.Intent
+import com.example.bgls.MainActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
@@ -30,13 +33,24 @@ class BalanceSheetActivity : AppCompatActivity() {
     private lateinit var liabilityAdapter: BalanceSheetAdapter
     private var assetList = mutableListOf<BalanceSheetModel>()
     private var liabilityList = mutableListOf<BalanceSheetModel>()
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balance_sheet)
 
+        initViews()
+        setupNavigation()
+        loadData()
+        setupFilters()
+    }
+
+    private fun initViews() {
         rvAsset = findViewById(R.id.rvAsset)
         rvLiability = findViewById(R.id.rvLiability)
+        btnHome = findViewById(R.id.btnHome)
+        btnBack = findViewById(R.id.btnBack)
 
         assetAdapter = BalanceSheetAdapter(assetList)
         rvAsset.layoutManager = LinearLayoutManager(this)
@@ -45,31 +59,33 @@ class BalanceSheetActivity : AppCompatActivity() {
         liabilityAdapter = BalanceSheetAdapter(liabilityList)
         rvLiability.layoutManager = LinearLayoutManager(this)
         rvLiability.adapter = liabilityAdapter
+    }
 
-        loadData()
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
 
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun setupFilters() {
         val layoutFilterAsset = findViewById<View>(R.id.layoutFilterAsset)
         val btnFilterAsset = findViewById<View>(R.id.btnFilterAsset)
         btnFilterAsset.setOnClickListener {
-            if (layoutFilterAsset.visibility == View.GONE) {
-                layoutFilterAsset.visibility = View.VISIBLE
-            } else {
-                layoutFilterAsset.visibility = View.GONE
-            }
+            layoutFilterAsset.visibility = if (layoutFilterAsset.visibility == View.GONE) View.VISIBLE else View.GONE
         }
 
         val layoutFilterLiability = findViewById<View>(R.id.layoutFilterLiability)
         val btnFilterLiability = findViewById<View>(R.id.btnFilterLiability)
         btnFilterLiability.setOnClickListener {
-            if (layoutFilterLiability.visibility == View.GONE) {
-                layoutFilterLiability.visibility = View.VISIBLE
-            } else {
-                layoutFilterLiability.visibility = View.GONE
-            }
+            layoutFilterLiability.visibility = if (layoutFilterLiability.visibility == View.GONE) View.VISIBLE else View.GONE
         }
-
-        findViewById<View>(R.id.btnHome).setOnClickListener { finish() }
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
     }
 
     private fun loadData() {

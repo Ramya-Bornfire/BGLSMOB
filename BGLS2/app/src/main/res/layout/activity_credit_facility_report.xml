@@ -210,82 +210,84 @@
 
             <!-- CENTER CARD -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="435dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="#FFFFFF"
-                android:padding="24dp"
                 android:elevation="4dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="GENERATE FACILITY REPORT"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#333333"
+                    android:layout_marginBottom="24dp"
                     android:gravity="center"
-                    android:layout_marginBottom="24dp"/>
+                    android:text="GENERATE FACILITY REPORT"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="85dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Account No:"
-                        android:textSize="11sp"
                         android:textColor="#333333"
-                        android:layout_marginEnd="8dp"/>
+                        android:textSize="11sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_background"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:paddingEnd="4dp">
+
                         <EditText
                             android:id="@+id/etAccountNo"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:textSize="11sp"
-                            android:paddingStart="12dp"
-                            android:hint="Select Account"
                             android:focusable="false"
-                            android:inputType="none"/>
+                            android:hint="Select Account"
+                            android:inputType="none"
+                            android:paddingStart="12dp"
+                            android:textSize="11sp" />
+
                         <ImageView
                             android:id="@+id/ivSearchAccount"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:src="@android:drawable/ic_menu_search"
                             android:padding="6dp"
-                            app:tint="#007BFF"/>
+                            android:src="@android:drawable/ic_menu_search"
+                            app:tint="#007BFF" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="24dp"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="24dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="85dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:text="Account Name:"
-                        android:textSize="11sp"
                         android:textColor="#333333"
-                        android:layout_marginEnd="8dp"/>
+                        android:textSize="11sp" />
 
                     <EditText
                         android:id="@+id/etAccountName"
@@ -293,12 +295,12 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@drawable/edittext_background"
-                        android:textSize="11sp"
-                        android:paddingStart="12dp"
-                        android:hint="Account Name"
                         android:focusable="false"
+                        android:hint="Account Name"
                         android:inputType="none"
-                        android:textColor="#666666"/>
+                        android:paddingStart="12dp"
+                        android:textColor="#666666"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <ProgressBar
@@ -306,20 +308,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/btnSubmit"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:text="DOWNLOAD REPORT"
-                    android:textSize="12sp"
-                    android:textAllCaps="false"
                     android:backgroundTint="#007BFF"
+                    android:elevation="4dp"
+                    android:text="DOWNLOAD REPORT"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:elevation="4dp"/>
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

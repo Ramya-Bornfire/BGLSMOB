@@ -3,7 +3,7 @@ package com.example.bgls.TransactionInquiries
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,22 +23,40 @@ class InterestSummaryActivity : AppCompatActivity() {
     private lateinit var rvInterestSummary: RecyclerView
     private lateinit var adapter: InterestSummaryAdapter
     private lateinit var tvTranDate: TextView
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
     private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_interest_summary)
 
-        setupHeader()
+        initViews()
+        setupNavigation()
         setupRecyclerView()
-        setupButtons()
         loadData()
     }
 
-    private fun setupHeader() {
+    private fun initViews() {
         tvTranDate = findViewById(R.id.tvTranDate)
+        btnHome    = findViewById(R.id.btnHome)
+        btnBack    = findViewById(R.id.btnBack)
+
         tvTranDate.setOnClickListener {
             showDatePicker()
+        }
+    }
+
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -67,17 +85,7 @@ class InterestSummaryActivity : AppCompatActivity() {
         rvInterestSummary.adapter = adapter
     }
 
-    private fun setupButtons() {
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
-        }
-    }
+
 
     private fun loadData() {
         lifecycleScope.launch {

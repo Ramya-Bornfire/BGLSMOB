@@ -1,64 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- ─── HEADER ─── -->
-    <LinearLayout
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
-        android:padding="16dp"
-        android:gravity="center_vertical"
-        android:elevation="2dp">
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Lease Loan Interest Summary"
-            android:textColor="#333333"
+            android:text="LEASE LOAN INTEREST SUMMARY"
+            android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
 
+        <!-- Right Side Container (User Info + Buttons) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
-            <TextView
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TRAN DATE"
-                android:textColor="#333333"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginEnd="8dp" />
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
 
-            <TextView
-                android:id="@+id/tvTranDate"
-                android:layout_width="100dp"
-                android:layout_height="36dp"
-                android:background="#E9ECEF"
-                android:gravity="center"
-                android:text="06-05-2026"
-                android:textColor="#333333"
-                android:textSize="12sp"
-                android:padding="4dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
         </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRANSACTION DATE:"
+            android:textColor="#333333"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/tvTranDate"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:background="@drawable/edittext_background"
+            android:gravity="center"
+            android:text="06-05-2026"
+            android:textColor="#333333"
+            android:textSize="11sp"
+            android:paddingHorizontal="12dp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDD" />
-
-    <!-- ─── TABLE CONTENT ─── -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -75,147 +202,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#E9ECEF"
-                android:paddingVertical="12dp"
-                android:gravity="center_vertical">
+                android:background="#F8F9FA"
+                android:paddingVertical="8dp">
 
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="LOAN NO"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:paddingStart="8dp" />
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:text="NAME"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="DATE OF LOAN"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="LOAN AMT"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
-
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:text="INTEREST RATE"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="LIABILITY"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ACCRUED INTEREST"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="BOOKED INTEREST"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
-
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="APPLIED INTEREST"
-                    android:textColor="#333333"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:gravity="end"
-                    android:paddingEnd="8dp" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="LOAN NO" />
+                <TextView style="@style/TableHeader" android:layout_width="150dp" android:layout_weight="1.5" android:text="NAME" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="DATE OF LOAN" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="LOAN AMT" android:gravity="end|center_vertical" android:paddingEnd="8dp" />
+                <TextView style="@style/TableHeader" android:layout_width="80dp" android:layout_weight="0.8" android:text="INT RATE" android:gravity="center" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="LIABILITY" android:gravity="end|center_vertical" android:paddingEnd="8dp" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="ACCRUED INT" android:gravity="end|center_vertical" android:paddingEnd="8dp" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="BOOKED INT" android:gravity="end|center_vertical" android:paddingEnd="8dp" />
+                <TextView style="@style/TableHeader" android:layout_width="100dp" android:layout_weight="1" android:text="APPLIED INT" android:gravity="end|center_vertical" android:paddingEnd="8dp" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CCCCCC" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvInterestSummary"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:background="#FFFFFF" />
         </LinearLayout>
     </HorizontalScrollView>
-
-    <!-- ─── BOTTOM BUTTONS ─── -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#FFFFFF"
-        android:elevation="4dp">
-
-        <Button
-            android:id="@+id/btnHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#007BFF"
-            android:layout_marginEnd="8dp"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#007BFF"
-            android:textAllCaps="false" />
-    </LinearLayout>
 
 </LinearLayout>

@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.MainActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.ChartOfAccounts.ChartOfAccountsDetailActivity
@@ -28,18 +30,50 @@ data class BalancingReportModel(
     val status: String
 )
 
-class BalancingReportActivity : AppCompatActivity() {
+class BalancingReportActivity :  AppCompatActivity() {
 
     private lateinit var rvBalancingReport: RecyclerView
     private lateinit var balancingAdapter: BalancingReportAdapter
     private var reportList = mutableListOf<BalancingReportModel>()
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balancing_report)
 
+        initViews()
+        setupNavigation()
+        setupSpinners()
+        setupListeners()
+    }
+
+    private fun initViews() {
         rvBalancingReport = findViewById(R.id.rvBalancingReport)
+        btnHome = findViewById(R.id.btnHome)
+        btnBack = findViewById(R.id.btnBack)
+
+        balancingAdapter = BalancingReportAdapter(reportList)
+        rvBalancingReport.layoutManager = LinearLayoutManager(this)
+        rvBalancingReport.adapter = balancingAdapter
         
+        loadOfficeData()
+    }
+
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun setupSpinners() {
         val spinnerOffice = findViewById<Spinner>(R.id.spinnerOffice)
         val officeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listOf("OFFICE", "CUSTOMER"))
         officeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -56,24 +90,13 @@ class BalancingReportActivity : AppCompatActivity() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
 
+    private fun setupListeners() {
         val layoutFilter = findViewById<View>(R.id.layoutFilter)
         findViewById<View>(R.id.btnFilter).setOnClickListener {
-            if (layoutFilter.visibility == View.GONE) {
-                layoutFilter.visibility = View.VISIBLE
-            } else {
-                layoutFilter.visibility = View.GONE
-            }
+            layoutFilter.visibility = if (layoutFilter.visibility == View.GONE) View.VISIBLE else View.GONE
         }
-
-        loadOfficeData()
-
-        balancingAdapter = BalancingReportAdapter(reportList)
-        rvBalancingReport.layoutManager = LinearLayoutManager(this)
-        rvBalancingReport.adapter = balancingAdapter
-
-        findViewById<View>(R.id.btnHome).setOnClickListener { finish() }
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
     }
 
     private fun loadOfficeData() {

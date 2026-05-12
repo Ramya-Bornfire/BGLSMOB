@@ -38,7 +38,8 @@ class AccountBalanceActivity : AppCompatActivity() {
     private lateinit var rvLeaseAccounts: RecyclerView
     private lateinit var progressLease: ProgressBar
     private lateinit var tvLeaseNoData: TextView
-    private lateinit var rgAccountType: RadioGroup
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
 
     private lateinit var leaseAdapter: AccountBalanceLeaseAdapter
     private var currentMode = "Lease" // "Lease" or "Deposit"
@@ -49,6 +50,7 @@ class AccountBalanceActivity : AppCompatActivity() {
 
         initViews()
         setupRecyclerView()
+        setupNavigation()
         setupListeners()
         
         // Load initial full list (Account_Balances endpoint)
@@ -62,14 +64,26 @@ class AccountBalanceActivity : AppCompatActivity() {
         rvLeaseAccounts   = findViewById(R.id.rvLeaseAccounts)
         progressLease     = findViewById(R.id.progressLease)
         tvLeaseNoData     = findViewById(R.id.tvLeaseNoData)
-        rgAccountType     = findViewById(R.id.rgAccountType)
+        btnHome           = findViewById(R.id.btnHome)
+        btnBack           = findViewById(R.id.btnBack)
 
         etLeaseDatePicker.setText(getTodayString())
     }
 
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun setupListeners() {
-        findViewById<ImageView>(R.id.btnBackArrow).setOnClickListener { finish() }
-        
         etLeaseDatePicker.setOnClickListener { showDatePicker() }
         
         btnLeaseFilter.setOnClickListener {
@@ -83,9 +97,7 @@ class AccountBalanceActivity : AppCompatActivity() {
             }
         }
 
-
         setupSearchListener()
-        setupBottomButtons()
     }
 
     private fun setupRecyclerView() {
@@ -265,15 +277,7 @@ class AccountBalanceActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupBottomButtons() {
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
-        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
-    }
+
 
     private fun getTodayString(): String {
         val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
