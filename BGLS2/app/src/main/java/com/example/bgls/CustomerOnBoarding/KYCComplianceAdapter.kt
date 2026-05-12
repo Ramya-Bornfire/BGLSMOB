@@ -15,6 +15,7 @@ data class KYCItem(
     val accountType: String,
     val customerName: String,
     val nationalId: String,
+    val status: String? = null,
     var isSelected: Boolean = false
 )
 

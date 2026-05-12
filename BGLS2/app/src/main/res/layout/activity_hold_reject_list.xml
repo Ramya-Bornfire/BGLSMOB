@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7F9"
+    tools:context=".CustomerOnBoarding.HoldRejectListActivity">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/header_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="HOLD AND REJECT - LIST"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#007BFF"
+            android:minHeight="0dp"
+            android:minWidth="60dp"
+            android:paddingHorizontal="12dp"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="16dp">
+
+        <!-- Table Header Container -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <!-- Default Table Header -->
+            <LinearLayout
+                android:id="@+id/layoutDefaultHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E0E5E9"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:paddingStart="8dp"
+                    android:text="Sr No"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Customer Group"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Appl Ref No"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Account Type"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="Customer Name"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="National ID"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Status"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:gravity="center"
+                    android:text="Select"
+                    android:textColor="#333333"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Filter Table Header (visible when filter is opened) -->
+            <LinearLayout
+                android:id="@+id/layoutFilterHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E0E5E9"
+                android:orientation="horizontal"
+                android:paddingVertical="5dp"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etFilterSrNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Sr No"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etFilterCustomerGroup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Group"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etFilterApplRefNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Appl Ref"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etFilterAccountType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Ac Type"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etFilterCustomerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Name"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etFilterNationalId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Nat ID"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+                <EditText
+                    android:id="@+id/etFilterStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_marginHorizontal="2dp"
+                    android:background="@android:color/white"
+                    android:hint="Status"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapCharacters"
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    android:gravity="center"
+                    android:text="Select"
+                    android:textColor="#333333"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF" />
+
+    </LinearLayout>
+</LinearLayout>

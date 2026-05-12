@@ -1198,4 +1198,5 @@ interface ServiceApi {
     ): Call<ApprovalViewResponse>
     @GET("api/Approval")
     fun getApprovalList(@Query("formmode") formmode: String = "list"): Call<ApprovalListResponse>
+
 }

@@ -322,6 +322,7 @@ class MainActivity : AppCompatActivity() {
             "Disbursement"              -> Intent(this, DisbursementActivity::class.java)
             "KYC Compliance"            -> Intent(this, KYCComplianceActivity::class.java)
             "Compliance Department"     -> Intent(this, ComplianceDepartmentActivity::class.java)
+            "Hold and Reject"                  -> Intent(this, HoldRejectListActivity::class.java)
             "Deposit Maintenance"       -> Intent(this, DepositAccountMaintenanceListActivity::class.java)
             "Credit Facility Report"    -> Intent(this, CreditFacilityReportActivity::class.java)
             "End Of Month Report"       -> Intent(this, EndOfMonthReportActivity::class.java)
