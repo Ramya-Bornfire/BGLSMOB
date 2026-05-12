@@ -2,6 +2,7 @@ package com.example.bgls.LoanOperation
 
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -54,8 +55,8 @@ class LoanOperationActivity : AppCompatActivity() {
     private lateinit var tvRoutingAcctLabel: TextView
     private lateinit var etRoutingAcct: EditText
     private lateinit var tvColTranAmt: TextView
-    private lateinit var btnHome: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
     private lateinit var ivSearchAccount: ImageView
     
     // Upload mode views
@@ -307,11 +308,13 @@ class LoanOperationActivity : AppCompatActivity() {
         }
 
         btnHome.setOnClickListener {
-            finish()
+            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
         }
 
         btnBack.setOnClickListener {
-            onBackPressed()
+            finish()
         }
 
         btnUpload.setOnClickListener {

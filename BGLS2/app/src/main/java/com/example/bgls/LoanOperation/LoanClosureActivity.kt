@@ -39,8 +39,8 @@ class LoanClosureActivity : AppCompatActivity() {
     private lateinit var llRows: LinearLayout
     private lateinit var ivAddRow: ImageView
     private lateinit var ivRemoveRow: ImageView
-    private lateinit var btnHome: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
 
     private var isPreClosureMode = true
     private var currentAccountNo = ""
@@ -89,8 +89,12 @@ class LoanClosureActivity : AppCompatActivity() {
         btnSubmit.setOnClickListener { submitData() }
         btnScheduler.setOnClickListener { navigateToScheduler() }
         btnLedger.setOnClickListener { navigateToLedger() }
-        btnHome.setOnClickListener { finish() }
-        btnBack.setOnClickListener { onBackPressed() }
+        btnHome.setOnClickListener {
+            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
+        btnBack.setOnClickListener { finish() }
     }
 
     private fun setMode(isPreClosure: Boolean) {

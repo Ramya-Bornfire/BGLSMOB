@@ -1,85 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F8F9FA">
 
-    <!-- HEADER BAR -->
-    <LinearLayout
-        android:layout_marginTop="30dp"
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E9ECEF"
-        android:padding="8dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:elevation="2dp">
-        
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="LOAN PRE - CLOSURE"
-            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#333333"
-            android:layout_marginStart="8dp"/>
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
 
+        <!-- Right Side Container (User Info + Buttons) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/btnScheduler"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:text="SCHEDULER"
-                android:textSize="10sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:layout_marginEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"/>
-            <Button
-                android:id="@+id/btnLedger"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="LEDGER"
-                android:textSize="10sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:layout_marginEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"/>
-            <Button
-                android:id="@+id/btnPreClosureMode"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="PRE - CLOSURE"
-                android:textSize="10sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:layout_marginEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"/>
-            <Button
-                android:id="@+id/btnClosureMode"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="CLOSURE"
-                android:textSize="10sp"
-                android:textAllCaps="false"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"/>
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
         </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
+        <Button
+            android:id="@+id/btnScheduler"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="SCHEDULER"
+            android:textSize="10sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="2dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"/>
+        <Button
+            android:id="@+id/btnLedger"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="LEDGER"
+            android:textSize="10sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="2dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"/>
+        <Button
+            android:id="@+id/btnPreClosureMode"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="PRE - CLOSURE"
+            android:textSize="10sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginEnd="2dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"/>
+        <Button
+            android:id="@+id/btnClosureMode"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="CLOSURE"
+            android:textSize="10sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"/>
     </LinearLayout>
 
     <ScrollView
@@ -300,30 +431,10 @@
         android:background="#FFFFFF"
         android:elevation="4dp">
         <Button
-            android:id="@+id/btnHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Home"
-            android:layout_marginEnd="12dp"
-            android:backgroundTint="#007BFF"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textAllCaps="false"/>
-        <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="#007BFF"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textAllCaps="false"/>
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
             android:backgroundTint="#007BFF"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
