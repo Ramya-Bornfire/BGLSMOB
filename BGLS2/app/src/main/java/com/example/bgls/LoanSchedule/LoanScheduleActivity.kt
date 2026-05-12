@@ -31,9 +31,6 @@ class LoanScheduleActivity : AppCompatActivity() {
     
     private lateinit var btnUpload: Button
     private lateinit var btnList: Button
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
     
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoanScheduleActivityAdapter
@@ -42,34 +39,15 @@ class LoanScheduleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_schedule)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
-
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+        
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
         }
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    // Navigate back to MainActivity (or any home screen)
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> {
-                    // TODO: Open Profile activity if needed
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_logout -> {
-                    // TODO: Implement logout logic (clear session, go to login)
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
         }
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

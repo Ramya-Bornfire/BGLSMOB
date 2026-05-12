@@ -36,7 +36,13 @@ class LoanScheduleListActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_schedule_list)
         btnBack = findViewById(R.id.btnBack)
-        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        btnBack.setOnClickListener { finish() }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

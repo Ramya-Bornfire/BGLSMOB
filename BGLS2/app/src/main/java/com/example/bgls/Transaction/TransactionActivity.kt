@@ -37,9 +37,6 @@ class TransactionActivity : AppCompatActivity() {
     private lateinit var tabFees: TextView
     private lateinit var tabPenalty: TextView
     private lateinit var tabRecovery: TextView
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navigationView: NavigationView
-    private lateinit var menuIcon: ImageView
 
     private lateinit var apiService: ServiceApi
     private var currentFlowCode = "DISBT"
@@ -53,7 +50,15 @@ class TransactionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_transaction)
 
         initViews()
-        setupNavigationDrawer()
+        
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
+        
         setupSpinner()
         setupRecyclerView()
         setupTabs()
@@ -76,29 +81,6 @@ class TransactionActivity : AppCompatActivity() {
         tabFees = findViewById(R.id.tabFees)
         tabPenalty = findViewById(R.id.tabPenalty)
         tabRecovery = findViewById(R.id.tabRecovery)
-        drawerLayout = findViewById(R.id.drawerLayout)
-        navigationView = findViewById(R.id.navigationView)
-        menuIcon = findViewById(R.id.menuIcon)
-    }
-
-    private fun setupNavigationDrawer() {
-        menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
-                R.id.nav_logout -> Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
     }
 
     private fun setupSpinner() {
