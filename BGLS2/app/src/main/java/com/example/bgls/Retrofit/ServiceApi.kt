@@ -1062,4 +1062,62 @@ interface ServiceApi {
     suspend fun submitFailedReversal(
         @Body payload: com.example.bgls.DataModels.FailedReversalSubmissionPayload
     ): Response<Map<String, Any>>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // BATCH JOB APIs
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** Initial list load – returns TRANDATE, booking (loan) & booking1 (deposit) */
+    @GET("api/interestBatchJob_test")
+    suspend fun batchJobInit(
+        @Query("formmode") formmode: String = "list"
+    ): Response<Map<String, Any>>
+
+    /** Holiday / weekend check */
+    @FormUrlEncoded
+    @POST("api/holidayCheckBatchJob")
+    suspend fun holidayCheckBatchJob(
+        @Field("trndate") trndate: String
+    ): Response<okhttp3.ResponseBody>
+
+    /** DAB account list */
+    @GET("api/getDabAcctList")
+    suspend fun getDabAcctList(): Response<List<com.example.bgls.DataModels.DabAccountModel>>
+
+    /** DAB run for a single account */
+    @FormUrlEncoded
+    @POST("api/DoatransactionpushBatchJob")
+    suspend fun doaDabRun(
+        @Field("acct_num")  acctNum:  String,
+        @Field("from_date") fromDate: String,
+        @Field("to_date")   toDate:   String
+    ): Response<String>
+
+    /** Consistency check */
+    @FormUrlEncoded
+    @POST("api/BatchJobconsistencyCheck")
+    suspend fun consistencyCheck(
+        @Field("trndate") trndate: String
+    ): Response<com.example.bgls.DataModels.ConsistencyCheckResponse>
+
+    /** Date change process */
+    @FormUrlEncoded
+    @POST("api/bacthJobdateChageProcess")
+    suspend fun dateChangeProcess(
+        @Field("nxtdate") nxtdate: String,
+        @Field("trndate") trndate: String
+    ): Response<okhttp3.ResponseBody>   // was Response<String>
+
+    @GET("api/glconsolidation")
+    suspend fun glConsolidation(): Response<okhttp3.ResponseBody>   // was Response<String>
+
+    @POST("api/interest_accural_batch_job")
+    suspend fun interestAccrual(
+        @Body body: Map<String, String>
+    ): Response<okhttp3.ResponseBody>   // was Response<String>
+
+    @POST("api/penalty_accural_batch_job")
+    suspend fun penaltyAccrual(
+        @Body body: Map<String, String>
+    ): Response<okhttp3.ResponseBody>
 }

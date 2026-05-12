@@ -111,24 +111,7 @@
             android:layout_height="wrap_content"
             android:stretchColumns="0,1">
             
-            <!-- Rows will be added dynamically or just a few static ones for mock -->
-            <!-- Static Mock Rows -->
-            <TableRow android:background="@drawable/table_cell_bg">
-                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115552307" android:textSize="13sp" android:textColor="#333333"/>
-                <TextView android:padding="12dp" android:text="ARNOLD KEMBOI" android:textSize="13sp" android:textColor="#333333"/>
-            </TableRow>
-            <TableRow android:background="@drawable/table_cell_bg">
-                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115600973" android:textSize="13sp" android:textColor="#333333"/>
-                <TextView android:padding="12dp" android:text="ELVIS KIPKEMOI" android:textSize="13sp" android:textColor="#333333"/>
-            </TableRow>
-            <TableRow android:background="@drawable/table_cell_bg">
-                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115610551" android:textSize="13sp" android:textColor="#333333"/>
-                <TextView android:padding="12dp" android:text="LILIAN JEROTICH" android:textSize="13sp" android:textColor="#333333"/>
-            </TableRow>
-            <TableRow android:background="@drawable/table_cell_bg">
-                <TextView android:padding="12dp" android:text="CCO1T80001a19062024115619913" android:textSize="13sp" android:textColor="#333333"/>
-                <TextView android:padding="12dp" android:text="LYDIA CHEROTICH" android:textSize="13sp" android:textColor="#333333"/>
-            </TableRow>
+            <!-- Rows are added dynamically from the API -->
         </TableLayout>
     </ScrollView>
 

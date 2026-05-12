@@ -39,41 +39,41 @@
 
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DEE2E6"/>
 
-        <!-- Row 1 -->
+        <!-- Row 1: TRM Balance -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp">
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="TRM Balance" android:textSize="12sp" android:textColor="#555555"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="832,148,300.73" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="831,739,100.73" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvTrmCredit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvTrmDebit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
         </LinearLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
 
-        <!-- Row 2 -->
+        <!-- Row 2: COA Balance -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp">
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="COA Balance" android:textSize="12sp" android:textColor="#555555"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="831,748,300.73" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="831,739,100.73" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvCoaCredit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvCoaDebit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
         </LinearLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
 
-        <!-- Row 3 -->
+        <!-- Row 3: DAB Balance -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp">
             <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="DAB Balance" android:textSize="12sp" android:textColor="#555555"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="828,771,051.98" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
-            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="828,771,051.98" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvDabCredit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
+            <TextView android:id="@+id/tvDabDebit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
         </LinearLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DEE2E6"/>
@@ -86,17 +86,13 @@
             android:gravity="center"
             android:padding="24dp">
             <TextView
+                android:id="@+id/tvValidationResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Validation Failed "
-                android:textSize="22sp"
+                android:text="Running..."
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#FF3B30"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="❌"
-                android:textSize="22sp"/>
+                android:textColor="#555555"/>
         </LinearLayout>
 
     </LinearLayout>

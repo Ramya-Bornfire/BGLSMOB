@@ -83,12 +83,13 @@ class RecoveryReversalActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 // The backend RecoveryReversal(formmode="list") returns Map<String, Object>
-                val response = RetrofitClient.api.getRecoveryReversal("list")
+                val response = RetrofitClient.api.getRecoveryReversal("list1")
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
                     val gson = Gson()
                     
-                    val dataJson = gson.toJson(body["data"])
+                  // val dataJson = gson.toJson(body["data"])
+                    val dataJson = gson.toJson(body["jour"])
                     val type = object : TypeToken<List<JournalEntryItem>>() {}.type
                     val items: List<JournalEntryItem>? = gson.fromJson(dataJson, type)
                     

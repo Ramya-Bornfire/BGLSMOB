@@ -27,4 +27,5 @@
     <item name="etOutstandingBalance" type="id" />
     <item name="etCurrency" type="id" />
     <item name="btnSearch" type="id" />
+    <item name="etNextDate" type="id" />
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#FFFFFF"
@@ -19,7 +19,7 @@
 
     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
 
-    <!-- Content -->
+    <!-- Content that will be hidden after submit -->
     <LinearLayout
         android:id="@+id/layoutDialogContent"
         android:layout_width="match_parent"
@@ -27,6 +27,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- From Date -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,11 +51,11 @@
                 android:background="@drawable/edittext_border"
                 android:paddingHorizontal="8dp"
                 android:textSize="14sp"
-                android:text="07-05-2026"
                 android:focusable="false"
                 android:textColor="#555555"/>
         </LinearLayout>
 
+        <!-- To Date (current date, visible but read-only) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,24 +79,23 @@
                 android:background="@drawable/edittext_background"
                 android:paddingHorizontal="8dp"
                 android:textSize="14sp"
-                android:text="07-05-2026"
                 android:enabled="false"
                 android:textColor="#555555"/>
         </LinearLayout>
 
-        <!-- Validation View (Hidden initially) -->
-        <TextView
-            android:id="@+id/tvValidationMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Working Day"
-            android:textSize="20sp"
-            android:textColor="#333333"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginVertical="24dp"/>
-
     </LinearLayout>
+
+    <!-- RESULT TextView – placed OUTSIDE layoutDialogContent so it stays visible -->
+    <TextView
+        android:id="@+id/tvValidationMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_margin="24dp"/>
 
     <!-- Buttons -->
     <LinearLayout

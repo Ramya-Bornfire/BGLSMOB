@@ -1,277 +1,229 @@
 package com.example.bgls.BatchJobExecution
 
+import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.bgls.DataModels.ConsistencyCheckResponse
+import com.example.bgls.DataModels.DabAccountModel
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class BatchJobActivity : AppCompatActivity() {
+
+    private lateinit var progressDialog: ProgressDialog
+    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+    private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_batch_job)
 
-        val etNextWorkingDate = findViewById<android.widget.EditText>(R.id.etNextWorkingDate)
-        etNextWorkingDate.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            val year = calendar.get(java.util.Calendar.YEAR)
-            val month = calendar.get(java.util.Calendar.MONTH)
-            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-
-            val datePicker = android.app.DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate = String.format("%02d-%02d-%04d", selectedDay, selectedMonth + 1, selectedYear)
-                etNextWorkingDate.setText(formattedDate)
-            }, year, month, day)
-            datePicker.show()
+        progressDialog = ProgressDialog(this).apply {
+            setMessage("Processing...")
+            setCancelable(false)
         }
 
-        findViewById<View>(R.id.rowHolidayCheck).setOnClickListener {
-            showHolidayCheckDialog()
-        }
+        val etCurrentDate = findViewById<EditText>(R.id.etCurrentDate)
+        val etNextWorkingDate = findViewById<EditText>(R.id.etNextWorkingDate)
 
-        findViewById<View>(R.id.rowDailyAccountBalance).setOnClickListener {
-            showDabSelectionDialog()
-        }
+        // Set current date
+        etCurrentDate.setText(dateFormat.format(Date()))
+        etNextWorkingDate.setOnClickListener { showDatePicker(etNextWorkingDate) }
 
-        findViewById<View>(R.id.rowConsistencyCheck).setOnClickListener {
-            showConsistencyCheckDialog()
-        }
+        // Job row clicks
+        findViewById<View>(R.id.rowHolidayCheck).setOnClickListener { showHolidayCheckDialog() }
+        findViewById<View>(R.id.rowDailyAccountBalance).setOnClickListener { showDabSelectionDialog() }
+        findViewById<View>(R.id.rowConsistencyCheck).setOnClickListener { showConsistencyCheckDialog() }
+        findViewById<View>(R.id.rowDateChange).setOnClickListener { showDateChangeDialog() }
+        findViewById<View>(R.id.rowGlUpdation).setOnClickListener { runGlConsolidation() }
+        findViewById<View>(R.id.rowPenaltyAccrual).setOnClickListener { showAccrualDialog("Penalty") }
+        findViewById<View>(R.id.rowInterestAccrual).setOnClickListener { showAccrualDialog("Interest") }
 
-        findViewById<View>(R.id.rowDateChange).setOnClickListener {
-            showSuccessDialog("Date Change Operation", "Date Change Successfully")
-        }
-
-        findViewById<View>(R.id.rowGlUpdation).setOnClickListener {
-            showSuccessDialog("GL Consolidation", "GL Consolidation Successful")
-        }
-
-        findViewById<View>(R.id.rowPenaltyAccrual).setOnClickListener {
-            showAccrualDialog("Penalty")
-        }
-
-        findViewById<View>(R.id.rowInterestAccrual).setOnClickListener {
-            showAccrualDialog("Interest")
-        }
-
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
-            finish()
-        }
-
+        findViewById<Button>(R.id.btnHome).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnRefresh).setOnClickListener {
-            // Simulate refresh logic
-            android.widget.Toast.makeText(this, "Batch jobs refreshed successfully", android.widget.Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Batch jobs refreshed", Toast.LENGTH_SHORT).show()
         }
+        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+    }
 
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
+    // ----------------------------- Helper: Date picker -----------------------------
+    private fun showDatePicker(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(this, { _, year, month, day ->
+            editText.setText(String.format("%02d-%02d-%04d", day, month + 1, year))
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
+    private fun convertToApiFormat(dateStr: String): String {
+        return try {
+            val date = dateFormat.parse(dateStr)
+            apiDateFormat.format(date)
+        } catch (e: Exception) {
+            dateStr
         }
     }
 
+    // ----------------------------- 1. Holiday Check -----------------------------
     private fun showHolidayCheckDialog() {
-        val dialog = android.app.AlertDialog.Builder(this).create()
+        val dialog = AlertDialog.Builder(this).create()
         val view = layoutInflater.inflate(R.layout.dialog_holiday_check, null)
         dialog.setView(view)
 
-        val etFromDate = view.findViewById<android.widget.EditText>(R.id.etFromDate)
-        val etToDate = view.findViewById<android.widget.EditText>(R.id.etToDate)
-        val btnSubmit = view.findViewById<android.widget.Button>(R.id.btnSubmit)
-        val btnClose = view.findViewById<android.widget.Button>(R.id.btnClose)
-        val tvDialogTitle = view.findViewById<android.widget.TextView>(R.id.tvDialogTitle)
-        val tvValidationMessage = view.findViewById<android.widget.TextView>(R.id.tvValidationMessage)
-        val layoutContent = view.findViewById<android.widget.LinearLayout>(R.id.layoutDialogContent)
+        val etDate = view.findViewById<EditText>(R.id.etFromDate)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+        val tvResult = view.findViewById<TextView>(R.id.tvValidationMessage)
+        val layoutContent = view.findViewById<LinearLayout>(R.id.layoutDialogContent)
+        val etToDate = view.findViewById<EditText>(R.id.etToDate)
 
-        etFromDate.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            val datePicker = android.app.DatePickerDialog(this, { _, year, month, day ->
-                etFromDate.setText(String.format("%02d-%02d-%04d", day, month + 1, year))
-            }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH))
-            datePicker.show()
-        }
+        // Set To Date as current date
+        etToDate.setText(dateFormat.format(Date()))
+        etDate.setOnClickListener { showDatePicker(etDate) }
 
         btnSubmit.setOnClickListener {
-            // Change UI to validation result view as per image
-            tvDialogTitle.text = "Holiday Check Validation"
-            
-            // Hide input rows
-            for (i in 0 until layoutContent.childCount) {
-                val child = layoutContent.getChildAt(i)
-                if (child is android.widget.LinearLayout) {
-                    child.visibility = View.GONE
+            val dateStr = etDate.text.toString()
+            if (dateStr.isEmpty()) {
+                Toast.makeText(this, "Select a date", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            progressDialog.show()
+            lifecycleScope.launch {
+                try {
+                    val apiDate = convertToApiFormat(dateStr)
+                    val response = RetrofitClient.api.holidayCheckBatchJob(apiDate)
+                    progressDialog.dismiss()
+                    if (response.isSuccessful && response.body() != null) {
+                        val result = response.body()!!.string()
+                        Log.d("HolidayCheck", "Result: $result")
+                        tvResult.text = result
+                        tvResult.visibility = View.VISIBLE
+                        layoutContent.visibility = View.GONE
+                        btnSubmit.visibility = View.GONE
+                    } else {
+                        Log.e("HolidayCheck", "API Error: ${response.code()}")
+                        Toast.makeText(this@BatchJobActivity, "API Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    Log.e("HolidayCheck", "Error: ${e.message}", e)
+                    Toast.makeText(this@BatchJobActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-            
-            tvValidationMessage.visibility = View.VISIBLE
-            btnSubmit.visibility = View.GONE
         }
 
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        btnClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
-    private fun showConsistencyCheckDialog() {
-        val dialog = android.app.AlertDialog.Builder(this).create()
-        val view = layoutInflater.inflate(R.layout.dialog_consistency_check, null)
-        dialog.setView(view)
-
-        view.findViewById<android.widget.Button>(R.id.btnClose).setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    }
-
-    private fun showSuccessDialog(title: String, message: String) {
-        val dialog = android.app.AlertDialog.Builder(this).create()
-        val view = layoutInflater.inflate(R.layout.dialog_holiday_check, null)
-        dialog.setView(view)
-
-        val tvDialogTitle = view.findViewById<android.widget.TextView>(R.id.tvDialogTitle)
-        val tvValidationMessage = view.findViewById<android.widget.TextView>(R.id.tvValidationMessage)
-        val layoutContent = view.findViewById<android.widget.LinearLayout>(R.id.layoutDialogContent)
-        val btnSubmit = view.findViewById<android.widget.Button>(R.id.btnSubmit)
-        val btnClose = view.findViewById<android.widget.Button>(R.id.btnClose)
-
-        tvDialogTitle.text = title
-        tvValidationMessage.text = message
-        tvValidationMessage.visibility = View.VISIBLE
-        btnSubmit.visibility = View.GONE
-
-        // Hide date input rows
-        for (i in 0 until layoutContent.childCount) {
-            val child = layoutContent.getChildAt(i)
-            if (child is android.widget.LinearLayout) {
-                child.visibility = View.GONE
-            }
-        }
-
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    }
-
-    private fun showAccrualDialog(type: String) {
-        val dialog = android.app.AlertDialog.Builder(this).create()
-        val view = layoutInflater.inflate(R.layout.dialog_penalty_accrual, null)
-        dialog.setView(view)
-
-        val etAccrualDate = view.findViewById<android.widget.EditText>(R.id.etAccrualDate)
-        val btnSubmit = view.findViewById<android.widget.Button>(R.id.btnSubmit)
-        val btnClose = view.findViewById<android.widget.Button>(R.id.btnClose)
-        val tvDialogTitle = view.findViewById<android.widget.TextView>(R.id.tvDialogTitle)
-        val tvSuccessMessage = view.findViewById<android.widget.TextView>(R.id.tvSuccessMessage)
-        val layoutContent = view.findViewById<android.widget.LinearLayout>(R.id.layoutDialogContent)
-
-        tvDialogTitle.text = "$type Accrual Run"
-        tvSuccessMessage.text = "$type Accrual Runned Successfully"
-
-        etAccrualDate.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            val datePicker = android.app.DatePickerDialog(this, { _, year, month, day ->
-                etAccrualDate.setText(String.format("%02d-%02d-%04d", day, month + 1, year))
-            }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH))
-            datePicker.show()
-        }
-
-        btnSubmit.setOnClickListener {
-            tvDialogTitle.text = "$type Accrual"
-            
-            // Hide input rows
-            for (i in 0 until layoutContent.childCount) {
-                val child = layoutContent.getChildAt(i)
-                if (child is android.widget.LinearLayout) {
-                    child.visibility = View.GONE
-                }
-            }
-            
-            tvSuccessMessage.visibility = View.VISIBLE
-            btnSubmit.visibility = View.GONE
-        }
-
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    }
-
+    // ----------------------------- 2. Daily Account Balance -----------------------------
     private fun showDabSelectionDialog() {
-        val dialog = android.app.AlertDialog.Builder(this).create()
+        val dialog = AlertDialog.Builder(this).create()
         val view = layoutInflater.inflate(R.layout.dialog_dab_selection, null)
         dialog.setView(view)
 
-        val etAccountId = view.findViewById<android.widget.EditText>(R.id.etAccountId)
-        val btnSearchAccount = view.findViewById<android.widget.ImageButton>(R.id.btnSearchAccount)
-        val etFromDate = view.findViewById<android.widget.EditText>(R.id.etFromDate)
-        val etToDate = view.findViewById<android.widget.EditText>(R.id.etToDate)
-        val btnSubmit = view.findViewById<android.widget.Button>(R.id.btnSubmit)
-        val btnClose = view.findViewById<android.widget.Button>(R.id.btnClose)
-        val tvDialogTitle = view.findViewById<android.widget.TextView>(R.id.tvDialogTitle)
-        val layoutSelectionContent = view.findViewById<android.widget.LinearLayout>(R.id.layoutSelectionContent)
-        val layoutProcessing = view.findViewById<android.widget.LinearLayout>(R.id.layoutProcessing)
+        val etAccountId = view.findViewById<EditText>(R.id.etAccountId)
+        val etFromDate = view.findViewById<EditText>(R.id.etFromDate)
+        val etToDate = view.findViewById<EditText>(R.id.etToDate)
+        val btnSearch = view.findViewById<ImageButton>(R.id.btnSearchAccount)
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+        val layoutSelectionContent = view.findViewById<LinearLayout>(R.id.layoutSelectionContent)
+        val layoutProcessing = view.findViewById<LinearLayout>(R.id.layoutProcessing)
 
-        etFromDate.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            android.app.DatePickerDialog(this, { _, year, month, day ->
-                etFromDate.setText(String.format("%02d-%02d-%04d", day, month + 1, year))
-            }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show()
-        }
+        etFromDate.setOnClickListener { showDatePicker(etFromDate) }
+        etToDate.setOnClickListener { showDatePicker(etToDate) }
 
-        etToDate.setOnClickListener {
-            val calendar = java.util.Calendar.getInstance()
-            android.app.DatePickerDialog(this, { _, year, month, day ->
-                etToDate.setText(String.format("%02d-%02d-%04d", day, month + 1, year))
-            }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH)).show()
-        }
-
-        btnSearchAccount.setOnClickListener {
-            showDabAccountListDialog { selectedAccount ->
+        btnSearch.setOnClickListener {
+            fetchDabAccountList { selectedAccount ->
                 etAccountId.setText(selectedAccount)
             }
         }
 
         btnSubmit.setOnClickListener {
-            // Show processing and error as per image
-            tvDialogTitle.text = "Daily Account Balance"
-            
-            // Hide input rows
-            for (i in 0 until layoutSelectionContent.childCount) {
-                val child = layoutSelectionContent.getChildAt(i)
-                if (child is android.widget.LinearLayout && child.id != R.id.layoutProcessing) {
-                    child.visibility = View.GONE
+            val accountNo = etAccountId.text.toString()
+            val fromDate = etFromDate.text.toString()
+            val toDate = etToDate.text.toString()
+            if (accountNo.isEmpty() || fromDate.isEmpty() || toDate.isEmpty()) {
+                Toast.makeText(this, "All fields required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            progressDialog.show()
+            lifecycleScope.launch {
+                try {
+                    val response = RetrofitClient.api.doaDabRun(accountNo, fromDate, toDate)
+                    progressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        val message = response.body() ?: "Success"
+                        Log.d("DAB", "Success: $message")
+                        AlertDialog.Builder(this@BatchJobActivity)
+                            .setTitle("Daily Account Balance")
+                            .setMessage(message)
+                            .setPositiveButton("OK") { _, _ -> dialog.dismiss() }
+                            .show()
+                    } else {
+                        Log.e("DAB", "Failed: ${response.code()}")
+                        AlertDialog.Builder(this@BatchJobActivity)
+                            .setTitle("Daily Account Balance")
+                            .setMessage("Failed: ${response.code()}")
+                            .setPositiveButton("OK") { _, _ -> dialog.dismiss() }
+                            .show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    Log.e("DAB", "Error: ${e.message}", e)
+                    AlertDialog.Builder(this@BatchJobActivity)
+                        .setTitle("Daily Account Balance")
+                        .setMessage("Error: ${e.message}")
+                        .setPositiveButton("OK") { _, _ -> dialog.dismiss() }
+                        .show()
                 }
             }
-            
-            layoutProcessing.visibility = View.VISIBLE
-            btnSubmit.visibility = View.GONE
         }
 
-        btnClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        btnClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
-    private fun showDabAccountListDialog(onSelected: (String) -> Unit) {
-        val dialog = android.app.AlertDialog.Builder(this).create()
+    private fun fetchDabAccountList(onSelected: (String) -> Unit) {
+        progressDialog.show()
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getDabAcctList()
+                progressDialog.dismiss()
+                if (response.isSuccessful && response.body() != null) {
+                    showAccountListDialog(response.body()!!, onSelected)
+                } else {
+                    Log.e("DAB", "No accounts found")
+                    Toast.makeText(this@BatchJobActivity, "No accounts found", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                Log.e("DAB", "Error fetching account list: ${e.message}", e)
+                Toast.makeText(this@BatchJobActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun showAccountListDialog(accounts: List<DabAccountModel>, onSelected: (String) -> Unit) {
+        val dialog = AlertDialog.Builder(this).create()
         val view = layoutInflater.inflate(R.layout.dialog_dab_account_list, null)
         dialog.setView(view)
 
-        val btnFilter = view.findViewById<android.widget.Button>(R.id.btnFilter)
-        val etFilterAccountNumber = view.findViewById<android.widget.EditText>(R.id.etFilterAccountNumber)
-        val etFilterAccountName = view.findViewById<android.widget.EditText>(R.id.etFilterAccountName)
-        val tableAccounts = view.findViewById<android.widget.TableLayout>(R.id.tableAccounts)
+        val tableAccounts = view.findViewById<TableLayout>(R.id.tableAccounts)
+        val btnFilter = view.findViewById<Button>(R.id.btnFilter)
+        val etFilterAccountNumber = view.findViewById<EditText>(R.id.etFilterAccountNumber)
+        val etFilterAccountName = view.findViewById<EditText>(R.id.etFilterAccountName)
 
         btnFilter.setOnClickListener {
             val isVisible = etFilterAccountNumber.visibility == View.VISIBLE
@@ -279,25 +231,295 @@ class BatchJobActivity : AppCompatActivity() {
             etFilterAccountName.visibility = if (isVisible) View.GONE else View.VISIBLE
         }
 
-        // Add click listeners to mock rows
-        for (i in 0 until tableAccounts.childCount) {
-            val row = tableAccounts.getChildAt(i) as? android.widget.TableRow
-            row?.setOnClickListener {
-                val accountNumber = (row.getChildAt(0) as? android.widget.TextView)?.text.toString()
-                onSelected(accountNumber)
-                dialog.dismiss()
+        fun populateTable(filterNum: String = "", filterName: String = "") {
+            tableAccounts.removeAllViews()
+            for (account in accounts) {
+                val acctNum = account.acctNum ?: continue
+                val acctName = account.acctName ?: ""
+                if (filterNum.isNotEmpty() && !acctNum.contains(filterNum, ignoreCase = true)) continue
+                if (filterName.isNotEmpty() && !acctName.contains(filterName, ignoreCase = true)) continue
+
+                val row = TableRow(this)
+                val tvNum = TextView(this).apply { text = acctNum; setPadding(16, 8, 16, 8) }
+                val tvName = TextView(this).apply { text = acctName; setPadding(16, 8, 16, 8) }
+                row.addView(tvNum)
+                row.addView(tvName)
+                row.isClickable = true
+                row.setOnClickListener {
+                    onSelected(acctNum)
+                    dialog.dismiss()
+                }
+                tableAccounts.addView(row)
             }
         }
 
-        view.findViewById<android.widget.Button>(R.id.btnClose).setOnClickListener {
+        etFilterAccountNumber.addTextChangedListener(object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) {
+                populateTable(s.toString(), etFilterAccountName.text.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        etFilterAccountName.addTextChangedListener(object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) {
+                populateTable(etFilterAccountNumber.text.toString(), s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        populateTable()
+
+        view.findViewById<Button>(R.id.btnClose).setOnClickListener { dialog.dismiss() }
+        view.findViewById<Button>(R.id.btnBack).setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+    // ----------------------------- 3. Consistency Check -----------------------------
+    private fun showConsistencyCheckDialog() {
+        val dialog = AlertDialog.Builder(this).create()
+        val view = layoutInflater.inflate(R.layout.dialog_consistency_check, null)
+        dialog.setView(view)
+
+        val tvTrmCredit = view.findViewById<TextView>(R.id.tvTrmCredit)
+        val tvTrmDebit = view.findViewById<TextView>(R.id.tvTrmDebit)
+        val tvCoaCredit = view.findViewById<TextView>(R.id.tvCoaCredit)
+        val tvCoaDebit = view.findViewById<TextView>(R.id.tvCoaDebit)
+        val tvDabCredit = view.findViewById<TextView>(R.id.tvDabCredit)
+        val tvDabDebit = view.findViewById<TextView>(R.id.tvDabDebit)
+        val tvResult = view.findViewById<TextView>(R.id.tvValidationResult)
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+
+        val currentDate = findViewById<EditText>(R.id.etCurrentDate).text.toString()
+        if (currentDate.isEmpty()) {
+            Toast.makeText(this, "No current date", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
-        }
-        
-        view.findViewById<android.widget.Button>(R.id.btnBack).setOnClickListener {
-            dialog.dismiss()
+            return
         }
 
+        progressDialog.show()
+        lifecycleScope.launch {
+            try {
+                val apiDate = convertToApiFormat(currentDate)
+                val response = RetrofitClient.api.consistencyCheck(apiDate)
+                progressDialog.dismiss()
+                if (response.isSuccessful && response.body() != null) {
+                    val result = response.body()!!
+                    Log.d("ConsistencyCheck", "Response: $result")
+                    tvTrmCredit.text = formatNumber(result.trmRow.second)
+                    tvTrmDebit.text = formatNumber(result.trmRow.third)
+                    tvCoaCredit.text = formatNumber(result.coaRow.second)
+                    tvCoaDebit.text = formatNumber(result.coaRow.third)
+                    tvDabCredit.text = formatNumber(result.dabRow.second)
+                    tvDabDebit.text = formatNumber(result.dabRow.third)
+                    tvResult.text = "Validation Completed"
+                    tvResult.setTextColor(resources.getColor(android.R.color.holo_green_dark))
+
+                    AlertDialog.Builder(this@BatchJobActivity)
+                        .setTitle("Consistency Check")
+                        .setMessage("Validation Completed Successfully")
+                        .setPositiveButton("OK") { _, _ -> }
+                        .show()
+                } else {
+                    Log.e("ConsistencyCheck", "Validation Failed")
+                    tvResult.text = "Validation Failed"
+                    tvResult.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+                    AlertDialog.Builder(this@BatchJobActivity)
+                        .setTitle("Consistency Check")
+                        .setMessage("Validation Failed")
+                        .setPositiveButton("OK") { _, _ -> }
+                        .show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                Log.e("ConsistencyCheck", "Error: ${e.message}", e)
+                tvResult.text = "Error: ${e.message}"
+                tvResult.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+                AlertDialog.Builder(this@BatchJobActivity)
+                    .setTitle("Consistency Check")
+                    .setMessage("Error: ${e.message}")
+                    .setPositiveButton("OK") { _, _ -> }
+                    .show()
+            }
+        }
+
+        btnClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    // ----------------------------- 4. Date Change Process -----------------------------
+    private fun showDateChangeDialog() {
+        val dialog = AlertDialog.Builder(this).create()
+        val view = layoutInflater.inflate(R.layout.dialog_holiday_check, null)
+        dialog.setView(view)
+
+        val tvTitle = view.findViewById<TextView>(R.id.tvDialogTitle)
+        tvTitle.text = "Date Change Process"
+
+        val layoutContent = view.findViewById<LinearLayout>(R.id.layoutDialogContent)
+        val etCurrentDate = EditText(this).apply {
+            hint = "Current Date"
+            setPadding(16, 16, 16, 16)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener { showDatePicker(this) }
+        }
+        val etNextDate = EditText(this).apply {
+            hint = "Next Date"
+            setPadding(16, 16, 16, 16)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener { showDatePicker(this) }
+        }
+        layoutContent.addView(etCurrentDate, 0)
+        layoutContent.addView(etNextDate, 1)
+
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+        val tvResult = view.findViewById<TextView>(R.id.tvValidationMessage)
+
+        btnSubmit.setOnClickListener {
+            val current = etCurrentDate.text.toString()
+            val next = etNextDate.text.toString()
+            if (current.isEmpty() || next.isEmpty()) {
+                Toast.makeText(this, "Both dates required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            progressDialog.show()
+            lifecycleScope.launch {
+                try {
+                    val response = RetrofitClient.api.dateChangeProcess(next, current)
+                    progressDialog.dismiss()
+                    if (response.isSuccessful && response.body() != null) {
+                        val respBody = response.body()!!.string()  // read plain string
+                        Log.d("DateChange", "Response: $respBody")
+                        tvResult.text = respBody
+                        tvResult.visibility = View.VISIBLE
+                        layoutContent.visibility = View.GONE
+                        btnSubmit.visibility = View.GONE
+                        findViewById<EditText>(R.id.etCurrentDate).setText(current)
+                        findViewById<EditText>(R.id.etNextWorkingDate).setText(next)
+                    } else {
+                        Log.e("DateChange", "Date change failed: ${response.code()}")
+                        Toast.makeText(this@BatchJobActivity, "Date change failed", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    Log.e("DateChange", "Error: ${e.message}", e)
+                    Toast.makeText(this@BatchJobActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        btnClose.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    // ----------------------------- 5. GL Consolidation -----------------------------
+    private fun runGlConsolidation() {
+        progressDialog.show()
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.glConsolidation()
+                progressDialog.dismiss()
+                if (response.isSuccessful && response.body() != null) {
+                    val respBody = response.body()!!.string()
+                    Log.d("GL", "Response: $respBody")
+                    AlertDialog.Builder(this@BatchJobActivity)
+                        .setTitle("GL Consolidation")
+                        .setMessage("GL Consolidation Successful")
+                        .setPositiveButton("OK") { _, _ -> }
+                        .show()
+                } else {
+                    Log.e("GL", "GL Consolidation Failed: ${response.code()}")
+                    AlertDialog.Builder(this@BatchJobActivity)
+                        .setTitle("GL Consolidation")
+                        .setMessage("GL Consolidation Failed")
+                        .setPositiveButton("OK") { _, _ -> }
+                        .show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                Log.e("GL", "Error: ${e.message}", e)
+                AlertDialog.Builder(this@BatchJobActivity)
+                    .setTitle("GL Consolidation")
+                    .setMessage("Error: ${e.message}")
+                    .setPositiveButton("OK") { _, _ -> }
+                    .show()
+            }
+        }
+    }
+
+    // ----------------------------- 6. Accrual (Interest / Penalty) -----------------------------
+    private fun showAccrualDialog(type: String) {
+        val dialog = AlertDialog.Builder(this).create()
+        val view = layoutInflater.inflate(R.layout.dialog_penalty_accrual, null)
+        dialog.setView(view)
+
+        val tvTitle = view.findViewById<TextView>(R.id.tvDialogTitle)
+        tvTitle.text = "$type Accrual Run"
+
+        val etDate = view.findViewById<EditText>(R.id.etAccrualDate)
+        etDate.setText(dateFormat.format(Date()))
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+        val tvSuccess = view.findViewById<TextView>(R.id.tvSuccessMessage)
+        val layoutContent = view.findViewById<LinearLayout>(R.id.layoutDialogContent)
+
+        etDate.setOnClickListener { showDatePicker(etDate) }
+
+        btnSubmit.setOnClickListener {
+            val dateStr = etDate.text.toString()
+            if (dateStr.isEmpty()) {
+                Toast.makeText(this, "Select date", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            progressDialog.show()
+            lifecycleScope.launch {
+                try {
+                    val response = if (type == "Interest") {
+                        RetrofitClient.api.interestAccrual(mapOf("date" to dateStr))
+                    } else {
+                        RetrofitClient.api.penaltyAccrual(mapOf("date" to dateStr))
+                    }
+                    progressDialog.dismiss()
+                    if (response.isSuccessful && response.body() != null) {
+                        val respBody = response.body()!!.string()
+                        Log.d("${type}Accrual", "Response: $respBody")
+                        tvSuccess.text = respBody
+                        tvSuccess.visibility = View.VISIBLE
+                        layoutContent.visibility = View.GONE
+                        btnSubmit.visibility = View.GONE
+                    } else {
+                        Log.e("${type}Accrual", "Failed: ${response.code()}")
+                        Toast.makeText(this@BatchJobActivity, "$type Accrual failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    Log.e("${type}Accrual", "Error: ${e.message}", e)
+                    Toast.makeText(this@BatchJobActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        btnClose.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
+    // ----------------------------- Helper: format currency numbers -----------------------------
+    private fun formatNumber(value: String): String {
+        return try {
+            val num = value.toDoubleOrNull() ?: 0.0
+            String.format(Locale.US, "%,.2f", num)
+        } catch (e: Exception) {
+            value
+        }
     }
 }
