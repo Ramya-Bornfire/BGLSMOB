@@ -17,6 +17,9 @@ import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
+import android.content.Intent
+import com.example.bgls.MainActivity
+import android.widget.ImageView
 
 class CreditFacilityReportActivity : AppCompatActivity() {
 
@@ -26,9 +29,9 @@ class CreditFacilityReportActivity : AppCompatActivity() {
     private lateinit var etAccountNo: EditText
     private lateinit var etAccountName: EditText
     private lateinit var btnSubmit: Button
-    private lateinit var btnHome: Button
-    private lateinit var btnBack: Button
-    private lateinit var progressBar: ProgressBar   // add this to your layout (see Step 4)
+    private lateinit var btnHome: ImageView
+    private lateinit var btnBack: ImageView
+    private lateinit var progressBar: ProgressBar
 
     // true = Details mode, false = Schedule mode
     private var isDetailsMode = true
@@ -42,6 +45,7 @@ class CreditFacilityReportActivity : AppCompatActivity() {
         setContentView(R.layout.activity_credit_facility_report)
 
         initViews()
+        setupNavigation()
         setupListeners()
         loadAccountLists()   // fetch both lists from server on open
     }
@@ -62,6 +66,19 @@ class CreditFacilityReportActivity : AppCompatActivity() {
         progressBar     = findViewById(R.id.progressBar)
     }
 
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun setupListeners() {
         btnDetails.setOnClickListener  { setMode(true) }
         btnSchedule.setOnClickListener { setMode(false) }
@@ -76,9 +93,6 @@ class CreditFacilityReportActivity : AppCompatActivity() {
             }
             downloadPdf(acctNo)
         }
-
-        btnHome.setOnClickListener { finish() }
-        btnBack.setOnClickListener { onBackPressed() }
     }
 
     // ------------------------------------------------------------------

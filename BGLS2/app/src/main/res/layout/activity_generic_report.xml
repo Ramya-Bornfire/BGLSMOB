@@ -1,93 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
-    <LinearLayout
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
 
-        <!-- HEADER BAR -->
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tvReportTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#E9ECEF"
-            android:padding="8dp"
+            android:text="REPORT TITLE"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:elevation="2dp">
-            
-            <TextView
-                android:id="@+id/tvReportTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Report Title"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginStart="8dp"/>
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
+            <!-- Vertical User Info -->
             <LinearLayout
-                android:id="@+id/llFormat"
+                android:id="@+id/userInfoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-                <TextView
-                    android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Format: "
-                    android:textSize="12sp"
-                    android:textColor="#333333"/>
-                <Spinner
-                    android:id="@+id/spinnerFormat"
-                    android:layout_width="100dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/edittext_background"
-                    android:layout_marginEnd="8dp"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
         </LinearLayout>
+    </RelativeLayout>
 
-        <ScrollView
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:id="@+id/llFormat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF"
+        android:visibility="gone">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Format:"
+            android:textSize="12sp"
+            android:textColor="#333333"
+            android:layout_marginEnd="8dp"/>
+        <Spinner
+            android:id="@+id/spinnerFormat"
+            android:layout_width="120dp"
+            android:layout_height="32dp"
+            android:background="@drawable/spinner_background"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center">
 
+            <!-- DATE SELECTION CARD -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#FFFFFF"
                 android:padding="32dp"
+                android:elevation="4dp"
                 android:gravity="center">
 
-                <!-- DATE SELECTION -->
+                <TextView
+                    android:id="@+id/tvDateLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AS ON DATE"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:gravity="center"
+                    android:layout_marginBottom="24dp"/>
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@drawable/card_background"
-                    android:padding="24dp"
-                    android:elevation="1dp">
+                    android:layout_marginBottom="24dp">
 
                     <TextView
-                        android:id="@+id/tvDateLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ason Date"
+                        android:text="Select Date:"
                         android:textSize="12sp"
                         android:textColor="#333333"
-                        android:layout_marginEnd="12dp"/>
+                        android:layout_marginEnd="16dp"/>
 
                     <LinearLayout
-                        android:layout_width="140dp"
-                        android:layout_height="36dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
                         android:background="@drawable/edittext_background"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
@@ -98,70 +244,44 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
-                            android:text=""
                             android:textSize="12sp"
-                            android:paddingStart="8dp"
+                            android:paddingStart="12dp"
                             android:gravity="center_vertical"
                             android:focusable="false"
+                            android:hint="DD-MM-YYYY"
                             android:inputType="none"/>
                         <ImageView
                             android:id="@+id/ivCalendar"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:src="@android:drawable/ic_menu_my_calendar"
-                            android:tint="#333333"/>
+                            app:tint="#007BFF"/>
                     </LinearLayout>
                 </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
+                <Button
+                    android:id="@+id/btnDownload"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:text="DOWNLOAD REPORT"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:elevation="4dp"/>
 
-        <!-- BOTTOM ACTION BUTTONS -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="16dp"
-            android:background="#E9ECEF"
-            android:elevation="4dp">
-            <Button
-                android:id="@+id/btnHome"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Home"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-            <Button
-                android:id="@+id/btnDownload"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Download"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Back"
-                android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -16,14 +16,16 @@ import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
+import android.content.Intent
+import com.example.bgls.MainActivity
 
 class EndOfMonthReportActivity : AppCompatActivity() {
 
     private lateinit var etAsonDate: EditText
     private lateinit var ivCalendar: ImageView
-    private lateinit var btnHome: Button
+    private lateinit var btnHome: ImageView
     private lateinit var btnDownload: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnBack: ImageView
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,7 @@ class EndOfMonthReportActivity : AppCompatActivity() {
         setContentView(R.layout.activity_end_of_month_report)
 
         initViews()
+        setupNavigation()
         setupListeners()
     }
 
@@ -41,6 +44,19 @@ class EndOfMonthReportActivity : AppCompatActivity() {
         btnDownload = findViewById(R.id.btnDownload)
         btnBack = findViewById(R.id.btnBack)
         progressBar = findViewById(R.id.progressBar)
+    }
+
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setupListeners() {
@@ -56,9 +72,6 @@ class EndOfMonthReportActivity : AppCompatActivity() {
             }
             downloadReport(date)
         }
-
-        btnHome.setOnClickListener { finish() }
-        btnBack.setOnClickListener { onBackPressed() }
     }
 
     private fun showDatePicker() {

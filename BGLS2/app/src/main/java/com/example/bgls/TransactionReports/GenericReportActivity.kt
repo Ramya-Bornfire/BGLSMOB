@@ -16,6 +16,8 @@ import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
+import android.content.Intent
+import com.example.bgls.MainActivity
 
 class GenericReportActivity : AppCompatActivity() {
 
@@ -23,9 +25,9 @@ class GenericReportActivity : AppCompatActivity() {
     private lateinit var etAsonDate: EditText
     private lateinit var ivCalendar: ImageView
     private lateinit var spinnerFormat: Spinner
-    private lateinit var btnHome: Button
+    private lateinit var btnHome: ImageView
     private lateinit var btnDownload: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnBack: ImageView
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +35,7 @@ class GenericReportActivity : AppCompatActivity() {
         setContentView(R.layout.activity_generic_report)
 
         initViews()
+        setupNavigation()
         setupListeners()
         
         // Get report details from intent
@@ -61,6 +64,19 @@ class GenericReportActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
     }
 
+    private fun setupNavigation() {
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+        btnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun setupListeners() {
         ivCalendar.setOnClickListener {
             showDatePicker()
@@ -75,9 +91,6 @@ class GenericReportActivity : AppCompatActivity() {
             
             startDownload(date)
         }
-
-        btnHome.setOnClickListener { finish() }
-        btnBack.setOnClickListener { onBackPressed() }
     }
 
     private fun showDatePicker() {
