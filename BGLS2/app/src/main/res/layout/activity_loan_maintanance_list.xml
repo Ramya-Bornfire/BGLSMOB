@@ -1,72 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/main"
     android:background="#F5F5F5">
 
-    <!-- ─── TITLE BAR ─── -->
-    <LinearLayout
-
-        android:layout_marginTop="30dp"
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@drawable/header_bg"
-        android:padding="10dp"
-        android:gravity="center_vertical">
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/arrow_back"
-            android:scaleType="centerCrop"
-            android:layout_marginEnd="12dp" />
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="LOAN MASTER - LIST"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
 
-        <!-- Select Filter Spinner -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOAN MAINTENANCE - LIST"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
+
         <Spinner
             android:id="@+id/spinnerFilter"
             android:layout_width="160dp"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:background="@drawable/spinner_background"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
             android:layout_marginEnd="8dp"/>
 
-        <!-- Select Status Spinner -->
         <Spinner
             android:id="@+id/spinnerStatus"
             android:layout_width="160dp"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:background="@drawable/spinner_background"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
             android:layout_marginEnd="8dp"/>
 
         <Button
             android:id="@+id/btnDownload"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:text="Download"
+            android:textSize="12sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#2196F3"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"/>
+            android:textAllCaps="false"/>
     </LinearLayout>
 
     <!-- Search input – visible when a filter is selected -->
