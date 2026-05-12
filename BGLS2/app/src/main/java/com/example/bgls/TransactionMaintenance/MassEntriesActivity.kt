@@ -1,12 +1,8 @@
 package com.example.bgls.TransactionMaintenance
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +15,7 @@ import com.example.bgls.DataModels.ChartAccountApiItem
 import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.example.bgls.DataModels.MassEntryModel
 import com.example.bgls.DataModels.MassEntryRequest
+import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
@@ -45,8 +42,22 @@ class MassEntriesActivity : AppCompatActivity() {
         tvMassTotal = findViewById(R.id.tvMassTotal)
         setupRecyclerView()
         setupButtons()
+        setupNavigation()
 
         loadInitialData()
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun loadInitialData() {
@@ -54,7 +65,10 @@ class MassEntriesActivity : AppCompatActivity() {
             try {
                 val response = RetrofitClient.api.getJournalEntryAddScreen()
                 if (response.isSuccessful && response.body() != null) {
-                    currentTranId = response.body()!!.plusonetran2 ?: "TR0000"
+                    val data = response.body()!!
+                    currentTranId = data.plusonetran2 ?: "TR0000"
+                    findViewById<EditText>(R.id.etHeaderTranId)?.setText(currentTranId)
+                    findViewById<EditText>(R.id.etHeaderDate)?.setText(data.currentDate)
                     // Add initial row with correct tranId
                     massEntryAdapter.addRow(currentTranId)
                 } else {

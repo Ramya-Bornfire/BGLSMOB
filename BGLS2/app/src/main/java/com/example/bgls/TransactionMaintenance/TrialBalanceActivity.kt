@@ -24,6 +24,9 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class TrialBalanceActivity : AppCompatActivity() {
 
@@ -51,6 +54,7 @@ class TrialBalanceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trial_balance)
 
         initViews()
+        setupNavigation()
         setupRecyclerViews()
         setupDatePicker()
         
@@ -78,6 +82,19 @@ class TrialBalanceActivity : AppCompatActivity() {
         tvTotalCredits = findViewById(R.id.tvTotalCredits)
         tvTotalDebits = findViewById(R.id.tvTotalDebits)
         btnFilter = findViewById(R.id.btnFilter)
+    }
+
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setupRecyclerViews() {

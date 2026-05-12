@@ -1,10 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F5">
+
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PROFIT AND LOSS ACCOUNT"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
+        
+        <LinearLayout
+            android:id="@+id/llDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/edittext_background"
+            android:paddingHorizontal="8dp"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="8dp">
+            <TextView
+                android:id="@+id/tvSelectedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02-May-2026"
+                android:textSize="11sp"
+                android:textColor="#333333"
+                android:layout_marginEnd="4dp"/>
+            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@android:drawable/ic_menu_my_calendar" app:tint="#666666"/>
+        </LinearLayout>
+
+        <Button android:id="@+id/btnFilterIncome" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Income Filter" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp" android:layout_marginEnd="8dp"/>
+        <Button android:id="@+id/btnFilterExpenditure" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Exp. Filter" android:backgroundTint="#007BFF" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp"/>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,14 +213,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
-                    android:background="#E8EAED"
+                    android:background="#F8F9FA"
                     android:paddingHorizontal="12dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="INCOME" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:text="PROFIT AND LOSS ACCOUNT" android:gravity="center" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
-                    <Button android:id="@+id/btnFilterIncome" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Filter" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="INCOME" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333" android:gravity="center"/>
                 </LinearLayout>
 
                 <!-- Income Table Header -->
@@ -65,9 +247,9 @@
                         android:visibility="gone"
                         android:paddingHorizontal="4dp"
                         android:paddingBottom="4dp">
-                        <EditText android:id="@+id/etFilterIncomeGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter GL" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterIncomeId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter ID" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterIncomeName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
                         <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -83,12 +265,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="8dp"
-                    android:gravity="end">
+                    android:gravity="end"
+                    android:background="#F8F9FA">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total:" android:textStyle="bold" android:textSize="12sp" android:layout_marginEnd="16dp"/>
-                    <TextView android:id="@+id/tvTotalIncome" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="22,557,592.73" android:textStyle="bold" android:textSize="12sp"/>
+                    <TextView android:id="@+id/tvTotalIncome" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00" android:textStyle="bold" android:textSize="12sp"/>
                 </LinearLayout>
-
-                <Button android:id="@+id/btnHome" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Home" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:layout_gravity="center" android:layout_marginBottom="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="16dp"/>
             </LinearLayout>
 
             <!-- EXPENDITURE SECTION -->
@@ -103,32 +284,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:orientation="horizontal"
-                    android:background="#E8EAED"
+                    android:background="#F8F9FA"
                     android:paddingHorizontal="12dp"
                     android:gravity="center_vertical">
-                    <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="EXPENDITURE" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333"/>
-                    
-                    <LinearLayout
-                        android:id="@+id/llDatePicker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:background="@drawable/spinner_background"
-                        android:paddingHorizontal="8dp"
-                        android:gravity="center_vertical"
-                        android:layout_marginEnd="8dp">
-                        <TextView
-                            android:id="@+id/tvSelectedDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="02-May-2026"
-                            android:textSize="10sp"
-                            android:layout_marginEnd="4dp"/>
-                        <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@android:drawable/ic_menu_my_calendar" android:tint="#666666"/>
-                    </LinearLayout>
-                    
-                    <Button android:id="@+id/btnFilterExpenditure" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Filter" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:textAllCaps="false" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="12dp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="EXPENDITURE" android:textStyle="bold" android:textSize="14sp" android:textColor="#333333" android:gravity="center"/>
                 </LinearLayout>
 
                 <!-- Expenditure Table Header -->
@@ -157,9 +318,9 @@
                         android:visibility="gone"
                         android:paddingHorizontal="4dp"
                         android:paddingBottom="4dp">
-                        <EditText android:id="@+id/etFilterExpGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter GL" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterExpId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter ID" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterExpName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/spinner_background" android:textSize="10sp" android:hint="Filter Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
                         <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -175,12 +336,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="8dp"
-                    android:gravity="end">
+                    android:gravity="end"
+                    android:background="#F8F9FA">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total:" android:textStyle="bold" android:textSize="12sp" android:layout_marginEnd="16dp"/>
                     <TextView android:id="@+id/tvTotalExpenditure" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00" android:textStyle="bold" android:textSize="12sp"/>
                 </LinearLayout>
-
-                <Button android:id="@+id/btnBack" android:layout_width="wrap_content" android:layout_height="32dp" android:text="Back" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="10sp" android:layout_gravity="center" android:layout_marginBottom="8dp" android:minHeight="0dp" android:minWidth="0dp" android:paddingHorizontal="16dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -192,7 +352,8 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:background="#FFFFFF"
-        android:gravity="center">
+        android:gravity="center"
+        android:elevation="4dp">
         
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Report Status : " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
@@ -201,7 +362,7 @@
 
         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="4dp">
             <TextView android:id="@+id/tvProfitAmountLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profit Amount: " android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
-            <TextView android:id="@+id/tvProfitAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="22,557,592.73" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
+            <TextView android:id="@+id/tvProfitAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0.00" android:textStyle="bold" android:textSize="16sp" android:textColor="#333333"/>
         </LinearLayout>
     </LinearLayout>
 

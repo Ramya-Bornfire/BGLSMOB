@@ -1,5 +1,8 @@
 package com.example.bgls.TransactionMaintenance
 
+import android.content.Intent
+import com.example.bgls.MainActivity
+
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -42,6 +45,17 @@ class JournalEntriesActivity : AppCompatActivity() {
             insets
         }
         setupSpinners()
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun setupSpinners() {

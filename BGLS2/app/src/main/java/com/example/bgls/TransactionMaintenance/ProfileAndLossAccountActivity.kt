@@ -22,6 +22,9 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 data class ProfitLossUIModel(
     val glHead: String,
@@ -60,6 +63,7 @@ class ProfileAndLossAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile_and_loss_account)
 
         initViews()
+        setupNavigation()
         setupAdapters()
         setupListeners()
         setupFilterListeners()
@@ -90,10 +94,20 @@ class ProfileAndLossAccountActivity : AppCompatActivity() {
         rvExpenditure.adapter = expenditureAdapter
     }
 
+    private fun setupNavigation() {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+    }
+
     private fun setupListeners() {
-        findViewById<View>(R.id.btnHome).setOnClickListener { finish() }
-        findViewById<View>(R.id.btnBack).setOnClickListener { finish() }
-        
         llDatePicker.setOnClickListener { showDatePicker() }
         
         findViewById<View>(R.id.btnFilterIncome).setOnClickListener {

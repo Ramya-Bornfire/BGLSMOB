@@ -1,97 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:padding="16dp">
+    android:background="#F5F5F5">
 
-    <!-- HEADER row: Bulk Transactions -->
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BULK TRANSACTIONS"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Toolbar for actions -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/header_bg"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
         
-        <TextView
-            android:gravity="center"
-            android:layout_width="0dp" 
-            android:layout_height="wrap_content" 
-            android:layout_weight="1"
-            android:text="Bulk Transactions" 
-            android:textStyle="bold" 
-            android:textSize="18sp" 
-            android:textColor="@color/white"/>
-
-        <TextView 
-            android:layout_width="wrap_content" 
-            android:layout_height="wrap_content" 
-            android:text="TRAN DATE" 
-            android:textSize="12sp" 
-            android:textColor="@color/white"
-            android:layout_marginEnd="8dp"/>
-            
-        <EditText 
-            android:layout_width="120dp" 
-            android:layout_height="30dp" 
-            android:background="#DDE0E2" 
-            android:enabled="false" 
-            android:text="30-04-2026" 
-            android:padding="6dp" 
-            android:textSize="12sp"
-            android:textColor="#333333"/>
-    </LinearLayout>
-
-    <!-- INPUTS: Tran ID, Tran Type -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRAN ID" android:textSize="12sp" android:layout_marginEnd="8dp"/>
-        <EditText android:layout_width="120dp" android:layout_height="36dp" android:background="#E8EAED" android:enabled="false" android:text="TR8868" android:padding="8dp" android:textSize="12sp" android:layout_marginEnd="24dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRAN ID" android:textSize="10sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/etHeaderTranId" android:layout_width="90dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="TR8868" android:padding="6dp" android:textSize="10sp" android:layout_marginEnd="16dp"/>
         
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TRAN TYPE" android:textSize="12sp" android:layout_marginEnd="8dp"/>
-        <EditText android:layout_width="160dp" android:layout_height="36dp" android:background="#E8EAED" android:enabled="false" android:text="Transfer" android:padding="8dp" android:textSize="12sp" android:layout_marginEnd="24dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TYPE" android:textSize="10sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/etHeaderTranType" android:layout_width="100dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="Transfer" android:padding="6dp" android:textSize="10sp" android:layout_marginEnd="16dp"/>
 
-        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DATE" android:textSize="10sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
+        <EditText android:id="@+id/etHeaderDate" android:layout_width="100dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:enabled="false" android:text="30-04-2026" android:padding="6dp" android:textSize="10sp"/>
     </LinearLayout>
 
-    <!-- Buttons: Add, Remove, Submit -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginBottom="8dp">
-        <Button android:id="@+id/btnAddRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Add" android:backgroundTint="#4CAF50" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
-        <Button android:id="@+id/btnRemoveRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Remove" android:backgroundTint="#F44336" android:textColor="#FFFFFF" android:layout_marginEnd="8dp"/>
-        <Button android:id="@+id/btnSubmit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Submit" android:backgroundTint="#2196F3" android:textColor="#FFFFFF"/>
-    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical">
-            <!-- Table Header -->
-            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#F8F9FA" android:paddingTop="8dp" android:paddingBottom="8dp" android:gravity="center_vertical">
-                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Part Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Account No" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Name" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Part Tran Type" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Amount" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Tran Particular" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" gravity="center"/>
-                <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate Code" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
-                <TextView android:layout_width="160dp" android:layout_height="wrap_content" android:text="Additional Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center"/>
-            </LinearLayout>
-            
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvMassEntries"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+        <!-- Buttons: Add, Remove, Submit -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginBottom="8dp">
+            <Button android:id="@+id/btnAddRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Add" android:backgroundTint="#4CAF50" android:textColor="#FFFFFF" android:layout_marginEnd="8dp" android:textSize="12sp" android:textAllCaps="false"/>
+            <Button android:id="@+id/btnRemoveRow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Remove" android:backgroundTint="#F44336" android:textColor="#FFFFFF" android:layout_marginEnd="8dp" android:textSize="12sp" android:textAllCaps="false"/>
+            <Button android:id="@+id/btnSubmit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="36dp" android:text="Submit" android:backgroundTint="#2196F3" android:textColor="#FFFFFF" android:textSize="12sp" android:textAllCaps="false"/>
         </LinearLayout>
-    </HorizontalScrollView>
 
-    <!-- FOOTER TOTALS Mass Entries -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="16dp">
-        <TextView android:id="@+id/tvMassTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Credit: 0.00  |  Total Debit: 0.00" android:textSize="12sp" android:textColor="#444444"/>
+        <HorizontalScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:orientation="vertical" android:background="#FFFFFF" android:padding="1dp">
+                <!-- Table Header -->
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:background="#F8F9FA" android:paddingTop="8dp" android:paddingBottom="8dp" android:gravity="center_vertical">
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Part Tran Id" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Account No" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Account Name" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Part Tran Type" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Tran Amount" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Tran Particular" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate Code" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Rate" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:layout_marginEnd="8dp" android:gravity="center"/>
+                    <TextView android:layout_width="160dp" android:layout_height="wrap_content" android:text="Additional Remarks" android:textStyle="bold" android:textSize="12sp" android:textColor="#333333" android:gravity="center"/>
+                </LinearLayout>
+                
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMassEntries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- FOOTER TOTALS Mass Entries -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="end" android:layout_marginTop="16dp">
+            <TextView android:id="@+id/tvMassTotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Credit: 0.00  |  Total Debit: 0.00" android:textSize="12sp" android:textColor="#444444" android:textStyle="bold"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

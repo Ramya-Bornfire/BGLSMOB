@@ -14,6 +14,8 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import android.app.DatePickerDialog
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 import android.widget.EditText
 import java.util.Calendar
@@ -30,10 +32,8 @@ class JournalEntriesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_journal_entries_list)
 
-       fun setupRecyclerView() {
-            setupButtons()}
-
-      initViews()
+        initViews()
+        setupButtons()
         loadData()
     }
 
@@ -156,12 +156,13 @@ class JournalEntriesListActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
-            val intent = Intent(this, com.example.bgls.MainActivity::class.java)
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
+            finish()
         }
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             finish()
         }
 
