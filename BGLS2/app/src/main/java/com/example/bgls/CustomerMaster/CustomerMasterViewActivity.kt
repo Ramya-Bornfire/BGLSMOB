@@ -17,6 +17,8 @@ import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import android.content.Intent
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class CustomerMasterViewActivity : AppCompatActivity() {
 
@@ -56,6 +58,16 @@ class CustomerMasterViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_master_view)
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = android.content.Intent(this@CustomerMasterViewActivity, MainActivity::class.java)
+            hIntent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
 
         initViews()
         // Populate immediately from Intent extras (cached data from list)

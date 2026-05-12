@@ -13,6 +13,8 @@ import com.example.bgls.DataModels.LoanMasterViewResponse
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
+import android.widget.ImageView
+import com.example.bgls.MainActivity
 
 class LoanMasterViewActivity : AppCompatActivity() {
 
@@ -100,6 +102,17 @@ class LoanMasterViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_master_view)
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
+
         loanId = intent.getStringExtra("loanId") ?: ""
         holderKey = intent.getStringExtra("holderKey") ?: ""
         branchKey = intent.getStringExtra("branchKey") ?: ""

@@ -19,6 +19,8 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
+import com.example.bgls.MainActivity
+import android.widget.ImageView
 
 class LoanScheduleViewActivity : AppCompatActivity() {
 
@@ -51,6 +53,17 @@ class LoanScheduleViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_schedule_view)
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
+
         loanId = intent.getStringExtra("loanId") ?: ""
         holderKey = intent.getStringExtra("holder_key") ?: ""
         encodedKey = intent.getStringExtra("encoded_key") ?: ""

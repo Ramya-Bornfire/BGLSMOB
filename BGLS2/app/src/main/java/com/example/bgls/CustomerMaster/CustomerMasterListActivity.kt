@@ -60,7 +60,13 @@ class CustomerMasterListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_master_list)
         btnBack = findViewById(R.id.btnBack)
-        btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        btnBack.setOnClickListener { finish() }
+
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
+        }
         initViews()
         setupSpinners()
         setupSearchBox()
