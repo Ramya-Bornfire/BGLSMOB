@@ -2,41 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:minWidth="795dp">
 
     <TextView android:id="@+id/tvGlshCode"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="1" android:minWidth="120dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvAcctNum"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="1.2"
+        android:layout_weight="1.2" android:minWidth="145dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvAcctName"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="2" android:minWidth="240dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvCredit"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="1.2"
+        android:layout_weight="1.2" android:minWidth="145dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:gravity="center_vertical|end"
         android:textSize="11sp" android:textColor="#333333"/>
 
     <TextView android:id="@+id/tvDebit"
         android:layout_width="0dp" android:layout_height="match_parent"
-        android:layout_weight="1.2"
+        android:layout_weight="1.2" android:minWidth="145dp"
         android:padding="12dp"
-        android:background="@drawable/table_cell_bg" android:gravity="center_vertical|end"
+        android:gravity="center_vertical|end"
         android:textSize="11sp" android:textColor="#333333"/>
 
 </LinearLayout>

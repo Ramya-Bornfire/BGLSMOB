@@ -207,7 +207,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true"
-        android:scrollbars="horizontal">
+        android:scrollbars="horizontal"
+        android:descendantFocusability="blocksDescendants">
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -218,82 +219,77 @@
             
             <!-- Table Header -->
             <LinearLayout
-                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#F8F9FA"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="GL CODE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCOUNT NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="OPENING BALANCE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="NET CHANGE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CLOSING BALANCE"/>
+                android:background="#E8EAED">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="GL CODE"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:minWidth="200dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="ACCOUNT NAME"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="OPENING BALANCE" android:gravity="end|center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CREDIT" android:gravity="end|center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DEBIT" android:gravity="end|center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="NET CHANGE" android:gravity="end|center_vertical"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CLOSING BALANCE" android:gravity="end|center_vertical"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTrialBalance"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#FFFFFF"/>
+                android:layout_height="wrap_content"
+                android:minWidth="910dp"
+                android:background="#FFFFFF"
+                android:nestedScrollingEnabled="false"/>
 
-            <!-- Duplicate Header / Footer Row as per screenshot -->
+            <!-- Total Row (Aligned with columns) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="#F8F9FA"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="GL CODE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCOUNT NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="OPENING BALANCE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="NET CHANGE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CLOSING BALANCE"/>
-            </LinearLayout>
-
-            <!-- Total Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#FFFFFF"
-                android:paddingVertical="12dp"
-                android:paddingHorizontal="16dp"
-                android:gravity="end">
+                android:minWidth="910dp">
                 
+                <View android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:minWidth="80dp"/>
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2.0"
+                    android:minWidth="200dp"
                     android:text="Total:"
                     android:textStyle="bold"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textColor="#333333"
-                    android:layout_marginEnd="20dp"/>
+                    android:padding="12dp"
+                    android:gravity="end"/>
+                
+                <View android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="150dp"/>
 
                 <TextView
                     android:id="@+id/tvTotalCredits"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:minWidth="120dp"
                     android:text="0.00"
                     android:textStyle="bold"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textColor="#333333"
-                    android:layout_marginEnd="40dp"/>
+                    android:padding="12dp"
+                    android:gravity="end"/>
 
                 <TextView
                     android:id="@+id/tvTotalDebits"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:minWidth="120dp"
                     android:text="0.00"
                     android:textStyle="bold"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textColor="#333333"
-                    android:layout_marginEnd="40dp"/>
+                    android:padding="12dp"
+                    android:gravity="end"/>
+                
+                <View android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.4" android:minWidth="240dp"/>
             </LinearLayout>
 
             <!-- GLSH Details Section -->
@@ -319,18 +315,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="#F5F5F5">
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:text="GLSH CODE"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="ACCOUNT NO"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:text="ACCOUNT NAME"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="CREDIT"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DEBIT"/>
+                    android:background="#E8EAED">
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="GLSH CODE"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="145dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="ACCOUNT NO"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="240dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="ACCOUNT NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="145dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CREDIT" android:gravity="end|center_vertical"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="145dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DEBIT" android:gravity="end|center_vertical"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvGLSHDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minWidth="795dp"
+                    android:background="#FFFFFF"
                     android:nestedScrollingEnabled="false"/>
             </LinearLayout>
         </LinearLayout>
