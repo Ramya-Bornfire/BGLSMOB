@@ -64,7 +64,7 @@ class LoanMaintananceListActivity : AppCompatActivity() {
         setupRecyclerView()
         setupPagination()
         setupDownload()
-        setupSearch()
+        setupColumnFilterLogic()
         loadLoansFromApi(1)
     }
 
@@ -76,41 +76,48 @@ class LoanMaintananceListActivity : AppCompatActivity() {
         btnNext        = findViewById(R.id.btnNext)
         tvPageInfo     = findViewById(R.id.tvPageInfo)
         recyclerView   = findViewById(R.id.recyclerViewLoansList)
-        etSearchFilter = findViewById(R.id.etSearchFilter)
         progressBar    = findViewById(R.id.progressBar)
     }
 
+    private var isFilterVisible = false
+    private var allLoadedLoans: List<LoanMaster> = emptyList()
+
     private fun setupSpinners() {
-        // Filter spinner
         val filterOptions = listOf("Select Filter", "Loan Id", "Loan Type", "Mobile No")
-        val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val filterAdapter = ArrayAdapter(this, R.layout.spinner_item_small, filterOptions)
+        filterAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_small)
         spinnerFilter.adapter = filterAdapter
 
-        // Status spinner – matches web's status options
-        val statusOptions = listOf("Select Status", "ACTIVE", "ACTIVE_IN_ARREARS", "APPROVED")
-        val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerStatus.adapter = statusAdapter
-
-        // When a filter is selected, show/hide the search box
         spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (pos == 0) {
-                    etSearchFilter.visibility = View.GONE
-                    etSearchFilter.setText("")
-                    loadLoansFromApi(1)
-                } else {
-                    etSearchFilter.visibility = View.VISIBLE
-                    etSearchFilter.hint = filterOptions[pos]
-                    etSearchFilter.setText("")
-                    etSearchFilter.requestFocus()
+                if (pos > 0) {
+                    showFilterHeader(true)
+                    // Reset all first
+                    findViewById<View>(R.id.etFilterLoanId).visibility = View.GONE
+                    findViewById<View>(R.id.etFilterLoanType).visibility = View.GONE
+                    findViewById<View>(R.id.etFilterLoanName).visibility = View.GONE
+                    findViewById<View>(R.id.etFilterMobileNo).visibility = View.GONE
+
+                    val targetEt = when (pos) {
+                        1 -> findViewById<EditText>(R.id.etFilterLoanId)
+                        2 -> findViewById<EditText>(R.id.etFilterLoanType)
+                        3 -> findViewById<EditText>(R.id.etFilterMobileNo)
+                        else -> null
+                    }
+                    targetEt?.apply {
+                        visibility = View.VISIBLE
+                        requestFocus()
+                    }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        // Filter by status when changed
+        val statusOptions = listOf("Select Status", "ACTIVE", "ACTIVE_IN_ARREARS", "APPROVED")
+        val statusAdapter = ArrayAdapter(this, R.layout.spinner_item_small, statusOptions)
+        statusAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_small)
+        spinnerStatus.adapter = statusAdapter
+
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val selected = statusOptions[pos]
@@ -124,21 +131,69 @@ class LoanMaintananceListActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSearch() {
-        etSearchFilter.setOnEditorActionListener { _, _, _ ->
-            val query = etSearchFilter.text.toString().trim()
-            if (query.isEmpty()) {
-                loadLoansFromApi(1)
-                return@setOnEditorActionListener true
-            }
+    private fun setupColumnFilterLogic() {
+        val filterIds = listOf(
+            R.id.etFilterLoanId, R.id.etFilterLoanType,
+            R.id.etFilterLoanName, R.id.etFilterMobileNo
+        )
 
-            when (spinnerFilter.selectedItemPosition) {
-                1 -> searchByLoanId(query)      // Loan Id
-                2 -> searchByLoanType(query)    // Loan Type
-                3 -> searchByMobile(query)      // Mobile No
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyCombinedFilter()
             }
-            true
+            override fun afterTextChanged(s: android.text.Editable?) {}
         }
+
+        filterIds.forEach { id ->
+            val et = findViewById<EditText>(id)
+            et.addTextChangedListener(textWatcher)
+            et.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH || 
+                    actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                    showFilterHeader(false)
+                    true
+                } else false
+            }
+        }
+    }
+
+    private fun showFilterHeader(show: Boolean) {
+        isFilterVisible = show
+        findViewById<View>(R.id.layoutDefaultHeader).visibility = if (show) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.layoutFilterHeader).visibility = if (show) View.VISIBLE else View.GONE
+        if (!show) {
+            // Reset spinner to "Select Filter"
+            spinnerFilter.setSelection(0)
+            // Hide all EditTexts
+            findViewById<View>(R.id.etFilterLoanId).visibility = View.GONE
+            findViewById<View>(R.id.etFilterLoanType).visibility = View.GONE
+            findViewById<View>(R.id.etFilterLoanName).visibility = View.GONE
+            findViewById<View>(R.id.etFilterMobileNo).visibility = View.GONE
+        }
+    }
+
+    private fun clearFilters() {
+        val filterIds = listOf(
+            R.id.etFilterLoanId, R.id.etFilterLoanType,
+            R.id.etFilterLoanName, R.id.etFilterMobileNo
+        )
+        filterIds.forEach { findViewById<EditText>(it).text.clear() }
+    }
+
+    private fun applyCombinedFilter() {
+        val qId = findViewById<EditText>(R.id.etFilterLoanId).text.toString().trim()
+        val qType = findViewById<EditText>(R.id.etFilterLoanType).text.toString().trim()
+        val qName = findViewById<EditText>(R.id.etFilterLoanName).text.toString().trim()
+        val qMobile = findViewById<EditText>(R.id.etFilterMobileNo).text.toString().trim()
+
+        val filtered = allLoadedLoans.filter { item ->
+            (qId.isEmpty() || (item.id ?: "").contains(qId, ignoreCase = true)) &&
+            (qType.isEmpty() || (item.loanName ?: "").contains(qType, ignoreCase = true)) &&
+            (qName.isEmpty() || item.customerName.contains(qName, ignoreCase = true)) &&
+            (qMobile.isEmpty() || (item.mobilePhone ?: "").contains(qMobile, ignoreCase = true))
+        }
+        updateTable(filtered, isFiltering = true)
     }
 
     private fun setupRecyclerView() {
@@ -167,7 +222,8 @@ class LoanMaintananceListActivity : AppCompatActivity() {
                     if (body != null) {
                         currentPage = body.currentPage
                         totalPages  = body.totalPages
-                        adapter.updateList(body.data)
+                        allLoadedLoans = body.data
+                        updateTable(allLoadedLoans)
                         updatePaginationUI()
                     } else {
                         showNoData()
@@ -178,51 +234,6 @@ class LoanMaintananceListActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Network error", e)
-                showNoData()
-            } finally {
-                showLoading(false)
-            }
-        }
-    }
-
-    private fun searchByLoanId(loanId: String) {
-        showLoading(true)
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.api.searchLoanById(loanId)
-                handleSearchResponse(response)
-            } catch (e: Exception) {
-                Log.e(TAG, "Search error", e)
-                showNoData()
-            } finally {
-                showLoading(false)
-            }
-        }
-    }
-
-    private fun searchByLoanType(loanType: String) {
-        showLoading(true)
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.api.searchLoanByType(loanType)
-                handleSearchResponse(response)
-            } catch (e: Exception) {
-                Log.e(TAG, "Search error", e)
-                showNoData()
-            } finally {
-                showLoading(false)
-            }
-        }
-    }
-
-    private fun searchByMobile(mobileNumber: String) {
-        showLoading(true)
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.api.searchLoanByMobile(mobileNumber)
-                handleSearchResponse(response)
-            } catch (e: Exception) {
-                Log.e(TAG, "Search error", e)
                 showNoData()
             } finally {
                 showLoading(false)
@@ -249,7 +260,8 @@ class LoanMaintananceListActivity : AppCompatActivity() {
         if (response.isSuccessful) {
             val list = response.body()
             if (!list.isNullOrEmpty()) {
-                adapter.updateList(list)
+                allLoadedLoans = list
+                updateTable(allLoadedLoans)
                 // Hide pagination for search results
                 totalPages = 1
                 currentPage = 1
@@ -266,7 +278,8 @@ class LoanMaintananceListActivity : AppCompatActivity() {
     // ─── UI HELPERS ───
 
     private fun showNoData() {
-        adapter.updateList(emptyList())
+        allLoadedLoans = emptyList()
+        updateTable(emptyList())
         Toast.makeText(this, "No data available", Toast.LENGTH_SHORT).show()
     }
 
@@ -274,8 +287,17 @@ class LoanMaintananceListActivity : AppCompatActivity() {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    private fun updateTable(pageData: List<LoanMaster>, isFiltering: Boolean = false) {
+        if (isFiltering) {
+            tvPageInfo.text = "Showing ${pageData.size} results"
+        } else {
+            tvPageInfo.text = "Page $currentPage of $totalPages"
+        }
+        adapter.updateList(pageData)
+    }
+
     private fun updatePaginationUI() {
-        tvPageInfo.text = "Page $currentPage of $totalPages"
+        // tvPageInfo update moved to updateTable
         btnPrev.isEnabled = currentPage > 1
         btnPrev.alpha = if (currentPage > 1) 1f else 0.5f
         btnNext.isEnabled = currentPage < totalPages

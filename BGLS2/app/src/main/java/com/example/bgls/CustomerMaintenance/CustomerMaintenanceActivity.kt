@@ -35,7 +35,8 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
     private lateinit var adapter: CustomerMaintenanceAdapter
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-private lateinit var homebtn: ImageView
+    private lateinit var homebtn: ImageView
+    private lateinit var progressBar: ProgressBar
 
     private var currentStatusFilter: String = "Select Status"
     private var currentPage: Int = 1
@@ -69,6 +70,7 @@ private lateinit var homebtn: ImageView
 
         recyclerView = findViewById(R.id.recyclerViewCustomerMaintenance)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        progressBar = findViewById(R.id.progressBar)
 
         setupSpinners()
         setupPagination()
@@ -88,12 +90,21 @@ private lateinit var homebtn: ImageView
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position > 0) {
-                    // Show filter row and focus corresponding box
                     showFilterHeader(true)
-                    when (filterOptions[position]) {
-                        "ID" -> findViewById<EditText>(R.id.etFilterCustomerId).requestFocus()
-                        "Name" -> findViewById<EditText>(R.id.etFilterCustomerName).requestFocus()
-                        "Mobile" -> findViewById<EditText>(R.id.etFilterMobileNo).requestFocus()
+                    // Reset all first
+                    findViewById<View>(R.id.etFilterCustomerId).visibility = View.GONE
+                    findViewById<View>(R.id.etFilterCustomerName).visibility = View.GONE
+                    findViewById<View>(R.id.etFilterMobileNo).visibility = View.GONE
+
+                    val targetEt = when (filterOptions[position]) {
+                        "ID" -> findViewById<EditText>(R.id.etFilterCustomerId)
+                        "Name" -> findViewById<EditText>(R.id.etFilterCustomerName)
+                        "Mobile" -> findViewById<EditText>(R.id.etFilterMobileNo)
+                        else -> null
+                    }
+                    targetEt?.apply {
+                        visibility = View.VISIBLE
+                        requestFocus()
                     }
                 }
             }
@@ -126,9 +137,7 @@ private lateinit var homebtn: ImageView
 
     private fun setupColumnFilterLogic() {
         val filterIds = listOf(
-            R.id.etFilterSrNo, R.id.etFilterCustomerId, R.id.etFilterCustomerName,
-            R.id.etFilterDob, R.id.etFilterBranchName, R.id.etFilterMobileNo,
-            R.id.etFilterEmail, R.id.etFilterStatus
+            R.id.etFilterCustomerId, R.id.etFilterCustomerName, R.id.etFilterMobileNo
         )
 
         val textWatcher = object : android.text.TextWatcher {
@@ -140,7 +149,15 @@ private lateinit var homebtn: ImageView
         }
 
         filterIds.forEach { id ->
-            findViewById<EditText>(id).addTextChangedListener(textWatcher)
+            val et = findViewById<EditText>(id)
+            et.addTextChangedListener(textWatcher)
+            et.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH || 
+                    actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                    showFilterHeader(false)
+                    true
+                } else false
+            }
         }
     }
 
@@ -149,16 +166,18 @@ private lateinit var homebtn: ImageView
         findViewById<View>(R.id.layoutDefaultHeader).visibility = if (show) View.GONE else View.VISIBLE
         findViewById<View>(R.id.layoutFilterHeader).visibility = if (show) View.VISIBLE else View.GONE
         if (!show) {
-            clearFilters()
-            applyCombinedFilter()
+            // Reset spinner to "Select Filter"
+            findViewById<Spinner>(R.id.spinnerFilter).setSelection(0)
+            // Hide all EditTexts in the filter row
+            findViewById<View>(R.id.etFilterCustomerId).visibility = View.GONE
+            findViewById<View>(R.id.etFilterCustomerName).visibility = View.GONE
+            findViewById<View>(R.id.etFilterMobileNo).visibility = View.GONE
         }
     }
 
     private fun clearFilters() {
         val filterIds = listOf(
-            R.id.etFilterSrNo, R.id.etFilterCustomerId, R.id.etFilterCustomerName,
-            R.id.etFilterDob, R.id.etFilterBranchName, R.id.etFilterMobileNo,
-            R.id.etFilterEmail, R.id.etFilterStatus
+            R.id.etFilterCustomerId, R.id.etFilterCustomerName, R.id.etFilterMobileNo
         )
         filterIds.forEach { findViewById<EditText>(it).text.clear() }
     }
@@ -167,17 +186,11 @@ private lateinit var homebtn: ImageView
         val qId = findViewById<EditText>(R.id.etFilterCustomerId).text.toString().trim()
         val qName = findViewById<EditText>(R.id.etFilterCustomerName).text.toString().trim()
         val qMobile = findViewById<EditText>(R.id.etFilterMobileNo).text.toString().trim()
-        val qEmail = findViewById<EditText>(R.id.etFilterEmail).text.toString().trim()
-        val qStatus = findViewById<EditText>(R.id.etFilterStatus).text.toString().trim()
-        val qBranch = findViewById<EditText>(R.id.etFilterBranchName).text.toString().trim()
 
         val filtered = allLoadedData.filter { item ->
-            (qId.isEmpty() || item.customerId.contains(qId, ignoreCase = true)) &&
+            (qId.isEmpty() || (item.customerId ?: "").contains(qId, ignoreCase = true)) &&
             (qName.isEmpty() || item.customerName.contains(qName, ignoreCase = true)) &&
-            (qMobile.isEmpty() || item.mobileNo.contains(qMobile, ignoreCase = true)) &&
-            (qEmail.isEmpty() || item.email.contains(qEmail, ignoreCase = true)) &&
-            (qBranch.isEmpty() || item.branchName.contains(qBranch, ignoreCase = true)) &&
-            (qStatus.isEmpty() || item.status.contains(qStatus, ignoreCase = true))
+            (qMobile.isEmpty() || (item.mobileNo ?: "").contains(qMobile, ignoreCase = true))
         }
         updateTable(filtered, isFiltering = true)
     }
@@ -209,6 +222,7 @@ private lateinit var homebtn: ImageView
     }
 
     private fun loadData() {
+        progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
                 if (currentStatusFilter == "Select Status") {
@@ -249,6 +263,8 @@ private lateinit var homebtn: ImageView
                 }
             } catch (e: Exception) {
                 showToast("Network error: ${e.message}")
+            } finally {
+                progressBar.visibility = View.GONE
             }
         }
     }
