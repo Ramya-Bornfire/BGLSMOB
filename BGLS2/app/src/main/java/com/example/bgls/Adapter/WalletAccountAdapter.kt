@@ -28,6 +28,7 @@ class WalletAccountAdapter(
         val tvCloseDate: TextView = view.findViewById(R.id.tvCloseDate)
         val tvCurrency: TextView = view.findViewById(R.id.tvCurrency)
         val tvBalance: TextView = view.findViewById(R.id.tvBalance)
+        val tvStatus: TextView = view.findViewById(R.id.tvStatus)
         val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
     }
 
@@ -48,6 +49,7 @@ class WalletAccountAdapter(
         holder.tvCloseDate.text = account.closeDate
         holder.tvCurrency.text = account.currency
         holder.tvBalance.text = account.balance
+        holder.tvStatus.text = account.status
         
         // Zebra striping
         if (position % 2 == 0) {

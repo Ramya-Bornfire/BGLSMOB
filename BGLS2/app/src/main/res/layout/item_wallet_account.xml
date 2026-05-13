@@ -2,108 +2,137 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="32dp"
     android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:paddingTop="1dp"
-    android:paddingBottom="1dp">
+    android:minWidth="790dp"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/tvCategory"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.8"
+        android:minWidth="60dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="Wallet"
-        android:textSize="11sp"
-        android:maxLines="2"
-        android:ellipsize="end"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCustId"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.2"
+        android:minWidth="100dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="CUST001"
-        android:textColor="#007BFF"
-        android:textSize="11sp"
-        android:maxLines="2"
-        android:ellipsize="end"/>
+        android:textColor="#2196F3"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvAccNo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0"
+        android:minWidth="80dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="TD001"
-        android:textColor="#007BFF"
-        android:textSize="11sp"
-        android:maxLines="2"
-        android:ellipsize="end"/>
+        android:textColor="#2196F3"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.5"
+        android:minWidth="120dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="Name"
-        android:textSize="11sp"
-        android:maxLines="2"
-        android:ellipsize="end"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvOpenDate"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0"
+        android:minWidth="80dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="01-01-2026"
-        android:textSize="11sp"
-        android:maxLines="2"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCloseDate"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0"
+        android:minWidth="80dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text=""
-        android:textSize="11sp"
-        android:maxLines="2"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvCurrency"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.8"
+        android:minWidth="60dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
         android:text="SCR"
-        android:textSize="11sp"
-        android:maxLines="2"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
     <TextView
         android:id="@+id/tvBalance"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0"
+        android:minWidth="80dp"
+        android:padding="12dp"
+        android:gravity="center_vertical|center_horizontal"
         android:text="0.00"
-        android:gravity="end"
-        android:paddingEnd="8dp"
-        android:textSize="11sp"
-        android:maxLines="2"/>
+        android:textColor="#333333"
+        android:textSize="11sp"/>
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tvStatus"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="0.8"
-        android:gravity="center">
+        android:minWidth="70dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:text="Verified"
+        android:textColor="#4CAF50"
+        android:textSize="11sp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:minWidth="60dp"
+        android:padding="12dp"
+        android:gravity="center"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false">
 
         <RadioButton
             android:id="@+id/rbSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="#007BFF"
-            android:layout_centerInParent="true"
-            android:clickable="true"
-            android:focusable="true"/>
+            android:buttonTint="#2196F3"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
+    </LinearLayout>
 
-    </RelativeLayout>
 </LinearLayout>
