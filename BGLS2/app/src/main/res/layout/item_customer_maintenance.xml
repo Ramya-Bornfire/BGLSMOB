@@ -7,72 +7,73 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:minWidth="1080dp">
 
         <TextView
             android:id="@+id/tvSNo"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="0.6" android:minWidth="60dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvCustomerId"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1.5" android:minWidth="140dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#2196F3"
+            android:textSize="12sp" android:textColor="#2196F3"
             android:clickable="true" android:focusable="true"/>
 
         <TextView
             android:id="@+id/tvCustomerName"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="2.2" android:minWidth="200dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvDob"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1.2" android:minWidth="100dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvBranchName"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1.8" android:minWidth="160dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvMobileNo"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1.5" android:minWidth="130dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="2.2" android:minWidth="200dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
 
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="0dp" android:layout_height="match_parent"
             android:layout_weight="1" android:minWidth="90dp"
-            android:paddingTop="12dp" android:paddingBottom="12dp"
+            android:padding="12dp"
             android:gravity="center_vertical"
-            android:paddingStart="8dp" android:paddingEnd="4dp" android:textSize="12sp" android:textColor="#333333"/>
+            android:textSize="12sp" android:textColor="#333333"/>
             
     </LinearLayout>
 

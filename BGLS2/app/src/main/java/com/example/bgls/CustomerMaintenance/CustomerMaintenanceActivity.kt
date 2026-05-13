@@ -35,11 +35,11 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
     private lateinit var adapter: CustomerMaintenanceAdapter
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
-
+private lateinit var homebtn: ImageView
 
     private var currentStatusFilter: String = "Select Status"
     private var currentPage: Int = 1
-    private val itemsPerPage: Int = 20
+    private val itemsPerPage: Int = 200
 
     // Server‑side pagination for ALL mode
     private var totalApiPages: Int = 1
@@ -49,6 +49,8 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
     // Cache for branch names (branchKey -> branchName)
     private val branchNameCache = mutableMapOf<String, String>()
+    private var isFilterVisible = false
+    private var allLoadedData: List<CustomerMaintenanceModel> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,28 +59,12 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
-        val btnBack = findViewById<ImageView>(R.id.btnBack)
-        btnBack.setOnClickListener {
-            finish()
-        }
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    Toast.makeText(this, "Home Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_profile -> {
-                    Toast.makeText(this, "Profile Clicked", Toast.LENGTH_SHORT).show()
-                }
-                R.id.nav_logout -> {
-                    Toast.makeText(this, "Logout Clicked", Toast.LENGTH_SHORT).show()
-                }
-            }
-            drawerLayout.closeDrawer(GravityCompat.START)
-            true
+        
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener {
+            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(hIntent)
         }
 
         recyclerView = findViewById(R.id.recyclerViewCustomerMaintenance)
@@ -86,6 +72,7 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
         setupSpinners()
         setupPagination()
+        setupColumnFilterLogic()
 
         // Initial load
         loadData()
@@ -93,17 +80,33 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
 
     private fun setupSpinners() {
         val filterOptions = listOf("Select Filter", "ID", "Name", "Mobile")
-        val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        findViewById<Spinner>(R.id.spinnerFilter).adapter = filterAdapter
+        val filterSpinner = findViewById<Spinner>(R.id.spinnerFilter)
+        val filterAdapter = ArrayAdapter(this, R.layout.spinner_item_small, filterOptions)
+        filterAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_small)
+        filterSpinner.adapter = filterAdapter
+
+        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position > 0) {
+                    // Show filter row and focus corresponding box
+                    showFilterHeader(true)
+                    when (filterOptions[position]) {
+                        "ID" -> findViewById<EditText>(R.id.etFilterCustomerId).requestFocus()
+                        "Name" -> findViewById<EditText>(R.id.etFilterCustomerName).requestFocus()
+                        "Mobile" -> findViewById<EditText>(R.id.etFilterMobileNo).requestFocus()
+                    }
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
         val statusSpinner = findViewById<Spinner>(R.id.spinnerStatus)
         val statusOptions = listOf(
             "Select Status", "ACTIVE", "INACTIVE", "BLACKLIST",
             "EXITED", "PENDING_APPROVAL", "REJECTED"
         )
-        val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val statusAdapter = ArrayAdapter(this, R.layout.spinner_item_small, statusOptions)
+        statusAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_small)
         statusSpinner.adapter = statusAdapter
 
         statusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -116,9 +119,67 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
         }
 
         val allOptions = listOf("ALL", "VERIFIED", "NOTVERIFIED")
-        val allAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, allOptions)
-        allAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val allAdapter = ArrayAdapter(this, R.layout.spinner_item_small, allOptions)
+        allAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_small)
         findViewById<Spinner>(R.id.spinnerAll).adapter = allAdapter
+    }
+
+    private fun setupColumnFilterLogic() {
+        val filterIds = listOf(
+            R.id.etFilterSrNo, R.id.etFilterCustomerId, R.id.etFilterCustomerName,
+            R.id.etFilterDob, R.id.etFilterBranchName, R.id.etFilterMobileNo,
+            R.id.etFilterEmail, R.id.etFilterStatus
+        )
+
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                applyCombinedFilter()
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        }
+
+        filterIds.forEach { id ->
+            findViewById<EditText>(id).addTextChangedListener(textWatcher)
+        }
+    }
+
+    private fun showFilterHeader(show: Boolean) {
+        isFilterVisible = show
+        findViewById<View>(R.id.layoutDefaultHeader).visibility = if (show) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.layoutFilterHeader).visibility = if (show) View.VISIBLE else View.GONE
+        if (!show) {
+            clearFilters()
+            applyCombinedFilter()
+        }
+    }
+
+    private fun clearFilters() {
+        val filterIds = listOf(
+            R.id.etFilterSrNo, R.id.etFilterCustomerId, R.id.etFilterCustomerName,
+            R.id.etFilterDob, R.id.etFilterBranchName, R.id.etFilterMobileNo,
+            R.id.etFilterEmail, R.id.etFilterStatus
+        )
+        filterIds.forEach { findViewById<EditText>(it).text.clear() }
+    }
+
+    private fun applyCombinedFilter() {
+        val qId = findViewById<EditText>(R.id.etFilterCustomerId).text.toString().trim()
+        val qName = findViewById<EditText>(R.id.etFilterCustomerName).text.toString().trim()
+        val qMobile = findViewById<EditText>(R.id.etFilterMobileNo).text.toString().trim()
+        val qEmail = findViewById<EditText>(R.id.etFilterEmail).text.toString().trim()
+        val qStatus = findViewById<EditText>(R.id.etFilterStatus).text.toString().trim()
+        val qBranch = findViewById<EditText>(R.id.etFilterBranchName).text.toString().trim()
+
+        val filtered = allLoadedData.filter { item ->
+            (qId.isEmpty() || item.customerId.contains(qId, ignoreCase = true)) &&
+            (qName.isEmpty() || item.customerName.contains(qName, ignoreCase = true)) &&
+            (qMobile.isEmpty() || item.mobileNo.contains(qMobile, ignoreCase = true)) &&
+            (qEmail.isEmpty() || item.email.contains(qEmail, ignoreCase = true)) &&
+            (qBranch.isEmpty() || item.branchName.contains(qBranch, ignoreCase = true)) &&
+            (qStatus.isEmpty() || item.status.contains(qStatus, ignoreCase = true))
+        }
+        updateTable(filtered, isFiltering = true)
     }
 
     private fun setupPagination() {
@@ -136,8 +197,8 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
             val totalPages = if (currentStatusFilter == "Select Status") {
                 totalApiPages
             } else {
-                if (fullFilteredList.isEmpty()) 1
-                else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+                if (allLoadedData.isEmpty()) 1
+                else (allLoadedData.size + itemsPerPage - 1) / itemsPerPage
             }
 
             if (currentPage < totalPages) {
@@ -160,8 +221,8 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
                             totalApiPages = body.totalPages
                             // Enrich branch names
                             enrichCustomerListWithBranchNames(list)
-                            val models = list.map { it.toMaintenanceModel() }
-                            updateTable(models)
+                            allLoadedData = list.map { it.toMaintenanceModel() }
+                            updateTable(allLoadedData)
                         }
                     } else {
                         showToast("Failed to load data")
@@ -173,12 +234,13 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
                         val list = response.body() ?: emptyList()
                         // Enrich branch names
                         enrichCustomerListWithBranchNames(list)
-                        fullFilteredList = list.map { it.toMaintenanceModel() }
-                        val totalPages = if (fullFilteredList.isEmpty()) 1
-                        else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+                        allLoadedData = list.map { it.toMaintenanceModel() }
+                        
+                        val totalPages = if (allLoadedData.isEmpty()) 1
+                        else (allLoadedData.size + itemsPerPage - 1) / itemsPerPage
                         val start = (currentPage - 1) * itemsPerPage
-                        val end = minOf(start + itemsPerPage, fullFilteredList.size)
-                        val pageData = if (start < fullFilteredList.size) fullFilteredList.subList(start, end)
+                        val end = minOf(start + itemsPerPage, allLoadedData.size)
+                        val pageData = if (start < allLoadedData.size) allLoadedData.subList(start, end)
                         else emptyList()
                         updateTable(pageData)
                     } else {
@@ -191,12 +253,17 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateTable(pageData: List<CustomerMaintenanceModel>) {
+    private fun updateTable(pageData: List<CustomerMaintenanceModel>, isFiltering: Boolean = false) {
         val totalPages = if (currentStatusFilter == "Select Status") totalApiPages
-        else if (fullFilteredList.isEmpty()) 1
-        else (fullFilteredList.size + itemsPerPage - 1) / itemsPerPage
+        else if (allLoadedData.isEmpty()) 1
+        else (allLoadedData.size + itemsPerPage - 1) / itemsPerPage
 
-        findViewById<TextView>(R.id.tvPageInfo).text = "Page $currentPage of $totalPages"
+        val pageInfo = findViewById<TextView>(R.id.tvPageInfo)
+        if (isFiltering) {
+            pageInfo.text = "Showing ${pageData.size} results"
+        } else {
+            pageInfo.text = "Page $currentPage of $totalPages"
+        }
 
         adapter = CustomerMaintenanceAdapter(this, pageData)
         recyclerView.adapter = adapter

@@ -174,35 +174,36 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- FILTERS (Above table, right aligned) -->
+        <!-- FILTERS & ACTIONS (Above table) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
             android:gravity="end|center_vertical"
             android:background="#F5F7F9">
 
             <Spinner
                 android:id="@+id/spinnerFilter"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="120dp"
+                android:layout_height="34dp"
                 android:background="@drawable/spinner_background"
-                android:layout_marginEnd="12dp"/>
+                android:layout_marginEnd="8dp"/>
 
             <Spinner
                 android:id="@+id/spinnerStatus"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="120dp"
+                android:layout_height="34dp"
                 android:background="@drawable/spinner_background"
-                android:layout_marginEnd="12dp"/>
+                android:layout_marginEnd="8dp"/>
 
             <Spinner
                 android:id="@+id/spinnerAll"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:background="@drawable/spinner_background"/>
+                android:layout_width="100dp"
+                android:layout_height="34dp"
+                android:background="@drawable/spinner_background"
+                android:layout_marginEnd="8dp"/>
         </LinearLayout>
 
         <!-- TABLE SECTION -->
@@ -211,37 +212,65 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:fillViewport="true"
-            android:scrollbars="horizontal">
+            android:scrollbars="horizontal"
+            android:descendantFocusability="blocksDescendants">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:minWidth="1080dp">
 
-                <!-- TABLE HEADER -->
-                <LinearLayout
+                <!-- DUAL HEADER: Default vs Filter Row -->
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#E0E5E9"
-                    android:paddingVertical="12dp">
+                    android:layout_height="wrap_content">
 
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:minWidth="60dp" android:text="S.NO" android:gravity="start"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:text="CUSTOMER ID" android:gravity="start"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="200dp" android:text="CUSTOMER NAME"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DOB" android:gravity="start"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="160dp" android:text="BRANCH NAME"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="130dp" android:text="MOBILE NO"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="200dp" android:text="EMAIL"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="90dp" android:text="STATUS" android:gravity="start"/>
-                </LinearLayout>
+                    <!-- 1. Default Table Header (TextViews) -->
+                    <LinearLayout
+                        android:id="@+id/layoutDefaultHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="visible">
 
-                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="140dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="200dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER NAME"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DOB"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.8" android:minWidth="160dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="BRANCH NAME"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="130dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Mobile No"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="200dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Email"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="90dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
+                    </LinearLayout>
 
+                    <!-- 2. Filter Table Header (EditTexts) -->
+                    <LinearLayout
+                        android:id="@+id/layoutFilterHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="gone">
+
+                        <EditText android:id="@+id/etFilterSrNo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="No" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterCustomerId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="140dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="ID" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterCustomerName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="200dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="Name" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterDob" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="DOB" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterBranchName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.8" android:minWidth="160dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="Branch" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterMobileNo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="130dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="Mobile" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterEmail" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="200dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="Email" android:textSize="11sp" android:singleLine="true"/>
+                        <EditText android:id="@+id/etFilterStatus" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="90dp" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="Status" android:textSize="11sp" android:singleLine="true"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- TABLE ROWS -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewCustomerMaintenance"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:minWidth="1080dp"
                     android:background="#FFFFFF"/>
 
             </LinearLayout>

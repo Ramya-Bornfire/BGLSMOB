@@ -41,7 +41,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
 
     // ─── Pagination state (server-side) ───
-    private val pageLimit = 200
+    private val pageSize = 200
     private var currentPage = 1
     private var totalPages = 1
 
@@ -75,7 +75,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
         setupDownload()
 
         // Initial load – all customers, page 1
-        loadPage(1)
+        loadCustomersFromApi(1)
     }
 
     private fun initViews() {
@@ -115,7 +115,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 etSearch.isEnabled = selectedFilter != "Select Filter"
                 etSearch.setText("")
                 // Reset to full list when filter type changes
-                if (selectedFilter == "Select Filter") loadPage(1)
+                if (selectedFilter == "Select Filter") loadCustomersFromApi(1)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
@@ -129,7 +129,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 } else if (selectedStatus != "Select Status") {
                     loadByStatus(selectedStatus)
                 } else {
-                    loadPage(1)
+                    loadCustomersFromApi(1)
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -147,7 +147,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 searchJob?.cancel()
                 val query = s.toString().trim()
                 if (query.isEmpty()) {
-                    loadPage(1)
+                    loadCustomersFromApi(1)
                     return
                 }
                 searchJob = lifecycleScope.launch {
@@ -172,9 +172,10 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 if (response != null && response.isSuccessful) {
                     val list = response.body() ?: emptyList()
                     fetchAndMapBranchNames(list)
+                    currentPage = 1
+                    totalPages = 1
+                    updatePaginationUI()
                     tvPageInfo.text = "${list.size} result(s)"
-                    btnPrev.isEnabled = false; btnPrev.alpha = 0.5f
-                    btnNext.isEnabled = false; btnNext.alpha = 0.5f
                 } else {
                     Toast.makeText(this@CustomerMasterListActivity,
                         "Search failed: ${response?.code()}", Toast.LENGTH_SHORT).show()
@@ -196,9 +197,10 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val list = response.body() ?: emptyList()
                     fetchAndMapBranchNames(list)
+                    currentPage = 1
+                    totalPages = 1
+                    updatePaginationUI()
                     tvPageInfo.text = "${list.size} result(s)"
-                    btnPrev.isEnabled = false; btnPrev.alpha = 0.5f
-                    btnNext.isEnabled = false; btnNext.alpha = 0.5f
                 } else {
                     Toast.makeText(this@CustomerMasterListActivity,
                         "Filter failed: ${response.code()}", Toast.LENGTH_SHORT).show()
@@ -214,19 +216,18 @@ class CustomerMasterListActivity : AppCompatActivity() {
 
     // ─── Paginated full-list load ─────────────────────────────────────────────
 
-    private fun loadPage(page: Int) {
+    private fun loadCustomersFromApi(page: Int) {
         showLoading(true)
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getAllApprovedCust(page, pageLimit)
+                val response = RetrofitClient.api.getAllApprovedCust(page, pageSize)
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null) {
                         currentPage = body.currentPage
                         totalPages  = body.totalPages
                         fetchAndMapBranchNames(body.data)
-                        tvPageInfo.text = "Page $currentPage of $totalPages"
-                        updatePaginationButtons()
+                        updatePaginationUI()
                     }
                 } else {
                     Toast.makeText(this@CustomerMasterListActivity,
@@ -241,7 +242,8 @@ class CustomerMasterListActivity : AppCompatActivity() {
         }
     }
 
-    private fun updatePaginationButtons() {
+    private fun updatePaginationUI() {
+        tvPageInfo.text = "Page $currentPage of $totalPages"
         btnPrev.isEnabled = currentPage > 1
         btnPrev.alpha     = if (currentPage > 1) 1f else 0.5f
         btnNext.isEnabled = currentPage < totalPages
@@ -319,10 +321,10 @@ class CustomerMasterListActivity : AppCompatActivity() {
 
     private fun setupPagination() {
         btnPrev.setOnClickListener {
-            if (currentPage > 1) loadPage(currentPage - 1)
+            if (currentPage > 1) loadCustomersFromApi(currentPage - 1)
         }
         btnNext.setOnClickListener {
-            if (currentPage < totalPages) loadPage(currentPage + 1)
+            if (currentPage < totalPages) loadCustomersFromApi(currentPage + 1)
         }
     }
 
