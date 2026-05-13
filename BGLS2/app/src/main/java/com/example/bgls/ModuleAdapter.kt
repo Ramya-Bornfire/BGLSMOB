@@ -16,7 +16,7 @@ class ModuleAdapter(
     private val modules: List<Module>,
     private val cellW: Int,
     private val cellH: Int,
-    private val onClick: (Module) -> Unit
+    private val onClick: (Module, View) -> Unit
 ) : RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder>() {
 
     class ModuleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -70,7 +70,7 @@ class ModuleAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            onClick(module)
+            onClick(module, it)
         }
     }
 

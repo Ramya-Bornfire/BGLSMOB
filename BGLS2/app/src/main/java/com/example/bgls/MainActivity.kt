@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -114,14 +115,14 @@ class MainActivity : AppCompatActivity() {
                 override fun canScrollHorizontally(): Boolean = false
             }
 
-            recyclerView.adapter = ModuleAdapter(modules, cellW, cellH) { module ->
-                onModuleClicked(module)
+            recyclerView.adapter = ModuleAdapter(modules, cellW, cellH) { module, view ->
+                onModuleClicked(module, view)
             }
         }
     }
 
     // ── Module click → show sub-items dialog or navigate directly ───────────
-    private fun onModuleClicked(module: Module) {
+    private fun onModuleClicked(module: Module, view: View) {
         when {
             module.subItems.isEmpty() -> {
                 Toast.makeText(this, "${module.title} coming soon", Toast.LENGTH_SHORT).show()
@@ -129,118 +130,88 @@ class MainActivity : AppCompatActivity() {
             module.subItems.size == 1 -> {
                 navigate(module.subItems.first(), module.title)
             }
-            else -> showSubMenu(module)
+            else -> showSubMenu(module, view)
         }
     }
 
     // ── Professional Sub-Menu Dialog with Blue Gradient Header ─────────────────
-    private fun showSubMenu(module: Module) {
-        val dialog = android.app.Dialog(this)
-        dialog.setContentView(R.layout.dialog_sub_menu)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setLayout(
-            (resources.displayMetrics.widthPixels * 0.88).toInt(),
-            android.view.WindowManager.LayoutParams.WRAP_CONTENT)
+    // ── Professional Sub-Menu anchored to the clicked module card ─────────────────
+    private fun showSubMenu(module: Module, anchorView: View) {
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.dialog_sub_menu, null)
 
-        // Get all dialog views
-        val tvTitle    = dialog.findViewById<TextView>(R.id.tvDialogTitle)
-        val container  = dialog.findViewById<LinearLayout>(R.id.llDialogItems)
-        val btnClose   = dialog.findViewById<ImageView>(R.id.ivDialogClose)
-        val tvIcon     = dialog.findViewById<TextView>(R.id.tvDialogIcon)
-        val flIcon     = dialog.findViewById<FrameLayout>(R.id.flDialogIcon)
-        val headerLayout = dialog.findViewById<LinearLayout>(R.id.llDialogHeader)
-        val scrollView = dialog.findViewById<ScrollView>(R.id.scrollViewItems)
+        // Show all items without scrolling by using WRAP_CONTENT
+        val width = anchorView.width
+        val popupWindow = PopupWindow(popupView, width, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        
+        popupWindow.elevation = 25f
+        popupWindow.animationStyle = android.R.style.Animation_Dialog
 
-        // ✅ Header gets BLUE GRADIENT
+        val tvTitle    = popupView.findViewById<TextView>(R.id.tvDialogTitle)
+        val container  = popupView.findViewById<LinearLayout>(R.id.llDialogItems)
+        val btnClose   = popupView.findViewById<ImageView>(R.id.ivDialogClose)
+        val tvIcon     = popupView.findViewById<TextView>(R.id.tvDialogIcon)
+        val flIcon     = popupView.findViewById<FrameLayout>(R.id.flDialogIcon)
+        val headerLayout = popupView.findViewById<LinearLayout>(R.id.llDialogHeader)
+
+        headerLayout?.setPadding(dp(12), dp(10), dp(12), dp(10))
         headerLayout?.background = getHeaderGradientBackground()
-
-        // White text for header
+        
+        tvTitle.text = module.title.lowercase().replaceFirstChar { it.uppercase() }
+        tvTitle.textSize = 14f
         tvTitle.setTextColor(Color.WHITE)
+        tvTitle.isAllCaps = false
 
-        // "BANKING SERVICES" label in semi-transparent white
-       // val lblBankingService = dialog.findViewById<TextView>(R.id.lblBankingService)
-      //  lblBankingService?.setTextColor(Color.parseColor("#CCFFFFFF"))
-
-        // Close icon in white
-        btnClose.imageTintList = android.content.res.ColorStateList.valueOf(Color.WHITE)
-
-        // ✅ Sub-items area stays WHITE
-        scrollView?.setBackgroundColor(Color.WHITE)
-
-        tvTitle.text = module.title
         tvIcon.text = module.icon
-
-        // Icon background - white with module color border
+        tvIcon.textSize = 18f
+        flIcon.layoutParams.width = dp(34)
+        flIcon.layoutParams.height = dp(34)
         flIcon.background = getRoundedCircleBgWhite(module.color)
         tvIcon.setTextColor(Color.parseColor(module.color))
 
-        // Clear existing views
+        btnClose.layoutParams.width = dp(24)
+        btnClose.layoutParams.height = dp(24)
+        btnClose.imageTintList = android.content.res.ColorStateList.valueOf(Color.WHITE)
+        btnClose.setOnClickListener { popupWindow.dismiss() }
+
         container.removeAllViews()
 
-        // Add each sub-item
         module.subItems.forEachIndexed { index, item ->
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                setPadding(dp(16), dp(14), dp(16), dp(14))
-
-                background = getWhiteCardBg()
+                setPadding(dp(10), dp(4), dp(10), dp(4))
+                
                 isClickable = true
                 isFocusable = true
                 setOnClickListener {
-                    dialog.dismiss()
+                    popupWindow.dismiss()
                     navigate(item, module.title)
                 }
 
-                val params = LinearLayout.LayoutParams(
+                layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(dp(12), if (index == 0) dp(12) else dp(6), dp(12), if (index == module.subItems.size - 1) dp(12) else dp(6))
-                }
-                layoutParams = params
-            }
-
-            val dot = View(this).apply {
-                layoutParams = LinearLayout.LayoutParams(dp(8), dp(8)).apply {
-                    marginEnd = dp(14)
-                }
-                background = getRoundedDot(module.color)
+                )
             }
 
             val tv = TextView(this).apply {
-                text = item
-                textSize = 16f
+                // Sentence case: First letter capital, others lowercase
+                text = item.lowercase().replaceFirstChar { it.uppercase() }
+                textSize = 11f
                 setTextColor(Color.parseColor("#1A1A1A"))
-                typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                isAllCaps = false
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             }
 
-            val arrow = TextView(this).apply {
-                text = "›"
-                textSize = 22f
-                setTextColor(Color.parseColor("#CCCCCC"))
-                setPadding(dp(8), 0, 0, 0)
-            }
-
-            row.addView(dot)
             row.addView(tv)
-            row.addView(arrow)
             container.addView(row)
-
-            // Add divider between items
-            if (index < module.subItems.size - 1) {
-                val divider = View(this).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, dp(1))
-                    setBackgroundColor(Color.parseColor("#F0F0F0"))
-                }
-                container.addView(divider)
-            }
         }
 
-        btnClose.setOnClickListener { dialog.dismiss() }
-        dialog.show()
+        // Show anchored to the clicked view, perfectly covering the card using absolute coordinates
+        val location = IntArray(2)
+        anchorView.getLocationOnScreen(location)
+        popupWindow.showAtLocation(anchorView, android.view.Gravity.NO_GRAVITY, location[0], location[1])
     }
 
     // ── Gradient Background for Header (Blue Gradient) ─────────────────────
@@ -275,8 +246,8 @@ class MainActivity : AppCompatActivity() {
         return android.graphics.drawable.GradientDrawable().apply {
             shape = android.graphics.drawable.GradientDrawable.RECTANGLE
             setColor(Color.WHITE)
-            cornerRadius = dp(12).toFloat()
-            setStroke(dp(1), Color.parseColor("#E0E0E0"))
+            cornerRadius = dp(8).toFloat()
+            // Removed stroke for a line-less look
         }
     }
 

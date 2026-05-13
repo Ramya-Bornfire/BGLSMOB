@@ -75,11 +75,12 @@
                 app:tint="#FFFFFF"/>
         </LinearLayout>
 
-        <!-- White Sub-items Container -->
+        <!-- White Sub-items Container (Scrollable within card height) -->
         <ScrollView
             android:id="@+id/scrollViewItems"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:fadeScrollbars="false"
             android:clipToPadding="false"
             android:paddingVertical="8dp"
