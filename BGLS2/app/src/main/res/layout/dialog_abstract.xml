@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/card_background"
+    android:padding="0dp">
+
+    <!-- Dialog Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#F8F9FA">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ABSTRACT"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- User Info Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="User Id" android:textSize="11sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
+            <EditText android:layout_width="120dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="EMP02" android:textSize="11sp" android:paddingHorizontal="8dp" android:enabled="false" android:textColor="#333333"/>
+            
+            <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="User Name" android:textSize="11sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
+            <EditText android:layout_width="150dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="Dylan Doolun" android:textSize="11sp" android:paddingHorizontal="8dp" android:enabled="false" android:textColor="#333333"/>
+        </LinearLayout>
+
+        <!-- Table Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F8F9FA"
+            android:paddingVertical="8dp"
+            android:orientation="horizontal">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tran ID" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333" android:paddingHorizontal="4dp"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Account No" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333" android:paddingHorizontal="4dp"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Tran type" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333" android:paddingHorizontal="4dp"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Debit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333" android:paddingHorizontal="4dp" android:gravity="end"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Credit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333" android:paddingHorizontal="4dp" android:gravity="end"/>
+        </LinearLayout>
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No records available"
+            android:textSize="11sp"
+            android:padding="12dp"
+            android:gravity="center"
+            android:textColor="#999999"/>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginTop="8dp"/>
+
+        <!-- Summary Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginTop="12dp">
+            
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Opening Balance" android:textSize="11sp" android:textColor="#333333"/>
+                <EditText android:layout_width="100dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="0.00" android:textSize="11sp" android:paddingHorizontal="8dp" android:gravity="end" android:enabled="false" android:textColor="#333333"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Deposit" android:textSize="11sp" android:textColor="#333333"/>
+                <EditText android:layout_width="100dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="0.00" android:textSize="11sp" android:paddingHorizontal="8dp" android:gravity="end" android:enabled="false" android:textColor="#333333"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="4dp">
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Withdrawl" android:textSize="11sp" android:textColor="#333333"/>
+                <EditText android:layout_width="100dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="0.00" android:textSize="11sp" android:paddingHorizontal="8dp" android:gravity="end" android:enabled="false" android:textColor="#333333"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Closing Balance" android:textSize="11sp" android:textColor="#333333"/>
+                <EditText android:layout_width="100dp" android:layout_height="32dp" android:background="@drawable/edittext_background" android:text="0.00" android:textSize="11sp" android:paddingHorizontal="8dp" android:gravity="end" android:enabled="false" android:textColor="#333333"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Close Button -->
+        <Button
+            android:id="@+id/btnDialogClose"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Close"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:minWidth="80dp"/>
+
+    </LinearLayout>
+</LinearLayout>

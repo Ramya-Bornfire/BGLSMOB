@@ -1,10 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CustomerOnBoarding.DisbursementActivity">
+    android:orientation="vertical"
+    android:background="#F8F9FA">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tvMainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOAN OPERATIONS"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (Home) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ROW 1: OPERATION TYPE / COLLECTION TYPE / TRAN ABSTRACT -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <!-- OPERATION TYPE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp"
+                    android:layout_marginEnd="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPERATION TYPE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="8dp"/>
+                    
+                    <RadioButton
+                        android:id="@+id/rbDisbursement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disbursement"
+                        android:textSize="10sp"
+                        android:checked="true"
+                        android:paddingEnd="8dp"/>
+                </LinearLayout>
+
+                <!-- COLLECTION TYPE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp"
+                    android:layout_marginEnd="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="COLLECTION TYPE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="8dp"/>
+                    
+                    <RadioGroup
+                        android:id="@+id/rgCollectionType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbCash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cash" android:textSize="10sp" android:paddingEnd="12dp"/>
+                        <RadioButton android:id="@+id/rbOfficeRouting" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Office Routing Account" android:textSize="10sp" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- TRANSACTION ABSTRACT -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TRANSACTION ABSTRACT"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="8dp"/>
+                    
+                    <RadioGroup
+                        android:id="@+id/rgTranAbstract"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbCashAbstract" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cash" android:textSize="10sp" android:paddingEnd="12dp"/>
+                        <RadioButton android:id="@+id/rbOfficeRoutingAbstract" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Office Routing Account" android:textSize="10sp" android:checked="true"/>
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 2: INPUT FIELDS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/card_background"
+                android:padding="12dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account No"
+                    android:textSize="11sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="8dp"/>
+                <Spinner
+                    android:id="@+id/spinnerAccountNo"
+                    android:layout_width="160dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Account Name"
+                    android:textSize="11sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="8dp"/>
+                <EditText
+                    android:id="@+id/etAccountName"
+                    android:layout_width="120dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/edittext_background"
+                    android:textSize="11sp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount"
+                    android:textSize="11sp"
+                    android:textColor="#333333"
+                    android:layout_marginEnd="8dp"/>
+                <EditText
+                    android:id="@+id/etAmount"
+                    android:layout_width="100dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/edittext_background"
+                    android:textSize="11sp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <Button
+                    android:id="@+id/btnEnter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Enter"
+                    android:backgroundTint="#007BFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="16dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:id="@+id/layoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnFooterHome"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Home"
+            android:backgroundTint="#3F7AE0"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="false"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/btnFooterBack"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Back"
+            android:backgroundTint="#3F7AE0"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+</LinearLayout>

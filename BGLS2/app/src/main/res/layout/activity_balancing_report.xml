@@ -203,64 +203,60 @@
             android:paddingHorizontal="16dp"/>
     </LinearLayout>
 
-    <!-- Filter Row -->
-    <HorizontalScrollView
+    <!-- Filter Row (Directly under Toolbar) -->
+    <LinearLayout
         android:id="@+id/layoutFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:visibility="gone"
+        android:orientation="horizontal"
+        android:padding="4dp"
         android:elevation="4dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="4dp">
-            <EditText android:layout_width="100dp" android:layout_height="36dp" android:hint="HEAD" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
-            <EditText android:layout_width="80dp" android:layout_height="36dp" android:hint="GL" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
-            <EditText android:layout_width="120dp" android:layout_height="36dp" android:hint="SCHEME" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
-            <EditText android:layout_width="150dp" android:layout_height="36dp" android:hint="ACCT NAME" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
-            <EditText android:layout_width="100dp" android:layout_height="36dp" android:hint="BALANCE" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:gravity="end"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+        <EditText android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.0" android:hint="HEAD" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
+        <EditText android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.8" android:hint="GL" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
+        <EditText android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.2" android:hint="SCHEME" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.5" android:layout_margin="2dp"/>
+        <EditText android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="2.0" android:hint="NAME" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.8" android:layout_margin="2dp"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.0" android:layout_margin="2dp"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.0" android:layout_margin="2dp"/>
+        <EditText android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.2" android:hint="BAL" android:textSize="10sp" android:paddingHorizontal="8dp" android:background="@drawable/edittext_background" android:layout_margin="2dp" android:gravity="end"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.0" android:layout_margin="2dp"/>
+        <View android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="1.0" android:layout_margin="2dp"/>
+    </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
-        
+        android:orientation="vertical">
+
+        <!-- Table Header (Full Width) -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <!-- Table Header -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#F8F9FA"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="HEAD" />
-                <TextView style="@style/TableHeader" android:layout_width="80dp" android:text="GL" />
-                <TextView style="@style/TableHeader" android:layout_width="120dp" android:text="SCHEME CODE" />
-                <TextView style="@style/TableHeader" android:layout_width="120dp" android:text="ACCT ID" />
-                <TextView style="@style/TableHeader" android:layout_width="200dp" android:text="ACCT NAME" />
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="CURRENCY" />
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="CREDITS" android:gravity="end|center_vertical" android:paddingEnd="8dp"/>
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="DEBITS" android:gravity="end|center_vertical" android:paddingEnd="8dp"/>
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="BALANCE" android:gravity="end|center_vertical" android:paddingEnd="8dp"/>
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="STATUS" android:gravity="center"/>
-                <TextView style="@style/TableHeader" android:layout_width="100dp" android:text="ACTION" android:gravity="center"/>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBalancingReport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#F8F9FA"
+            android:paddingVertical="8dp">
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="HEAD" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="GL" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="SCH" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="ACCT ID" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="NAME" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CUR" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CR" android:gravity="end|center_vertical" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="DR" android:gravity="end|center_vertical" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="BAL" android:gravity="end|center_vertical" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STA" android:gravity="center"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACT" android:gravity="center"/>
         </LinearLayout>
-    </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBalancingReport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"/>
+    </LinearLayout>
 
 </LinearLayout>

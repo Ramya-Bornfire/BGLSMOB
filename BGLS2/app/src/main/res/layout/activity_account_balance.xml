@@ -216,40 +216,34 @@
         android:singleLine="true"
         android:elevation="2dp"/>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
+        <!-- TABLE HEADER (Full Width) -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <!-- TABLE HEADER -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#F8F9FA"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:minWidth="50dp"  android:text="SRL NO"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.6" android:minWidth="120dp" android:text="CUSTOMER ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:minWidth="160dp" android:text="ACCOUNT ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="150dp" android:text="ACCOUNT NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp"  android:text="DATE OF LOAN"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:minWidth="120dp" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="LOAN AMOUNT"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:minWidth="120dp" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="BALANCE"/>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvLeaseAccounts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#F8F9FA"
+            android:paddingVertical="8dp">
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:text="SRL NO"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.6" android:text="CUSTOMER ID"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="ACCOUNT ID"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:text="ACCOUNT NAME"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DATE"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="AMOUNT"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="BALANCE"/>
         </LinearLayout>
-    </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLeaseAccounts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"/>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressLease"

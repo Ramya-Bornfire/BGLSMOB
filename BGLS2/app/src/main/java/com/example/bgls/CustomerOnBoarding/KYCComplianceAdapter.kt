@@ -33,6 +33,7 @@ class KYCComplianceAdapter(
         val tvAccountType: TextView = view.findViewById(R.id.tvAccountType)
         val tvCustomerName: TextView = view.findViewById(R.id.tvCustomerName)
         val tvNationalId: TextView = view.findViewById(R.id.tvNationalId)
+        val tvStatus: TextView = view.findViewById(R.id.tvStatus)
         val rbSelect: RadioButton = view.findViewById(R.id.rbSelect)
     }
 
@@ -50,6 +51,13 @@ class KYCComplianceAdapter(
         holder.tvAccountType.text = item.accountType
         holder.tvCustomerName.text = item.customerName
         holder.tvNationalId.text = item.nationalId
+
+        if (item.status != null) {
+            holder.tvStatus.visibility = View.VISIBLE
+            holder.tvStatus.text = item.status
+        } else {
+            holder.tvStatus.visibility = View.GONE
+        }
 
         holder.rbSelect.isChecked = item.applRefNo == selectedAppRefNo
 
