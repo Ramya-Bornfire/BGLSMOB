@@ -2,20 +2,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="32dp"
+    android:minWidth="950dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:paddingTop="1dp"
-    android:paddingBottom="1dp">
+    android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvCustId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:textSize="11sp"
+        android:minWidth="150dp"
+        android:padding="12dp"
+        android:textSize="12sp"
         android:textColor="#007BFF"
         android:ellipsize="end"
         android:maxLines="2"/>
@@ -25,7 +24,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:textSize="11sp"
+        android:minWidth="200dp"
+        android:padding="12dp"
+        android:textSize="12sp"
         android:textColor="#333333"
         android:ellipsize="end"
         android:maxLines="2"/>
@@ -35,7 +36,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="11sp"
+        android:minWidth="100dp"
+        android:padding="12dp"
+        android:textSize="12sp"
         android:textColor="#333333"
         android:maxLines="2"/>
 
@@ -44,7 +47,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:textSize="11sp"
+        android:minWidth="150dp"
+        android:padding="12dp"
+        android:textSize="12sp"
         android:textColor="#333333"
         android:maxLines="2"/>
 
@@ -53,8 +58,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:gravity="end"
-        android:textSize="11sp"
+        android:minWidth="150dp"
+        android:padding="12dp"
+        android:gravity="end|center_vertical"
+        android:textSize="12sp"
         android:textColor="#333333"
         android:maxLines="2"/>
 
@@ -63,8 +70,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minWidth="100dp"
+        android:padding="12dp"
         android:gravity="center"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:maxLines="2"/>
 
@@ -72,6 +81,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minWidth="100dp"
+        android:padding="12dp"
         android:gravity="center">
         
         <RadioButton
@@ -80,7 +91,7 @@
             android:layout_height="wrap_content"
             android:buttonTint="#007BFF"
             android:layout_centerInParent="true"
-            android:clickable="true"
-            android:focusable="true" />
+            android:clickable="false"
+            android:focusable="false" />
     </RelativeLayout>
 </LinearLayout>

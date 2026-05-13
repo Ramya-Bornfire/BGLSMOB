@@ -178,73 +178,103 @@
     </LinearLayout>
 
     <!-- MAIN CONTENT -->
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:fillViewport="true"
+        android:scrollbars="horizontal"
+        android:descendantFocusability="blocksDescendants">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#E9ECEF"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:minWidth="950dp"
+            android:background="#FFFFFF">
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:text="CUSTOMER ID"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E8EAED">
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:text="CUSTOMER NAME"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:minWidth="150dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:text="CUSTOMER ID"/>
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="ACCOUNT NO"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:minWidth="200dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:text="CUSTOMER NAME"/>
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:text="DATE OF DEPOSIT"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:minWidth="100dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:text="ACCOUNT NO"/>
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:gravity="end"
-                android:text="DEPOSIT AMOUNT"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:minWidth="150dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:text="DATE OF DEPOSIT"/>
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="STATUS"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:minWidth="150dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:gravity="end|center_vertical"
+                    android:text="DEPOSIT AMOUNT"/>
 
-            <TextView
-                style="@style/TableHeader"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="ACTION"/>
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:minWidth="100dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:text="STATUS"/>
+
+                <TextView
+                    style="@style/TableHeader"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:minWidth="100dp"
+                    android:background="@drawable/table_cell_bg"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:text="ACTION"/>
+            </LinearLayout>
+
+
+            <!-- RECYCLER VIEW -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvDepositAccounts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minWidth="950dp"
+                android:background="#FFFFFF"/>
         </LinearLayout>
-
-
-        <!-- RECYCLER VIEW -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvDepositAccounts"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

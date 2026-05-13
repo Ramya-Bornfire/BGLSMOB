@@ -54,6 +54,10 @@ class DepositAccountAdapter(
             holder.itemView.setBackgroundColor(Color.parseColor("#F8F9FA"))
         }
 
+        holder.itemView.setOnClickListener {
+            onActionClick(account)
+        }
+
         holder.rbSelect.setOnClickListener {
             onActionClick(account)
         }
@@ -62,6 +66,9 @@ class DepositAccountAdapter(
             onCustIdClick(account)
         }
 
+        holder.tvActNo.setOnClickListener {
+            onLedgerClick(account.actNo)
+        }
     }
 
     override fun getItemCount(): Int = accountList.size
