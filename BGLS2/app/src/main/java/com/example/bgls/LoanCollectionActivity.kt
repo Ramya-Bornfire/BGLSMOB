@@ -31,7 +31,11 @@ class LoanCollectionActivity : AppCompatActivity() {
     private lateinit var btnBulkAdd: Button
     private lateinit var btnBulkUpload: Button
     private lateinit var btnSubmit: Button
-
+    private lateinit var btnBack: ImageView
+    private lateinit var btnHome: ImageView
+    private lateinit var txtUserIdInfo: TextView
+    private lateinit var txtUserNameInfo: TextView
+    private lateinit var txtLoginTimeInfo: TextView
     // Weights (must match header)
     private val W_TRAN_ID   = 1.2f
     private val W_NAMES     = 1.5f
@@ -64,12 +68,26 @@ class LoanCollectionActivity : AppCompatActivity() {
         btnBulkAdd = findViewById(R.id.btnBulkAdd)
         btnBulkUpload = findViewById(R.id.btnBulkUpload)
         btnSubmit = findViewById(R.id.btnSubmit)
+        btnBack = findViewById(R.id.btnBack)
+        btnHome = findViewById(R.id.btnHome)
+        txtUserIdInfo = findViewById(R.id.txtUserIdInfo)
+        txtUserNameInfo = findViewById(R.id.txtUserNameInfo)
+        txtLoginTimeInfo = findViewById(R.id.txtLoginTimeInfo)
 
+        // Optionally set session data here if available
+        // txtUserIdInfo.text = session.userId
         layoutBulkCollection.visibility = LinearLayout.VISIBLE
 
         btnBulkAdd.setOnClickListener { addRow() }
         btnBulkUpload.setOnClickListener { filePickerLauncher.launch("*/*") }
         btnSubmit.setOnClickListener { submitManualRows() }
+        btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        btnHome.setOnClickListener {
+            finishAffinity()
+        }
     }
 
     // ----------------------------------------------------------------------

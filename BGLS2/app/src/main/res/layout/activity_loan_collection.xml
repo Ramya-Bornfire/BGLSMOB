@@ -6,282 +6,467 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".LoanCollectionActivity">
 
+    <!-- MAIN CONTAINER -->
     <LinearLayout
         android:id="@+id/layoutBulkCollection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnSubmit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- ─── Section Header Bar ─── -->
+        <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/header_bg"
+            android:layout_marginTop="30dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="24dp"
+            android:elevation="8dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/arrow_back"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@android:color/white"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BULK COLLECTION"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                android:layout_centerInParent="true"/>
+
+            <!-- Right Side Container (User Info + Buttons) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+                <!-- Vertical User Info -->
+                <LinearLayout
+                    android:id="@+id/userInfoLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="wrap_content"
+                            android:text="User ID"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="4dp"/>
+                        <TextView
+                            android:id="@+id/txtUserIdInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="EMP04"
+                            android:textColor="@android:color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp">
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="wrap_content"
+                            android:text="User Name"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="4dp"/>
+                        <TextView
+                            android:id="@+id/txtUserNameInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Manivanan"
+                            android:textColor="@android:color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp">
+                        <TextView
+                            android:layout_width="65dp"
+                            android:layout_height="wrap_content"
+                            android:text="Login Time"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textColor="#AACFFF"
+                            android:textSize="10sp"
+                            android:layout_marginEnd="4dp"/>
+                        <TextView
+                            android:id="@+id/txtLoginTimeInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="--"
+                            android:textColor="@android:color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/btnHome"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/home"
+                    android:padding="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@android:color/white"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- BUTTON ROW -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/header_bg"
-            android:padding="8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Bulk Collection"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:gravity="center"
-                android:textColor="@color/white"/>
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/btnBulkUpload"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="Upload"
-                android:textSize="10sp"
-                android:textAllCaps="false"
+                android:layout_height="36dp"
                 android:backgroundTint="#007BFF"
-                android:textColor="#FFFFFF"/>
+                android:text="Upload"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btnBulkAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="#28A745"
+                android:text="Add"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="11sp" />
+
         </LinearLayout>
 
-        <!-- ─── Add Button ─── -->
-        <Button
-            android:id="@+id/btnBulkAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="32dp"
-            android:text="Add"
-            android:textSize="10sp"
-            android:textAllCaps="false"
-            android:backgroundTint="#28A745"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
-
-        <!-- ─── Table Container ─── -->
-        <!--
-             KEY FIX: No HorizontalScrollView here.
-             layout_weight works only when parent has a known width.
-             match_parent on this outer LinearLayout gives weights
-             a reference width = full screen width on every device.
-        -->
-        <LinearLayout
+        <!-- TABLE AREA -->
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="4dp"
-            android:background="#FFFFFF">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
 
-            <!-- ─── Table Header ─── -->
-            <!--
-                Weights used here:
-                TranId=1.2, Names=1.5, Ref=1.2, Mobile=1.5,
-                Amount=1.0, AllocAmt=1.2, Time=1.5, Status=1.2,
-                AllocRB=0.8, Delete=0.6
-                Total = 11.7
-                All row cells must use the SAME weights.
-            -->
+            <!-- IMPORTANT -->
+            <!-- Width fixed so all columns visible correctly -->
             <LinearLayout
-                android:id="@+id/llTableHeader"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:background="#E9ECEF">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    android:text="Transaction ID"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:text="Names"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    android:text="Reference"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:text="Mobile Number"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    android:text="Amount"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    android:text="Allocated Amount"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:text="Trans. Time"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    android:text="Status"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:text="Allocated"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.6"
-                    android:text="Del"
-                    android:padding="4dp"
-                    android:textStyle="bold"
-                    android:textSize="9sp"
-                    android:textColor="#444444"
-                    android:background="@drawable/table_cell_bg"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-            <!-- ─── Rows Container ─── -->
-            <LinearLayout
-                android:id="@+id/llBulkRows"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#FFFFFF">
-
-                <!-- Default first row — same weights as header -->
+                <!-- TABLE HEADER -->
                 <LinearLayout
+                    android:id="@+id/llTableHeader"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="45dp"
+                    android:background="#DDE3EA"
                     android:orientation="horizontal">
 
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.2" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.5" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.2" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.5" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.0" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.2" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:text="0" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.5" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:text="01-05-2026 13:00" android:gravity="center"/>
-                    <EditText android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1.2" android:background="@drawable/table_cell_bg" android:textSize="9sp" android:padding="4dp" android:text="UNALLOCATED" android:gravity="center"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="120dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.8"
                         android:background="@drawable/table_cell_bg"
-                        android:gravity="center">
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minHeight="0dp"
-                            android:minWidth="0dp"/>
-                    </LinearLayout>
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Transaction ID"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.6"
                         android:background="@drawable/table_cell_bg"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_delete"
-                            android:padding="2dp"/>
-                    </LinearLayout>
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Names"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Reference"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Mobile Number"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Amount"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Allocated Amount"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Trans. Time"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Status"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Allocated"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Del"
+                        android:textColor="#222222"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
+
+                <!-- ROWS -->
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:id="@+id/llBulkRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- DEFAULT ROW -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="150dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="150dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="140dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="0"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="150dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="01-05-2026 13:00"
+                                android:textSize="10sp"/>
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center"
+                                android:padding="4dp"
+                                android:text="UNALLOCATED"
+                                android:textSize="10sp"/>
+
+                            <LinearLayout
+                                android:layout_width="90dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center">
+
+                                <RadioButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/table_cell_bg"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@android:drawable/ic_menu_delete"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
             </LinearLayout>
-        </LinearLayout>
+
+        </HorizontalScrollView>
 
     </LinearLayout>
+
+    <!-- SUBMIT -->
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="Submit"
-        android:textSize="14sp"
-        android:textAllCaps="false"
+        android:layout_marginBottom="14dp"
         android:backgroundTint="#007BFF"
-        android:textColor="#FFFFFF"
+        android:text="Submit"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

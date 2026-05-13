@@ -22,6 +22,9 @@ class BatchJobActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
     private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
     private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private lateinit var txtUserIdInfo: TextView
+    private lateinit var txtUserNameInfo: TextView
+    private lateinit var txtLoginTimeInfo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +51,20 @@ class BatchJobActivity : AppCompatActivity() {
         findViewById<View>(R.id.rowPenaltyAccrual).setOnClickListener { showAccrualDialog("Penalty") }
         findViewById<View>(R.id.rowInterestAccrual).setOnClickListener { showAccrualDialog("Interest") }
 
-        findViewById<Button>(R.id.btnHome).setOnClickListener { finish() }
+        // Header icons
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnHome).setOnClickListener { finish() }
+
+        txtUserIdInfo = findViewById(R.id.txtUserIdInfo)
+        txtUserNameInfo = findViewById(R.id.txtUserNameInfo)
+        txtLoginTimeInfo = findViewById(R.id.txtLoginTimeInfo)
+
+        // Bottom Buttons
+        findViewById<Button>(R.id.btnHomeBottom).setOnClickListener { finish() }
         findViewById<Button>(R.id.btnRefresh).setOnClickListener {
             Toast.makeText(this, "Batch jobs refreshed", Toast.LENGTH_SHORT).show()
         }
-        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<Button>(R.id.btnBackBottom).setOnClickListener { finish() }
     }
 
     // ----------------------------- Helper: Date picker -----------------------------
