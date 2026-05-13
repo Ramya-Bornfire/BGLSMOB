@@ -174,16 +174,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="#E9ECEF"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Category"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="Customer ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Account No"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Name"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Open Date"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Close Date"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Currency"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Balance" android:gravity="center"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Select" android:gravity="center"/>
+                android:paddingVertical="4dp">
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Category" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="Customer ID" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Account No" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="Name" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Open Date" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Close Date" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Currency" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="80dp" android:text="Balance" android:gravity="center" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="70dp" android:text="Status" android:textSize="11sp"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="Select" android:gravity="center" android:textSize="11sp"/>
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
