@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import android.content.Intent
 import android.widget.ImageView
 import com.example.bgls.MainActivity
+import com.example.bgls.DepositAccount.DepositAccountMaintenanceFlowActivity
 
 class CustomerMasterViewActivity : AppCompatActivity() {
 
@@ -292,12 +293,27 @@ class CustomerMasterViewActivity : AppCompatActivity() {
                     recyclerViewAccountDetails.isNestedScrollingEnabled = false
                     recyclerViewAccountDetails.adapter =
                         AccountDetailAdapter(this@CustomerMasterViewActivity, accounts) { account ->
-                            val intent = Intent(this@CustomerMasterViewActivity,
-                                LoanMasterViewActivity::class.java)
-                            intent.putExtra("loanId", account.accountId)
-                            intent.putExtra("holderKey", account.holderKey)
-                            intent.putExtra("branchKey", this@CustomerMasterViewActivity.intent.getStringExtra("branchKey") ?: "")
-                            startActivity(intent)
+                            val clickedAccId = account.accountId
+                            if (clickedAccId.startsWith("TD")) {
+                                val navIntent = Intent(this@CustomerMasterViewActivity,
+                                    DepositAccountMaintenanceFlowActivity::class.java)
+                                navIntent.putExtra("ACCT_ID", clickedAccId)
+                                startActivity(navIntent)
+                            } else if (clickedAccId.startsWith("LA")) {
+                                val navIntent = Intent(this@CustomerMasterViewActivity,
+                                    LoanMasterViewActivity::class.java)
+                                navIntent.putExtra("loanId", clickedAccId)
+                                navIntent.putExtra("holderKey", account.holderKey)
+                                navIntent.putExtra("branchKey", this@CustomerMasterViewActivity.intent.getStringExtra("branchKey") ?: "")
+                                startActivity(navIntent)
+                            } else {
+                                val navIntent = Intent(this@CustomerMasterViewActivity,
+                                    LoanMasterViewActivity::class.java)
+                                navIntent.putExtra("loanId", clickedAccId)
+                                navIntent.putExtra("holderKey", account.holderKey)
+                                navIntent.putExtra("branchKey", this@CustomerMasterViewActivity.intent.getStringExtra("branchKey") ?: "")
+                                startActivity(navIntent)
+                            }
                         }
                 } else {
                     Toast.makeText(

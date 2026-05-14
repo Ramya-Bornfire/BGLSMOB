@@ -25,7 +25,8 @@ import com.example.bgls.DataModels.CustomerMasterViewResponse
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
-import retrofit2.Response           // <-- ADD THIS IMPORT
+import retrofit2.Response
+import com.example.bgls.DepositAccount.DepositAccountMaintenanceFlowActivity
 
 class CustomerMaintenanceViewActivity : AppCompatActivity() {
 
@@ -152,11 +153,24 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
                     this@CustomerMaintenanceViewActivity,
                     accounts
                 ) { account ->
-                    val intent = Intent(this@CustomerMaintenanceViewActivity, LoanMasterViewActivity::class.java)
-                    intent.putExtra("loanId", account.accountId)
-                    intent.putExtra("holderKey", account.holderKey)
-                    intent.putExtra("branchKey", branchKey)   // branchKey is already defined in the activity
-                    startActivity(intent)
+                    val clickedAccId = account.accountId
+                    if (clickedAccId.startsWith("TD")) {
+                        val intent = Intent(this@CustomerMaintenanceViewActivity, DepositAccountMaintenanceFlowActivity::class.java)
+                        intent.putExtra("ACCT_ID", clickedAccId)
+                        startActivity(intent)
+                    } else if (clickedAccId.startsWith("LA")) {
+                        val intent = Intent(this@CustomerMaintenanceViewActivity, LoanMasterViewActivity::class.java)
+                        intent.putExtra("loanId", clickedAccId)
+                        intent.putExtra("holderKey", account.holderKey)
+                        intent.putExtra("branchKey", branchKey)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@CustomerMaintenanceViewActivity, LoanMasterViewActivity::class.java)
+                        intent.putExtra("loanId", clickedAccId)
+                        intent.putExtra("holderKey", account.holderKey)
+                        intent.putExtra("branchKey", branchKey)
+                        startActivity(intent)
+                    }
                 }
             } else {
                 showToast("Failed to load account details")
