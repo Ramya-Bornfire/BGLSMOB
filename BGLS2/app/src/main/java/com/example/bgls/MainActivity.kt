@@ -284,7 +284,7 @@ class MainActivity : AppCompatActivity() {
             "Account Balances"          -> Intent(this, AccountBalanceActivity::class.java)
             "Interest Summary"          -> Intent(this, InterestSummaryActivity::class.java)
             "Journal Book"              -> Intent(this, JournalEntriesListActivity::class.java)
-            "Account Ledger"            -> Intent(this, TransAccountLedgerActivity::class.java)
+            "Account Ledger"            -> Intent(this, TransInqAccountLedgerActivity::class.java)
             "Balance Sheet"             -> Intent(this, BalanceSheetActivity::class.java)
             "Balancing Report"          -> Intent(this, BalancingReportActivity::class.java)
             "Batch Job"                 -> Intent(this, BatchJobActivity::class.java)

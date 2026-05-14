@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <TextView android:id="@+id/tvHead"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1" android:minWidth="80dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvAcctId"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.5" android:minWidth="120dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#2196F3"/>
+
+    <TextView android:id="@+id/tvAcctName"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="2.5" android:minWidth="200dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvCurrency"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="0.8" android:minWidth="60dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvCredits"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.2" android:minWidth="100dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical|end"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvDebits"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.2" android:minWidth="100dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical|end"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvBalance"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="1.2" android:minWidth="100dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical|end"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#333333"/>
+
+    <TextView android:id="@+id/tvStatus"
+        android:layout_width="0dp" android:layout_height="match_parent"
+        android:layout_weight="0.8" android:minWidth="60dp"
+        android:paddingTop="12dp" android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp" android:paddingEnd="8dp"
+        android:textSize="12sp" android:textColor="#4CAF50"/>
+
+    <!-- Action (Eye Icon) -->
+    <RadioButton android:id="@+id/ivAction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.6"
+        android:minWidth="40dp"
+        android:padding="8dp"
+        android:contentDescription="View"
+        app:tint="#607D8B"/>
+
+</LinearLayout>

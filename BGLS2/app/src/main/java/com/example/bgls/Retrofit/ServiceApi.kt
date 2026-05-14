@@ -170,6 +170,12 @@ interface ServiceApi {
         @Query("type") type: String
     ): Call<List<ChartAccountItem>>
 
+    /** Suspend version – for coroutine-based callers */
+    @GET("api/chartaccounts/filter")
+    suspend fun filterChartOfAccountsSuspend(
+        @Query("type") type: String
+    ): retrofit2.Response<List<ChartAccountItem>>
+
     @GET("api/chartOfAccounts")
     fun getChartOfAccountsReferences(
         @Query("formmode") formmode: String = "add"
@@ -460,6 +466,21 @@ interface ServiceApi {
         @Query("formmode") formmode: String = "view",
         @Query("acct_num") acctNum: String
     ): retrofit2.Response<com.example.bgls.DataModels.AccountLedgerViewResponse>
+
+    /** Account Ledger list – returns all chart accounts */
+    @GET("api/accountLedger2")
+    suspend fun getAccountLedger2List(
+        @Query("formmode") formmode: String = "list"
+    ): retrofit2.Response<com.example.bgls.DataModels.AccountLedgerListResponse>
+
+    /** Account Ledger Excel download */
+    @GET("api/accountledgerdownload")
+    @Streaming
+    suspend fun downloadAccountLedgerExcel(
+        @Query("acct_num") acctNum: String,
+        @Query("fromdate") fromDate: String? = null,
+        @Query("todate") toDate: String? = null
+    ): retrofit2.Response<okhttp3.ResponseBody>
 
     @GET("api/getTypeDescription")
     suspend fun getTypeDescription(@Query("refType") refType: String): Response<TypeDescriptionResponse>

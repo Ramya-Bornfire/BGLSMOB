@@ -374,6 +374,10 @@
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
+            android:name=".TransactionInquiries.TransInqAccountLedgerActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".BatchJobExecution.BatchJobActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
