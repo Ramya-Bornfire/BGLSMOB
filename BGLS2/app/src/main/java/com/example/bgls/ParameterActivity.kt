@@ -39,6 +39,9 @@ import okhttp3.ResponseBody
 class ParameterActivity : AppCompatActivity() {
 
     private var moduleFromIntent: String = "Reference Code Maintenance"
+    private var isFilterVisible = false
+    private var currentHeaderRow: TableRow? = null
+    private var currentFilterRow: TableRow? = null
 
     private lateinit var binding:  ActivityParameterBinding
 
@@ -181,7 +184,16 @@ class ParameterActivity : AppCompatActivity() {
         }
 
         binding.btnFilter.setOnClickListener {
-            Toast.makeText(this, "Filter criteria for $currentModule", Toast.LENGTH_SHORT).show()
+            isFilterVisible = !isFilterVisible
+            currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+            currentFilterRow?.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+            
+            if (isFilterVisible) {
+                applyFilters()
+            } else {
+                clearFilters()
+                applyFilters()
+            }
         }
 
         binding.btnUpload.setOnClickListener {
@@ -337,7 +349,19 @@ class ParameterActivity : AppCompatActivity() {
             headerRow.addView(tv)
         }
 
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEach {
+            filterRow.addView(createFilterEditText(it, 1f))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
@@ -428,7 +452,19 @@ class ParameterActivity : AppCompatActivity() {
             headerRow.addView(tv)
         }
 
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEach {
+            filterRow.addView(createFilterEditText(it, 1f))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
@@ -490,7 +526,19 @@ class ParameterActivity : AppCompatActivity() {
             tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEach {
+            filterRow.addView(createFilterEditText(it, 1f))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
@@ -605,7 +653,19 @@ class ParameterActivity : AppCompatActivity() {
             headerRow.addView(tv)
         }
 
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEach {
+            filterRow.addView(createFilterEditText(it, 1f))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         data.forEachIndexed { rowIndex, item ->
             val row = TableRow(this)
@@ -665,7 +725,19 @@ class ParameterActivity : AppCompatActivity() {
             headerRow.addView(tv)
         }
 
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEach {
+            filterRow.addView(createFilterEditText(it, 1f))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         // Use forEachIndexed instead of forEach to get rowIndex
         data.forEachIndexed { rowIndex, item ->
@@ -845,7 +917,19 @@ class ParameterActivity : AppCompatActivity() {
             headerRow.addView(textView)
         }
 
+        currentHeaderRow = headerRow
+        currentHeaderRow?.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
         tableLayout.addView(headerRow)
+
+        val filterRow = TableRow(this).apply {
+            setBackgroundColor(Color.parseColor("#E0E5E9"))
+            visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        }
+        headers.forEachIndexed { index, header ->
+            filterRow.addView(createFilterEditText(header, weights[index]))
+        }
+        currentFilterRow = filterRow
+        tableLayout.addView(filterRow)
 
         // Data rows
         data.forEachIndexed { rowIndex, item ->
@@ -994,8 +1078,95 @@ class ParameterActivity : AppCompatActivity() {
             } else {
                 textSize = 13f
             }
-            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight)
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight).apply {
+                setMargins(2, 2, 2, 2)
+            }
             maxLines = 2
+        }
+    }
+
+    private fun createFilterEditText(hintText: String, weight: Float): View {
+        val actionHints = listOf("Action ▼", "ACTIONS", "ACTION", "Select")
+        if (actionHints.any { it.equals(hintText, ignoreCase = true) }) {
+            return TextView(this).apply {
+                text = hintText
+                setPadding(8, 8, 8, 8)
+                gravity = Gravity.CENTER
+                setTypeface(typeface, Typeface.BOLD)
+                textSize = 10f
+                layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight).apply {
+                    setMargins(2, 2, 2, 2)
+                }
+            }
+        }
+        return android.widget.EditText(this).apply {
+            hint = hintText
+            setPadding(8, 8, 8, 8)
+            gravity = Gravity.CENTER_VERTICAL
+            textSize = 10f
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight).apply {
+                setMargins(2, 2, 2, 2)
+            }
+            setBackgroundResource(R.drawable.edittext_bg)
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            setSingleLine(true)
+            
+            addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+            setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                    applyFilters()
+                    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                    imm.hideSoftInputFromWindow(windowToken, 0)
+                    true
+                } else false
+            }
+        }
+    }
+
+    private fun applyFilters() {
+        if (currentFilterRow == null) return
+        
+        val filterTexts = mutableListOf<String>()
+        for (i in 0 until currentFilterRow!!.childCount) {
+            val child = currentFilterRow!!.getChildAt(i)
+            if (child is android.widget.EditText) {
+                filterTexts.add(child.text.toString().trim().lowercase())
+            } else {
+                filterTexts.add("")
+            }
+        }
+        
+        for (i in 2 until tableLayout.childCount) {
+            val row = tableLayout.getChildAt(i) as TableRow
+            var match = true
+            for (j in 0 until row.childCount) {
+                val filterText = filterTexts.getOrNull(j) ?: ""
+                if (filterText.isNotEmpty()) {
+                    val cellText = (row.getChildAt(j) as? TextView)?.text?.toString()?.lowercase() ?: ""
+                    if (!cellText.contains(filterText)) {
+                        match = false
+                        break
+                    }
+                }
+            }
+            row.visibility = if (match) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun clearFilters() {
+        if (currentFilterRow == null) return
+        for (i in 0 until currentFilterRow!!.childCount) {
+            val child = currentFilterRow!!.getChildAt(i)
+            if (child is android.widget.EditText) {
+                child.text.clear()
+            }
         }
     }
 
