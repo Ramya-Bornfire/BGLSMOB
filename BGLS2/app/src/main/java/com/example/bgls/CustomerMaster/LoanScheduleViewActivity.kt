@@ -256,12 +256,63 @@ class LoanScheduleViewActivity : AppCompatActivity() {
         return try {
             when (dateObj) {
                 is Long -> dateFormat.format(Date(dateObj))
-                is String -> dateObj.toLongOrNull()?.let { dateFormat.format(Date(it)) } ?: dateObj
                 is Date -> dateFormat.format(dateObj)
+                is String -> {
+                    val trimmed = dateObj.trim()
+                    if (trimmed.isEmpty()) return ""
+
+                    // If it's already in the correct format, return it
+                    if (trimmed.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return trimmed
+
+                    // Try to parse as a Long (timestamp)
+                    val timestamp = trimmed.toLongOrNull()
+                    if (timestamp != null) {
+                        return dateFormat.format(Date(timestamp))
+                    }
+
+                    // Try various known formats
+                    val inputFormats = arrayOf(
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                        "yyyy-MM-dd'T'HH:mm:ss",
+                        "yyyy-MM-dd HH:mm:ss",
+                        "yyyy-MM-dd",
+                        "dd-MM-yyyy"
+                    )
+
+                    var result: String? = null
+                    for (format in inputFormats) {
+                        try {
+                            val sdf = SimpleDateFormat(format, Locale.US)
+                            val date = sdf.parse(trimmed)
+                            if (date != null) {
+                                result = dateFormat.format(date)
+                                break
+                            }
+                        } catch (e: Exception) {
+                            // try next format
+                        }
+                    }
+                    
+                    if (result != null) return result
+
+                    // Fallback: If it contains 'T', just take the date part
+                    if (trimmed.contains("T")) {
+                        val datePart = trimmed.substringBefore("T")
+                        if (datePart.matches(Regex("^\\d{4}-\\d{2}-\\d{2}$"))) {
+                            try {
+                                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                                val date = sdf.parse(datePart)
+                                if (date != null) return dateFormat.format(date)
+                            } catch (e: Exception) {}
+                        }
+                    }
+                    
+                    trimmed
+                }
                 else -> dateObj.toString()
             }
         } catch (e: Exception) {
-            ""
+            dateObj.toString()
         }
     }
 

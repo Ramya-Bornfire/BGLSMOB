@@ -251,22 +251,44 @@ class LoanMasterViewActivity : AppCompatActivity() {
 
     private fun formatDate(dateString: String?): String {
         if (dateString.isNullOrEmpty()) return ""
-        if (dateString.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return dateString
-        return try {
-            val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", java.util.Locale.getDefault())
-            val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
-            val date = inputFormat.parse(dateString) ?: return dateString
-            outputFormat.format(date)
-        } catch (e: Exception) {
+        val trimmed = dateString.trim()
+        if (trimmed.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return trimmed
+        
+        val inputFormats = arrayOf(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy-MM-dd",
+            "dd-MM-yyyy"
+        )
+        
+        for (format in inputFormats) {
             try {
-                val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-                val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
-                val date = inputFormat.parse(dateString) ?: return dateString
-                outputFormat.format(date)
-            } catch (e2: Exception) {
-                dateString
+                val inputFormat = java.text.SimpleDateFormat(format, java.util.Locale.US)
+                val outputFormat = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US)
+                val date = inputFormat.parse(trimmed)
+                if (date != null) {
+                    return outputFormat.format(date)
+                }
+            } catch (e: Exception) {
+                // try next format
             }
         }
+
+        // Fallback: If it contains 'T', just take the date part
+        if (trimmed.contains("T")) {
+            val datePart = trimmed.substringBefore("T")
+            if (datePart.matches(Regex("^\\d{4}-\\d{2}-\\d{2}$"))) {
+                try {
+                    val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
+                    val outSdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US)
+                    val date = sdf.parse(datePart)
+                    if (date != null) return outSdf.format(date)
+                } catch (e: Exception) {}
+            }
+        }
+        
+        return trimmed
     }
 
     private fun formatDecimal(value: Double?): String {

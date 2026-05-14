@@ -128,8 +128,13 @@ class AccountLedgerActivity : AppCompatActivity() {
         // Status
         val status = if (ca.acctStatus == "Y" || ca.entityFlg == "Y") "ACTIVE" else "INACTIVE"
         etAcctStatus.setText(status)
+
+        // Open/Close Dates
+        etAcctOpenDate.setText(formatBackendDate(ca.acctOpnDate))
+        etAcctCloseDate.setText(formatBackendDate(ca.acctClsDate))
+        
+        // From/To Dates
         etFromDate.setText(formatBackendDate(data.tranDate))
-        // Dates - Backend format might vary, but using dd-MM-yyyy for display
         etToDate.setText(formatBackendDate(data.tranDate))
     }
 
@@ -201,33 +206,54 @@ class AccountLedgerActivity : AppCompatActivity() {
 
     private fun formatBackendDate(dateObj: Any?): String {
         if (dateObj == null) return ""
-        val dateStr = dateObj.toString()
+        val dateStr = dateObj.toString().trim()
         if (dateStr.isEmpty()) return ""
 
+        // If already in dd-MM-yyyy format, return it
+        if (dateStr.matches(Regex("^\\d{2}-\\d{2}-\\d{4}$"))) return dateStr
+
         return try {
-            // If it's a timestamp
-            if (dateStr.toDoubleOrNull() != null) {
-                val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                return sdf.format(java.util.Date(dateStr.toLong()))
+            // Check if it's a timestamp (Long)
+            val timestamp = dateStr.toLongOrNull()
+            if (timestamp != null) {
+                val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+                return sdf.format(java.util.Date(timestamp))
             }
             
             // Standard backend formats
             val inputFormats = arrayOf(
                 "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd HH:mm:ss",
                 "yyyy-MM-dd",
                 "dd-MM-yyyy",
                 "EEE MMM dd HH:mm:ss zzz yyyy" // Java Date.toString()
             )
+            
+            val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.US)
             
             for (format in inputFormats) {
                 try {
                     val parser = SimpleDateFormat(format, Locale.US)
                     val date = parser.parse(dateStr)
                     if (date != null) {
-                        return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
+                        return outputFormat.format(date)
                     }
                 } catch (e: Exception) {}
             }
+
+            // Fallback: If it contains 'T', just take the date part
+            if (dateStr.contains("T")) {
+                val datePart = dateStr.substringBefore("T")
+                if (datePart.matches(Regex("^\\d{4}-\\d{2}-\\d{2}$"))) {
+                    try {
+                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        val date = sdf.parse(datePart)
+                        if (date != null) return outputFormat.format(date)
+                    } catch (e: Exception) {}
+                }
+            }
+
             dateStr
         } catch (e: Exception) {
             dateStr

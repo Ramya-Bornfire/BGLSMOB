@@ -21,7 +21,9 @@ data class ChartAccountDetail(
     @SerializedName("ref_crncy_bal") val refCrncyBal: Double? = null,
     @SerializedName("modify_user") val modifyUser: String? = null,
     @SerializedName("modify_time") val modifyTime: String? = null,
-    @SerializedName("entry_time") val entryTime: String? = null
+    @SerializedName("entry_time") val entryTime: String? = null,
+    @SerializedName("acct_opn_date") val acctOpnDate: String? = null,
+    @SerializedName("acct_cls_date") val acctClsDate: String? = null
 )
 
 data class AccountLedgerViewResponse(
