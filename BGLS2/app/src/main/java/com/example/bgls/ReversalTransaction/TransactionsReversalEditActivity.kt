@@ -57,7 +57,7 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
         }
         
         findViewById<Button>(R.id.btnAddTransaction).setOnClickListener {
-            val emptyModel = ReversalDetailModel("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+            val emptyModel = ReversalDetailModel("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
             showTransactionDetailsDialog(emptyModel, isAddMode = true)
         }
     }
@@ -150,7 +150,9 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
             flowDate = formatDate(item.flow_date),
             tranDate = formatDate(item.tran_date),
             valueDate = formatDate(item.value_date),
+            tranCode = item.tran_code ?: "",
             tranReportCode = item.tran_rpt_code ?: "",
+            tranRefNo = item.tran_ref_no ?: "",
             additionalDetails = item.add_details ?: "",
             partitionType = item.partition_type ?: "",
             partitionDetails = item.partition_det ?: "",
@@ -274,11 +276,27 @@ class TransactionsReversalEditActivity : AppCompatActivity() {
         val etAmount = dialog.findViewById<android.widget.EditText>(R.id.etDiagAmount)
         etAmount.setText(data.amount.replace(",", ""))
         
+        dialog.findViewById<android.widget.TextView>(R.id.diagParticulars).text = data.particulars
+        dialog.findViewById<android.widget.TextView>(R.id.diagRemarks).text = data.remarks
         dialog.findViewById<android.widget.TextView>(R.id.diagFlowDate).text = data.flowDate
         dialog.findViewById<android.widget.TextView>(R.id.diagTranDate).text = data.tranDate
         dialog.findViewById<android.widget.TextView>(R.id.diagValueDate).text = data.valueDate
+        dialog.findViewById<android.widget.TextView>(R.id.diagTranCode).text = data.tranCode
+        dialog.findViewById<android.widget.TextView>(R.id.diagTranReportCode).text = data.tranReportCode
+        dialog.findViewById<android.widget.TextView>(R.id.diagTranRefNo).text = data.tranRefNo
+        dialog.findViewById<android.widget.TextView>(R.id.diagAdditionalDetails).text = data.additionalDetails
+        dialog.findViewById<android.widget.TextView>(R.id.diagPartitionType).text = data.partitionType
+        dialog.findViewById<android.widget.TextView>(R.id.diagPartitionDetails).text = data.partitionDetails
+        dialog.findViewById<android.widget.TextView>(R.id.diagInstrumentNo).text = data.instrumentNo
+        dialog.findViewById<android.widget.TextView>(R.id.diagInstrumentDate).text = data.instrumentDate
+        dialog.findViewById<android.widget.TextView>(R.id.diagRefCurrency).text = data.currency
+        dialog.findViewById<android.widget.TextView>(R.id.diagHomeCurrencyAmount).text = data.homeCurrencyAmount
+        dialog.findViewById<android.widget.TextView>(R.id.diagRateCode).text = data.rateCode
+        dialog.findViewById<android.widget.TextView>(R.id.diagRate).text = data.rate
         dialog.findViewById<android.widget.TextView>(R.id.diagEntryUser).text = data.entryUser
         dialog.findViewById<android.widget.TextView>(R.id.diagPostUser).text = data.postUser
+        dialog.findViewById<android.widget.TextView>(R.id.diagEntryTime).text = data.entryTime
+        dialog.findViewById<android.widget.TextView>(R.id.diagPostTime).text = data.postTime
         dialog.findViewById<android.widget.TextView>(R.id.diagStatus).text = data.tranStatus
         dialog.findViewById<android.widget.TextView>(R.id.diagDeleted).text = data.deleted
 

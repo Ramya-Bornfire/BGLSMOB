@@ -174,47 +174,39 @@
             android:layout_marginEnd="8dp"/>
     </LinearLayout>
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true"
-        android:scrollbars="horizontal">
+        android:orientation="vertical"
+        android:background="#FFFFFF">
         
+        <!-- Table Header -->
         <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#F8F9FA"
+            android:paddingVertical="8dp">
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="TRAN DATE"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="TRAN ID"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:text="PA TRAN TY"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CURRENCY"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT" android:gravity="end|center_vertical" android:paddingEnd="8dp"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:text="ACCT ID"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:text="ACCT NAME"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:text="TRAN PARTICULAR"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="SELECT" android:gravity="center"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecoveryReversal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:minWidth="1200dp"
-            android:background="#FFFFFF">
-            
-            <!-- Table Header -->
-            <LinearLayout
-                android:layout_marginTop="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#F8F9FA"
-                android:paddingVertical="8dp">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:text="TRAN DATE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:text="TRAN ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.9" android:minWidth="90dp" android:text="PA TRAN TY"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:text="CURRENCY"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:text="AMOUNT" android:gravity="end|center_vertical" android:paddingEnd="8dp"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:text="ACCT ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="180dp" android:text="ACCT NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:text="TRAN PARTICULAR"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:text="STATUS"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:text="SELECT" android:gravity="center"/>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecoveryReversal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFFFFF"/>
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:background="#FFFFFF"/>
+    </LinearLayout>
 
     <!-- Footer Pagination -->
     <LinearLayout

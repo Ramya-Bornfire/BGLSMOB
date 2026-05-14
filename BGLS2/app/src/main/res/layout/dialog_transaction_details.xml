@@ -77,13 +77,21 @@
 
             <!-- Row 5 -->
             <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Particulars" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagParticulars" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Tran Remarks" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagRemarks" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 6 -->
+            <TableRow android:paddingVertical="4dp">
                 <TextView android:text="Flow Code" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
                 <Spinner android:id="@+id/spinnerDiagFlowCode" android:layout_width="match_parent" android:layout_height="36dp" android:background="@drawable/spinner_background"/>
                 <TextView android:text="Flow Date" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
                 <TextView android:id="@+id/diagFlowDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
             </TableRow>
 
-            <!-- Row 6 -->
+            <!-- Row 7 -->
             <TableRow android:paddingVertical="4dp">
                 <TextView android:text="Tran Date" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
                 <TextView android:id="@+id/diagTranDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
@@ -91,7 +99,55 @@
                 <TextView android:id="@+id/diagValueDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
             </TableRow>
 
-            <!-- Add more rows as needed to match screenshot -->
+            <!-- Row 8 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Code" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagTranCode" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Tran Report Code" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagTranReportCode" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 9 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Tran Ref NO" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagTranRefNo" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Additional Details" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagAdditionalDetails" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 10 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Partition Type" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagPartitionType" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Partition Details" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagPartitionDetails" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 11 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Instrument NO" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagInstrumentNo" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Instrument Date" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagInstrumentDate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 12 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Ref Currency" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagRefCurrency" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Home Currency Amount" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagHomeCurrencyAmount" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 13 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Rate Code" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagRateCode" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Rate" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagRate" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 14 -->
             <TableRow android:paddingVertical="4dp">
                 <TextView android:text="Entry User" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
                 <TextView android:id="@+id/diagEntryUser" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
@@ -99,6 +155,15 @@
                 <TextView android:id="@+id/diagPostUser" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
             </TableRow>
 
+            <!-- Row 15 -->
+            <TableRow android:paddingVertical="4dp">
+                <TextView android:text="Entry Time" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
+                <TextView android:id="@+id/diagEntryTime" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+                <TextView android:text="Post Time" android:textSize="12sp" android:textColor="#333333" android:paddingHorizontal="8dp"/>
+                <TextView android:id="@+id/diagPostTime" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>
+            </TableRow>
+
+            <!-- Row 16 -->
             <TableRow android:paddingVertical="4dp">
                 <TextView android:text="Tran Status" android:textSize="12sp" android:textColor="#333333" android:paddingEnd="8dp"/>
                 <TextView android:id="@+id/diagStatus" android:background="@drawable/table_cell_bg" android:padding="8dp" android:textSize="12sp"/>

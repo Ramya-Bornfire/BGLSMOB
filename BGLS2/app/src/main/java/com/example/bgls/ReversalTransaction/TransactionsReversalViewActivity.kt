@@ -81,14 +81,14 @@ class TransactionsReversalViewActivity : AppCompatActivity() {
         detailList.add(ReversalDetailModel(
             "TR00001", "1523", "MGJJ129", "HAROLD OPICHO", "TRANSFER", "Debit", "KES", "33,600.00",
             "Loan Disbursement Amount", "Loan Disbursement Amount", "DISBT", "10-04-2019", "10-04-2019", "10-04-2019",
-            "", "", "P", "Partition Detail", "", "10-04-2019", "0.00", "RC01", "0.00",
+            "", "", "", "", "P", "Partition Detail", "", "10-04-2019", "0.00", "RC01", "0.00",
             "SYSTEM", "30-03-2019", "POST USER", "02-10-2025", "POSTED", "N"
         ))
         // Add one more for pagination demo
         detailList.add(ReversalDetailModel(
             "TR00001", "1524", "WA00001", "HAROLD OPICHO", "TRANSFER", "Credit", "KES", "33,600.00",
             "Loan Disbursement Amount", "Loan Disbursement Amount", "DISBT", "10-04-2019", "10-04-2019", "10-04-2019",
-            "", "", "P", "Partition Detail", "", "10-04-2019", "0.00", "RC01", "0.00",
+            "", "", "", "", "P", "Partition Detail", "", "10-04-2019", "0.00", "RC01", "0.00",
             "SYSTEM", "30-03-2019", "POST USER", "02-10-2025", "POSTED", "N"
         ))
     }

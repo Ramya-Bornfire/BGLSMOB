@@ -29,7 +29,7 @@ class RecoveryReversalActivity : AppCompatActivity() {
     private val dataList = mutableListOf<ReversalTransactionModel>()
 
     private var currentPage = 1
-    private val pageSize = 10
+    private val pageSize = 200
     private var totalPages = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {

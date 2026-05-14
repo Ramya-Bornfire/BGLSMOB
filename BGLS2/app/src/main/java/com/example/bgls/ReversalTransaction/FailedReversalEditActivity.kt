@@ -167,7 +167,9 @@ class FailedReversalEditActivity : AppCompatActivity() {
             flowDate = formatDate(item.flow_date),
             tranDate = formatDate(item.tran_date),
             valueDate = formatDate(item.value_date),
+            tranCode = item.tran_code ?: "",
             tranReportCode = item.tran_rpt_code ?: "",
+            tranRefNo = item.tran_ref_no ?: "",
             additionalDetails = item.add_details ?: "",
             partitionType = item.partition_type ?: "",
             partitionDetails = item.partition_det ?: "",
@@ -332,11 +334,27 @@ class FailedReversalEditActivity : AppCompatActivity() {
         etAmount.isEnabled = true
         etAmount.setBackgroundResource(R.drawable.edittext_bg)
 
+        dialog.findViewById<TextView>(R.id.diagParticulars).text = data.particulars
+        dialog.findViewById<TextView>(R.id.diagRemarks).text = data.remarks
         dialog.findViewById<TextView>(R.id.diagFlowDate).text = data.flowDate
         dialog.findViewById<TextView>(R.id.diagTranDate).text = data.tranDate
         dialog.findViewById<TextView>(R.id.diagValueDate).text = data.valueDate
+        dialog.findViewById<TextView>(R.id.diagTranCode).text = data.tranCode
+        dialog.findViewById<TextView>(R.id.diagTranReportCode).text = data.tranReportCode
+        dialog.findViewById<TextView>(R.id.diagTranRefNo).text = data.tranRefNo
+        dialog.findViewById<TextView>(R.id.diagAdditionalDetails).text = data.additionalDetails
+        dialog.findViewById<TextView>(R.id.diagPartitionType).text = data.partitionType
+        dialog.findViewById<TextView>(R.id.diagPartitionDetails).text = data.partitionDetails
+        dialog.findViewById<TextView>(R.id.diagInstrumentNo).text = data.instrumentNo
+        dialog.findViewById<TextView>(R.id.diagInstrumentDate).text = data.instrumentDate
+        dialog.findViewById<TextView>(R.id.diagRefCurrency).text = data.currency
+        dialog.findViewById<TextView>(R.id.diagHomeCurrencyAmount).text = data.homeCurrencyAmount
+        dialog.findViewById<TextView>(R.id.diagRateCode).text = data.rateCode
+        dialog.findViewById<TextView>(R.id.diagRate).text = data.rate
         dialog.findViewById<TextView>(R.id.diagEntryUser).text = data.entryUser
         dialog.findViewById<TextView>(R.id.diagPostUser).text = data.postUser
+        dialog.findViewById<TextView>(R.id.diagEntryTime).text = data.entryTime
+        dialog.findViewById<TextView>(R.id.diagPostTime).text = data.postTime
         dialog.findViewById<TextView>(R.id.diagStatus).text = data.tranStatus
         dialog.findViewById<TextView>(R.id.diagDeleted).text = data.deleted
 
