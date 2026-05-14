@@ -10,7 +10,7 @@ import com.example.bgls.DataModels.CalendarModel
 import com.example.bgls.R
 
 class CalendarAdapter(
-    private val list: List<CalendarModel>,
+    private var list: List<CalendarModel>,
     private val onClick: (String) -> Unit
 ) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
@@ -52,4 +52,9 @@ class CalendarAdapter(
     }
 
     override fun getItemCount() = list.size
+
+    fun updateData(newList: List<CalendarModel>) {
+        list = newList
+        notifyDataSetChanged()
+    }
 }

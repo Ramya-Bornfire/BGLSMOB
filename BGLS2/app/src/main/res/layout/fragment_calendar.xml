@@ -55,95 +55,91 @@
             android:layout_marginStart="8dp"
             android:visibility="gone"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layoutFilter"
+    <FrameLayout
+        android:id="@+id/frameCalendarHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:visibility="gone">
+        android:layout_height="wrap_content">
 
-        <!-- Year Filter -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/layoutDefaultHeader"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="#E0E5E9"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:visibility="visible">
 
             <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="Year"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"/>
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="Month"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Select"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutFilterHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="10dp"
+            android:background="#E0E5E9"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/etFilterYear"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                 android:background="@drawable/edittext_bg"
-                android:hint="Enter Year"
-                android:padding="2dp"/>
-        </LinearLayout>
+                android:layout_weight="1"
+                android:hint="Year"
+                android:textSize="12sp"
+                android:padding="5dp"
+                android:background="@android:color/white"
+                android:layout_marginEnd="4dp"
+                android:inputType="textCapCharacters"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"/>
 
-        <!-- Month Filter -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginStart="12dp">
+            <EditText
+                android:id="@+id/etFilterMonth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Month"
+                android:textSize="12sp"
+                android:padding="5dp"
+                android:background="@android:color/white"
+                android:layout_marginEnd="4dp"
+                android:inputType="textCapCharacters"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Month"
+                android:text="Select"
                 android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="6dp"/>
-
-            <EditText
-                android:id="@+id/etFilterMonth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_bg"
-                 android:padding="2dp"
-                android:hint="Enter Month"/>
+                android:textSize="12sp"
+                android:textColor="#333333"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/layoutTableHeader"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="Year"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="Month"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Select"
-            android:textStyle="bold"/>
-    </LinearLayout>
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/layoutHolidayHeader"
         android:layout_width="match_parent"

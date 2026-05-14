@@ -21,6 +21,9 @@ import java.util.Locale
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private lateinit var recycler: RecyclerView
+    private var isFilterVisible = false
+    private var allCalendarData = mutableListOf<CalendarModel>()
+    private lateinit var calendarAdapter: CalendarAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,10 +36,27 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         recycler = view.findViewById(R.id.recyclerCalendar)
         val tabCalendar = view.findViewById<TextView>(R.id.tabCalendar)
         val tabHoliday = view.findViewById<TextView>(R.id.tabHoliday)
-        val header = view.findViewById<LinearLayout>(R.id.layoutTableHeader)
+        val headerContainer = view.findViewById<FrameLayout>(R.id.frameCalendarHeader)
+        val layoutDefaultHeader = view.findViewById<LinearLayout>(R.id.layoutDefaultHeader)
+        val layoutFilterHeader = view.findViewById<LinearLayout>(R.id.layoutFilterHeader)
         val holidayHeader = view.findViewById<LinearLayout>(R.id.layoutHolidayHeader)
 
         recycler.layoutManager = LinearLayoutManager(requireContext())
+
+        btnFilter.setOnClickListener {
+            isFilterVisible = !isFilterVisible
+            layoutDefaultHeader.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+            layoutFilterHeader.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+            
+            if (isFilterVisible) {
+                applyCalendarFilter()
+            } else {
+                clearColumnFilters()
+                applyCalendarFilter()
+            }
+        }
+
+        setupColumnFilterLogic(view)
 
         // 🔥 CALENDAR TAB
         tabCalendar.setOnClickListener {
@@ -49,7 +69,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
             recycler.visibility = View.VISIBLE
             layoutHoliday.visibility = View.GONE
-            header.visibility = View.VISIBLE
+            headerContainer.visibility = View.VISIBLE
             holidayHeader.visibility = View.GONE
 
             loadCalendar()
@@ -66,7 +86,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
             recycler.visibility = View.VISIBLE
             layoutHoliday.visibility = View.GONE
-            header.visibility = View.GONE
+            headerContainer.visibility = View.GONE
+            
+            isFilterVisible = false
+            layoutDefaultHeader.visibility = View.VISIBLE
+            layoutFilterHeader.visibility = View.GONE
+            
             holidayHeader.visibility = View.VISIBLE
 
 //            loadHolidays("")
@@ -82,7 +107,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         btnAdd.setOnClickListener {
             layoutHoliday.visibility = View.VISIBLE
             recycler.visibility = View.GONE
-            header.visibility = View.GONE
+            headerContainer.visibility = View.GONE
             holidayHeader.visibility = View.GONE
             btnAdd.visibility = View.GONE
         }
@@ -114,21 +139,29 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     // Get UI references (make them accessible inside the lambda)
                     val btnFilter = requireView().findViewById<Button>(R.id.btnFilter)
                     val btnAdd = requireView().findViewById<Button>(R.id.btnAdd)
-                    val header = requireView().findViewById<LinearLayout>(R.id.layoutTableHeader)
+                    val headerContainer = requireView().findViewById<FrameLayout>(R.id.frameCalendarHeader)
+                    val layoutDefaultHeader = requireView().findViewById<LinearLayout>(R.id.layoutDefaultHeader)
+                    val layoutFilterHeader = requireView().findViewById<LinearLayout>(R.id.layoutFilterHeader)
                     val holidayHeader = requireView().findViewById<LinearLayout>(R.id.layoutHolidayHeader)
 
-                    recycler.adapter = CalendarAdapter(mappedList) { selectedMonth ->
+                    allCalendarData = mappedList.toMutableList()
+                    calendarAdapter = CalendarAdapter(allCalendarData) { selectedMonth ->
                         // 1. Load holidays
                         loadHolidays(selectedMonth)
 
                         // 2. Switch to holiday header
-                        header.visibility = View.GONE
+                        headerContainer.visibility = View.GONE
+                        isFilterVisible = false
+                        layoutDefaultHeader.visibility = View.VISIBLE
+                        layoutFilterHeader.visibility = View.GONE
                         holidayHeader.visibility = View.VISIBLE
 
                         // 3. Adjust buttons (like the Holiday tab)
                         btnFilter.visibility = View.GONE
                         btnAdd.visibility = View.VISIBLE
                     }
+                    recycler.adapter = calendarAdapter
+                    applyCalendarFilter()
                 } else {
                     Toast.makeText(requireContext(), "API Error", Toast.LENGTH_SHORT).show()
                 }
@@ -172,6 +205,54 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun setupColumnFilterLogic(view: View) {
+        val etFilterYear = view.findViewById<EditText>(R.id.etFilterYear)
+        val etFilterMonth = view.findViewById<EditText>(R.id.etFilterMonth)
+
+        val textWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isFilterVisible) applyCalendarFilter()
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        }
+
+        etFilterYear.addTextChangedListener(textWatcher)
+        etFilterMonth.addTextChangedListener(textWatcher)
+
+        val editorActionListener = TextView.OnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH || actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                applyCalendarFilter()
+                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                true
+            } else false
+        }
+
+        etFilterYear.setOnEditorActionListener(editorActionListener)
+        etFilterMonth.setOnEditorActionListener(editorActionListener)
+    }
+
+    private fun applyCalendarFilter() {
+        if (!::calendarAdapter.isInitialized) return
+
+        val view = view ?: return
+        val etYear = view.findViewById<EditText>(R.id.etFilterYear).text.toString().trim()
+        val etMonth = view.findViewById<EditText>(R.id.etFilterMonth).text.toString().trim()
+
+        val filtered = allCalendarData.filter { item ->
+            val matchesYear = etYear.isEmpty() || (item.year?.contains(etYear, ignoreCase = true) == true)
+            val matchesMonth = etMonth.isEmpty() || (item.month?.contains(etMonth, ignoreCase = true) == true)
+            matchesYear && matchesMonth
+        }
+        calendarAdapter.updateData(filtered)
+    }
+
+    private fun clearColumnFilters() {
+        view?.findViewById<EditText>(R.id.etFilterYear)?.text?.clear()
+        view?.findViewById<EditText>(R.id.etFilterMonth)?.text?.clear()
     }
 
 }
