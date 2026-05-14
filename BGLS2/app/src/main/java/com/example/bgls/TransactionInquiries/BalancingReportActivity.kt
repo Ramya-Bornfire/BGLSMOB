@@ -163,10 +163,21 @@ class BalancingReportActivity :  AppCompatActivity() {
 
             // Setup Action Spinner
             val actions = listOf("Action", "Modify", "Verify", "Delete", "View")
-            val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, actions)
+//            val adapter = ArrayAdapter(holder.itemView.context, android.R.layout.simple_spinner_item, actions)
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            holder.spinnerAction.adapter = adapter
+            val adapter = object : ArrayAdapter<String>(
+                holder.itemView.context,
+                R.layout.spinner_small_item,
+                actions
+            ) {
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent)
+                }
+            }
+
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             holder.spinnerAction.adapter = adapter
-
             holder.spinnerAction.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                     val selectedAction = actions[pos]

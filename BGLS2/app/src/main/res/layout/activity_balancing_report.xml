@@ -247,9 +247,9 @@
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="CUR" />
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CR" android:gravity="end|center_vertical" />
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="DR" android:gravity="end|center_vertical" />
-            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="BAL" android:gravity="end|center_vertical" />
-            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STA" android:gravity="center"/>
-            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACT" android:gravity="center"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="BALANCE" android:gravity="end|center_vertical" />
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS" android:gravity="center"/>
+            <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="ACTION" android:gravity="center"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
