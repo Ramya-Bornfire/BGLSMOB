@@ -451,7 +451,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="#333333"
-                    android:background="#EEEEEE"
+                    android:background="#FFFFFF"
                     android:paddingStart="16dp" android:paddingEnd="16dp"
                     android:paddingTop="12dp" android:paddingBottom="12dp"/>
 

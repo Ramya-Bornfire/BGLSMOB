@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/main"
-    android:background="#F5F5F5">
+    android:background="#FFFFFF">
 
     <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
     <RelativeLayout

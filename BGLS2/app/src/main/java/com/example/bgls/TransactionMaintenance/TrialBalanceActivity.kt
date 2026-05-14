@@ -263,11 +263,7 @@ class TrialBalanceActivity : AppCompatActivity() {
             holder.tvClosingBal.text = decimalFormat.format(item.closingBal)
             
             // Zebra striping
-            if (position % 2 == 0) {
-                holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-            } else {
-                holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-            }
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
             
             holder.tvGlCode.setOnClickListener { onItemClick(item) }
         }
@@ -306,13 +302,10 @@ class TrialBalanceActivity : AppCompatActivity() {
             }
             
             // Zebra striping
-            if (position % 2 == 0) {
-                holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-            } else {
-                holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-            }
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
         }
 
         override fun getItemCount() = list.size
     }
 }
+

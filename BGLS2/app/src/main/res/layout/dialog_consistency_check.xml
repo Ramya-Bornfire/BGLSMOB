@@ -16,7 +16,7 @@
         android:textColor="#333333"
         android:padding="16dp"/>
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFFFFF"/>
 
     <!-- Content -->
     <LinearLayout
@@ -50,7 +50,7 @@
             <TextView android:id="@+id/tvTrmDebit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFFFFF"/>
 
         <!-- Row 2: COA Balance -->
         <LinearLayout
@@ -63,7 +63,7 @@
             <TextView android:id="@+id/tvCoaDebit" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="-" android:textSize="12sp" android:textColor="#555555" android:gravity="end"/>
         </LinearLayout>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFFFFF"/>
 
         <!-- Row 3: DAB Balance -->
         <LinearLayout
@@ -114,3 +114,4 @@
     </LinearLayout>
 
 </LinearLayout>
+

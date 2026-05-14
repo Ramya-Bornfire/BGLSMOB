@@ -53,7 +53,7 @@ class WalletTransactionAdapter(private val transactions: List<WalletTransaction>
         
         // Alternate colors
         if (position % 2 == 1) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
+            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
         } else {
             holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
         }
@@ -61,3 +61,4 @@ class WalletTransactionAdapter(private val transactions: List<WalletTransaction>
 
     override fun getItemCount(): Int = transactions.size
 }
+

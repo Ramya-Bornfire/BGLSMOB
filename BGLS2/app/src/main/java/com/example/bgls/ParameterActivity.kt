@@ -332,8 +332,8 @@ class ParameterActivity : AppCompatActivity() {
 
         headers.forEach {
             val tv = createTextView(it, true, 1f)
-            tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
-            tv.setTextColor(Color.WHITE)
+            tv.setBackgroundColor(Color.WHITE)
+            tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
 
@@ -402,11 +402,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // alternate row colors
-                if (rowIndex % 2 == 0) {
-                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                } else {
-                    tv.setBackgroundColor(Color.WHITE)
-                }
+                tv.setBackgroundColor(android.graphics.Color.WHITE)
 
                 row.addView(tv)
             }
@@ -427,8 +423,8 @@ class ParameterActivity : AppCompatActivity() {
 
         headers.forEach {
             val tv = createTextView(it, true, 1f)
-            tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
-            tv.setTextColor(Color.WHITE)
+            tv.setBackgroundColor(Color.WHITE)
+            tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
 
@@ -470,11 +466,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // alternate row color
-                if (rowIndex % 2 == 0) {
-                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                } else {
-                    tv.setBackgroundColor(Color.WHITE)
-                }
+                tv.setBackgroundColor(android.graphics.Color.WHITE)
 
                 row.addView(tv)
             }
@@ -494,8 +486,8 @@ class ParameterActivity : AppCompatActivity() {
         val headerRow = TableRow(this)
         headers.forEach {
             val tv = createTextView(it, true, 1f)
-            tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
-            tv.setTextColor(Color.WHITE)
+            tv.setBackgroundColor(Color.WHITE)
+            tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
         tableLayout.addView(headerRow)
@@ -590,9 +582,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // Alternate row background
-                if (rowIndex % 2 == 0) tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                else tv.setBackgroundColor(Color.WHITE)
-
+                tv.setBackgroundColor(android.graphics.Color.WHITE)
                 row.addView(tv)
             }
             tableLayout.addView(row)
@@ -610,8 +600,8 @@ class ParameterActivity : AppCompatActivity() {
 
         headers.forEach {
             val tv = createTextView(it, true, 1f)
-            tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
-            tv.setTextColor(Color.WHITE)
+            tv.setBackgroundColor(Color.WHITE)
+            tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
 
@@ -649,11 +639,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // alternate row color
-                if (rowIndex % 2 == 0) {
-                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                } else {
-                    tv.setBackgroundColor(Color.WHITE)
-                }
+                tv.setBackgroundColor(android.graphics.Color.WHITE)
 
                 row.addView(tv)
             }
@@ -674,8 +660,8 @@ class ParameterActivity : AppCompatActivity() {
 
         headers.forEach {
             val tv = createTextView(it, true, 1f)
-            tv.setBackgroundColor(ContextCompat.getColor(this, R.color.cyanblue))
-            tv.setTextColor(Color.WHITE)
+            tv.setBackgroundColor(Color.WHITE)
+            tv.setTextColor(Color.BLACK)
             headerRow.addView(tv)
         }
 
@@ -810,11 +796,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // Alternate row colors - now rowIndex is available
-                if (rowIndex % 2 == 0) {
-                    tv.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                } else {
-                    tv.setBackgroundColor(Color.WHITE)
-                }
+                tv.setBackgroundColor(android.graphics.Color.WHITE)
 
                 row.addView(tv)
             }
@@ -828,12 +810,7 @@ class ParameterActivity : AppCompatActivity() {
 
         // Header row
         val headerRow = TableRow(this).apply {
-            setBackgroundColor(
-                ContextCompat.getColor(
-                    this@ParameterActivity,
-                    R.color.gray_light
-                )
-            )
+            setBackgroundColor(android.graphics.Color.WHITE)
         }
 
         val headers = listOf(
@@ -862,10 +839,8 @@ class ParameterActivity : AppCompatActivity() {
                 weights[index]
             )
 
-            textView.setBackgroundColor(
-                ContextCompat.getColor(this, R.color.cyanblue)
-            )
-            textView.setTextColor(Color.WHITE)
+            textView.setBackgroundColor(Color.WHITE)
+            textView.setTextColor(Color.BLACK)
 
             headerRow.addView(textView)
         }
@@ -920,13 +895,7 @@ class ParameterActivity : AppCompatActivity() {
                 }
 
                 // Alternate row colors
-                if (rowIndex % 2 == 0) {
-                    textView.setBackgroundColor(
-                        Color.parseColor("#F5F5F5")
-                    )
-                } else {
-                    textView.setBackgroundColor(Color.WHITE)
-                }
+                textView.setBackgroundColor(android.graphics.Color.WHITE)
 
                 row.addView(textView)
             }
@@ -1007,13 +976,7 @@ class ParameterActivity : AppCompatActivity() {
                 popupMenu.show()
             }
 
-            if (rowIndex % 2 == 0) {
-                actionText.setBackgroundColor(
-                    Color.parseColor("#F5F5F5")
-                )
-            } else {
-                actionText.setBackgroundColor(Color.WHITE)
-            }
+            actionText.setBackgroundColor(android.graphics.Color.WHITE)
 
             row.addView(actionText)
 
@@ -1348,3 +1311,4 @@ class ParameterActivity : AppCompatActivity() {
             })
     }
 }
+

@@ -53,11 +53,7 @@ class TransactionsReversalAdapter(
         holder.rbSelect.isChecked = (selectedIndex == position)
         
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         // Make ACCT ID clickable as a link
         holder.tvAcctId.paintFlags = holder.tvAcctId.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -82,3 +78,5 @@ class TransactionsReversalAdapter(
 
     override fun getItemCount() = list.size
 }
+
+

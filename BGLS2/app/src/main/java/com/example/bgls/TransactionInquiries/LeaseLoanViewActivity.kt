@@ -72,7 +72,7 @@ class LeaseLoanViewActivity : AppCompatActivity() {
             tab.setOnClickListener {
                 // Update UI: Highlight selected tab
                 tabs.forEach { 
-                    it.setBackgroundColor(Color.parseColor("#F0F0F0"))
+                    it.setBackgroundColor(android.graphics.Color.WHITE)
                     it.setTextColor(Color.parseColor("#333333"))
                 }
                 tab.setBackgroundColor(Color.parseColor("#007BFF"))
@@ -411,3 +411,4 @@ class LeaseLoanViewActivity : AppCompatActivity() {
         rvFlows.adapter = LoanFlowAdapter(flowList)
     }
 }
+

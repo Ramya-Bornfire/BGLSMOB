@@ -51,11 +51,7 @@ class AccountBalanceDepositAdapter(
         holder.tvAccountId.setTextColor(Color.parseColor("#1a6bb5"))
 
         // Alternate row background
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F8F9FA"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         holder.tvAccountId.setOnClickListener { onAccountClick(item) }
     }
@@ -81,3 +77,5 @@ class AccountBalanceDepositAdapter(
         notifyDataSetChanged()
     }
 }
+
+

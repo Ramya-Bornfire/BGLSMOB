@@ -44,11 +44,7 @@ class LoanMasterAdapter(
         holder.tvStatus.text           = item.accountState ?: ""
 
         // Alternate row background for readability
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         // Click listeners
         holder.itemView.setOnClickListener {
@@ -67,3 +63,4 @@ class LoanMasterAdapter(
         notifyDataSetChanged()
     }
 }
+

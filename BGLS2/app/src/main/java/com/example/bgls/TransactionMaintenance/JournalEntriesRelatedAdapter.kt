@@ -41,12 +41,10 @@ class JournalEntriesRelatedAdapter(
         holder.tvStatus.text = item.status
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
     }
 
     override fun getItemCount(): Int = dataList.size
 }
+
+

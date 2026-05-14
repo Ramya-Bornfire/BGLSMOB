@@ -45,11 +45,7 @@ class TabLedgerAdapter(
         holder.tvStatus.text = item.status
         
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         if (item.status.equals("Active", ignoreCase = true)) {
             holder.tvStatus.setTextColor(Color.parseColor("#4CAF50"))
@@ -74,3 +70,5 @@ class TabLedgerAdapter(
         notifyDataSetChanged()
     }
 }
+
+

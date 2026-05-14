@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5">
+    android:background="#FFFFFF">
 
     <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
     <RelativeLayout
@@ -328,7 +328,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5F5F5"
+        android:background="#FFFFFF"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="12dp">
@@ -346,3 +346,4 @@
     </LinearLayout>
 
 </LinearLayout>
+

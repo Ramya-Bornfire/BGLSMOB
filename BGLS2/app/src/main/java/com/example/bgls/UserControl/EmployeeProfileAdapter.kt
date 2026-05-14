@@ -55,11 +55,7 @@ class EmployeeProfileAdapter(
         )
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         holder.tvEmployeeId.setOnClickListener { listener.onView(emp) }
         holder.tvAction.setOnClickListener { anchor ->
@@ -101,3 +97,4 @@ class EmployeeProfileAdapter(
         notifyItemInserted(employeeList.size - 1)
     }
 }
+

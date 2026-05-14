@@ -391,11 +391,7 @@ class CustomerMaintenanceAdapter(
         holder.tvStatus.text = item.status
         
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         // Make Customer ID look like a clickable link
         holder.tvCustomerId.paintFlags = holder.tvCustomerId.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -411,3 +407,4 @@ class CustomerMaintenanceAdapter(
 
     override fun getItemCount(): Int = list.size
 }
+

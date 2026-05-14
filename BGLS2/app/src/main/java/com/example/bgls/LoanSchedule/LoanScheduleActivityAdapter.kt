@@ -51,11 +51,7 @@ class LoanScheduleActivityAdapter(
         holder.tvTotalDues.text         = item.totalDues
 
         // Alternate row background
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
     }
 
     override fun getItemCount(): Int = scheduleList.size
@@ -65,3 +61,4 @@ class LoanScheduleActivityAdapter(
         notifyDataSetChanged()
     }
 }
+

@@ -52,11 +52,7 @@ class DepositOperationAdapter(
             onTranIdClick(holder.tvTranId.text.toString())
         }
 
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F8F9FA"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
     }
 
     private fun formatDate(dateStr: String?): String {
@@ -74,3 +70,5 @@ class DepositOperationAdapter(
 
     override fun getItemCount(): Int = operationList.size
 }
+
+

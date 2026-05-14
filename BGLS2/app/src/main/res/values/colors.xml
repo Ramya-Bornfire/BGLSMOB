@@ -6,7 +6,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
 
-    <color name="colorBackground">#F8F9FA</color>
+    <color name="colorBackground">#FFFFFF</color>
     <color name="colorSurface">#FFFFFF</color>
 
     <color name="textColorPrimary">#1A1D1E</color>

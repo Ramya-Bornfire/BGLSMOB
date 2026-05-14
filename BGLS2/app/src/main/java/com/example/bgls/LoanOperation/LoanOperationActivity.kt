@@ -518,7 +518,7 @@ class LoanOperationActivity : AppCompatActivity() {
 
         flows.forEach { flow ->
             val rowIndex = tlTableContent.childCount - 2
-            val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+            val bgColor = Color.WHITE
             
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -588,7 +588,7 @@ class LoanOperationActivity : AppCompatActivity() {
 
     private fun addBulkRow(data: Map<String, Any>? = null) {
         val rowIndex = llBulkRows.childCount
-        val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+        val bgColor = Color.WHITE
 
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -715,7 +715,7 @@ class LoanOperationActivity : AppCompatActivity() {
             for (acc in list) {
                 if (acc.size < 2) continue
                 val rowIndex = tlAccounts.childCount
-                val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+                val bgColor = Color.WHITE
                 val row = TableRow(this@LoanOperationActivity).apply { setBackgroundColor(bgColor) }
                 val tvNo = TextView(this@LoanOperationActivity).apply {
                     text = acc[0].toString()
@@ -799,3 +799,4 @@ class LoanOperationActivity : AppCompatActivity() {
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
     private fun View.setAllPadding(padding: Int) = setPadding(padding, padding, padding, padding)
 }
+

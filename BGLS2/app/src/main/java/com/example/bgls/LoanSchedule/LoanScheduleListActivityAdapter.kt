@@ -42,11 +42,7 @@ class LoanScheduleListActivityAdapter(
         holder.tvStatus.text           = item.status
 
         // Alternate row background
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         holder.itemView.setOnClickListener { onItemClick(item) }
         holder.tvLoanId.setOnClickListener { onItemClick(item) }
@@ -59,3 +55,4 @@ class LoanScheduleListActivityAdapter(
         notifyDataSetChanged()
     }
 }
+

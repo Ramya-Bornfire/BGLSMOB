@@ -215,82 +215,82 @@
                     
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Id" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="ACCT ID" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetAcctId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetAcctId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Type" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Acct CCY" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetAcctCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetAcctCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Particulars" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranParticulars" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranParticulars" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Flow Code" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetFlowCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetFlowCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Date" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Code" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Ref NO" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranRefNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranRefNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Partition Type" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPartitionType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPartitionType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Instrument NO" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetInstrumentNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetInstrumentNo" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Ref CCY" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetRefCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetRefCcy" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Rate Code" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetRateCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetRateCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Entry User" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetEntryUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetEntryUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Entry Time" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetEntryTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetEntryTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Status" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranStatus" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranStatus" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -304,82 +304,82 @@
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Part Tran Id" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPartTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPartTranId" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Acct Name" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetAcctName" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetAcctName" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Part Tran Type" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPartTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPartTranType" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Amt" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                        <TextView android:id="@+id/tvDetTranAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Remarks" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranRemarks" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranRemarks" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Flow Date" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetFlowDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetFlowDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Value Date" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetValueDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetValueDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Tran Report Code" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetTranReportCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetTranReportCode" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Additional Details" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetAdditionalDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetAdditionalDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Partition Details" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPartitionDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPartitionDetails" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Instrument Date" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetInstrumentDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetInstrumentDate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Ref CCY Amt" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetRefCcyAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                        <TextView android:id="@+id/tvDetRefCcyAmt" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Rate" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetRate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
+                        <TextView android:id="@+id/tvDetRate" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333" android:gravity="end"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Post User" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPostUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPostUser" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Post Time" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetPostTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetPostTime" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                         <TextView android:layout_width="0dp" android:layout_weight="0.4" android:layout_height="wrap_content" android:text="Deleted" android:textSize="12sp" android:textColor="#666666"/>
-                        <TextView android:id="@+id/tvDetDeleted" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#F5F5F5" android:padding="8dp" android:textColor="#333333"/>
+                        <TextView android:id="@+id/tvDetDeleted" android:layout_width="0dp" android:layout_weight="0.6" android:layout_height="wrap_content" android:textSize="12sp" android:background="#FFFFFF" android:padding="8dp" android:textColor="#333333"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -487,3 +487,4 @@
     <!-- Footer removed as buttons moved to header -->
 
 </LinearLayout>
+

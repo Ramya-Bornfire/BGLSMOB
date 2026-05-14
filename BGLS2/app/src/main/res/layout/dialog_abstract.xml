@@ -68,7 +68,7 @@
             android:gravity="center"
             android:textColor="#999999"/>
 
-        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" android:layout_marginTop="8dp"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFFFFF" android:layout_marginTop="8dp"/>
 
         <!-- Summary Section -->
         <LinearLayout
@@ -116,3 +116,4 @@
 
     </LinearLayout>
 </LinearLayout>
+

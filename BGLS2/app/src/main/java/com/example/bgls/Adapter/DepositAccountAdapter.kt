@@ -48,11 +48,7 @@ class DepositAccountAdapter(
         }
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F8F9FA"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
 
         holder.itemView.setOnClickListener {
             onActionClick(account)
@@ -73,3 +69,5 @@ class DepositAccountAdapter(
 
     override fun getItemCount(): Int = accountList.size
 }
+
+

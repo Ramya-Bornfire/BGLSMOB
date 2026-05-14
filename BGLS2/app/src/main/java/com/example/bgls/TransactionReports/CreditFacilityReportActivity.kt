@@ -186,7 +186,7 @@ class CreditFacilityReportActivity : AppCompatActivity() {
             
             // Add Header Row
             val header = TableRow(this).apply {
-                setBackgroundColor(Color.LTGRAY)
+                setBackgroundColor(Color.WHITE)
                 setPadding(2, 2, 2, 2)
             }
             header.addView(TextView(this).apply { 

@@ -45,12 +45,9 @@ class UserActivityAdapter(
         holder.tvRemarks.text = item.remarks ?: ""
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
-        } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F9F9F9"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
     }
 
     override fun getItemCount(): Int = activityList.size
 }
+

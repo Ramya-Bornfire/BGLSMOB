@@ -17,7 +17,7 @@
         android:textColor="#333333"
         android:padding="16dp"/>
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#FFFFFF"/>
 
     <!-- Content that will be hidden after submit -->
     <LinearLayout

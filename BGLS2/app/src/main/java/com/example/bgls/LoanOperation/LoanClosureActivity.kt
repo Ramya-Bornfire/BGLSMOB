@@ -194,7 +194,7 @@ class LoanClosureActivity : AppCompatActivity() {
             for (acc in list) {
                 if (acc.size < 2) continue
                 val rowIndex = tlAccounts.childCount
-                val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+                val bgColor = Color.WHITE
                 val row = TableRow(this@LoanClosureActivity).apply { setBackgroundColor(bgColor) }
                 val tvNo = TextView(this@LoanClosureActivity).apply {
                     text = acc[0].toString(); textSize = 10f
@@ -416,7 +416,7 @@ class LoanClosureActivity : AppCompatActivity() {
         isEditable: Boolean, isDeletable: Boolean
     ): LinearLayout {
         val rowIndex = llRows.childCount
-        val bgColor = if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
+        val bgColor = Color.WHITE
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -749,3 +749,4 @@ class LoanClosureActivity : AppCompatActivity() {
 
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
 }
+

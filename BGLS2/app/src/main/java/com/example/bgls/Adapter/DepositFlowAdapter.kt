@@ -50,11 +50,7 @@ class DepositFlowAdapter(
         holder.rbSelect.visibility = if (isOperationsMode) View.VISIBLE else View.GONE
 
         // Zebra striping
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#FFFFFF"))
-        } else {
-            holder.itemView.setBackgroundColor(android.graphics.Color.parseColor("#F8F9FA"))
-        }
+        holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
         holder.rbSelect.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()
@@ -72,3 +68,4 @@ class DepositFlowAdapter(
 
     override fun getItemCount(): Int = flowList.size
 }
+
