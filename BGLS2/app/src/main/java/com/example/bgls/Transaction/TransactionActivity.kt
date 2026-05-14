@@ -243,15 +243,38 @@ class TransactionActivity : AppCompatActivity() {
     }
 
     private fun formatDate(dateStr: String?): String {
-        if (dateStr.isNullOrEmpty()) return ""
-        return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            val date = inputFormat.parse(dateStr)
-            outputFormat.format(date)
+        if (dateStr == null || dateStr == "null" || dateStr.isEmpty()) return ""
+        try {
+            // If already dd-MM-yyyy
+            if (dateStr.matches(Regex("\\d{2}-\\d{2}-\\d{4}"))) {
+                return dateStr
+            }
+            
+            // If timestamp
+            val timestamp = dateStr.toLongOrNull()
+            if (timestamp != null) {
+                val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                return sdf.format(Date(timestamp))
+            }
+            
+            // If contains time component
+            val cleanDate = if (dateStr.contains("T")) {
+                dateStr.substringBefore("T")
+            } else if (dateStr.contains(" ")) {
+                dateStr.substringBefore(" ")
+            } else {
+                dateStr
+            }
+            
+            // Format from yyyy-MM-dd to dd-MM-yyyy
+            val parts = cleanDate.split("-")
+            if (parts.size == 3 && parts[0].length == 4) {
+                return "${parts[2]}-${parts[1]}-${parts[0]}"
+            }
         } catch (e: Exception) {
-            dateStr
+            // Ignore
         }
+        return dateStr
     }
 
     private fun formatAmount(amount: Double?): String {

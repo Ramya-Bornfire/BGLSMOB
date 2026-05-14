@@ -437,33 +437,4 @@
         </HorizontalScrollView>
     </LinearLayout>
 
-
-
-    <!-- ─── AUDIT FOOTER ─── -->
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:background="#FFFFFF"
-        android:stretchColumns="1,3,5">
-
-        <TableRow android:padding="4dp">
-            <TextView android:text="Entry User :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvEntryUser" android:textSize="11sp" android:textColor="#666666" android:text="SYSTEM"/>
-            <TextView android:text="Modify User :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvModifyUser" android:textSize="11sp" android:textColor="#666666" android:text=""/>
-            <TextView android:text="Verify User :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvVerifyUser" android:textSize="11sp" android:textColor="#666666" android:text="SYSTEM"/>
-        </TableRow>
-
-        <TableRow android:padding="4dp">
-            <TextView android:text="Entry Time :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvEntryTime" android:textSize="11sp" android:textColor="#666666" android:text="06-05-2026"/>
-            <TextView android:text="Modify Time :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvModifyTime" android:textSize="11sp" android:textColor="#666666" android:text=""/>
-            <TextView android:text="Verify Time :" android:textStyle="bold" android:textSize="11sp" android:textColor="#333333" android:gravity="end" android:paddingEnd="8dp"/>
-            <TextView android:id="@+id/tvVerifyTime" android:textSize="11sp" android:textColor="#666666" android:text="06-05-2026"/>
-        </TableRow>
-    </TableLayout>
-
 </LinearLayout>
