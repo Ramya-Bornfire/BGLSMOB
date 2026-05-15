@@ -165,6 +165,20 @@
         android:padding="8dp"
         android:background="#E9ECEF">
         
+        <Button
+            android:id="@+id/btnFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="Filter"
+            android:textAllCaps="false"
+            android:backgroundTint="#2196F3"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="16dp"
+            android:layout_marginEnd="8dp"/>
+
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sort By" android:textSize="11sp" android:textColor="#333333" android:layout_marginEnd="8dp"/>
         <Spinner
             android:id="@+id/spinnerFilter"
@@ -183,6 +197,7 @@
         
         <!-- Table Header -->
         <LinearLayout
+            android:id="@+id/headerRow"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -199,6 +214,28 @@
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:text="TRAN PARTICULAR"/>
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="STATUS"/>
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:text="SELECT" android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Filter Row -->
+        <LinearLayout
+            android:id="@+id/filterRow"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#E0E5E9"
+            android:paddingVertical="4dp"
+            android:visibility="gone">
+            <EditText android:id="@+id/etFilterTranDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:hint="DATE" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterTranId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:hint="ID" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterPaTranTy" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.9" android:hint="TYPE" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterCurrency" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:hint="CURR" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterAmount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:hint="AMT" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterAcctId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:hint="ACCT" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterAcctName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.8" android:hint="NAME" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterTranParticular" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:hint="PART" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterStatus" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:hint="STAT" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="Action" android:gravity="center" android:textSize="10sp" android:textStyle="bold"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

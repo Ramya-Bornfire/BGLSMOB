@@ -21,12 +21,30 @@ import java.util.Locale
 import android.content.Intent
 import android.widget.ImageView
 import com.example.bgls.MainActivity
+import android.view.View
 
 class RecoveryReversalActivity : AppCompatActivity() {
 
     private lateinit var rvRecoveryReversal: RecyclerView
     private lateinit var adapter: TransactionsReversalAdapter
     private val dataList = mutableListOf<ReversalTransactionModel>()
+
+    private lateinit var btnFilter: Button
+    private lateinit var headerRow: android.widget.LinearLayout
+    private lateinit var filterRow: android.widget.LinearLayout
+
+    // Filter EditTexts
+    private lateinit var etFilterTranDate: android.widget.EditText
+    private lateinit var etFilterTranId: android.widget.EditText
+    private lateinit var etFilterPaTranTy: android.widget.EditText
+    private lateinit var etFilterCurrency: android.widget.EditText
+    private lateinit var etFilterAmount: android.widget.EditText
+    private lateinit var etFilterAcctId: android.widget.EditText
+    private lateinit var etFilterAcctName: android.widget.EditText
+    private lateinit var etFilterTranParticular: android.widget.EditText
+    private lateinit var etFilterStatus: android.widget.EditText
+
+    private var isFilterVisible = false
 
     private var currentPage = 1
     private val pageSize = 200
@@ -37,10 +55,36 @@ class RecoveryReversalActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recovery_reversal)
 
         rvRecoveryReversal = findViewById(R.id.rvRecoveryReversal)
+        btnFilter = findViewById(R.id.btnFilter)
+        headerRow = findViewById(R.id.headerRow)
+        filterRow = findViewById(R.id.filterRow)
+
+        // Pre-cache filter fields
+        etFilterTranDate = findViewById(R.id.etFilterTranDate)
+        etFilterTranId = findViewById(R.id.etFilterTranId)
+        etFilterPaTranTy = findViewById(R.id.etFilterPaTranTy)
+        etFilterCurrency = findViewById(R.id.etFilterCurrency)
+        etFilterAmount = findViewById(R.id.etFilterAmount)
+        etFilterAcctId = findViewById(R.id.etFilterAcctId)
+        etFilterAcctName = findViewById(R.id.etFilterAcctName)
+        etFilterTranParticular = findViewById(R.id.etFilterTranParticular)
+        etFilterStatus = findViewById(R.id.etFilterStatus)
+
+        // Standardize filter fields
+        val allFilters = listOf(
+            etFilterTranDate, etFilterTranId, etFilterPaTranTy, etFilterCurrency,
+            etFilterAmount, etFilterAcctId, etFilterAcctName, etFilterTranParticular, etFilterStatus
+        )
+        allFilters.forEach { et ->
+            et.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            et.imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            et.setSingleLine(true)
+        }
 
         setupNavigation()
         setupSpinner()
         setupRecyclerView()
+        setupFilterActions()
         fetchDataFromApi()
 
         // Handle pagination buttons (mock behavior for now, same as TransactionsReversal)
@@ -79,6 +123,62 @@ class RecoveryReversalActivity : AppCompatActivity() {
         spinner.adapter = spinnerAdapter
     }
 
+    private fun setupFilterActions() {
+        btnFilter.setOnClickListener {
+            isFilterVisible = !isFilterVisible
+            headerRow.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+            filterRow.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+            
+            if (!isFilterVisible) {
+                clearAllFilters()
+            } else {
+                applyFilters()
+            }
+        }
+
+        val filters = listOf(
+            etFilterTranDate, etFilterTranId, etFilterPaTranTy, etFilterCurrency,
+            etFilterAmount, etFilterAcctId, etFilterAcctName, etFilterTranParticular, etFilterStatus
+        )
+
+        filters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+        }
+    }
+
+    private fun applyFilters() {
+        adapter.filter(
+            etFilterTranDate.text.toString().trim(),
+            etFilterTranId.text.toString().trim(),
+            etFilterPaTranTy.text.toString().trim(),
+            etFilterCurrency.text.toString().trim(),
+            etFilterAmount.text.toString().trim(),
+            etFilterAcctId.text.toString().trim(),
+            etFilterAcctName.text.toString().trim(),
+            etFilterTranParticular.text.toString().trim(),
+            etFilterStatus.text.toString().trim()
+        )
+    }
+
+    private fun clearAllFilters() {
+        etFilterTranDate.text.clear()
+        etFilterTranId.text.clear()
+        etFilterPaTranTy.text.clear()
+        etFilterCurrency.text.clear()
+        etFilterAmount.text.clear()
+        etFilterAcctId.text.clear()
+        etFilterAcctName.text.clear()
+        etFilterTranParticular.text.clear()
+        etFilterStatus.text.clear()
+        applyFilters()
+    }
+
     private fun fetchDataFromApi() {
         lifecycleScope.launch {
             try {
@@ -88,14 +188,12 @@ class RecoveryReversalActivity : AppCompatActivity() {
                     val body = response.body()!!
                     val gson = Gson()
                     
-                  // val dataJson = gson.toJson(body["data"])
                     val dataJson = gson.toJson(body["jour"])
                     val type = object : TypeToken<List<JournalEntryItem>>() {}.type
                     val items: List<JournalEntryItem>? = gson.fromJson(dataJson, type)
                     
-                    dataList.clear()
-                    items?.forEach { item ->
-                        dataList.add(ReversalTransactionModel(
+                    val newData = items?.map { item ->
+                        ReversalTransactionModel(
                             tranDate = formatDate(item.tran_date),
                             tranId = "${item.tran_id}/${item.part_tran_id}",
                             paTranTy = item.part_tran_type ?: "",
@@ -105,9 +203,12 @@ class RecoveryReversalActivity : AppCompatActivity() {
                             acctName = item.acct_name ?: "",
                             tranParticular = item.tran_particular ?: "",
                             status = item.tran_status ?: ""
-                        ))
-                    }
-                    adapter.notifyDataSetChanged()
+                        )
+                    } ?: emptyList()
+                    
+                    dataList.clear()
+                    dataList.addAll(newData)
+                    adapter.updateList(newData)
                     
                     if (items == null || items.isEmpty()) {
                         Toast.makeText(this@RecoveryReversalActivity, "No recovery transactions found", Toast.LENGTH_SHORT).show()
@@ -131,7 +232,7 @@ class RecoveryReversalActivity : AppCompatActivity() {
         rvRecoveryReversal.layoutManager = LinearLayoutManager(this)
         adapter = TransactionsReversalAdapter(
             context = this,
-            list = dataList,
+            initialList = dataList,
             onAcctIdClick = { position ->
                 val item = dataList[position]
                 val intent = android.content.Intent(this, RecoveryReversalViewActivity::class.java)

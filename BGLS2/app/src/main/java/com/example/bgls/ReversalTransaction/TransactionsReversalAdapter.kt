@@ -13,11 +13,13 @@ import com.example.bgls.R
 
 class TransactionsReversalAdapter(
     private val context: Context,
-    private val list: List<ReversalTransactionModel>,
+    private val initialList: List<ReversalTransactionModel>,
     private val onAcctIdClick: (Int) -> Unit = {},
     private val onSelectClick: (Int) -> Unit = {}
 ) : RecyclerView.Adapter<TransactionsReversalAdapter.ViewHolder>() {
 
+    private var fullList: List<ReversalTransactionModel> = initialList
+    private val list = initialList.toMutableList()
     private var selectedIndex = -1
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -77,6 +79,41 @@ class TransactionsReversalAdapter(
     }
 
     override fun getItemCount() = list.size
+
+    fun updateList(newList: List<ReversalTransactionModel>) {
+        fullList = newList
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(date: String, id: String, type: String, curr: String, amt: String, acctId: String, name: String, particular: String, status: String) {
+        val f1 = date.lowercase()
+        val f2 = id.lowercase()
+        val f3 = type.lowercase()
+        val f4 = curr.lowercase()
+        val f5 = amt.lowercase()
+        val f6 = acctId.lowercase()
+        val f7 = name.lowercase()
+        val f8 = particular.lowercase()
+        val f9 = status.lowercase()
+
+        val filtered = fullList.filter {
+            (f1.isEmpty() || it.tranDate.lowercase().contains(f1)) &&
+            (f2.isEmpty() || it.tranId.lowercase().contains(f2)) &&
+            (f3.isEmpty() || it.paTranTy.lowercase().contains(f3)) &&
+            (f4.isEmpty() || it.currency.lowercase().contains(f4)) &&
+            (f5.isEmpty() || it.amount.lowercase().contains(f5)) &&
+            (f6.isEmpty() || it.acctId.lowercase().contains(f6)) &&
+            (f7.isEmpty() || it.acctName.lowercase().contains(f7)) &&
+            (f8.isEmpty() || it.tranParticular.lowercase().contains(f8)) &&
+            (f9.isEmpty() || it.status.lowercase().contains(f9))
+        }
+
+        list.clear()
+        list.addAll(filtered)
+        notifyDataSetChanged()
+    }
 }
 
 
