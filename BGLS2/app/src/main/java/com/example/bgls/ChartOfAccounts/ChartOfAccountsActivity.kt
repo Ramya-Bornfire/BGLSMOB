@@ -55,6 +55,48 @@ class ChartOfAccountsActivity : AppCompatActivity() {
     private lateinit var chartAdapter: TabChartAdapter
     private lateinit var ledgerAdapter: TabLedgerAdapter
     private lateinit var transactionAdapter: TabTransactionAdapter
+    private lateinit var btnFilter: Button
+    private lateinit var filterRowChart: android.widget.LinearLayout
+    private lateinit var filterRowLedger: android.widget.LinearLayout
+    private lateinit var filterRowTransaction: android.widget.LinearLayout
+    
+    private lateinit var headerRowChart: android.widget.LinearLayout
+    private lateinit var headerRowLedger: android.widget.LinearLayout
+    private lateinit var headerRowTransaction: android.widget.LinearLayout
+
+    // Chart Filters
+    private lateinit var etFilterHead: android.widget.EditText
+    private lateinit var etFilterGl: android.widget.EditText
+    private lateinit var etFilterScheme: android.widget.EditText
+    private lateinit var etFilterAcctId: android.widget.EditText
+    private lateinit var etFilterAcctName: android.widget.EditText
+    private lateinit var etFilterCurrency: android.widget.EditText
+    private lateinit var etFilterCredits: android.widget.EditText
+    private lateinit var etFilterDebits: android.widget.EditText
+    private lateinit var etFilterBalance: android.widget.EditText
+    private lateinit var etFilterStatus: android.widget.EditText
+
+    // Ledger Filters
+    private lateinit var etFilterLedgerHead: android.widget.EditText
+    private lateinit var etFilterLedgerAcctId: android.widget.EditText
+    private lateinit var etFilterLedgerAcctName: android.widget.EditText
+    private lateinit var etFilterLedgerCurrency: android.widget.EditText
+    private lateinit var etFilterLedgerCredits: android.widget.EditText
+    private lateinit var etFilterLedgerDebits: android.widget.EditText
+    private lateinit var etFilterLedgerBalance: android.widget.EditText
+    private lateinit var etFilterLedgerStatus: android.widget.EditText
+
+    // Transaction Filters
+    private lateinit var etFilterTranId: android.widget.EditText
+    private lateinit var etFilterTranEvent: android.widget.EditText
+    private lateinit var etFilterTranDebitNo: android.widget.EditText
+    private lateinit var etFilterTranDebitName: android.widget.EditText
+    private lateinit var etFilterTranCreditNo: android.widget.EditText
+    private lateinit var etFilterTranCreditName: android.widget.EditText
+    private lateinit var etFilterTranParticular: android.widget.EditText
+    private lateinit var etFilterTranType: android.widget.EditText
+    
+    private var isFilterVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +115,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupTabs()
         setupActionButtons()
+        setupFilterActions()
 
         // Initial tab selection (optional)
         when (intent.getStringExtra("SELECT_TAB")) {
@@ -97,6 +140,63 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.btnAdd)
         spinnerOffice = findViewById(R.id.spinnerOffice)
         tvMainTitle = findViewById(R.id.tvMainTitle)
+        btnFilter = findViewById(R.id.btnFilter)
+        
+        filterRowChart = findViewById(R.id.filterRowChart)
+        filterRowLedger = findViewById(R.id.filterRowLedger)
+        filterRowTransaction = findViewById(R.id.filterRowTransaction)
+
+        headerRowChart = findViewById(R.id.headerRowChart)
+        headerRowLedger = findViewById(R.id.headerRowLedger)
+        headerRowTransaction = findViewById(R.id.headerRowTransaction)
+
+        // Initialize Chart Filters
+        etFilterHead = findViewById(R.id.etFilterHead)
+        etFilterGl = findViewById(R.id.etFilterGl)
+        etFilterScheme = findViewById(R.id.etFilterScheme)
+        etFilterAcctId = findViewById(R.id.etFilterAcctId)
+        etFilterAcctName = findViewById(R.id.etFilterAcctName)
+        etFilterCurrency = findViewById(R.id.etFilterCurrency)
+        etFilterCredits = findViewById(R.id.etFilterCredits)
+        etFilterDebits = findViewById(R.id.etFilterDebits)
+        etFilterBalance = findViewById(R.id.etFilterBalance)
+        etFilterStatus = findViewById(R.id.etFilterStatus)
+
+        // Initialize Ledger Filters
+        etFilterLedgerHead = findViewById(R.id.etFilterLedgerHead)
+        etFilterLedgerAcctId = findViewById(R.id.etFilterLedgerAcctId)
+        etFilterLedgerAcctName = findViewById(R.id.etFilterLedgerAcctName)
+        etFilterLedgerCurrency = findViewById(R.id.etFilterLedgerCurrency)
+        etFilterLedgerCredits = findViewById(R.id.etFilterLedgerCredits)
+        etFilterLedgerDebits = findViewById(R.id.etFilterLedgerDebits)
+        etFilterLedgerBalance = findViewById(R.id.etFilterLedgerBalance)
+        etFilterLedgerStatus = findViewById(R.id.etFilterLedgerStatus)
+
+        // Initialize Transaction Filters
+        etFilterTranId = findViewById(R.id.etFilterTranId)
+        etFilterTranEvent = findViewById(R.id.etFilterTranEvent)
+        etFilterTranDebitNo = findViewById(R.id.etFilterTranDebitNo)
+        etFilterTranDebitName = findViewById(R.id.etFilterTranDebitName)
+        etFilterTranCreditNo = findViewById(R.id.etFilterTranCreditNo)
+        etFilterTranCreditName = findViewById(R.id.etFilterTranCreditName)
+        etFilterTranParticular = findViewById(R.id.etFilterTranParticular)
+        etFilterTranType = findViewById(R.id.etFilterTranType)
+
+        // Standardize all filter EditTexts to match ParameterActivity behavior
+        val allFilters = listOf(
+            etFilterHead, etFilterGl, etFilterScheme, etFilterAcctId, etFilterAcctName,
+            etFilterCurrency, etFilterCredits, etFilterDebits, etFilterBalance, etFilterStatus,
+            etFilterLedgerHead, etFilterLedgerAcctId, etFilterLedgerAcctName, etFilterLedgerCurrency,
+            etFilterLedgerCredits, etFilterLedgerDebits, etFilterLedgerBalance, etFilterLedgerStatus,
+            etFilterTranId, etFilterTranEvent, etFilterTranDebitNo, etFilterTranDebitName,
+            etFilterTranCreditNo, etFilterTranCreditName, etFilterTranParticular, etFilterTranType
+        )
+        
+        allFilters.forEach { et ->
+            et.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            et.imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            et.setSingleLine(true)
+        }
     }
 
     private fun setupRecyclerViews() {
@@ -124,6 +224,137 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFilterActions() {
+        btnFilter.setOnClickListener {
+            isFilterVisible = !isFilterVisible
+            updateFilterVisibility()
+            if (!isFilterVisible) {
+                clearAllFilters()
+            } else {
+                // Apply filters immediately when shown to respect any existing text
+                applyChartFilters()
+                applyLedgerFilters()
+                applyTransactionFilters()
+            }
+        }
+
+        // --- Chart Tab Filters ---
+        val chartFilters = listOf(
+            etFilterHead, etFilterGl, etFilterScheme, etFilterAcctId, etFilterAcctName,
+            etFilterCurrency, etFilterCredits, etFilterDebits, etFilterBalance, etFilterStatus
+        )
+        chartFilters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyChartFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+        }
+
+        // --- Ledger Tab Filters ---
+        val ledgerFilters = listOf(
+            etFilterLedgerHead, etFilterLedgerAcctId, etFilterLedgerAcctName, etFilterLedgerCurrency,
+            etFilterLedgerCredits, etFilterLedgerDebits, etFilterLedgerBalance, etFilterLedgerStatus
+        )
+        ledgerFilters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyLedgerFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+        }
+
+        // --- Transaction Tab Filters ---
+        val tranFilters = listOf(
+            etFilterTranId, etFilterTranEvent, etFilterTranDebitNo, etFilterTranDebitName,
+            etFilterTranCreditNo, etFilterTranCreditName, etFilterTranParticular, etFilterTranType
+        )
+        tranFilters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyTransactionFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+        }
+    }
+
+    private fun updateFilterVisibility() {
+        // Tab 1
+        headerRowChart.visibility = if (isFilterVisible && activeTabId == R.id.btnTabChart) View.GONE else (if (activeTabId == R.id.btnTabChart) View.VISIBLE else View.GONE)
+        filterRowChart.visibility = if (isFilterVisible && activeTabId == R.id.btnTabChart) View.VISIBLE else View.GONE
+
+        // Tab 2
+        headerRowLedger.visibility = if (isFilterVisible && activeTabId == R.id.btnTabLedger) View.GONE else (if (activeTabId == R.id.btnTabLedger) View.VISIBLE else View.GONE)
+        filterRowLedger.visibility = if (isFilterVisible && activeTabId == R.id.btnTabLedger) View.VISIBLE else View.GONE
+
+        // Tab 3
+        headerRowTransaction.visibility = if (isFilterVisible && activeTabId == R.id.btnTabTransaction) View.GONE else (if (activeTabId == R.id.btnTabTransaction) View.VISIBLE else View.GONE)
+        filterRowTransaction.visibility = if (isFilterVisible && activeTabId == R.id.btnTabTransaction) View.VISIBLE else View.GONE
+    }
+
+    private fun clearAllFilters() {
+        val allFilters = listOf(
+            R.id.etFilterHead, R.id.etFilterGl, R.id.etFilterScheme, R.id.etFilterAcctId, R.id.etFilterAcctName,
+            R.id.etFilterCurrency, R.id.etFilterCredits, R.id.etFilterDebits, R.id.etFilterBalance, R.id.etFilterStatus,
+            R.id.etFilterLedgerHead, R.id.etFilterLedgerAcctId, R.id.etFilterLedgerAcctName, R.id.etFilterLedgerCurrency,
+            R.id.etFilterLedgerCredits, R.id.etFilterLedgerDebits, R.id.etFilterLedgerBalance, R.id.etFilterLedgerStatus,
+            R.id.etFilterTranId, R.id.etFilterTranEvent, R.id.etFilterTranDebitNo, R.id.etFilterTranDebitName,
+            R.id.etFilterTranCreditNo, R.id.etFilterTranCreditName, R.id.etFilterTranParticular, R.id.etFilterTranType
+        )
+        allFilters.forEach { id -> findViewById<android.widget.EditText>(id).text.clear() }
+        
+        chartAdapter.filter("", "", "", "", "", "", "", "", "", "")
+        ledgerAdapter.filter("", "", "", "", "", "", "", "")
+        transactionAdapter.filter("", "", "", "", "", "", "", "")
+    }
+
+    private fun applyChartFilters() {
+        val f1 = etFilterHead.text.toString().trim()
+        val f2 = etFilterGl.text.toString().trim()
+        val f3 = etFilterScheme.text.toString().trim()
+        val f4 = etFilterAcctId.text.toString().trim()
+        val f5 = etFilterAcctName.text.toString().trim()
+        val f6 = etFilterCurrency.text.toString().trim()
+        val f7 = etFilterCredits.text.toString().trim()
+        val f8 = etFilterDebits.text.toString().trim()
+        val f9 = etFilterBalance.text.toString().trim()
+        val f10 = etFilterStatus.text.toString().trim()
+
+        chartAdapter.filter(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+    }
+
+    private fun applyLedgerFilters() {
+        val f1 = etFilterLedgerHead.text.toString().trim()
+        val f2 = etFilterLedgerAcctId.text.toString().trim()
+        val f3 = etFilterLedgerAcctName.text.toString().trim()
+        val f4 = etFilterLedgerCurrency.text.toString().trim()
+        val f5 = etFilterLedgerCredits.text.toString().trim()
+        val f6 = etFilterLedgerDebits.text.toString().trim()
+        val f7 = etFilterLedgerBalance.text.toString().trim()
+        val f8 = etFilterLedgerStatus.text.toString().trim()
+
+        ledgerAdapter.filter(f1, f2, f3, f4, f5, f6, f7, f8)
+    }
+
+    private fun applyTransactionFilters() {
+        val f1 = etFilterTranId.text.toString().trim()
+        val f2 = etFilterTranEvent.text.toString().trim()
+        val f3 = etFilterTranDebitNo.text.toString().trim()
+        val f4 = etFilterTranDebitName.text.toString().trim()
+        val f5 = etFilterTranCreditNo.text.toString().trim()
+        val f6 = etFilterTranCreditName.text.toString().trim()
+        val f7 = etFilterTranParticular.text.toString().trim()
+        val f8 = etFilterTranType.text.toString().trim()
+
+        transactionAdapter.filter(f1, f2, f3, f4, f5, f6, f7, f8)
+    }
+
     private fun setupTabs() {
         btnTabChart.setOnClickListener { selectTab(btnTabChart, scrollTabChart) }
         btnTabLedger.setOnClickListener { selectTab(btnTabLedger, scrollTabLedger) }
@@ -148,6 +379,8 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         selectedButton.setBackgroundResource(R.drawable.tab_selected)
         selectedButton.setTextColor(Color.WHITE)
         selectedScroll.visibility = View.VISIBLE
+        
+        updateFilterVisibility()
 
         // UI changes per tab
         when (selectedButton.id) {
@@ -234,6 +467,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                             )
                         }
                         chartAdapter.updateList(list)
+                        applyChartFilters() // re-apply filters if any
                     } else {
                         Toast.makeText(this@ChartOfAccountsActivity, "Error loading chart accounts", Toast.LENGTH_SHORT).show()
                     }
@@ -272,6 +506,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                             )
                         }
                         ledgerAdapter.updateList(list)
+                        applyLedgerFilters() // re-apply filters if any
                     } else {
                         Toast.makeText(this@ChartOfAccountsActivity, "Error loading ledger accounts", Toast.LENGTH_SHORT).show()
                     }
@@ -308,6 +543,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                             )
                         }
                         transactionAdapter.updateList(tabModels)
+                        applyTransactionFilters() // re-apply filters if any
                     } else {
                         Toast.makeText(this@ChartOfAccountsActivity, "Error loading transaction accounts", Toast.LENGTH_SHORT).show()
                     }

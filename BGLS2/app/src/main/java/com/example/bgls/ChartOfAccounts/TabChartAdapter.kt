@@ -20,7 +20,8 @@ class TabChartAdapter(
     private val initialList: List<TabChartModel>
 ) : RecyclerView.Adapter<TabChartAdapter.ViewHolder>() {
 
-    private var list = initialList.toMutableList()
+    private var fullList: List<TabChartModel> = initialList
+    private val list = initialList.toMutableList()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvHead: TextView = view.findViewById(R.id.tvHead)
@@ -99,7 +100,11 @@ class TabChartAdapter(
                             .setPositiveButton("Yes") { _, _ ->
                                 val pos = holder.adapterPosition
                                 if (pos != RecyclerView.NO_POSITION) {
+                                    val itemToDelete = list[pos]
                                     list.removeAt(pos)
+                                    // Also remove from fullList to keep it in sync if needed, 
+                                    // though usually fullList represents the server state.
+                                    fullList = fullList.filter { it != itemToDelete }
                                     notifyItemRemoved(pos)
                                     Toast.makeText(context, "Account Deleted", Toast.LENGTH_SHORT).show()
                                 }
@@ -118,7 +123,39 @@ class TabChartAdapter(
     override fun getItemCount(): Int = list.size
 
     fun updateList(newList: List<TabChartModel>) {
-        list = newList.toMutableList()
+        fullList = newList
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(head: String, gl: String, scheme: String, acctId: String, name: String, currency: String, credits: String, debits: String, balance: String, status: String) {
+        val f1 = head.lowercase()
+        val f2 = gl.lowercase()
+        val f3 = scheme.lowercase()
+        val f4 = acctId.lowercase()
+        val f5 = name.lowercase()
+        val f6 = currency.lowercase()
+        val f7 = credits.lowercase()
+        val f8 = debits.lowercase()
+        val f9 = balance.lowercase()
+        val f10 = status.lowercase()
+
+        val filtered = fullList.filter {
+            (f1.isEmpty() || it.head.lowercase().contains(f1)) &&
+            (f2.isEmpty() || it.gl.lowercase().contains(f2)) &&
+            (f3.isEmpty() || it.schemeCode.lowercase().contains(f3)) &&
+            (f4.isEmpty() || it.acctId.lowercase().contains(f4)) &&
+            (f5.isEmpty() || it.acctName.lowercase().contains(f5)) &&
+            (f6.isEmpty() || it.currency.lowercase().contains(f6)) &&
+            (f7.isEmpty() || it.credits.lowercase().contains(f7)) &&
+            (f8.isEmpty() || it.debits.lowercase().contains(f8)) &&
+            (f9.isEmpty() || it.balance.lowercase().contains(f9)) &&
+            (f10.isEmpty() || it.status.lowercase().contains(f10))
+        }
+
+        list.clear()
+        list.addAll(filtered)
         notifyDataSetChanged()
     }
 }

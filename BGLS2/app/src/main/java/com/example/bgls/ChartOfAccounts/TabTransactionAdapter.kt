@@ -12,8 +12,11 @@ import com.example.bgls.R
 
 class TabTransactionAdapter(
     private val context: Context,
-    private var list: List<TabTransactionModel>
+    private val initialList: List<TabTransactionModel>
 ) : RecyclerView.Adapter<TabTransactionAdapter.ViewHolder>() {
+
+    private var fullList: List<TabTransactionModel> = initialList
+    private val list = initialList.toMutableList()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvId: TextView = view.findViewById(R.id.tvId)
@@ -76,8 +79,9 @@ class TabTransactionAdapter(
                             .setPositiveButton("Yes") { _, _ ->
                                 val pos = holder.adapterPosition
                                 if (pos != RecyclerView.NO_POSITION) {
-                                    val mutableList = list.toMutableList()
-                                    mutableList.removeAt(pos)
+                                    val itemToDelete = list[pos]
+                                    val mutableList = fullList.toMutableList()
+                                    mutableList.remove(itemToDelete)
                                     updateList(mutableList)
                                     android.widget.Toast.makeText(context, "Deleted", android.widget.Toast.LENGTH_SHORT).show()
                                 }
@@ -96,7 +100,35 @@ class TabTransactionAdapter(
     override fun getItemCount(): Int = list.size
 
     fun updateList(newList: List<TabTransactionModel>) {
-        list = newList
+        fullList = newList
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(id: String, event: String, debitNo: String, debitName: String, creditNo: String, creditName: String, particular: String, type: String) {
+        val f1 = id.lowercase()
+        val f2 = event.lowercase()
+        val f3 = debitNo.lowercase()
+        val f4 = debitName.lowercase()
+        val f5 = creditNo.lowercase()
+        val f6 = creditName.lowercase()
+        val f7 = particular.lowercase()
+        val f8 = type.lowercase()
+
+        val filtered = fullList.filter {
+            (f1.isEmpty() || it.id.lowercase().contains(f1)) &&
+            (f2.isEmpty() || it.event.lowercase().contains(f2)) &&
+            (f3.isEmpty() || it.debitAccNo.lowercase().contains(f3)) &&
+            (f4.isEmpty() || it.debitAccName.lowercase().contains(f4)) &&
+            (f5.isEmpty() || it.creditAccNo.lowercase().contains(f5)) &&
+            (f6.isEmpty() || it.creditAccName.lowercase().contains(f6)) &&
+            (f7.isEmpty() || it.tranParticular.lowercase().contains(f7)) &&
+            (f8.isEmpty() || it.type.lowercase().contains(f8))
+        }
+
+        list.clear()
+        list.addAll(filtered)
         notifyDataSetChanged()
     }
 }

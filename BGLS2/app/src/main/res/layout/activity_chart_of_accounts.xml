@@ -260,6 +260,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/headerRowChart"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -275,6 +276,28 @@
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="STATUS"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="ACTION"/>
+                    </LinearLayout>
+
+                    <!-- Filter Row Chart -->
+                    <LinearLayout
+                        android:id="@+id/filterRowChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E0E5E9"
+                        android:padding="2dp"
+                        android:visibility="gone">
+                        <EditText android:id="@+id/etFilterHead" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="HEAD" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterGl" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="60dp" android:hint="GL" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterScheme" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="SCHEME" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterAcctId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="120dp" android:hint="ACCT ID" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterAcctName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.5" android:minWidth="200dp" android:hint="ACCT NAME" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterCurrency" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="CURR" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterCredits" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="CREDITS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterDebits" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="DEBITS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterBalance" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="BAL" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterStatus" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="STATUS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:text="Action" android:gravity="center" android:textSize="10sp" android:textStyle="bold"/>
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
@@ -302,6 +325,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/headerRowLedger"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -314,6 +338,25 @@
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DEBITS"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="STATUS"/>
+                    </LinearLayout>
+                    
+                    <!-- Filter Row Ledger -->
+                    <LinearLayout
+                        android:id="@+id/filterRowLedger"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E0E5E9"
+                        android:padding="2dp"
+                        android:visibility="gone">
+                        <EditText android:id="@+id/etFilterLedgerHead" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="HEAD" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerAcctId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="120dp" android:hint="ACCT ID" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerAcctName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.5" android:minWidth="200dp" android:hint="ACCT NAME" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerCurrency" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="CURR" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerCredits" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="CREDITS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerDebits" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="DEBITS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerBalance" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:hint="BAL" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterLedgerStatus" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:hint="STATUS" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
@@ -341,6 +384,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/headerRowTransaction"
                         android:layout_marginTop="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -354,6 +398,26 @@
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2" android:minWidth="150dp" android:text="TRAN PARTICULAR"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="60dp" android:text="TYPE"/>
                         <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="ACTIONS"/>
+                    </LinearLayout>
+                    
+                    <!-- Filter Row Transaction -->
+                    <LinearLayout
+                        android:id="@+id/filterRowTransaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E0E5E9"
+                        android:padding="2dp"
+                        android:visibility="gone">
+                        <EditText android:id="@+id/etFilterTranId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="60dp" android:hint="ID" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranEvent" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="100dp" android:hint="EVENT" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranDebitNo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="120dp" android:hint="DEBIT NO" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranDebitName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:minWidth="150dp" android:hint="DEBIT NAME" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranCreditNo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="120dp" android:hint="CREDIT NO" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranCreditName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:minWidth="150dp" android:hint="CREDIT NAME" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranParticular" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:minWidth="150dp" android:hint="PARTICULAR" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <EditText android:id="@+id/etFilterTranType" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="60dp" android:hint="TYPE" android:textSize="10sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:minWidth="80dp" android:text="Actions" android:gravity="center" android:textSize="10sp" android:textStyle="bold"/>
                     </LinearLayout>
 
                     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>

@@ -14,9 +14,12 @@ import com.example.bgls.R
 
 class TabLedgerAdapter(
     private val context: Context,
-    private var list: List<TabLedgerModel>
+    private val initialList: List<TabLedgerModel>
 ) : RecyclerView.Adapter<TabLedgerAdapter.ViewHolder>() {
 
+    private var fullList: List<TabLedgerModel> = initialList
+    private val list = initialList.toMutableList()
+    
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvHead: TextView = view.findViewById(R.id.tvHead)
         val tvAcctId: TextView = view.findViewById(R.id.tvAcctId)
@@ -66,7 +69,35 @@ class TabLedgerAdapter(
     override fun getItemCount(): Int = list.size
 
     fun updateList(newList: List<TabLedgerModel>) {
-        list = newList
+        fullList = newList
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(head: String, acctId: String, name: String, currency: String, credits: String, debits: String, balance: String, status: String) {
+        val f1 = head.lowercase()
+        val f2 = acctId.lowercase()
+        val f3 = name.lowercase()
+        val f4 = currency.lowercase()
+        val f5 = credits.lowercase()
+        val f6 = debits.lowercase()
+        val f7 = balance.lowercase()
+        val f8 = status.lowercase()
+
+        val filtered = fullList.filter {
+            (f1.isEmpty() || it.head.lowercase().contains(f1)) &&
+            (f2.isEmpty() || it.acctId.lowercase().contains(f2)) &&
+            (f3.isEmpty() || it.acctName.lowercase().contains(f3)) &&
+            (f4.isEmpty() || it.currency.lowercase().contains(f4)) &&
+            (f5.isEmpty() || it.credits.lowercase().contains(f5)) &&
+            (f6.isEmpty() || it.debits.lowercase().contains(f6)) &&
+            (f7.isEmpty() || it.balance.lowercase().contains(f7)) &&
+            (f8.isEmpty() || it.status.lowercase().contains(f8))
+        }
+
+        list.clear()
+        list.addAll(filtered)
         notifyDataSetChanged()
     }
 }
