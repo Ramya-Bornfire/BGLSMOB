@@ -13,6 +13,7 @@ class AccountLedgerPositingAdapter(
     private val onItemSelected: (Int) -> Unit
 ) : RecyclerView.Adapter<AccountLedgerPositingAdapter.ViewHolder>() {
 
+    private var fullList: List<AccountLedgerPostingModel> = list.toList()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTranDate: TextView = view.findViewById(R.id.tvTranDate)
@@ -58,8 +59,37 @@ class AccountLedgerPositingAdapter(
     override fun getItemCount(): Int = list.size
 
     fun updateData(newList: List<AccountLedgerPostingModel>) {
+        fullList = newList.toList()
         list.clear()
         list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun filter(date: String, id: String, type: String, curr: String, amt: String, acctId: String, name: String, particular: String, status: String) {
+        val fDate = date.lowercase()
+        val fId = id.lowercase()
+        val fType = type.lowercase()
+        val fCurr = curr.lowercase()
+        val fAmt = amt.lowercase()
+        val fAcctId = acctId.lowercase()
+        val fName = name.lowercase()
+        val fPart = particular.lowercase()
+        val fStatus = status.lowercase()
+
+        val filtered = fullList.filter {
+            (fDate.isEmpty() || it.tranDate.lowercase().contains(fDate)) &&
+            (fId.isEmpty() || "${it.tranId}/${it.partTranId}".lowercase().contains(fId)) &&
+            (fType.isEmpty() || it.partTranType.lowercase().contains(fType)) &&
+            (fCurr.isEmpty() || it.currency.lowercase().contains(fCurr)) &&
+            (fAmt.isEmpty() || it.amount.lowercase().contains(fAmt)) &&
+            (fAcctId.isEmpty() || it.acctId.lowercase().contains(fAcctId)) &&
+            (fName.isEmpty() || it.acctName.lowercase().contains(fName)) &&
+            (fPart.isEmpty() || it.tranParticular.lowercase().contains(fPart)) &&
+            (fStatus.isEmpty() || it.status.lowercase().contains(fStatus))
+        }
+
+        list.clear()
+        list.addAll(filtered)
         notifyDataSetChanged()
     }
 }

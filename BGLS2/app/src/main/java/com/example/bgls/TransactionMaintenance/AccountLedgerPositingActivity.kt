@@ -25,6 +25,22 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
     private var postingList = mutableListOf<AccountLedgerPostingModel>()
     private lateinit var btnBack: ImageView
     private lateinit var btnHome: ImageView
+    private lateinit var btnFilter: android.widget.Button
+    private lateinit var headerRow: android.widget.LinearLayout
+    private lateinit var filterRow: android.widget.LinearLayout
+
+    // Filter EditTexts
+    private lateinit var etFilterTranDate: android.widget.EditText
+    private lateinit var etFilterTranId: android.widget.EditText
+    private lateinit var etFilterPaTranTy: android.widget.EditText
+    private lateinit var etFilterCurrency: android.widget.EditText
+    private lateinit var etFilterAmount: android.widget.EditText
+    private lateinit var etFilterAcctId: android.widget.EditText
+    private lateinit var etFilterAcctName: android.widget.EditText
+    private lateinit var etFilterTranParticular: android.widget.EditText
+    private lateinit var etFilterStatus: android.widget.EditText
+
+    private var isFilterVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +53,7 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
         }
 
         initViews()
+        setupFilterActions()
         loadDataFromAPI()
     }
 
@@ -45,6 +62,31 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         btnBack = findViewById(R.id.btnBack)
         btnHome = findViewById(R.id.btnHome)
+        btnFilter = findViewById(R.id.btnFilter)
+        headerRow = findViewById(R.id.headerRow)
+        filterRow = findViewById(R.id.filterRow)
+
+        // Pre-cache filter fields
+        etFilterTranDate = findViewById(R.id.etFilterTranDate)
+        etFilterTranId = findViewById(R.id.etFilterTranId)
+        etFilterPaTranTy = findViewById(R.id.etFilterPaTranTy)
+        etFilterCurrency = findViewById(R.id.etFilterCurrency)
+        etFilterAmount = findViewById(R.id.etFilterAmount)
+        etFilterAcctId = findViewById(R.id.etFilterAcctId)
+        etFilterAcctName = findViewById(R.id.etFilterAcctName)
+        etFilterTranParticular = findViewById(R.id.etFilterTranParticular)
+        etFilterStatus = findViewById(R.id.etFilterStatus)
+
+        // Standardize filter fields
+        val allFilters = listOf(
+            etFilterTranDate, etFilterTranId, etFilterPaTranTy, etFilterCurrency,
+            etFilterAmount, etFilterAcctId, etFilterAcctName, etFilterTranParticular, etFilterStatus
+        )
+        allFilters.forEach { et ->
+            et.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            et.imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            et.setSingleLine(true)
+        }
 
         btnBack.setOnClickListener { finish() }
         btnHome.setOnClickListener {
@@ -83,6 +125,62 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
         rvAccountLedger.adapter = adapter
     }
 
+    private fun setupFilterActions() {
+        btnFilter.setOnClickListener {
+            isFilterVisible = !isFilterVisible
+            headerRow.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+            filterRow.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+            
+            if (!isFilterVisible) {
+                clearAllFilters()
+            } else {
+                applyFilters()
+            }
+        }
+
+        val filters = listOf(
+            etFilterTranDate, etFilterTranId, etFilterPaTranTy, etFilterCurrency,
+            etFilterAmount, etFilterAcctId, etFilterAcctName, etFilterTranParticular, etFilterStatus
+        )
+
+        filters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyFilters()
+                }
+                override fun afterTextChanged(s: android.text.Editable?) {}
+            })
+        }
+    }
+
+    private fun applyFilters() {
+        adapter.filter(
+            etFilterTranDate.text.toString().trim(),
+            etFilterTranId.text.toString().trim(),
+            etFilterPaTranTy.text.toString().trim(),
+            etFilterCurrency.text.toString().trim(),
+            etFilterAmount.text.toString().trim(),
+            etFilterAcctId.text.toString().trim(),
+            etFilterAcctName.text.toString().trim(),
+            etFilterTranParticular.text.toString().trim(),
+            etFilterStatus.text.toString().trim()
+        )
+    }
+
+    private fun clearAllFilters() {
+        etFilterTranDate.text.clear()
+        etFilterTranId.text.clear()
+        etFilterPaTranTy.text.clear()
+        etFilterCurrency.text.clear()
+        etFilterAmount.text.clear()
+        etFilterAcctId.text.clear()
+        etFilterAcctName.text.clear()
+        etFilterTranParticular.text.clear()
+        etFilterStatus.text.clear()
+        applyFilters()
+    }
+
     private fun loadDataFromAPI() {
         progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
@@ -106,7 +204,7 @@ class AccountLedgerPositingActivity : AppCompatActivity() {
                     }
                     postingList.clear()
                     postingList.addAll(newData)
-                    adapter.notifyDataSetChanged()
+                    adapter.updateData(newData)
                 } else {
                     Toast.makeText(this@AccountLedgerPositingActivity, "Failed to load ledger data", Toast.LENGTH_SHORT).show()
                 }
