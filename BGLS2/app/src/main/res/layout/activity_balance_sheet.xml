@@ -278,7 +278,7 @@
                     android:paddingVertical="8dp">
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="9sp" />
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="GL DESC" android:textSize="9sp" />
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENT" android:textSize="9sp" android:gravity="center"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENCY" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="NO OF ACCT" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT" android:textSize="9sp" android:gravity="end" android:paddingEnd="4dp"/>
                 </LinearLayout>
@@ -344,7 +344,7 @@
                     android:paddingVertical="8dp">
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="GL HEAD" android:textSize="9sp" />
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:text="GL DESC" android:textSize="9sp" />
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENT" android:textSize="9sp" android:gravity="center"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENCY" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="NO OF ACCT" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT" android:textSize="9sp" android:gravity="end" android:paddingEnd="4dp"/>
                 </LinearLayout>

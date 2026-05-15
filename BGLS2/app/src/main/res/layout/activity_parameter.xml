@@ -240,7 +240,9 @@
                     android:id="@+id/tableLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="*" />
+                    android:stretchColumns="*"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="16dp"/>
 
             </HorizontalScrollView>
 

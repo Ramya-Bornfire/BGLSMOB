@@ -914,6 +914,7 @@ class ParameterActivity : AppCompatActivity() {
             textView.setBackgroundColor(Color.WHITE)
             textView.setTextColor(Color.BLACK)
 
+
             headerRow.addView(textView)
         }
 
