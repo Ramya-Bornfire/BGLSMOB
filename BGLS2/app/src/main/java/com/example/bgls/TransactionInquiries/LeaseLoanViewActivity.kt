@@ -3,7 +3,7 @@ package com.example.bgls.TransactionInquiries
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.*
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -148,15 +148,20 @@ class LeaseLoanViewActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        findViewById<Button>(R.id.btnHome).setOnClickListener {
+        val homeClickListener = View.OnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
         }
-        findViewById<Button>(R.id.btnBack).setOnClickListener {
-            finish()
-        }
+        val backClickListener = View.OnClickListener { finish() }
+
+        findViewById<Button>(R.id.btnHome).setOnClickListener(homeClickListener)
+        findViewById<ImageView>(R.id.btnHomeHeader)?.setOnClickListener(homeClickListener)
+
+        findViewById<Button>(R.id.btnBack).setOnClickListener(backClickListener)
+        findViewById<ImageView>(R.id.btnBackHeader)?.setOnClickListener(backClickListener)
+
         findViewById<Button>(R.id.btnSchedule).setOnClickListener {
             val layoutSchedule = findViewById<LinearLayout>(R.id.layoutSchedule)
             if (layoutSchedule.visibility == View.VISIBLE) {
@@ -375,12 +380,7 @@ class LeaseLoanViewActivity : AppCompatActivity() {
         setupFlowsRecyclerView()
 
         // Audit section
-        findViewById<TextView>(R.id.tvEntryUser).text = "EMP02"
-        findViewById<TextView>(R.id.tvEntryTime).text = "24-04-2026"
-        findViewById<TextView>(R.id.tvModifyUser).text = "EMP02"
-        findViewById<TextView>(R.id.tvModifyTime).text = "24-04-2026"
-        findViewById<TextView>(R.id.tvVerifyUser).text = "EMP02"
-        findViewById<TextView>(R.id.tvVerifyTime).text = "24-04-2026"
+
     }
 
     private fun setupScheduleRecyclerView() {

@@ -47,9 +47,9 @@ class CustomerMasterAdapter(
         holder.tvStatus.text       = item.status       ?: ""
 
         // Alternate row background for readability
-        holder.itemView.setBackgroundColor(
-            if (position % 2 == 0) Color.WHITE else Color.parseColor("#F9F9F9")
-        )
+//        holder.itemView.setBackgroundColor(
+//            if (position % 2 == 0) Color.WHITE else Color.parseColor("#F9FF9F9F99F9")
+//        )
 
         // Status badge colour hint
         when (item.status?.uppercase()) {

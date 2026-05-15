@@ -37,16 +37,7 @@ class LoanCollectionActivity : AppCompatActivity() {
     private lateinit var txtUserNameInfo: TextView
     private lateinit var txtLoginTimeInfo: TextView
     // Weights (must match header)
-    private val W_TRAN_ID   = 1.2f
-    private val W_NAMES     = 1.5f
-    private val W_REF       = 1.2f
-    private val W_MOBILE    = 1.5f
-    private val W_AMOUNT    = 1.0f
-    private val W_ALLOC_AMT = 1.2f
-    private val W_TIME      = 1.5f
-    private val W_STATUS    = 1.2f
-    private val W_ALLOC_RB  = 0.8f
-    private val W_DELETE    = 0.6f
+
 
     private lateinit var progressDialog: ProgressDialog
 
@@ -96,40 +87,33 @@ class LoanCollectionActivity : AppCompatActivity() {
     private fun addRow() {
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(40))
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(45))
             orientation = LinearLayout.HORIZONTAL
             setBackgroundColor(Color.WHITE)
         }
 
-        val columns = listOf(
-            Pair(W_TRAN_ID,   ""),
-            Pair(W_NAMES,     ""),
-            Pair(W_REF,       ""),
-            Pair(W_MOBILE,    ""),
-            Pair(W_AMOUNT,    ""),
-            Pair(W_ALLOC_AMT, "0"),
-            Pair(W_TIME,      getCurrentDateTime()),
-            Pair(W_STATUS,    "UNALLOCATED")
-        )
+        // Weights matching XML header
+        val columnWeights = listOf(1.2f, 1.5f, 1.2f, 1.5f, 1.0f, 1.4f, 1.5f, 1.2f)
+        val defaultTexts = listOf("", "", "", "", "", "0", getCurrentDateTime(), "UNALLOCATED")
 
-        for ((weight, defaultText) in columns) {
+        for (i in columnWeights.indices) {
             val et = EditText(this).apply {
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, weight)
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, columnWeights[i])
                 setBackgroundResource(R.drawable.table_cell_bg)
                 textSize = 9f
                 setPadding(dp(4), dp(2), dp(4), dp(2))
-                setText(defaultText)
+                setText(defaultTexts[i])
                 gravity = Gravity.CENTER
-                if (weight == W_AMOUNT || weight == W_ALLOC_AMT) {
+                if (i == 4 || i == 5) {
                     inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
                 }
             }
             row.addView(et)
         }
 
-        // RadioButton cell (Allocated)
+        // RadioButton cell (Allocated) - weight 0.9
         val rbCell = LinearLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, W_ALLOC_RB)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.9f)
             setBackgroundResource(R.drawable.table_cell_bg)
             gravity = Gravity.CENTER
             addView(RadioButton(this@LoanCollectionActivity).apply {
@@ -140,9 +124,9 @@ class LoanCollectionActivity : AppCompatActivity() {
         }
         row.addView(rbCell)
 
-        // Delete cell
+        // Delete cell - weight 0.8
         val deleteCell = LinearLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, W_DELETE)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.8f)
             setBackgroundResource(R.drawable.table_cell_bg)
             gravity = Gravity.CENTER
             addView(ImageView(this@LoanCollectionActivity).apply {

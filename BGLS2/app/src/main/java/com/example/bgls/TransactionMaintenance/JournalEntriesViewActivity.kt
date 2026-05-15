@@ -159,12 +159,7 @@ class JournalEntriesViewActivity : AppCompatActivity() {
         relatedEntriesAdapter = RelatedEntriesAdapter(relatedEntriesList)
         rvRelatedEntries.adapter = relatedEntriesAdapter
 
-        tvFooterEntryUser = findViewById(R.id.tvEntryUser)
-        tvFooterEntryTime = findViewById(R.id.tvEntryTime)
-        tvFooterModifyUser = findViewById(R.id.tvModifyUser)
-        tvFooterModifyTime = findViewById(R.id.tvModifyTime)
-        tvFooterVerifyUser = findViewById(R.id.tvVerifyUser)
-        tvFooterVerifyTime = findViewById(R.id.tvVerifyTime)
+
 
     }
 
