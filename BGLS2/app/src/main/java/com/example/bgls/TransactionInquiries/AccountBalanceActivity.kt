@@ -33,13 +33,26 @@ import java.util.Locale
 class AccountBalanceActivity : AppCompatActivity() {
 
     private lateinit var etLeaseDatePicker: EditText
-    private lateinit var etLeaseSearch: EditText
     private lateinit var btnLeaseFilter: Button
     private lateinit var rvLeaseAccounts: RecyclerView
     private lateinit var progressLease: ProgressBar
     private lateinit var tvLeaseNoData: TextView
     private lateinit var btnHome: ImageView
     private lateinit var btnBack: ImageView
+
+    private lateinit var headerRow: android.widget.LinearLayout
+    private lateinit var filterRow: android.widget.LinearLayout
+
+    // Filter EditTexts
+    private lateinit var etFilterSrl: EditText
+    private lateinit var etFilterCustId: EditText
+    private lateinit var etFilterAcctId: EditText
+    private lateinit var etFilterName: EditText
+    private lateinit var etFilterDate: EditText
+    private lateinit var etFilterLoanAmt: EditText
+    private lateinit var etFilterDisbAmt: EditText
+
+    private var isFilterVisible = false
 
     private lateinit var leaseAdapter: AccountBalanceLeaseAdapter
     private var currentMode = "Lease" // "Lease" or "Deposit"
@@ -52,6 +65,7 @@ class AccountBalanceActivity : AppCompatActivity() {
         setupRecyclerView()
         setupNavigation()
         setupListeners()
+        setupFilterActions()
         
         // Load initial full list (Account_Balances endpoint)
         loadInitialData()
@@ -59,13 +73,34 @@ class AccountBalanceActivity : AppCompatActivity() {
 
     private fun initViews() {
         etLeaseDatePicker = findViewById(R.id.etLeaseDatePicker)
-        etLeaseSearch     = findViewById(R.id.etLeaseSearch)
         btnLeaseFilter    = findViewById(R.id.btnLeaseFilter)
         rvLeaseAccounts   = findViewById(R.id.rvLeaseAccounts)
         progressLease     = findViewById(R.id.progressLease)
         tvLeaseNoData     = findViewById(R.id.tvLeaseNoData)
         btnHome           = findViewById(R.id.btnHome)
         btnBack           = findViewById(R.id.btnBack)
+        headerRow         = findViewById(R.id.headerRow)
+        filterRow         = findViewById(R.id.filterRow)
+
+        // Pre-cache filter fields
+        etFilterSrl     = findViewById(R.id.etFilterSrl)
+        etFilterCustId  = findViewById(R.id.etFilterCustId)
+        etFilterAcctId  = findViewById(R.id.etFilterAcctId)
+        etFilterName    = findViewById(R.id.etFilterName)
+        etFilterDate    = findViewById(R.id.etFilterDate)
+        etFilterLoanAmt = findViewById(R.id.etFilterLoanAmt)
+        etFilterDisbAmt = findViewById(R.id.etFilterDisbAmt)
+
+        // Standardize filter fields
+        val allFilters = listOf(
+            etFilterSrl, etFilterCustId, etFilterAcctId, etFilterName,
+            etFilterDate, etFilterLoanAmt, etFilterDisbAmt
+        )
+        allFilters.forEach { et ->
+            et.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS
+            et.imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            et.setSingleLine(true)
+        }
 
         etLeaseDatePicker.setText(getTodayString())
     }
@@ -85,19 +120,58 @@ class AccountBalanceActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         etLeaseDatePicker.setOnClickListener { showDatePicker() }
-        
+    }
+
+    private fun setupFilterActions() {
         btnLeaseFilter.setOnClickListener {
-            if (etLeaseSearch.visibility == View.VISIBLE) {
-                etLeaseSearch.visibility = View.GONE
-                etLeaseSearch.setText("")
-                leaseAdapter.filter("")
+            isFilterVisible = !isFilterVisible
+            headerRow.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+            filterRow.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+            
+            if (!isFilterVisible) {
+                clearAllFilters()
             } else {
-                etLeaseSearch.visibility = View.VISIBLE
-                etLeaseSearch.requestFocus()
+                applyFilters()
             }
         }
 
-        setupSearchListener()
+        val filters = listOf(
+            etFilterSrl, etFilterCustId, etFilterAcctId, etFilterName,
+            etFilterDate, etFilterLoanAmt, etFilterDisbAmt
+        )
+
+        filters.forEach { et ->
+            et.addTextChangedListener(object : android.text.TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (isFilterVisible) applyFilters()
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+    }
+
+    private fun applyFilters() {
+        leaseAdapter.filter(
+            etFilterSrl.text.toString().trim(),
+            etFilterCustId.text.toString().trim(),
+            etFilterAcctId.text.toString().trim(),
+            etFilterName.text.toString().trim(),
+            etFilterDate.text.toString().trim(),
+            etFilterLoanAmt.text.toString().trim(),
+            etFilterDisbAmt.text.toString().trim()
+        )
+    }
+
+    private fun clearAllFilters() {
+        etFilterSrl.text.clear()
+        etFilterCustId.text.clear()
+        etFilterAcctId.text.clear()
+        etFilterName.text.clear()
+        etFilterDate.text.clear()
+        etFilterLoanAmt.text.clear()
+        etFilterDisbAmt.text.clear()
+        applyFilters()
     }
 
     private fun setupRecyclerView() {
@@ -250,6 +324,7 @@ class AccountBalanceActivity : AppCompatActivity() {
         progressLease.visibility = View.GONE
         if (models.isEmpty()) {
             tvLeaseNoData.visibility = View.VISIBLE
+            leaseAdapter.updateData(emptyList())
         } else {
             tvLeaseNoData.visibility = View.GONE
             leaseAdapter.updateData(models)
@@ -269,13 +344,6 @@ class AccountBalanceActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSearchListener() {
-        etLeaseSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { leaseAdapter.filter(s.toString()) }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-    }
 
 
 

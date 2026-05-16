@@ -191,30 +191,15 @@
             android:id="@+id/btnLeaseFilter"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:text="Search/Filter"
+            android:text="Filter"
             android:textSize="10sp"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#007BFF"
+            android:backgroundTint="#2196F3"
             android:paddingHorizontal="16dp"
             android:minWidth="0dp"
             android:minHeight="0dp"/>
     </LinearLayout>
-
-    <!-- Filter search box (shown when Filter button is active) -->
-    <EditText
-        android:id="@+id/etLeaseSearch"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:hint="Search by Customer ID / Account ID / Account Name..."
-        android:textSize="12sp"
-        android:background="#FFFFFF"
-        android:paddingHorizontal="16dp"
-        android:visibility="gone"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:singleLine="true"
-        android:elevation="2dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -224,6 +209,7 @@
 
         <!-- TABLE HEADER (Full Width) -->
         <LinearLayout
+            android:id="@+id/headerRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -236,6 +222,24 @@
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="DATE"/>
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="AMOUNT"/>
             <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.4" android:gravity="end|center_vertical" android:paddingEnd="8dp" android:text="BALANCE"/>
+        </LinearLayout>
+
+        <!-- Filter Row -->
+        <LinearLayout
+            android:id="@+id/filterRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#E0E5E9"
+            android:paddingVertical="4dp"
+            android:visibility="gone">
+            <EditText android:id="@+id/etFilterSrl" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.6" android:hint="SRL" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterCustId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.6" android:hint="CUST" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterAcctId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.0" android:hint="ACCT" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.8" android:hint="NAME" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:hint="DATE" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterLoanAmt" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.4" android:hint="AMT" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
+            <EditText android:id="@+id/etFilterDisbAmt" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.4" android:hint="BAL" android:textSize="9sp" android:padding="4dp" android:background="@drawable/edittext_bg" android:layout_margin="1dp"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

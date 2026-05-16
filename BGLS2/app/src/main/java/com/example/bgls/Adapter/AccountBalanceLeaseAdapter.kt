@@ -10,12 +10,13 @@ import com.example.bgls.DataModels.AccountBalanceLeaseModel
 import com.example.bgls.R
 
 class AccountBalanceLeaseAdapter(
-    private var fullList: List<AccountBalanceLeaseModel>,
+    private var initialList: List<AccountBalanceLeaseModel>,
     private val onCustomerClick: (AccountBalanceLeaseModel) -> Unit,
     private val onAccountClick: (AccountBalanceLeaseModel) -> Unit
 ) : RecyclerView.Adapter<AccountBalanceLeaseAdapter.LeaseViewHolder>() {
 
-    private var filteredList: MutableList<AccountBalanceLeaseModel> = fullList.toMutableList()
+    private var fullList: List<AccountBalanceLeaseModel> = initialList
+    private var filteredList: MutableList<AccountBalanceLeaseModel> = initialList.toMutableList()
 
     class LeaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvSrlNo: TextView       = view.findViewById(R.id.tvSrlNo)
@@ -56,24 +57,34 @@ class AccountBalanceLeaseAdapter(
 
     override fun getItemCount(): Int = filteredList.size
 
-    /** Filter by any column text */
-    fun filter(query: String) {
-        filteredList = if (query.isEmpty()) {
-            fullList.toMutableList()
-        } else {
-            fullList.filter { item ->
-                item.customerId.contains(query, ignoreCase = true) ||
-                item.accountId.contains(query, ignoreCase = true) ||
-                item.accountName.contains(query, ignoreCase = true) ||
-                item.dateOfLoan.contains(query, ignoreCase = true)
-            }.toMutableList()
-        }
+    fun updateData(newList: List<AccountBalanceLeaseModel>) {
+        fullList = newList
+        filteredList.clear()
+        filteredList.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun updateData(newList: List<AccountBalanceLeaseModel>) {
-        fullList = newList
-        filteredList = newList.toMutableList()
+    fun filter(srl: String, custId: String, acctId: String, name: String, date: String, loanAmt: String, disbAmt: String) {
+        val f1 = srl.lowercase()
+        val f2 = custId.lowercase()
+        val f3 = acctId.lowercase()
+        val f4 = name.lowercase()
+        val f5 = date.lowercase()
+        val f6 = loanAmt.lowercase()
+        val f7 = disbAmt.lowercase()
+
+        val filtered = fullList.filter {
+            (f1.isEmpty() || it.srlNo.toString().lowercase().contains(f1)) &&
+            (f2.isEmpty() || it.customerId.lowercase().contains(f2)) &&
+            (f3.isEmpty() || it.accountId.lowercase().contains(f3)) &&
+            (f4.isEmpty() || it.accountName.lowercase().contains(f4)) &&
+            (f5.isEmpty() || it.dateOfLoan.lowercase().contains(f5)) &&
+            (f6.isEmpty() || it.loanAmount.lowercase().contains(f6)) &&
+            (f7.isEmpty() || it.disbursedAmount.lowercase().contains(f7))
+        }
+
+        filteredList.clear()
+        filteredList.addAll(filtered)
         notifyDataSetChanged()
     }
 }
