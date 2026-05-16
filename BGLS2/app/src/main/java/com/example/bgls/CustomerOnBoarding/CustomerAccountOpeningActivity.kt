@@ -159,6 +159,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         return (dp * resources.displayMetrics.density).toInt()
     }
 
+    
     private fun setupSignatureUpload() {
         binding.containerSignatureRows.removeAllViews()
         addSignatureRow()

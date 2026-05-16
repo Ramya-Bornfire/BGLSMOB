@@ -45,6 +45,8 @@ import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
 import com.example.bgls.DataModels.KycListResponse
 import com.example.bgls.DataModels.LoanMaintenanceViewResponse
+import com.example.bgls.DataModels.LoginRequest
+import com.example.bgls.DataModels.LoginResponse
 import com.example.bgls.DataModels.ProfitLossResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -54,6 +56,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface ServiceApi {
+    @POST("api/login")
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
     @GET("api/organizationDetails")
     suspend fun getOrganizationDetails(
         @Query("formmode") formmode: String? = "add"
