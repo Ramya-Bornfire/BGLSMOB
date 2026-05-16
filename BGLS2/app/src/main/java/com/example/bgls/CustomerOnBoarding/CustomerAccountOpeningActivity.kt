@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.bgls.R
 import com.example.bgls.databinding.ActivityCustomerAccountOpeningBinding
 import com.google.android.material.tabs.TabLayout
+import com.example.bgls.util.SignaturePadView
 
 class CustomerAccountOpeningActivity : AppCompatActivity() {
 
@@ -223,13 +224,17 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
             setOnClickListener {
                 activeImageTarget = imageView
                 activeTextTarget = textView
-                val launcher = if (isPhoto) pickPhotoLauncher else pickSignatureLauncher
-                launcher.launch(androidx.activity.result.PickVisualMediaRequest(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly))
+                
+                if (isPhoto) {
+                    pickPhotoLauncher.launch(androidx.activity.result.PickVisualMediaRequest(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly))
+                } else {
+                    showSignatureOptionsDialog(imageView, textView)
+                }
             }
         }
 
         val photoBox = createPhotoPlaceholder("CHOOSE IMAGE", 1.2f, true)
-        val sigBox = createPhotoPlaceholder("Draw signature / click to sms", 1.2f, false)
+        val sigBox = createPhotoPlaceholder("SIGNATURE (Click to Choose)", 1.2f, false)
 
         row.addView(spinner)
         row.addView(etGroup)
@@ -238,6 +243,51 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         row.addView(sigBox)
 
         binding.containerSignatureRows.addView(row)
+    }
+
+    private fun showSignatureOptionsDialog(imageView: android.widget.ImageView, textView: android.widget.TextView) {
+        val options = arrayOf("Upload from Gallery", "Sign on Screen")
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Signature Option")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> {
+                        activeImageTarget = imageView
+                        activeTextTarget = textView
+                        pickSignatureLauncher.launch(androidx.activity.result.PickVisualMediaRequest(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                    1 -> {
+                        showSignaturePadDialog(imageView, textView)
+                    }
+                }
+            }
+            .show()
+    }
+
+    private fun showSignaturePadDialog(imageView: android.widget.ImageView, textView: android.widget.TextView) {
+        val dialog = android.app.Dialog(this)
+        dialog.setContentView(R.layout.dialog_signature_pad)
+        dialog.window?.setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        val signatureView = dialog.findViewById<com.example.bgls.util.SignaturePadView>(R.id.signatureView)
+        val btnClear = dialog.findViewById<android.widget.Button>(R.id.btnClear)
+        val btnSave = dialog.findViewById<android.widget.Button>(R.id.btnSave)
+        val btnCancel = dialog.findViewById<android.widget.Button>(R.id.btnCancel)
+
+        btnClear.setOnClickListener { signatureView.clear() }
+        btnCancel.setOnClickListener { dialog.dismiss() }
+        btnSave.setOnClickListener {
+            if (!signatureView.isEmpty()) {
+                val bitmap = signatureView.getSignatureBitmap()
+                imageView.setImageBitmap(bitmap)
+                textView.visibility = android.view.View.GONE
+                dialog.dismiss()
+            } else {
+                android.widget.Toast.makeText(this, "Please sign first", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialog.show()
     }
 
     private fun setupMandatoryLabels() {
