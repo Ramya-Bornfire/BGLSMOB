@@ -5,99 +5,121 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbg">
+    android:background="@drawable/pro_banking_bg">
 
-    <!-- Login Card -->
-    <androidx.cardview.widget.CardView
+    <!-- Login Card Glassmorphism -->
+    <LinearLayout
         android:id="@+id/loginCard"
-        android:layout_width="0dp"
+        android:layout_width="420dp"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:background="@drawable/bg_premium_card"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            android:src="@drawable/bf_logo"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BLMS LOGIN"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp" />
+
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Advanced Pro Banking"-->
+        <!--            android:textColor="#00E5FF"-->
+        <!--            android:textSize="14sp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginTop="4dp" />-->
+
+        <!-- Username -->
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="User ID"
+            android:textColorHint="#99FFFFFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="32dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/bg_premium_edittext"
+            android:inputType="textCapCharacters"
+            android:textSize="16sp"/>
+
+        <!-- Password with Eye Icon -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_marginTop="16dp">
 
-            <!-- Logo -->
-            <ImageView
-                android:id="@+id/logoImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/born_fire"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:background="@drawable/circle_bg"
-                android:clipToOutline="true"/>
-
-            <!-- Username -->
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="User ID"
-                android:layout_marginTop="24dp"
-                android:padding="12dp"
-                android:background="@drawable/edittext_bg"
-                android:inputType="textCapCharacters"/>
+                android:layout_height="50dp"
+                android:hint="Password"
+                android:textColorHint="#99FFFFFF"
+                android:textColor="#FFFFFF"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="48dp"
+                android:background="@drawable/bg_premium_edittext"
+                android:textSize="16sp"/>
 
+            <ImageView
+                android:id="@+id/eyeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_eye"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                app:tint="#99FFFFFF"/>
+        </RelativeLayout>
 
-            <!-- Password with Eye Icon -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+        <!-- Sign In Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="SIGN IN"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_premium_button"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@null"/> <!-- Remove default material tint to show our custom gradient -->
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:padding="12dp"
-                    android:background="@drawable/edittext_bg"
-                    android:paddingEnd="40dp"/>
+        <!-- Change Password TEXT -->
+        <TextView
+            android:id="@+id/txtChangePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Password?"
+            android:textColor="#00E5FF"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"/>
 
-                <ImageView
-                    android:id="@+id/eyeIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_eye"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="10dp"/>
-            </RelativeLayout>
-
-            <!-- Sign In Button -->
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sign In"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/cyanblue"
-                android:textColor="#FFFFFF"/>
-
-            <!-- Change Password TEXT -->
-            <TextView
-                android:id="@+id/txtChangePassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change Password?"
-                android:textColor="@color/cyanblue"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
