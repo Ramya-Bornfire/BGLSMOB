@@ -39,24 +39,24 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     // ── Module definitions ──────────────────────────────────────────────────
-    data class Module(val title: String, val icon: String, val color: String, val subItems: List<String> = emptyList())
+    data class Module(val title: String, val icon: String, val subItems: List<String> = emptyList())
 
     private val modules = listOf(
-        Module("Admin",                 "⚙️",  "#1565C0", listOf("Organization Details","User Control","Parameters","Audit Trail")),
-        Module("Migration",             "🔄",  "#00695C", listOf("Customer Master","Loan Master","Loan Schedule","Transaction")),
-        Module("Chart of Accounts",     "📊",  "#6A1B9A", listOf("Chart of Accounts")),
-        Module("Customer Onboarding",   "👤",  "#E65100", listOf("Minimal Data","Approval","Disbursement","KYC Compliance","Compliance Department","Hold and Reject")),
-        Module("Customer Maintenance",  "🛠️", "#2E7D32", listOf("Customer Maintenance")),
-        Module("Loan Maintenance",      "📋",  "#1976D2", listOf("Loan Maintenance")),
-        Module("Loan Operation",        "💼",  "#AD1457", listOf("Loan Operation","Loan Closure")),
-        Module("Deposit Maintenance",   "🏦",  "#00838F", listOf("Deposit Maintenance")),
-        Module("Wallet Maintenance",    "👛",  "#4527A0", listOf("Wallet Maintanance","Wallet Inquries")),
-        Module("Transaction Maintenance",    "💳",  "#558B2F", listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
-        Module("Reversal Transactions", "↩️",  "#BF360C", listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
-        Module("Collection Process",    "📥",  "#0277BD", listOf("Loan Collection")),
-        Module("Batch Job",             "⚡",  "#37474F", listOf("Batch Job")),
-        Module("Reports",               "📄",  "#4E342E", listOf("Credit Facility Report","End Of Month Report","DAB Reports","Consolidated Loan Reports","Transaction Reports","Recovery Report","Demand generation Report","Interest Accrual Report","Penalty Accrual Report")),
-        Module("Transaction Inquiries", "🔍",  "#283593", listOf("Account Balances","Interest Summary","Journal Book","Account Ledger","Trial Balance","Profile and Loss Account","Balance Sheet","Balancing Report"))
+        Module("Admin", "⚙️", listOf("Organization Details","User Control","Parameters","Audit Trail")),
+        Module("Migration", "🔄", listOf("Customer Master","Loan Master","Loan Schedule","Transaction")),
+        Module("Chart of Accounts", "📊", listOf("Chart of Accounts")),
+        Module("Customer Onboarding", "👤", listOf("Minimal Data","Approval","Disbursement","KYC Compliance","Compliance Department","Hold and Reject")),
+        Module("Customer Maintenance", "🛠️", listOf("Customer Maintenance")),
+        Module("Loan Maintenance", "📋", listOf("Loan Maintenance")),
+        Module("Loan Operation", "💼", listOf("Loan Operation","Loan Closure")),
+        Module("Deposit Maintenance", "🏦", listOf("Deposit Maintenance")),
+        Module("Wallet Maintenance", "👛", listOf("Wallet Maintanance","Wallet Inquries")),
+        Module("Transaction Maintenance", "💳", listOf("Journal Entries","Account Ledger Positing","Account Leader","Trial Balance","Profile and Loss Account")),
+        Module("Reversal Transactions", "↩️", listOf("Transaction Reversal","Recovery Reversal","Failed Reversal")),
+        Module("Collection Process", "📥", listOf("Loan Collection")),
+        Module("Batch Job", "⚡", listOf("Batch Job")),
+        Module("Reports", "📄", listOf("Credit Facility Report","End Of Month Report","DAB Reports","Consolidated Loan Reports","Transaction Reports","Recovery Report","Demand generation Report","Interest Accrual Report","Penalty Accrual Report")),
+        Module("Transaction Inquiries", "🔍", listOf("Account Balances","Interest Summary","Journal Book","Account Ledger","Trial Balance","Profile and Loss Account","Balance Sheet","Balancing Report"))
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,9 +141,18 @@ class MainActivity : AppCompatActivity() {
         val popupView = inflater.inflate(R.layout.dialog_sub_menu, null)
 
         // Show all items without scrolling by using WRAP_CONTENT
-        val width = anchorView.width
-        val popupWindow = PopupWindow(popupView, width, LinearLayout.LayoutParams.WRAP_CONTENT, true)
-        
+//        val width = anchorView.width
+//        val popupWindow = PopupWindow(popupView, width, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+// Smaller popup aligned with text/icon area
+        val width = (anchorView.width * 0.82).toInt()
+
+        val popupWindow = PopupWindow(
+            popupView,
+            width,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
         popupWindow.elevation = 25f
         popupWindow.animationStyle = android.R.style.Animation_Dialog
 
@@ -157,7 +166,13 @@ class MainActivity : AppCompatActivity() {
         headerLayout?.setPadding(dp(12), dp(10), dp(12), dp(10))
         headerLayout?.background = getHeaderGradientBackground()
         
-        tvTitle.text = module.title.lowercase().replaceFirstChar { it.uppercase() }
+       // tvTitle.text = module.title.lowercase().replaceFirstChar { it.uppercase() }
+        tvTitle.text = module.title
+            .lowercase()
+            .split(" ")
+            .joinToString(" ") { word ->
+                word.replaceFirstChar { it.uppercase() }
+            }
         tvTitle.textSize = 14f
         tvTitle.setTextColor(Color.WHITE)
         tvTitle.isAllCaps = false
@@ -166,8 +181,10 @@ class MainActivity : AppCompatActivity() {
         tvIcon.textSize = 18f
         flIcon.layoutParams.width = dp(34)
         flIcon.layoutParams.height = dp(34)
-        flIcon.background = getRoundedCircleBgWhite(module.color)
-        tvIcon.setTextColor(Color.parseColor(module.color))
+//        flIcon.background = getRoundedCircleBgWhite(module.color)
+//        tvIcon.setTextColor(Color.parseColor(module.color))
+        flIcon.background = getRoundedCircleBgWhite("#38A9CB")
+        tvIcon.setTextColor(Color.parseColor("#38A9CB"))
 
         btnClose.layoutParams.width = dp(24)
         btnClose.layoutParams.height = dp(24)
@@ -197,7 +214,13 @@ class MainActivity : AppCompatActivity() {
 
             val tv = TextView(this).apply {
                 // Sentence case: First letter capital, others lowercase
-                text = item.lowercase().replaceFirstChar { it.uppercase() }
+              //  text = item.lowercase().replaceFirstChar { it.uppercase() }
+                text = item
+                    .lowercase()
+                    .split( " ")
+                    .joinToString(" ") { word ->
+                        word.replaceFirstChar { it.uppercase() }
+                    }
                 textSize = 11f
                 setTextColor(Color.parseColor("#1A1A1A"))
                 isAllCaps = false
@@ -211,7 +234,17 @@ class MainActivity : AppCompatActivity() {
         // Show anchored to the clicked view, perfectly covering the card using absolute coordinates
         val location = IntArray(2)
         anchorView.getLocationOnScreen(location)
-        popupWindow.showAtLocation(anchorView, android.view.Gravity.NO_GRAVITY, location[0], location[1])
+        //popupWindow.showAtLocation(anchorView, android.view.Gravity.NO_GRAVITY, location[0], location[1])
+        // Shift popup slightly right so it starts from title/icon area
+        val xOffset = dp(14)
+        val yOffset = 0
+
+        popupWindow.showAtLocation(
+            anchorView,
+            Gravity.NO_GRAVITY,
+            location[0] + xOffset,
+            location[1] + yOffset
+        )
     }
 
     // ── Gradient Background for Header (Blue Gradient) ─────────────────────

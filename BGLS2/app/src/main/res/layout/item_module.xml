@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:strokeWidth="0dp"
-    android:clickable="true"
-    android:focusable="true">
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:id="@+id/llContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:gravity="center">
+        android:background="?attr/selectableItemBackground">
 
         <FrameLayout
             android:id="@+id/flIconBg"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginBottom="12dp"
+            android:layout_gravity="center"
             android:background="@drawable/circle_bg">
 
             <TextView
@@ -32,33 +33,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="⚙️"
-                android:textSize="28sp"
-                android:layout_gravity="center" />
+                android:textSize="36sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false"
+                android:layout_gravity="center"/>
         </FrameLayout>
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Admin"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="#333333"
             android:gravity="center"
+            android:textAlignment="center"
             android:maxLines="2"
-            android:minLines="2"
-            android:ellipsize="end" />
-
-        <TextView
-            android:id="@+id/tvBadge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4 Items"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="3dp"
-            android:layout_marginTop="8dp" />
-
+            android:ellipsize="end"
+            android:textAllCaps="false"
+            android:fontFamily="sans-serif"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

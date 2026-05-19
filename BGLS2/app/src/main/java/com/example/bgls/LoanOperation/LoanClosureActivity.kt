@@ -410,57 +410,104 @@ class LoanClosureActivity : AppCompatActivity() {
         }
     }
 
-    private fun createTableRow(
-        flowDate: String, flowCode: String, flowAmtStr: String,
-        tranAmtStr: String, waiverStr: String, additionalStr: String,
-        isEditable: Boolean, isDeletable: Boolean
-    ): LinearLayout {
-        val rowIndex = llRows.childCount
-        val bgColor = Color.WHITE
-        val row = LinearLayout(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            orientation = LinearLayout.HORIZONTAL
-            tag = "data_row"
-            setBackgroundColor(bgColor)
-        }
-
-        val weights = listOf(1f, 1f, 1.2f, 1.2f, 1.2f, 1.5f)
-        val values = listOf(flowDate, flowCode, flowAmtStr, tranAmtStr, waiverStr, additionalStr)
-
-        for ((index, w) in weights.withIndex()) {
-            val et = EditText(this).apply {
-                layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), w)
-                setBackgroundColor(Color.TRANSPARENT)
-                textSize = 10f
-                setPadding(4.dpToPx(), 4.dpToPx(), 4.dpToPx(), 4.dpToPx())
-                gravity = if (index >= 2) Gravity.END else Gravity.CENTER
-                setText(values[index])
-                // flow_date (0), flow_code (1), flow_amt (2) are readonly
-                // tran_amt (3) is editable
-                // waiver (4) and additional (5) are readonly (calculated)
-                isFocusable = (index == 3 && isEditable)
-                isFocusableInTouchMode = (index == 3 && isEditable)
-                isClickable = (index == 3 && isEditable)
-            }
-
-            // Tran Amt change listener → calculate waiver/additional
-            if (index == 3 && isEditable) {
-                et.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                    override fun afterTextChanged(s: Editable?) {
-                        calculateAmounts(row)
-                    }
-                })
-            }
-            row.addView(et)
-        }
-        return row
+//    private fun createTableRow(
+//        flowDate: String, flowCode: String, flowAmtStr: String,
+//        tranAmtStr: String, waiverStr: String, additionalStr: String,
+//        isEditable: Boolean, isDeletable: Boolean
+//    ): LinearLayout {
+//        val rowIndex = llRows.childCount
+//        val bgColor = Color.WHITE
+//        val row = LinearLayout(this).apply {
+//            layoutParams = LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//            )
+//            orientation = LinearLayout.HORIZONTAL
+//            tag = "data_row"
+//            setBackgroundColor(bgColor)
+//        }
+//
+//        val weights = listOf(1f, 1f, 1.2f, 1.2f, 1.2f, 1.5f)
+//        val values = listOf(flowDate, flowCode, flowAmtStr, tranAmtStr, waiverStr, additionalStr)
+//
+//        for ((index, w) in weights.withIndex()) {
+//            val et = EditText(this).apply {
+//                layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), w)
+//                setBackgroundColor(Color.TRANSPARENT)
+//                textSize = 10f
+//                setPadding(4.dpToPx(), 4.dpToPx(), 4.dpToPx(), 4.dpToPx())
+//                gravity = if (index >= 2) Gravity.END else Gravity.CENTER
+//                setText(values[index])
+//                // flow_date (0), flow_code (1), flow_amt (2) are readonly
+//                // tran_amt (3) is editable
+//                // waiver (4) and additional (5) are readonly (calculated)
+//                isFocusable = (index == 3 && isEditable)
+//                isFocusableInTouchMode = (index == 3 && isEditable)
+//                isClickable = (index == 3 && isEditable)
+//            }
+//
+//            // Tran Amt change listener → calculate waiver/additional
+//            if (index == 3 && isEditable) {
+//                et.addTextChangedListener(object : TextWatcher {
+//                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//                    override fun afterTextChanged(s: Editable?) {
+//                        calculateAmounts(row)
+//                    }
+//                })
+//            }
+//            row.addView(et)
+//        }
+//        return row
+//    }
+private fun createTableRow(
+    flowDate: String, flowCode: String, flowAmtStr: String,
+    tranAmtStr: String, waiverStr: String, additionalStr: String,
+    isEditable: Boolean, isDeletable: Boolean
+): LinearLayout {
+    val row = LinearLayout(this).apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        orientation = LinearLayout.HORIZONTAL
+        setBackgroundColor(Color.WHITE)
     }
 
+    val weights = listOf(1f, 1f, 1.2f, 1.2f, 1.2f, 1.5f)
+    val values = listOf(flowDate, flowCode, flowAmtStr, tranAmtStr, waiverStr, additionalStr)
+
+    for ((index, w) in weights.withIndex()) {
+        val et = EditText(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, 40.dpToPx(), w)
+            setBackgroundColor(Color.TRANSPARENT)
+            textSize = 10f
+            setPadding(4.dpToPx(), 4.dpToPx(), 4.dpToPx(), 4.dpToPx())
+            // NEW: Left align for Flow Date (index 0) and Flow Code (index 1)
+            gravity = when (index) {
+                0, 1 -> Gravity.START
+                else -> if (index >= 2) Gravity.END else Gravity.CENTER
+            }
+            setText(values[index])
+            isFocusable = (index == 3 && isEditable)
+            isFocusableInTouchMode = (index == 3 && isEditable)
+            isClickable = (index == 3 && isEditable)
+        }
+
+        // Tran Amt change listener remains unchanged
+        if (index == 3 && isEditable) {
+            et.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    calculateAmounts(row)
+                }
+            })
+        }
+        row.addView(et)
+    }
+    return row
+}
     private fun calculateAmounts(row: LinearLayout) {
         val flowAmtEt = row.getChildAt(2) as EditText
         val tranAmtEt = row.getChildAt(3) as EditText

@@ -525,29 +525,44 @@ class LoanOperationActivity : AppCompatActivity() {
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 setBackgroundColor(bgColor)
             }
-            
-            val fields = mutableListOf(
-                Pair(1.2f, flow.flowDate), Pair(1.0f, flow.flowId), Pair(1.0f, flow.flowCode), 
-                Pair(1.2f, String.format("%.2f", flow.flowAmt))
+
+            val values = mutableListOf(
+                flow.flowDate,           // index 0
+                flow.flowId,             // index 1
+                flow.flowCode,           // index 2
+                String.format("%.2f", flow.flowAmt)  // index 3
             )
             if (isCollection) {
-                fields.add(Pair(1.2f, String.format("%.2f", flow.tranAmt ?: 0.0)))
+                values.add(String.format("%.2f", flow.tranAmt ?: 0.0))  // index 4 (if collection)
             }
-            fields.add(Pair(1.2f, flow.loanAcctNo))
-            fields.add(Pair(1.5f, flow.acctName))
+            values.add(flow.loanAcctNo)  // account no - index changes
+            values.add(flow.acctName)    // account name - last index
 
-            fields.forEach { (weight, value) ->
-                row.addView(TextView(this).apply {
-                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, weight)
+            val weights = mutableListOf(1.2f, 1.0f, 1.0f, 1.2f)
+            if (isCollection) weights.add(1.2f)
+            weights.addAll(listOf(1.2f, 1.5f))
+
+            values.forEachIndexed { idx, value ->
+                val textView = TextView(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, weights[idx])
                     text = value
                     textSize = 10f
                     setPadding(10, 12, 10, 12)
-                    gravity = if (value.toDoubleOrNull() != null) Gravity.END else Gravity.CENTER
+                    // Set gravity based on column type
+                    gravity = when (idx) {
+                        0, 1, 2,                     // Flow Date, Flow ID, Flow Code
+                        values.size - 2,             // Account No (second last)
+                        values.size - 1 -> Gravity.START   // Account Name (last)
+                        3, if (isCollection) 4 else -1 -> Gravity.END  // Flow Amt, Tran Amt
+                        else -> Gravity.CENTER
+                    }
                     setBackgroundColor(Color.TRANSPARENT)
                     setTextColor(Color.BLACK)
-                })
+                }
+                row.addView(textView)
             }
-            
+
+
             row.setOnClickListener {
                 if (rgOperationType.checkedRadioButtonId != R.id.rbCollection) {
                     performTransactionInterest(flow)
