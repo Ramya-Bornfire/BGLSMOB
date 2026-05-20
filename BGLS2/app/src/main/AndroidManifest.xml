@@ -151,7 +151,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.BGLS">
+            android:theme="@style/Theme.BGLS.Auth">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -164,7 +164,7 @@
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.BGLS">
+            android:theme="@style/Theme.BGLS.Auth">
         </activity>
         <activity
             android:name=".MainActivity"

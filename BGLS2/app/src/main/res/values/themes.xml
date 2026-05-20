@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.BGLS" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.BGLS" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
 
         <item name="colorPrimary">@color/cyanblue</item>
         <item name="colorPrimaryVariant">@color/cyanblue</item>
@@ -16,6 +17,12 @@
         <item name="android:editTextStyle">@style/UppercaseEditText</item>
         <item name="editTextStyle">@style/UppercaseEditText</item>
 
+    </style>
+
+    <style name="Theme.BGLS.Auth" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">#0F172A</item>
+        <item name="android:windowBackground">@drawable/pro_banking_bg</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <!-- REQUIRED if referenced -->
