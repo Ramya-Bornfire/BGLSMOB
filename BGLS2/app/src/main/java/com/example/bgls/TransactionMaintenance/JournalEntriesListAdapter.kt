@@ -27,8 +27,38 @@ class JournalEntriesListAdapter(
     private val onActionSelected: (String, JournalEntryListModel) -> Unit
 ) : RecyclerView.Adapter<JournalEntriesListAdapter.ViewHolder>() {
 
-    fun updateData(newList: List<JournalEntryListModel>) {
+    private var allItems = dataList.toList()
+
+    fun setFullData(newList: List<JournalEntryListModel>) {
+        allItems = newList.toList()
         dataList = newList
+        notifyDataSetChanged()
+    }
+
+    fun applyFilters(
+        tranDate: String,
+        tranId: String,
+        paTranTy: String,
+        currency: String,
+        amount: String,
+        acctId: String,
+        acctName: String,
+        tranParticular: String,
+        status: String
+    ) {
+        dataList = allItems.filter { item ->
+            val matchDate = tranDate.isBlank() || (item.tranDate).contains(tranDate.trim(), true)
+            val matchId = tranId.isBlank() || (item.tranId).contains(tranId.trim(), true)
+            val matchTy = paTranTy.isBlank() || (item.paTranTy).contains(paTranTy.trim(), true)
+            val matchCurr = currency.isBlank() || (item.currency).contains(currency.trim(), true)
+            val matchAmt = amount.isBlank() || (item.amount).contains(amount.trim(), true)
+            val matchAcct = acctId.isBlank() || (item.acctId).contains(acctId.trim(), true)
+            val matchName = acctName.isBlank() || (item.acctName).contains(acctName.trim(), true)
+            val matchPart = tranParticular.isBlank() || (item.tranParticular).contains(tranParticular.trim(), true)
+            val matchStat = status.isBlank() || (item.status).contains(status.trim(), true)
+            
+            matchDate && matchId && matchTy && matchCurr && matchAmt && matchAcct && matchName && matchPart && matchStat
+        }
         notifyDataSetChanged()
     }
 

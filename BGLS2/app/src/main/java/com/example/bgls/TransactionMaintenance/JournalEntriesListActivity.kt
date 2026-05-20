@@ -27,6 +27,30 @@ class JournalEntriesListActivity : AppCompatActivity() {
     private lateinit var rvJournalList: RecyclerView
     private lateinit var adapter: JournalEntriesListAdapter
     private val journalList = mutableListOf<JournalEntryListModel>()
+    
+    private var isFilterVisible = false
+    private var isDataLoaded = false
+
+    // Filter EditTexts
+    private lateinit var etFilterColDate: EditText
+    private lateinit var etFilterId: EditText
+    private lateinit var etFilterTy: EditText
+    private lateinit var etFilterCur: EditText
+    private lateinit var etFilterAmt: EditText
+    private lateinit var etFilterAcctId: EditText
+    private lateinit var etFilterAcctName: EditText
+    private lateinit var etFilterPart: EditText
+    private lateinit var etFilterStatus: EditText
+
+    private val filterTextWatcher = object : android.text.TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (isDataLoaded) {
+                applyFilters()
+            }
+        }
+        override fun afterTextChanged(s: android.text.Editable?) {}
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +69,89 @@ class JournalEntriesListActivity : AppCompatActivity() {
         }
         rvJournalList.adapter = adapter
 
+        // Init Filter Views
+        etFilterColDate = findViewById(R.id.etFilterColDate)
+        etFilterId = findViewById(R.id.etFilterId)
+        etFilterTy = findViewById(R.id.etFilterTy)
+        etFilterCur = findViewById(R.id.etFilterCur)
+        etFilterAmt = findViewById(R.id.etFilterAmt)
+        etFilterAcctId = findViewById(R.id.etFilterAcctId)
+        etFilterAcctName = findViewById(R.id.etFilterAcctName)
+        etFilterPart = findViewById(R.id.etFilterPart)
+        etFilterStatus = findViewById(R.id.etFilterStatus)
+
         findViewById<Button>(R.id.btnFilter).setOnClickListener {
-            loadData() // Reload as simple filter for now
+            toggleFilterVisibility()
         }
+    }
+
+    private fun toggleFilterVisibility() {
+        isFilterVisible = !isFilterVisible
+        val filterRow = findViewById<View>(R.id.filterRow)
+        val headerRow = findViewById<View>(R.id.headerRow)
+        
+        filterRow.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        headerRow.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+
+        if (isFilterVisible) {
+            etFilterColDate.removeTextChangedListener(filterTextWatcher)
+            etFilterColDate.addTextChangedListener(filterTextWatcher)
+            
+            etFilterId.removeTextChangedListener(filterTextWatcher)
+            etFilterId.addTextChangedListener(filterTextWatcher)
+            
+            etFilterTy.removeTextChangedListener(filterTextWatcher)
+            etFilterTy.addTextChangedListener(filterTextWatcher)
+            
+            etFilterCur.removeTextChangedListener(filterTextWatcher)
+            etFilterCur.addTextChangedListener(filterTextWatcher)
+            
+            etFilterAmt.removeTextChangedListener(filterTextWatcher)
+            etFilterAmt.addTextChangedListener(filterTextWatcher)
+            
+            etFilterAcctId.removeTextChangedListener(filterTextWatcher)
+            etFilterAcctId.addTextChangedListener(filterTextWatcher)
+            
+            etFilterAcctName.removeTextChangedListener(filterTextWatcher)
+            etFilterAcctName.addTextChangedListener(filterTextWatcher)
+            
+            etFilterPart.removeTextChangedListener(filterTextWatcher)
+            etFilterPart.addTextChangedListener(filterTextWatcher)
+            
+            etFilterStatus.removeTextChangedListener(filterTextWatcher)
+            etFilterStatus.addTextChangedListener(filterTextWatcher)
+        } else {
+            // Clear all fields
+            etFilterColDate.text.clear()
+            etFilterId.text.clear()
+            etFilterTy.text.clear()
+            etFilterCur.text.clear()
+            etFilterAmt.text.clear()
+            etFilterAcctId.text.clear()
+            etFilterAcctName.text.clear()
+            etFilterPart.text.clear()
+            etFilterStatus.text.clear()
+            
+            applyFilters()
+            
+            // Hide keyboard
+            val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            currentFocus?.let { imm.hideSoftInputFromWindow(it.windowToken, 0) }
+        }
+    }
+
+    private fun applyFilters() {
+        adapter.applyFilters(
+            tranDate = etFilterColDate.text.toString(),
+            tranId = etFilterId.text.toString(),
+            paTranTy = etFilterTy.text.toString(),
+            currency = etFilterCur.text.toString(),
+            amount = etFilterAmt.text.toString(),
+            acctId = etFilterAcctId.text.toString(),
+            acctName = etFilterAcctName.text.toString(),
+            tranParticular = etFilterPart.text.toString(),
+            status = etFilterStatus.text.toString()
+        )
     }
 
     private fun loadData() {
@@ -73,7 +177,10 @@ class JournalEntriesListActivity : AppCompatActivity() {
                             status = it.tran_status ?: ""
                         )
                     })
-                    adapter.notifyDataSetChanged()
+                    
+                    adapter.setFullData(journalList)
+                    isDataLoaded = true
+                    applyFilters()
 
                     if (journalList.isEmpty()) {
                         Toast.makeText(
