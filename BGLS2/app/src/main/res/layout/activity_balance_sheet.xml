@@ -201,7 +201,7 @@
             android:layout_width="wrap_content" 
             android:layout_height="32dp" 
             android:text="Toggle Asset Filters" 
-            android:backgroundTint="#6C757D" 
+            android:backgroundTint="@color/cyanblue"
             android:textColor="#FFFFFF" 
             android:textSize="10sp" 
             android:textAllCaps="false" 
@@ -215,7 +215,7 @@
             android:layout_width="wrap_content" 
             android:layout_height="32dp" 
             android:text="Toggle Liability Filters" 
-            android:backgroundTint="#6C757D" 
+            android:backgroundTint="@color/cyanblue"
             android:textColor="#FFFFFF" 
             android:textSize="10sp" 
             android:textAllCaps="false" 
@@ -256,21 +256,9 @@
                     android:padding="8dp"
                     android:gravity="center"/>
 
-                <!-- Asset Filter Row -->
+                <!-- Asset Table Header -->
                 <LinearLayout
-                    android:id="@+id/layoutFilterAsset"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#F8F9FA"
-                    android:visibility="gone"
-                    android:padding="4dp">
-                    <EditText android:id="@+id/etFilterAssetGlHead" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:hint="GL HEAD" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp"/>
-                    <EditText android:id="@+id/etFilterAssetGlDesc" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:hint="GL DESC" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp"/>
-                    <EditText android:id="@+id/etFilterAssetAmount" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:hint="AMT" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:gravity="end"/>
-                </LinearLayout>
-
-                <LinearLayout
+                    android:id="@+id/assetHeaderRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -281,6 +269,22 @@
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENCY" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="NO OF ACCT" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT" android:textSize="9sp" android:gravity="end" android:paddingEnd="4dp"/>
+                </LinearLayout>
+
+                <!-- Asset Filter Row -->
+                <LinearLayout
+                    android:id="@+id/layoutFilterAsset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#F8F9FA"
+                    android:visibility="gone"
+                    android:padding="4dp">
+                    <EditText android:id="@+id/etFilterAssetGlHead" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:hint="GL HEAD" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterAssetGlDesc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="2.0" android:hint="GL DESC" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterAssetCurrency" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:hint="CUR" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterAssetNoOfAc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:hint="No Ac" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="number"/>
+                    <EditText android:id="@+id/etFilterAssetAmount" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:hint="AMT" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="numberDecimal" android:gravity="end"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -322,21 +326,9 @@
                     android:padding="8dp"
                     android:gravity="center"/>
 
-                <!-- Liability Filter Row -->
+                <!-- Liability Table Header -->
                 <LinearLayout
-                    android:id="@+id/layoutFilterLiability"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#F8F9FA"
-                    android:visibility="gone"
-                    android:padding="4dp">
-                    <EditText android:id="@+id/etFilterLiabilityGlHead" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:hint="GL HEAD" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp"/>
-                    <EditText android:id="@+id/etFilterLiabilityGlDesc" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:hint="GL DESC" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp"/>
-                    <EditText android:id="@+id/etFilterLiabilityAmount" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:hint="AMT" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:gravity="end"/>
-                </LinearLayout>
-
-                <LinearLayout
+                    android:id="@+id/liabilityHeaderRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -347,6 +339,22 @@
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="CURRENCY" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:text="NO OF ACCT" android:textSize="9sp" android:gravity="center"/>
                     <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:text="AMOUNT" android:textSize="9sp" android:gravity="end" android:paddingEnd="4dp"/>
+                </LinearLayout>
+
+                <!-- Liability Filter Row -->
+                <LinearLayout
+                    android:id="@+id/layoutFilterLiability"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#F8F9FA"
+                    android:visibility="gone"
+                    android:padding="4dp">
+                    <EditText android:id="@+id/etFilterLiabilityGlHead" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:hint="GL HEAD" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterLiabilityGlDesc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="2.0" android:hint="GL DESC" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterLiabilityCurrency" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:hint="CUR" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="text"/>
+                    <EditText android:id="@+id/etFilterLiabilityNoOfAc" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:hint="No Ac" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="number"/>
+                    <EditText android:id="@+id/etFilterLiabilityAmount" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:hint="AMT" android:textSize="9sp" android:paddingHorizontal="4dp" android:background="@drawable/edittext_background" android:layout_margin="1dp" android:inputType="numberDecimal" android:gravity="end"/>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

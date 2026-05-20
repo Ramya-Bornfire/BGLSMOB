@@ -33,6 +33,8 @@ class BalanceSheetActivity : AppCompatActivity() {
     private lateinit var liabilityAdapter: BalanceSheetAdapter
     private var assetList = mutableListOf<BalanceSheetModel>()
     private var liabilityList = mutableListOf<BalanceSheetModel>()
+    private var fullAssetList = mutableListOf<BalanceSheetModel>()
+    private var fullLiabilityList = mutableListOf<BalanceSheetModel>()
     private lateinit var btnHome: ImageView
     private lateinit var btnBack: ImageView
 
@@ -75,17 +77,109 @@ class BalanceSheetActivity : AppCompatActivity() {
     }
 
     private fun setupFilters() {
-        val layoutFilterAsset = findViewById<View>(R.id.layoutFilterAsset)
+        // Asset section
+        val layoutFilterAsset = findViewById<android.widget.LinearLayout>(R.id.layoutFilterAsset)
+        val assetHeaderRow = findViewById<android.widget.LinearLayout>(R.id.assetHeaderRow)
         val btnFilterAsset = findViewById<View>(R.id.btnFilterAsset)
+
         btnFilterAsset.setOnClickListener {
-            layoutFilterAsset.visibility = if (layoutFilterAsset.visibility == View.GONE) View.VISIBLE else View.GONE
+            val isVisible = layoutFilterAsset.visibility == View.VISIBLE
+            layoutFilterAsset.visibility = if (isVisible) View.GONE else View.VISIBLE
+            assetHeaderRow.visibility = if (isVisible) View.VISIBLE else View.GONE
+            if (isVisible) {
+                // Reset to full list when closing filter
+                findViewById<android.widget.EditText>(R.id.etFilterAssetGlHead).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterAssetGlDesc).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterAssetCurrency).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterAssetNoOfAc).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterAssetAmount).text.clear()
+                assetList.clear()
+                assetList.addAll(fullAssetList)
+                assetAdapter.notifyDataSetChanged()
+            }
         }
 
-        val layoutFilterLiability = findViewById<View>(R.id.layoutFilterLiability)
-        val btnFilterLiability = findViewById<View>(R.id.btnFilterLiability)
-        btnFilterLiability.setOnClickListener {
-            layoutFilterLiability.visibility = if (layoutFilterLiability.visibility == View.GONE) View.VISIBLE else View.GONE
+        val etGlHead = findViewById<android.widget.EditText>(R.id.etFilterAssetGlHead)
+        val etGlDesc = findViewById<android.widget.EditText>(R.id.etFilterAssetGlDesc)
+        val etCurrency = findViewById<android.widget.EditText>(R.id.etFilterAssetCurrency)
+        val etNoOfAc = findViewById<android.widget.EditText>(R.id.etFilterAssetNoOfAc)
+        val etAmount = findViewById<android.widget.EditText>(R.id.etFilterAssetAmount)
+
+        val filterAsset = {
+            val gl = etGlHead.text.toString().trim().lowercase()
+            val desc = etGlDesc.text.toString().trim().lowercase()
+            val cur = etCurrency.text.toString().trim().lowercase()
+            val noAc = etNoOfAc.text.toString().trim()
+            val amt = etAmount.text.toString().trim()
+            assetList.clear()
+            assetList.addAll(fullAssetList.filter { item ->
+                (gl.isBlank() || item.glHead.lowercase().contains(gl)) &&
+                (desc.isBlank() || item.glDesc.lowercase().contains(desc)) &&
+                (cur.isBlank() || item.currency.lowercase().contains(cur)) &&
+                (noAc.isBlank() || item.noOfAc.contains(noAc)) &&
+                (amt.isBlank() || item.amount.contains(amt))
+            })
+            assetAdapter.notifyDataSetChanged()
         }
+
+        val assetWatcher = com.example.bgls.TransactionMaintenance.SearchTextWatcher { filterAsset() }
+        etGlHead.addTextChangedListener(assetWatcher)
+        etGlDesc.addTextChangedListener(assetWatcher)
+        etCurrency.addTextChangedListener(assetWatcher)
+        etNoOfAc.addTextChangedListener(assetWatcher)
+        etAmount.addTextChangedListener(assetWatcher)
+
+        // Liability section
+        val layoutFilterLiability = findViewById<android.widget.LinearLayout>(R.id.layoutFilterLiability)
+        val liabilityHeaderRow = findViewById<android.widget.LinearLayout>(R.id.liabilityHeaderRow)
+        val btnFilterLiability = findViewById<View>(R.id.btnFilterLiability)
+
+        btnFilterLiability.setOnClickListener {
+            val isVisible = layoutFilterLiability.visibility == View.VISIBLE
+            layoutFilterLiability.visibility = if (isVisible) View.GONE else View.VISIBLE
+            liabilityHeaderRow.visibility = if (isVisible) View.VISIBLE else View.GONE
+            if (isVisible) {
+                // Reset to full list when closing filter
+                findViewById<android.widget.EditText>(R.id.etFilterLiabilityGlHead).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterLiabilityGlDesc).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterLiabilityCurrency).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterLiabilityNoOfAc).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterLiabilityAmount).text.clear()
+                liabilityList.clear()
+                liabilityList.addAll(fullLiabilityList)
+                liabilityAdapter.notifyDataSetChanged()
+            }
+        }
+
+        val etLiabGlHead = findViewById<android.widget.EditText>(R.id.etFilterLiabilityGlHead)
+        val etLiabGlDesc = findViewById<android.widget.EditText>(R.id.etFilterLiabilityGlDesc)
+        val etLiabCurrency = findViewById<android.widget.EditText>(R.id.etFilterLiabilityCurrency)
+        val etLiabNoOfAc = findViewById<android.widget.EditText>(R.id.etFilterLiabilityNoOfAc)
+        val etLiabAmount = findViewById<android.widget.EditText>(R.id.etFilterLiabilityAmount)
+
+        val filterLiability = {
+            val gl = etLiabGlHead.text.toString().trim().lowercase()
+            val desc = etLiabGlDesc.text.toString().trim().lowercase()
+            val cur = etLiabCurrency.text.toString().trim().lowercase()
+            val noAc = etLiabNoOfAc.text.toString().trim()
+            val amt = etLiabAmount.text.toString().trim()
+            liabilityList.clear()
+            liabilityList.addAll(fullLiabilityList.filter { item ->
+                (gl.isBlank() || item.glHead.lowercase().contains(gl)) &&
+                (desc.isBlank() || item.glDesc.lowercase().contains(desc)) &&
+                (cur.isBlank() || item.currency.lowercase().contains(cur)) &&
+                (noAc.isBlank() || item.noOfAc.contains(noAc)) &&
+                (amt.isBlank() || item.amount.contains(amt))
+            })
+            liabilityAdapter.notifyDataSetChanged()
+        }
+
+        val liabilityWatcher = com.example.bgls.TransactionMaintenance.SearchTextWatcher { filterLiability() }
+        etLiabGlHead.addTextChangedListener(liabilityWatcher)
+        etLiabGlDesc.addTextChangedListener(liabilityWatcher)
+        etLiabCurrency.addTextChangedListener(liabilityWatcher)
+        etLiabNoOfAc.addTextChangedListener(liabilityWatcher)
+        etLiabAmount.addTextChangedListener(liabilityWatcher)
     }
 
     private fun loadData() {
@@ -111,6 +205,8 @@ class BalanceSheetActivity : AppCompatActivity() {
                                 ))
                             }
                         }
+                        fullAssetList.clear()
+                        fullAssetList.addAll(assetList)
                         assetAdapter.notifyDataSetChanged()
                     }
 
@@ -128,6 +224,8 @@ class BalanceSheetActivity : AppCompatActivity() {
                                 ))
                             }
                         }
+                        fullLiabilityList.clear()
+                        fullLiabilityList.addAll(liabilityList)
                         liabilityAdapter.notifyDataSetChanged()
                     }
                 }
