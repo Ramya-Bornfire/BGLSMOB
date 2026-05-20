@@ -219,6 +219,7 @@
             
             <!-- Table Header -->
             <LinearLayout
+                android:id="@+id/headerRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -230,6 +231,24 @@
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DEBIT" android:gravity="end|center_vertical"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="NET CHANGE" android:gravity="end|center_vertical"/>
                 <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CLOSING BALANCE" android:gravity="end|center_vertical"/>
+            </LinearLayout>
+
+            <!-- Filter Row -->
+            <LinearLayout
+                android:id="@+id/filterRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#F8F9FA"
+                android:paddingVertical="4dp"
+                android:visibility="gone">
+                <EditText android:id="@+id/etFilterGlCode" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:layout_height="38dp" android:hint="GL Code" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="text"/>
+                <EditText android:id="@+id/etFilterAcctName" android:layout_width="0dp" android:layout_weight="2.0" android:minWidth="200dp" android:layout_height="38dp" android:hint="Account Name" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="text"/>
+                <EditText android:id="@+id/etFilterOpeningBal" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:layout_height="38dp" android:hint="Open Bal" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="numberDecimal"/>
+                <EditText android:id="@+id/etFilterCredit" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:layout_height="38dp" android:hint="Credit" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="numberDecimal"/>
+                <EditText android:id="@+id/etFilterDebit" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:layout_height="38dp" android:hint="Debit" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="numberDecimal"/>
+                <EditText android:id="@+id/etFilterNetChange" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:layout_height="38dp" android:hint="Net Chg" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="numberDecimal"/>
+                <EditText android:id="@+id/etFilterClosingBal" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:layout_height="38dp" android:hint="Close Bal" android:textSize="10sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginHorizontal="2dp" android:inputType="numberDecimal"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

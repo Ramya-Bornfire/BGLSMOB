@@ -39,6 +39,28 @@ class TrialBalanceActivity : AppCompatActivity() {
     private lateinit var tvTotalDebits: TextView
     private lateinit var btnFilter: Button
     
+    // Filter EditTexts
+    private lateinit var etFilterGlCode: android.widget.EditText
+    private lateinit var etFilterAcctName: android.widget.EditText
+    private lateinit var etFilterOpeningBal: android.widget.EditText
+    private lateinit var etFilterCredit: android.widget.EditText
+    private lateinit var etFilterDebit: android.widget.EditText
+    private lateinit var etFilterNetChange: android.widget.EditText
+    private lateinit var etFilterClosingBal: android.widget.EditText
+
+    private var isFilterVisible = false
+    private var isDataLoaded = false
+
+    private val filterTextWatcher = object : android.text.TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (isDataLoaded) {
+                applyFilters()
+            }
+        }
+        override fun afterTextChanged(s: android.text.Editable?) {}
+    }
+    
     private lateinit var adapter: TrialBalanceAdapter
     private lateinit var glshAdapter: GLSHDetailAdapter
     
@@ -62,14 +84,7 @@ class TrialBalanceActivity : AppCompatActivity() {
         fetchInitialTrialBalance()
         
         findViewById<Button>(R.id.btnFilter).setOnClickListener {
-            // In the web version, filter button toggles filter row, here we just refresh
-            val selectedDate = tvSelectedDate.text.toString()
-            try {
-                val date = displayDateFormat.parse(selectedDate)
-                fetchTrialBalance(apiDateFormat.format(date!!))
-            } catch (e: Exception) {
-                Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show()
-            }
+            toggleFilterVisibility()
         }
     }
 
@@ -82,6 +97,73 @@ class TrialBalanceActivity : AppCompatActivity() {
         tvTotalCredits = findViewById(R.id.tvTotalCredits)
         tvTotalDebits = findViewById(R.id.tvTotalDebits)
         btnFilter = findViewById(R.id.btnFilter)
+        
+        etFilterGlCode = findViewById(R.id.etFilterGlCode)
+        etFilterAcctName = findViewById(R.id.etFilterAcctName)
+        etFilterOpeningBal = findViewById(R.id.etFilterOpeningBal)
+        etFilterCredit = findViewById(R.id.etFilterCredit)
+        etFilterDebit = findViewById(R.id.etFilterDebit)
+        etFilterNetChange = findViewById(R.id.etFilterNetChange)
+        etFilterClosingBal = findViewById(R.id.etFilterClosingBal)
+    }
+
+    private fun toggleFilterVisibility() {
+        isFilterVisible = !isFilterVisible
+        val filterRow = findViewById<View>(R.id.filterRow)
+        val headerRow = findViewById<View>(R.id.headerRow)
+
+        filterRow.visibility = if (isFilterVisible) View.VISIBLE else View.GONE
+        headerRow.visibility = if (isFilterVisible) View.GONE else View.VISIBLE
+
+        if (isFilterVisible) {
+            etFilterGlCode.removeTextChangedListener(filterTextWatcher)
+            etFilterGlCode.addTextChangedListener(filterTextWatcher)
+
+            etFilterAcctName.removeTextChangedListener(filterTextWatcher)
+            etFilterAcctName.addTextChangedListener(filterTextWatcher)
+
+            etFilterOpeningBal.removeTextChangedListener(filterTextWatcher)
+            etFilterOpeningBal.addTextChangedListener(filterTextWatcher)
+
+            etFilterCredit.removeTextChangedListener(filterTextWatcher)
+            etFilterCredit.addTextChangedListener(filterTextWatcher)
+
+            etFilterDebit.removeTextChangedListener(filterTextWatcher)
+            etFilterDebit.addTextChangedListener(filterTextWatcher)
+
+            etFilterNetChange.removeTextChangedListener(filterTextWatcher)
+            etFilterNetChange.addTextChangedListener(filterTextWatcher)
+
+            etFilterClosingBal.removeTextChangedListener(filterTextWatcher)
+            etFilterClosingBal.addTextChangedListener(filterTextWatcher)
+        } else {
+            // Clear all fields
+            etFilterGlCode.text.clear()
+            etFilterAcctName.text.clear()
+            etFilterOpeningBal.text.clear()
+            etFilterCredit.text.clear()
+            etFilterDebit.text.clear()
+            etFilterNetChange.text.clear()
+            etFilterClosingBal.text.clear()
+            
+            applyFilters()
+
+            // Hide keyboard
+            val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            currentFocus?.let { imm.hideSoftInputFromWindow(it.windowToken, 0) }
+        }
+    }
+
+    private fun applyFilters() {
+        adapter.applyFilters(
+            glCode = etFilterGlCode.text.toString(),
+            acctName = etFilterAcctName.text.toString(),
+            openingBal = etFilterOpeningBal.text.toString(),
+            credit = etFilterCredit.text.toString(),
+            debit = etFilterDebit.text.toString(),
+            netChange = etFilterNetChange.text.toString(),
+            closingBal = etFilterClosingBal.text.toString()
+        )
     }
 
     private fun setupNavigation() {
@@ -201,9 +283,21 @@ class TrialBalanceActivity : AppCompatActivity() {
             }
         }
 
+        isDataLoaded = true
+        adapter.setFullData(dataList)
+        applyFilters()
+    }
+
+    // Called by the adapter to update totals after filtering
+    fun updateTotals(filteredList: List<TrialBalanceItem>) {
+        var totalCredits = 0.0
+        var totalDebits = 0.0
+        for (item in filteredList) {
+            totalCredits += item.credit
+            totalDebits += item.debit
+        }
         tvTotalCredits.text = decimalFormat.format(totalCredits)
         tvTotalDebits.text = decimalFormat.format(totalDebits)
-        adapter.notifyDataSetChanged()
     }
 
     private fun fetchGLSHDetails(glshCode: String) {
@@ -229,9 +323,53 @@ class TrialBalanceActivity : AppCompatActivity() {
     }
 
     inner class TrialBalanceAdapter(
-        private val list: List<TrialBalanceItem>,
+        private var list: List<TrialBalanceItem>,
         private val onItemClick: (TrialBalanceItem) -> Unit
     ) : RecyclerView.Adapter<TrialBalanceAdapter.ViewHolder>() {
+        
+        private var allItems = list.toList()
+
+        fun setFullData(newList: List<TrialBalanceItem>) {
+            allItems = newList.toList()
+            list = newList
+            notifyDataSetChanged()
+        }
+
+        fun applyFilters(
+            glCode: String,
+            acctName: String,
+            openingBal: String,
+            credit: String,
+            debit: String,
+            netChange: String,
+            closingBal: String
+        ) {
+            val filtered = allItems.filter { item ->
+                val matchGl = glCode.isBlank() || item.glCode.contains(glCode.trim(), true)
+                val matchName = acctName.isBlank() || item.acctName.contains(acctName.trim(), true)
+                
+                val itemOpenStr = decimalFormat.format(item.openingBal)
+                val matchOpen = openingBal.isBlank() || itemOpenStr.contains(openingBal.trim(), true)
+                
+                val itemCreditStr = decimalFormat.format(item.credit)
+                val matchCredit = credit.isBlank() || itemCreditStr.contains(credit.trim(), true)
+                
+                val itemDebitStr = decimalFormat.format(item.debit)
+                val matchDebit = debit.isBlank() || itemDebitStr.contains(debit.trim(), true)
+                
+                val itemNetStr = decimalFormat.format(item.netChange)
+                val matchNet = netChange.isBlank() || itemNetStr.contains(netChange.trim(), true)
+                
+                val itemCloseStr = decimalFormat.format(item.closingBal)
+                val matchClose = closingBal.isBlank() || itemCloseStr.contains(closingBal.trim(), true)
+
+                matchGl && matchName && matchOpen && matchCredit && matchDebit && matchNet && matchClose
+            }
+            
+            list = filtered
+            notifyDataSetChanged()
+            updateTotals(filtered)
+        }
         
         inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvGlCode: TextView = view.findViewById(R.id.tvGlCode)
