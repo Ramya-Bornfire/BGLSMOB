@@ -229,6 +229,7 @@
                     android:background="#E8EAED">
 
                     <LinearLayout
+                        android:id="@+id/incomeHeaderRow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -246,11 +247,12 @@
                         android:orientation="horizontal"
                         android:visibility="gone"
                         android:paddingHorizontal="4dp"
-                        android:paddingBottom="4dp">
-                        <EditText android:id="@+id/etFilterIncomeGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterIncomeId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="ID" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterIncomeName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
+                        android:paddingVertical="4dp">
+                        <EditText android:id="@+id/etFilterIncomeGl" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Acct ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeCurrency" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="0.6" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Cur" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterIncomeAmount" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Amount" android:paddingHorizontal="4dp" android:inputType="numberDecimal"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -300,6 +302,7 @@
                     android:background="#E8EAED">
 
                     <LinearLayout
+                        android:id="@+id/expenditureHeaderRow"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -317,11 +320,12 @@
                         android:orientation="horizontal"
                         android:visibility="gone"
                         android:paddingHorizontal="4dp"
-                        android:paddingBottom="4dp">
-                        <EditText android:id="@+id/etFilterExpGl" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterExpId" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="ID" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <EditText android:id="@+id/etFilterExpName" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
-                        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1.6"/>
+                        android:paddingVertical="4dp">
+                        <EditText android:id="@+id/etFilterExpGl" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.2" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="GL" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpId" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Acct ID" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpName" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="2.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Name" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpCurrency" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="0.6" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Cur" android:paddingHorizontal="4dp" android:inputType="text"/>
+                        <EditText android:id="@+id/etFilterExpAmount" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1.0" android:background="@drawable/edittext_background" android:textSize="10sp" android:hint="Amount" android:paddingHorizontal="4dp" android:inputType="numberDecimal"/>
                     </LinearLayout>
                 </LinearLayout>
 

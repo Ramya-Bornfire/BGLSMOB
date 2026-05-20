@@ -110,14 +110,42 @@ class ProfileAndLossAccountActivity : AppCompatActivity() {
     private fun setupListeners() {
         llDatePicker.setOnClickListener { showDatePicker() }
         
-        findViewById<View>(R.id.btnFilterIncome).setOnClickListener {
+        findViewById<android.widget.Button>(R.id.btnFilterIncome).setOnClickListener {
             val filters = findViewById<LinearLayout>(R.id.llIncomeFilters)
-            filters.visibility = if (filters.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            val header = findViewById<LinearLayout>(R.id.incomeHeaderRow)
+            val isVisible = filters.visibility == View.VISIBLE
+            filters.visibility = if (isVisible) View.GONE else View.VISIBLE
+            header.visibility = if (isVisible) View.VISIBLE else View.GONE
+            if (isVisible) {
+                // Closing filter: clear all income filter fields and reset list
+                findViewById<android.widget.EditText>(R.id.etFilterIncomeGl).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterIncomeId).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterIncomeName).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterIncomeCurrency).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterIncomeAmount).text.clear()
+                incomeList.clear()
+                incomeList.addAll(fullIncomeList)
+                updateUI()
+            }
         }
         
-        findViewById<View>(R.id.btnFilterExpenditure).setOnClickListener {
+        findViewById<android.widget.Button>(R.id.btnFilterExpenditure).setOnClickListener {
             val filters = findViewById<LinearLayout>(R.id.llExpenditureFilters)
-            filters.visibility = if (filters.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            val header = findViewById<LinearLayout>(R.id.expenditureHeaderRow)
+            val isVisible = filters.visibility == View.VISIBLE
+            filters.visibility = if (isVisible) View.GONE else View.VISIBLE
+            header.visibility = if (isVisible) View.VISIBLE else View.GONE
+            if (isVisible) {
+                // Closing filter: clear all expenditure filter fields and reset list
+                findViewById<android.widget.EditText>(R.id.etFilterExpGl).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterExpId).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterExpName).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterExpCurrency).text.clear()
+                findViewById<android.widget.EditText>(R.id.etFilterExpAmount).text.clear()
+                expenditureList.clear()
+                expenditureList.addAll(fullExpenditureList)
+                updateUI()
+            }
         }
     }
 
@@ -125,48 +153,62 @@ class ProfileAndLossAccountActivity : AppCompatActivity() {
         val incomeGl = findViewById<android.widget.EditText>(R.id.etFilterIncomeGl)
         val incomeId = findViewById<android.widget.EditText>(R.id.etFilterIncomeId)
         val incomeName = findViewById<android.widget.EditText>(R.id.etFilterIncomeName)
+        val incomeCurrency = findViewById<android.widget.EditText>(R.id.etFilterIncomeCurrency)
+        val incomeAmount = findViewById<android.widget.EditText>(R.id.etFilterIncomeAmount)
         
         val filterIncome = {
-            val gl = incomeGl.text.toString().lowercase()
-            val id = incomeId.text.toString().lowercase()
-            val name = incomeName.text.toString().lowercase()
+            val gl = incomeGl.text.toString().trim().lowercase()
+            val id = incomeId.text.toString().trim().lowercase()
+            val name = incomeName.text.toString().trim().lowercase()
+            val cur = incomeCurrency.text.toString().trim().lowercase()
+            val amt = incomeAmount.text.toString().trim()
             
             incomeList.clear()
-            incomeList.addAll(fullIncomeList.filter { 
-                it.glHead.lowercase().contains(gl) &&
-                it.acctId.lowercase().contains(id) &&
-                it.acctName.lowercase().contains(name)
+            incomeList.addAll(fullIncomeList.filter { item ->
+                (gl.isBlank() || item.glHead.lowercase().contains(gl)) &&
+                (id.isBlank() || item.acctId.lowercase().contains(id)) &&
+                (name.isBlank() || item.acctName.lowercase().contains(name)) &&
+                (cur.isBlank() || item.currency.lowercase().contains(cur)) &&
+                (amt.isBlank() || decimalFormat.format(item.amount).contains(amt))
             })
-            incomeAdapter.notifyDataSetChanged()
             updateUI()
         }
         
         incomeGl.addTextChangedListener(SearchTextWatcher { filterIncome() })
         incomeId.addTextChangedListener(SearchTextWatcher { filterIncome() })
         incomeName.addTextChangedListener(SearchTextWatcher { filterIncome() })
+        incomeCurrency.addTextChangedListener(SearchTextWatcher { filterIncome() })
+        incomeAmount.addTextChangedListener(SearchTextWatcher { filterIncome() })
         
         val expGl = findViewById<android.widget.EditText>(R.id.etFilterExpGl)
         val expId = findViewById<android.widget.EditText>(R.id.etFilterExpId)
         val expName = findViewById<android.widget.EditText>(R.id.etFilterExpName)
+        val expCurrency = findViewById<android.widget.EditText>(R.id.etFilterExpCurrency)
+        val expAmount = findViewById<android.widget.EditText>(R.id.etFilterExpAmount)
         
         val filterExp = {
-            val gl = expGl.text.toString().lowercase()
-            val id = expId.text.toString().lowercase()
-            val name = expName.text.toString().lowercase()
+            val gl = expGl.text.toString().trim().lowercase()
+            val id = expId.text.toString().trim().lowercase()
+            val name = expName.text.toString().trim().lowercase()
+            val cur = expCurrency.text.toString().trim().lowercase()
+            val amt = expAmount.text.toString().trim()
             
             expenditureList.clear()
-            expenditureList.addAll(fullExpenditureList.filter { 
-                it.glHead.lowercase().contains(gl) &&
-                it.acctId.lowercase().contains(id) &&
-                it.acctName.lowercase().contains(name)
+            expenditureList.addAll(fullExpenditureList.filter { item ->
+                (gl.isBlank() || item.glHead.lowercase().contains(gl)) &&
+                (id.isBlank() || item.acctId.lowercase().contains(id)) &&
+                (name.isBlank() || item.acctName.lowercase().contains(name)) &&
+                (cur.isBlank() || item.currency.lowercase().contains(cur)) &&
+                (amt.isBlank() || decimalFormat.format(item.amount).contains(amt))
             })
-            expenditureAdapter.notifyDataSetChanged()
             updateUI()
         }
         
         expGl.addTextChangedListener(SearchTextWatcher { filterExp() })
         expId.addTextChangedListener(SearchTextWatcher { filterExp() })
         expName.addTextChangedListener(SearchTextWatcher { filterExp() })
+        expCurrency.addTextChangedListener(SearchTextWatcher { filterExp() })
+        expAmount.addTextChangedListener(SearchTextWatcher { filterExp() })
     }
 
     private fun showDatePicker() {
