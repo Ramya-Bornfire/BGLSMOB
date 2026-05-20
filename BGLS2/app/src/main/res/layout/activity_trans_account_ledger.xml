@@ -7,15 +7,15 @@
     android:orientation="vertical"
     android:background="#ffffff">
 
-    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <!-- HEADER -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/header_bg"
         android:layout_marginTop="30dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingHorizontal="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingHorizontal="16dp"
         android:elevation="8dp">
 
         <ImageView
@@ -34,12 +34,10 @@
             android:layout_height="wrap_content"
             android:text="ACCOUNT LEDGER"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:letterSpacing="0.05"
             android:layout_centerInParent="true"/>
 
-        <!-- Right Side Container (User Info + Buttons) -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,13 +46,12 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true">
 
-            <!-- Vertical User Info -->
             <LinearLayout
                 android:id="@+id/userInfoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginEnd="12dp">
+                android:layout_marginEnd="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -65,14 +62,14 @@
                         android:layout_height="wrap_content"
                         android:text="User ID"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=":"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
                         android:id="@+id/txtUserIdInfo"
@@ -80,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:text="EMP04"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -94,14 +91,14 @@
                         android:layout_height="wrap_content"
                         android:text="User Name"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=":"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
                         android:id="@+id/txtUserNameInfo"
@@ -109,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="Manivanan"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
 
@@ -123,14 +120,14 @@
                         android:layout_height="wrap_content"
                         android:text="Login Time"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=":"
                         android:textColor="#AACFFF"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:layout_marginEnd="4dp"/>
                     <TextView
                         android:id="@+id/txtLoginTimeInfo"
@@ -138,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:text="--"
                         android:textColor="@color/white"
-                        android:textSize="10sp"
+                        android:textSize="9sp"
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
@@ -155,43 +152,27 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <!-- Filter Bar -->
-    <RelativeLayout
+    <!-- TOOLBAR -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp"
-        android:background="#FFFFFF">
-
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="250dp"
-            android:layout_height="36dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/edittext_background"
-            android:hint="Search by Acct ID, Name..."
-            android:padding="8dp"
-            android:textSize="12sp"
-            android:textColor="#333333"
-            android:visibility="gone"/>
-
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+        android:background="#E9ECEF">
         <Button
             android:id="@+id/btnFilter"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_height="32dp"
             android:text="Filter"
+            android:textSize="11sp"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:backgroundTint="#2196F3"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textSize="12sp"
-            android:textAllCaps="false"/>
-    </RelativeLayout>
+            android:paddingHorizontal="20dp"/>
+    </LinearLayout>
 
-    <!-- Progress Bar -->
+    <!-- PROGRESS & NO DATA -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -199,7 +180,6 @@
         android:layout_gravity="center"
         android:visibility="gone"/>
 
-    <!-- No Data Text -->
     <TextView
         android:id="@+id/tvNoData"
         android:layout_width="match_parent"
@@ -211,6 +191,7 @@
         android:padding="24dp"
         android:visibility="gone"/>
 
+    <!-- MAIN CONTENT -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -221,24 +202,154 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:minWidth="1100dp">
+            android:minWidth="1200dp">
 
-            <!-- Table Header -->
+            <!-- HEADER ROW -->
             <LinearLayout
-                android:layout_marginTop="2dp"
+                android:id="@+id/headerRow"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:background="#E9ECEF"
+                android:gravity="center_vertical">
+
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="80dp" android:text="HEAD" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="120dp" android:text="ACCT ID" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.0" android:minWidth="200dp" android:text="ACCT NAME" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:minWidth="60dp" android:text="CUR" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:gravity="end|center_vertical" android:paddingEnd="12dp" android:text="CREDITS" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:gravity="end|center_vertical" android:paddingEnd="12dp" android:text="DEBITS" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.0" android:minWidth="100dp" android:gravity="end|center_vertical" android:paddingEnd="12dp" android:text="BALANCE" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.7" android:minWidth="70dp" android:text="STATUS" android:textColor="@color/black" android:textSize="12sp"/>
+                <View android:layout_width="1dp" android:layout_height="24dp" android:background="#FFFFFF"/>
+                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.5" android:minWidth="50dp" android:text="ACTION" android:textColor="@color/black" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <!-- FILTER ROW -->
+            <LinearLayout
+                android:id="@+id/filterRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="#E8EAED">
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1" android:minWidth="80dp" android:text="HEAD"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="120dp" android:text="ACCT ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCT NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="CUR"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="CREDITS"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="DEBITS"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="BALANCE"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="STATUS"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.6" android:minWidth="40dp" android:text="ACTION"/>
+                android:background="#E8EDF2"
+                android:paddingVertical="6dp"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etFilterHead"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="38dp"
+                    android:hint="Filter Head"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterAcctId"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.2"
+                    android:layout_height="38dp"
+                    android:hint="Filter Acct ID"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="number"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterAcctName"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.0"
+                    android:layout_height="38dp"
+                    android:hint="Filter Account Name"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterCurrency"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="38dp"
+                    android:hint="Curr"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterCredits"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_height="38dp"
+                    android:hint="Filter Credits"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterDebits"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_height="38dp"
+                    android:hint="Filter Debits"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterBalance"
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_height="38dp"
+                    android:hint="Filter Balance"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionSearch"/>
+
+                <EditText
+                    android:id="@+id/etFilterStatus"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:layout_height="38dp"
+                    android:hint="Active/Inactive"
+                    android:textSize="11sp"
+                    android:padding="8dp"
+                    android:background="@drawable/edittext_background"
+                    android:layout_margin="2dp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="38dp"/>
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#CCCCCC"/>
@@ -247,7 +358,8 @@
                 android:id="@+id/rvTransLedger"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF"/>
+                android:background="#FFFFFF"
+                android:nestedScrollingEnabled="true"/>
         </LinearLayout>
     </HorizontalScrollView>
 
