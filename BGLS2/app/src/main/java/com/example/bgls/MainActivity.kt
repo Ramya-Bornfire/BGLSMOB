@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.example.bgls.AuditTrial.AuditTrailDetailsActivity
 import com.example.bgls.BatchJobExecution.BatchJobActivity
 import com.example.bgls.ChartOfAccounts.ChartOfAccountsActivity
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         val navigationView = findViewById<NavigationView>(R.id.navigationView)
 
         binding.menuIcon.setOnClickListener {
-            drawerLayout.openDrawer(Gravity.START)
+            drawerLayout.openDrawer(GravityCompat.START)
         }
 
         navigationView.setNavigationItemSelectedListener {
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_profile -> Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
                 R.id.nav_logout  -> Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
             }
-            drawerLayout.closeDrawer(Gravity.START)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }

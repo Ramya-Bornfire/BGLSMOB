@@ -23,7 +23,7 @@ import com.example.bgls.MainActivity
 class TransactionsReversalActivity : AppCompatActivity() {
 
     private lateinit var rvTransactionsReversal: RecyclerView
-    private lateinit var spinnerFilter: Spinner
+    //private lateinit var spinnerFilter: Spinner
     private lateinit var btnPrev: Button
     private lateinit var btnNext: Button
     private lateinit var tvPageInfo: TextView
@@ -57,7 +57,7 @@ class TransactionsReversalActivity : AppCompatActivity() {
 
         initViews()
         setupNavigation()
-        setupSpinner()
+        //setupSpinner()
         setupFilterActions()
         
         adapter = TransactionsReversalAdapter(
@@ -105,7 +105,7 @@ class TransactionsReversalActivity : AppCompatActivity() {
 
     private fun initViews() {
         rvTransactionsReversal = findViewById(R.id.rvTransactionsReversal)
-        spinnerFilter = findViewById(R.id.spinnerFilter)
+       // spinnerFilter = findViewById(R.id.spinnerFilter)
         btnPrev = findViewById(R.id.btnPrev)
         btnNext = findViewById(R.id.btnNext)
         tvPageInfo = findViewById(R.id.tvPageInfo)
@@ -149,12 +149,12 @@ class TransactionsReversalActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSpinner() {
-        val options = arrayOf("Select Filter", "Date", "ID", "Amount")
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFilter.adapter = spinnerAdapter
-    }
+//    private fun setupSpinner() {
+//        val options = arrayOf("Select Filter", "Date", "ID", "Amount")
+//        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        spinnerFilter.adapter = spinnerAdapter
+//    }
 
     private fun setupFilterActions() {
         btnFilter.setOnClickListener {
