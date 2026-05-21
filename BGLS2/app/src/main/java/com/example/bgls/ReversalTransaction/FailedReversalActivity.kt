@@ -79,7 +79,6 @@ class FailedReversalActivity : AppCompatActivity() {
         }
 
         setupNavigation()
-        setupSpinner()
         setupRecyclerView()
         setupFilterActions()
         fetchDataFromApi()
@@ -110,14 +109,6 @@ class FailedReversalActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-    }
-
-    private fun setupSpinner() {
-        val spinner = findViewById<Spinner>(R.id.spinnerFilter)
-        val filterOptions = arrayOf("Select Filter", "Date", "Status", "Account")
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = spinnerAdapter
     }
 
     private fun setupFilterActions() {
