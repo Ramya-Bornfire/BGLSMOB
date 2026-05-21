@@ -42,8 +42,12 @@ class MinimalDataActivity : AppCompatActivity() {
 
         binding.btnProceedTop.setOnClickListener {
             if (validateMandatoryFields()) {
-                val intent = android.content.Intent(this, CustomerAccountOpeningActivity::class.java)
                 val isCorporate = binding.spCustomerGroup1.selectedItem.toString() == "CORPORATE CUSTOMER"
+                val intent = if (isCorporate) {
+                    android.content.Intent(this, CorporateCustomerAccountOpeningActivity::class.java)
+                } else {
+                    android.content.Intent(this, CustomerAccountOpeningActivity::class.java)
+                }
                 
                 intent.putExtra("app_ref_no", binding.etAppRefNo.text.toString())
                 intent.putExtra("customer_group", binding.spCustomerGroup1.selectedItem.toString())
