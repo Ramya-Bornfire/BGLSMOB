@@ -11,6 +11,16 @@ import com.example.bgls.R
 import com.example.bgls.databinding.ActivityCorporateCustomerAccountOpeningBinding
 import com.google.android.material.tabs.TabLayout
 import com.example.bgls.util.SignaturePadView
+import androidx.lifecycle.lifecycleScope
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
 
@@ -20,6 +30,12 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
     private lateinit var pickDocumentLauncher: androidx.activity.result.ActivityResultLauncher<androidx.activity.result.PickVisualMediaRequest>
     private var activeImageTarget: android.widget.ImageView? = null
     private var activeTextTarget: android.widget.TextView? = null
+
+    private var generatedAccountNo: String = ""
+    private var schemeGlCode: String = ""
+    private var schemeGlDesc: String = ""
+    private var schemeGlshCode: String = ""
+    private var schemeGlshDesc: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +66,242 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener {
             if (validateCurrentTab()) {
                 val currentTab = binding.tabLayout.selectedTabPosition
-                if (currentTab < binding.tabLayout.tabCount - 1) {
-                    binding.tabLayout.getTabAt(currentTab + 1)?.select()
-                } else {
-                    android.widget.Toast.makeText(this, "Application Submitted", android.widget.Toast.LENGTH_SHORT).show()
+                when (currentTab) {
+                    0 -> savePersonalDetails()
+                    1 -> saveAccountDetails()
+                    2 -> uploadDocuments { binding.tabLayout.getTabAt(3)?.select() }
+                    3 -> uploadSignaturesAndFinalize()
+                    else -> {
+                        if (currentTab < binding.tabLayout.tabCount - 1) {
+                            binding.tabLayout.getTabAt(currentTab + 1)?.select()
+                        }
+                    }
                 }
+            }
+        }
+
+        binding.spSchemeType.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = parent?.getItemAtPosition(position).toString()
+                if (selected != "SELECT") {
+                    fetchSchemeDetails(selected)
+                }
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
+    }
+
+    private fun fetchSchemeDetails(selected: String) {
+        val schemeType = when (selected) {
+            "FIXED DEPOSIT" -> "TDFIXED"
+            else -> "LSRET"
+        }
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.getSchemeDetails(schemeType)
+                }
+                if (response.isSuccessful) {
+                    val responseString = response.body()?.string() ?: ""
+                    val json = org.json.JSONObject(responseString)
+                    val data = json.optJSONObject("data")
+                    generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
+                    schemeGlCode = data?.optString("glcode") ?: ""
+                    schemeGlDesc = data?.optString("gldesc") ?: ""
+                    schemeGlshCode = data?.optString("glsh_code") ?: ""
+                    schemeGlshDesc = data?.optString("glsh_desc") ?: ""
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun savePersonalDetails() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Saving Corporate Details...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val params = mutableMapOf<String, String>()
+                params["customer_type"] = binding.etCustomerType.text.toString()
+                params["corporate_name"] = binding.etCorporateName.text.toString()
+                params["trade_name"] = binding.etTradeName.text.toString()
+                params["date_of_incorp"] = binding.etDateOfIncorp.text.toString()
+                params["email_id"] = binding.etEmailIdAO.text.toString()
+                params["mobile_no"] = binding.etMobileNoAO.text.toString()
+                params["monthly_income"] = binding.etMonthlyIncome.text.toString()
+                params["address_type"] = binding.spAddressType.selectedItem.toString()
+                params["house_no"] = binding.etHouseNo.text.toString()
+                params["street_no"] = binding.etStreetNo.text.toString()
+                params["street_name"] = binding.etStreetName.text.toString()
+                params["city"] = binding.spCity.selectedItem.toString()
+                params["address_valid_from"] = binding.etAddressValidFrom.text.toString()
+                params["nationality"] = binding.spNationality.selectedItem.toString()
+                params["country_of_birth"] = binding.spCountryOfBirth.selectedItem.toString()
+                
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", params)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Corporate Details Saved", android.widget.Toast.LENGTH_SHORT).show()
+                    binding.tabLayout.getTabAt(1)?.select()
+                } else {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveAccountDetails() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Saving Account Details...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                
+                val formData = mutableMapOf<String, Any>()
+                val scheme = binding.spSchemeType.selectedItem.toString()
+                formData["schemetype"] = if (scheme == "FIXED DEPOSIT") "TD" else "LA"
+                formData["schemecode"] = if (scheme == "FIXED DEPOSIT") "TDFIXED" else "LSRET"
+                formData["currency"] = "SCR"
+                formData["prisolid"] = binding.etPrimaryBranch.text.toString()
+                formData["branch_desc"] = binding.etBranchDesc.text.toString()
+                formData["cert_reg"] = binding.etCertReg.text.toString()
+                formData["bus_reg"] = binding.etBusReg.text.toString()
+                formData["date_incorp"] = binding.etDateIncorp.text.toString()
+                formData["country_operation"] = binding.spCountryOperation.selectedItem.toString()
+                
+                if (formData["schemetype"] == "LA") {
+                    formData["gl_code_loan"] = schemeGlCode
+                    formData["gl_desc_loan"] = schemeGlDesc
+                    formData["glsh_code_loan"] = schemeGlshCode
+                    formData["glsh_desc_loan"] = schemeGlshDesc
+                    formData["account_no"] = generatedAccountNo
+                } else {
+                    formData["gl_code"] = schemeGlCode
+                    formData["gl_desc"] = schemeGlDesc
+                    formData["glsh_code"] = schemeGlshCode
+                    formData["glsh_desc"] = schemeGlshDesc
+                    formData["deposit_account_no"] = generatedAccountNo
+                }
+                
+                val body = mapOf(
+                    "formData" to formData,
+                    "loanAccountNo" to generatedAccountNo,
+                    "accountNo" to generatedAccountNo,
+                    "scheduleList" to emptyList<Any>()
+                )
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.saveAccountDetails(appRefNo, body)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Account Details Saved", android.widget.Toast.LENGTH_SHORT).show()
+                    binding.tabLayout.getTabAt(2)?.select()
+                } else {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun uploadDocuments(onComplete: () -> Unit) {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Uploading Documents...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val parts = mutableListOf<MultipartBody.Part>()
+                
+                val dummyBody = "dummy".toRequestBody("text/plain".toMediaTypeOrNull())
+                parts.add(MultipartBody.Part.createFormData("files", "dummy.txt", dummyBody))
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.uploadImage(parts, appRefNo)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Documents Uploaded", android.widget.Toast.LENGTH_SHORT).show()
+                    onComplete()
+                } else {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to upload documents", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun uploadSignaturesAndFinalize() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Submitting Application...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
+                
+                val schedulerBody = "[{\"appl_ref_no\":\"$appRefNo\",\"rec_no\":\"1\",\"img_access_code\":\"GRP\",\"img_group\":\"COR\",\"keyword\":\"SIG\"}]".toRequestBody("application/json".toMediaTypeOrNull())
+                val schedulerPart = MultipartBody.Part.createFormData("scheduler", "scheduler.json", schedulerBody)
+                
+                val dummyBody = byteArrayOf(0).toRequestBody("image/png".toMediaTypeOrNull())
+                val photoPart = listOf(MultipartBody.Part.createFormData("photo", "photo.png", dummyBody))
+                val signPart = listOf(MultipartBody.Part.createFormData("sign", "sign.png", dummyBody))
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.addSignatureCorporate(schedulerPart, photoPart, signPart, cifId)
+                }
+                
+                if (response.isSuccessful) {
+                    val finalResponse = withContext(Dispatchers.IO) {
+                        RetrofitClient.api.finalizeSubmission(
+                            appRefNo = appRefNo,
+                            recNo = "1"
+                        )
+                    }
+                    
+                    progressDialog.dismiss()
+                    if (finalResponse.isSuccessful) {
+                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Application Submitted Successfully", android.widget.Toast.LENGTH_LONG).show()
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to finalize", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to upload signatures", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
             }
         }
     }

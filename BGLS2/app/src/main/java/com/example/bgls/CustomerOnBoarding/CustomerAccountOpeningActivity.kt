@@ -18,8 +18,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 class CustomerAccountOpeningActivity : AppCompatActivity() {
@@ -88,6 +90,228 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                 }
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
+    }
+
+    private fun fetchSchemeDetails(selected: String) {
+        val schemeType = when (selected) {
+            "FIXED DEPOSIT" -> "TDFIXED"
+            else -> "LSRET"
+        }
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.getSchemeDetails(schemeType)
+                }
+                if (response.isSuccessful) {
+                    val responseString = response.body()?.string() ?: ""
+                    val json = org.json.JSONObject(responseString)
+                    val data = json.optJSONObject("data")
+                    generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
+                    schemeGlCode = data?.optString("glcode") ?: ""
+                    schemeGlDesc = data?.optString("gldesc") ?: ""
+                    schemeGlshCode = data?.optString("glsh_code") ?: ""
+                    schemeGlshDesc = data?.optString("glsh_desc") ?: ""
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun savePersonalDetails() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Saving Personal Details...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val params = mutableMapOf<String, String>()
+                params["customer_type"] = binding.etCustomerType.text.toString()
+                params["first_name"] = binding.etFirstName.text.toString()
+                params["middle_name"] = binding.etMiddleName.text.toString()
+                params["last_name"] = binding.etLastName.text.toString()
+                params["full_name"] = binding.etFullName.text.toString()
+                params["dob"] = binding.etDateOfBirth.text.toString()
+                params["mobile_no"] = binding.etMobileNoAO.text.toString()
+                params["email_id"] = binding.etEmailIdAO.text.toString()
+                params["salutation"] = binding.spSalutation.selectedItem.toString()
+                params["gender"] = binding.spGender.selectedItem.toString()
+                params["martial_status"] = binding.spMartialStatus.selectedItem.toString()
+                params["occupation"] = binding.spOccupation.selectedItem.toString()
+                params["annual_income"] = binding.etAnnualIncome.text.toString()
+                params["monthly_income"] = binding.etMonthlyIncome.text.toString()
+                params["address_type"] = binding.spAddressType.selectedItem.toString()
+                params["house_no"] = binding.etHouseNo.text.toString()
+                params["street_no"] = binding.etStreetNo.text.toString()
+                params["street_name"] = binding.etStreetName.text.toString()
+                params["city"] = binding.spCity.selectedItem.toString()
+                params["address_valid_from"] = binding.etAddressValidFrom.text.toString()
+                params["nationality"] = binding.spNationality.selectedItem.toString()
+                params["country_of_birth"] = binding.spCountryOfBirth.selectedItem.toString()
+                
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", params)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Personal Details Saved", android.widget.Toast.LENGTH_SHORT).show()
+                    binding.tabLayout.getTabAt(1)?.select()
+                } else {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveAccountDetails() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Saving Account Details...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                
+                val formData = mutableMapOf<String, Any>()
+                val scheme = binding.spSchemeType.selectedItem.toString()
+                formData["schemetype"] = if (scheme == "FIXED DEPOSIT") "TD" else "LA"
+                formData["schemecode"] = if (scheme == "FIXED DEPOSIT") "TDFIXED" else "LSRET"
+                formData["currency"] = "SCR"
+                formData["prisolid"] = binding.etPrimaryBranch.text.toString()
+                formData["branch_desc"] = binding.etBranchName.text.toString()
+                formData["nationalid"] = binding.etNationalIdAO.text.toString()
+                formData["passno"] = binding.etPassportNoAO.text.toString()
+                formData["issuedate"] = binding.etIssueDate.text.toString()
+                formData["expdate"] = binding.etExpiryDate.text.toString()
+                
+                if (formData["schemetype"] == "LA") {
+                    formData["gl_code_loan"] = schemeGlCode
+                    formData["gl_desc_loan"] = schemeGlDesc
+                    formData["glsh_code_loan"] = schemeGlshCode
+                    formData["glsh_desc_loan"] = schemeGlshDesc
+                    formData["account_no"] = generatedAccountNo
+                } else {
+                    formData["gl_code"] = schemeGlCode
+                    formData["gl_desc"] = schemeGlDesc
+                    formData["glsh_code"] = schemeGlshCode
+                    formData["glsh_desc"] = schemeGlshDesc
+                    formData["deposit_account_no"] = generatedAccountNo
+                }
+                
+                val body = mapOf(
+                    "formData" to formData,
+                    "loanAccountNo" to generatedAccountNo,
+                    "accountNo" to generatedAccountNo,
+                    "scheduleList" to emptyList<Any>()
+                )
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.saveAccountDetails(appRefNo, body)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Account Details Saved", android.widget.Toast.LENGTH_SHORT).show()
+                    binding.tabLayout.getTabAt(2)?.select()
+                } else {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun uploadDocuments(onComplete: () -> Unit) {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Uploading Documents...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val parts = mutableListOf<MultipartBody.Part>()
+                
+                val dummyBody = "dummy".toRequestBody("text/plain".toMediaTypeOrNull())
+                parts.add(MultipartBody.Part.createFormData("files", "dummy.txt", dummyBody))
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.uploadImage(parts, appRefNo)
+                }
+                
+                progressDialog.dismiss()
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Documents Uploaded", android.widget.Toast.LENGTH_SHORT).show()
+                    onComplete()
+                } else {
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to upload documents", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun uploadSignaturesAndFinalize() {
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Submitting Application...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
+                
+                val schedulerBody = "[{\"appl_ref_no\":\"$appRefNo\",\"rec_no\":\"1\",\"img_access_code\":\"GRP\",\"img_group\":\"IND\",\"keyword\":\"SIG\"}]".toRequestBody("application/json".toMediaTypeOrNull())
+                val schedulerPart = MultipartBody.Part.createFormData("scheduler", "scheduler.json", schedulerBody)
+                
+                val dummyBody = byteArrayOf(0).toRequestBody("image/png".toMediaTypeOrNull())
+                val photoPart = listOf(MultipartBody.Part.createFormData("photo", "photo.png", dummyBody))
+                val signPart = listOf(MultipartBody.Part.createFormData("sign", "sign.png", dummyBody))
+                
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.addSignatureCorporate(schedulerPart, photoPart, signPart, cifId)
+                }
+                
+                if (response.isSuccessful) {
+                    val finalResponse = withContext(Dispatchers.IO) {
+                        RetrofitClient.api.finalizeSubmission(
+                            appRefNo = appRefNo,
+                            recNo = "1"
+                        )
+                    }
+                    
+                    progressDialog.dismiss()
+                    if (finalResponse.isSuccessful) {
+                        android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Application Submitted Successfully", android.widget.Toast.LENGTH_LONG).show()
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to finalize", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to upload signatures", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
