@@ -284,11 +284,11 @@ class EmployeProfileAddActivity : AppCompatActivity() {
         )
     }
 
-    private fun convertDateToBackend(dateStr: String): String? {
+    private fun convertDateToBackend(dateStr: String): Long? {
         if (dateStr.isBlank()) return null
         return try {
-            val parts = dateStr.split("-")
-            "${parts[2]}-${parts[1]}-${parts[0]}"   // dd-MM-yyyy → yyyy-MM-dd
+            val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            sdf.parse(dateStr)?.time
         } catch (e: Exception) { null }
     }
 
@@ -395,11 +395,15 @@ class EmployeProfileAddActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertToDisplay(dateStr: String): String {
+    private fun convertToDisplay(dateObj: Any?): String {
+        if (dateObj == null) return ""
+        val str = dateObj.toString()
+        if (str.isBlank()) return ""
         return try {
-            val parts = dateStr.split("-")
+            val ymd = str.split("T").firstOrNull() ?: return ""
+            val parts = ymd.split("-")
             "${parts[2]}-${parts[1]}-${parts[0]}"   // yyyy-MM-dd → dd-MM-yyyy
-        } catch (e: Exception) { dateStr }
+        } catch (e: Exception) { str }
     }
 
     private fun setSpinnerSelection(spinner: Spinner, value: String) {

@@ -10,8 +10,8 @@ data class EmployeeProfile(
     @SerializedName("employee_name") val employeeName: String? = null,
     @SerializedName("bank") val bank: String? = null,
     @SerializedName("bank_act_no") val bankActNo: String? = null,
-    @SerializedName("doj") val doj: String? = null,          // date as string (ISO or timestamp)
-    @SerializedName("dob") val dob: String? = null,
+    @SerializedName("doj") val doj: Any? = null,
+    @SerializedName("dob") val dob: Any? = null,
     @SerializedName("branch_id") val branchId: String? = null,
     @SerializedName("department") val department: String? = null,
     @SerializedName("design") val design: String? = null,

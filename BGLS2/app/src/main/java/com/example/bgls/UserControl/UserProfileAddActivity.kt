@@ -387,23 +387,25 @@ class UserProfileAddActivity : AppCompatActivity() {
     }
 
     // ----- date conversion helpers -----
-    private fun convertDateToBackend(dateStr: String): String? {
+    private fun convertDateToBackend(dateStr: String): Long? {
         if (dateStr.isBlank()) return null
         return try {
-            val parts = dateStr.split("-")
-            "${parts[2]}-${parts[1]}-${parts[0]}"  // dd-MM-yyyy → yyyy-MM-dd
+            val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            sdf.parse(dateStr)?.time
         } catch (e: Exception) { null }
     }
 
-    private fun parseBackendTimestampToYMD(timestamp: String?): String? {
-        if (timestamp.isNullOrBlank()) return null
+    private fun parseBackendTimestampToYMD(timestamp: Any?): String? {
+        if (timestamp == null) return null
+        val str = timestamp.toString()
+        if (str.isBlank()) return null
         return try {
-            timestamp.split("T").firstOrNull()
+            str.split("T").firstOrNull()
         } catch (e: Exception) { null }
     }
 
-    private fun convertToDisplay(dateStr: String?): String {
-        val ymd = parseBackendTimestampToYMD(dateStr) ?: return ""
+    private fun convertToDisplay(dateObj: Any?): String {
+        val ymd = parseBackendTimestampToYMD(dateObj) ?: return ""
         return try {
             val ymdParts = ymd.split("-")
             "${ymdParts[2]}-${ymdParts[1]}-${ymdParts[0]}"  // yyyy-MM-dd → dd-MM-yyyy

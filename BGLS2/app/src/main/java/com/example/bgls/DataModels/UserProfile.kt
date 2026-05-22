@@ -18,10 +18,10 @@ data class UserProfile(
     @SerializedName("branch_id") val branchId: String? = null,
     @SerializedName("branch_des") val branchDes: String? = null,
 
-    @SerializedName("disable_start_date") val disableStartDate: String? = null,
-    @SerializedName("disable_end_date") val disableEndDate: String? = null,
-    @SerializedName("pass_exp_date") val passwordExpiryDate: String? = null,
-    @SerializedName("acc_exp_date") val accountExpiryDate: String? = null,
+    @SerializedName("disable_start_date") val disableStartDate: Any? = null,
+    @SerializedName("disable_end_date") val disableEndDate: Any? = null,
+    @SerializedName("pass_exp_date") val passwordExpiryDate: Any? = null,
+    @SerializedName("acc_exp_date") val accountExpiryDate: Any? = null,
 
     @SerializedName("role_id") val roleId: String? = null,
     @SerializedName("role_desc") val roleDesc: String? = null,
