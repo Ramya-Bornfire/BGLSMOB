@@ -1,16 +1,26 @@
 package com.example.bgls.CustomerOnBoarding
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
 import com.example.bgls.databinding.ActivityCustomerAccountOpeningBinding
 import com.google.android.material.tabs.TabLayout
 import com.example.bgls.util.SignaturePadView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONObject
 
 class CustomerAccountOpeningActivity : AppCompatActivity() {
 
@@ -20,6 +30,12 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     private lateinit var pickDocumentLauncher: androidx.activity.result.ActivityResultLauncher<androidx.activity.result.PickVisualMediaRequest>
     private var activeImageTarget: android.widget.ImageView? = null
     private var activeTextTarget: android.widget.TextView? = null
+
+    private var generatedAccountNo: String = ""
+    private var schemeGlCode: String = ""
+    private var schemeGlDesc: String = ""
+    private var schemeGlshCode: String = ""
+    private var schemeGlshDesc: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +66,28 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener {
             if (validateCurrentTab()) {
                 val currentTab = binding.tabLayout.selectedTabPosition
-                if (currentTab < binding.tabLayout.tabCount - 1) {
-                    binding.tabLayout.getTabAt(currentTab + 1)?.select()
-                } else {
-                    android.widget.Toast.makeText(this, "Application Submitted", android.widget.Toast.LENGTH_SHORT).show()
+                when (currentTab) {
+                    0 -> savePersonalDetails()
+                    1 -> saveAccountDetails()
+                    2 -> uploadDocuments { binding.tabLayout.getTabAt(3)?.select() }
+                    3 -> uploadSignaturesAndFinalize()
+                    else -> {
+                        if (currentTab < binding.tabLayout.tabCount - 1) {
+                            binding.tabLayout.getTabAt(currentTab + 1)?.select()
+                        }
+                    }
                 }
             }
+        }
+
+        binding.spSchemeType.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = parent?.getItemAtPosition(position).toString()
+                if (selected != "SELECT") {
+                    fetchSchemeDetails(selected)
+                }
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
     }
 

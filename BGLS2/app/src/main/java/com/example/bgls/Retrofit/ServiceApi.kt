@@ -1224,4 +1224,91 @@ interface ServiceApi {
     @GET("api/Approval")
     fun getApprovalList(@Query("formmode") formmode: String = "list"): Call<ApprovalListResponse>
 
+    // --- Customer Onboarding (MinimalDataActivity) Endpoints ---
+    @GET("CheckDuplicateIndiv")
+    suspend fun checkDuplicateIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckBlackListIndiv")
+    suspend fun checkBlackListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckNegativeListIndiv")
+    suspend fun checkNegativeListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckDuplicateJoint")
+    suspend fun checkDuplicateJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckBlackListJoint")
+    suspend fun checkBlackListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckNegativeListJoint")
+    suspend fun checkNegativeListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckDuplicateCor")
+    suspend fun checkDuplicateCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckBlackListCor")
+    suspend fun checkBlackListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CheckNegativeListCor")
+    suspend fun checkNegativeListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("CustomerOnboarding")
+    suspend fun proceedIndividual(
+        @Query("formmode") formmode: String = "proceed",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @GET("CustomerJoint")
+    suspend fun proceedJoint(
+        @Query("formmode") formmode: String = "proceed",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @GET("CustomerOnboarding")
+    suspend fun proceedCorporate(
+        @Query("formmode") formmode: String = "corporate",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @POST("api/personalDetail1")
+    suspend fun savePersonalDetail(
+        @Query("refnumber") refnumber: String,
+        @Query("rec_no") recNo: String,
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @GET("api/Onschemetype1cordocument")
+    suspend fun getSchemeDetails(
+        @Query("schemetype") schemetype: String
+    ): Response<ResponseBody>
+
+    @POST("api/AccountDetailNxt")
+    suspend fun saveAccountDetails(
+        @Query("refnumber") refnumber: String,
+        @Body body: Map<String, @JvmSuppressWildcards Any>
+    ): Response<ResponseBody>
+
+    @Multipart
+    @POST("api/imageupload11")
+    suspend fun uploadImage(
+        @Part parts: List<MultipartBody.Part>,
+        @Query("appl_ref_no") applRefNo: String
+    ): Response<ResponseBody>
+
+    @Multipart
+    @POST("api/AddSigCor")
+    suspend fun addSignatureCorporate(
+        @Part scheduler: MultipartBody.Part,
+        @Part photo: List<MultipartBody.Part>,
+        @Part sign: List<MultipartBody.Part>,
+        @Query("cif_id") cifId: String
+    ): Response<ResponseBody>
+
+    @POST("api/BacpMinisub")
+    suspend fun finalizeSubmission(
+        @Query("formmode") formmode: String = "submitfin",
+        @Query("ApprefNO") appRefNo: String,
+        @Query("rec_no") recNo: String = "1",
+        @Query("hold_remarks") holdRemarks: String? = null
+    ): Response<ResponseBody>
 }

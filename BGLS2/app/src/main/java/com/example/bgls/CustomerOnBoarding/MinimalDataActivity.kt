@@ -1,16 +1,26 @@
 package com.example.bgls.CustomerOnBoarding
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Html
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
 import com.example.bgls.databinding.ActivityMinimalDataBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 class MinimalDataActivity : AppCompatActivity() {
 
@@ -43,39 +53,83 @@ class MinimalDataActivity : AppCompatActivity() {
         binding.btnProceedTop.setOnClickListener {
             if (validateMandatoryFields()) {
                 val isCorporate = binding.spCustomerGroup1.selectedItem.toString() == "CORPORATE CUSTOMER"
-                val intent = if (isCorporate) {
-                    android.content.Intent(this, CorporateCustomerAccountOpeningActivity::class.java)
-                } else {
-                    android.content.Intent(this, CustomerAccountOpeningActivity::class.java)
+                val isJoint = !isCorporate && binding.spCustomerType.selectedItem.toString() == "Joint Account"
+                
+                val progressDialog = ProgressDialog(this).apply {
+                    setMessage("Saving minimal customer onboarding data...")
+                    setCancelable(false)
+                    show()
                 }
                 
-                intent.putExtra("app_ref_no", binding.etAppRefNo.text.toString())
-                intent.putExtra("customer_group", binding.spCustomerGroup1.selectedItem.toString())
-                
-                if (isCorporate) {
-                    intent.putExtra("customer_type", "CORPORATE")
-                    intent.putExtra("primary_branch", "103") // Placeholder or extract if available
-                    intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
-                    intent.putExtra("first_name", binding.etCorporateNameC.text.toString())
-                    intent.putExtra("short_name", binding.etTradeNameC.text.toString())
-                    intent.putExtra("full_name", binding.etCorporateNameC.text.toString())
-                    intent.putExtra("dob", binding.etDateIncorpC.text.toString())
-                    intent.putExtra("email_id", binding.etEmailC.text.toString())
-                } else {
-                    intent.putExtra("customer_type", binding.spCustomerType.selectedItem.toString())
-                    intent.putExtra("primary_branch", "103")
-                    intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
-                    intent.putExtra("first_name", binding.etFirstNameI.text.toString())
-                    intent.putExtra("middle_name", binding.etMiddleNameI.text.toString())
-                    intent.putExtra("last_name", binding.etLastNameI.text.toString())
-                    intent.putExtra("short_name", binding.etShortNameI.text.toString())
-                    intent.putExtra("full_name", binding.etFullNameI.text.toString())
-                    intent.putExtra("dob", binding.etDateOfBirthI.text.toString())
-                    intent.putExtra("mobile_no", binding.tvCountryCodeI.text.toString() + binding.etMobileI.text.toString())
-                    intent.putExtra("email_id", "") // Not in minimal data for individual yet?
+                lifecycleScope.launch {
+                    try {
+                        val params = if (isCorporate) getCorporateParams() else getIndividualParams()
+                        val response = withContext(Dispatchers.IO) {
+                            when {
+                                isCorporate -> RetrofitClient.api.proceedCorporate(params = params)
+                                isJoint -> RetrofitClient.api.proceedJoint(params = params)
+                                else -> RetrofitClient.api.proceedIndividual(params = params)
+                            }
+                        }
+                        
+                        progressDialog.dismiss()
+                        
+                        if (response.isSuccessful) {
+                            val responseString = response.body()?.string() ?: ""
+                            var cifId = ""
+                            try {
+                                val json = org.json.JSONObject(responseString)
+                                cifId = json.optString("CifId", "")
+                                if (cifId.isEmpty()) {
+                                    cifId = json.optString("cif_id", "")
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+
+                            val intent = if (isCorporate) {
+                                android.content.Intent(this@MinimalDataActivity, CorporateCustomerAccountOpeningActivity::class.java)
+                            } else {
+                                android.content.Intent(this@MinimalDataActivity, CustomerAccountOpeningActivity::class.java)
+                            }
+                            
+                            intent.putExtra("app_ref_no", binding.etAppRefNo.text.toString())
+                            intent.putExtra("customer_group", binding.spCustomerGroup1.selectedItem.toString())
+                            intent.putExtra("cif_id", cifId)
+                            
+                            if (isCorporate) {
+                                intent.putExtra("customer_type", "CORPORATE")
+                                intent.putExtra("primary_branch", "103")
+                                intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
+                                intent.putExtra("first_name", binding.etCorporateNameC.text.toString())
+                                intent.putExtra("short_name", binding.etTradeNameC.text.toString())
+                                intent.putExtra("full_name", binding.etCorporateNameC.text.toString())
+                                intent.putExtra("dob", binding.etDateIncorpC.text.toString())
+                                intent.putExtra("email_id", binding.etEmailC.text.toString())
+                            } else {
+                                intent.putExtra("customer_type", binding.spCustomerType.selectedItem.toString())
+                                intent.putExtra("primary_branch", "103")
+                                intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
+                                intent.putExtra("first_name", binding.etFirstNameI.text.toString())
+                                intent.putExtra("middle_name", binding.etMiddleNameI.text.toString())
+                                intent.putExtra("last_name", binding.etLastNameI.text.toString())
+                                intent.putExtra("short_name", binding.etShortNameI.text.toString())
+                                intent.putExtra("full_name", binding.etFullNameI.text.toString())
+                                intent.putExtra("dob", binding.etDateOfBirthI.text.toString())
+                                intent.putExtra("mobile_no", binding.tvCountryCodeI.text.toString() + binding.etMobileI.text.toString())
+                                intent.putExtra("email_id", "")
+                            }
+                            
+                            startActivity(intent)
+                        } else {
+                            val errorMsg = response.errorBody()?.string() ?: "Response unsuccessful"
+                            Toast.makeText(this@MinimalDataActivity, "Failed to proceed: $errorMsg", Toast.LENGTH_LONG).show()
+                        }
+                    } catch (e: Exception) {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@MinimalDataActivity, "Error saving data: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
                 }
-                
-                startActivity(intent)
             }
         }
 
@@ -127,53 +181,149 @@ class MinimalDataActivity : AppCompatActivity() {
         return isValid
     }
 
+    private fun getIndividualParams(): Map<String, String> {
+        val params = mutableMapOf<String, String>()
+        params["firstname"] = binding.etFirstNameI.text.toString()
+        params["middlename"] = binding.etMiddleNameI.text.toString()
+        params["lastname"] = binding.etLastNameI.text.toString()
+        params["fullname"] = binding.etFullNameI.text.toString()
+        params["shortname"] = binding.etShortNameI.text.toString()
+        params["datebirth"] = binding.etDateOfBirthI.text.toString()
+        params["mobileno"] = binding.tvCountryCodeI.text.toString() + binding.etMobileI.text.toString()
+        params["passno"] = binding.etPassportI.text.toString()
+        params["nationalid"] = binding.etNationalIdI.text.toString()
+        params["noofpersons"] = binding.spNoOfPersons.selectedItem?.toString() ?: "1"
+        params["accType"] = binding.spCustomerType.selectedItem?.toString() ?: ""
+        params["prisolidmini"] = "103"
+        params["branchdescmini"] = "Al Salam Bank Seychelles Limited"
+        return params
+    }
+
+    private fun getCorporateParams(): Map<String, String> {
+        val params = mutableMapOf<String, String>()
+        params["cons_name"] = binding.spConstitution.selectedItem?.toString() ?: ""
+        params["cor_name"] = binding.etCorporateNameC.text.toString()
+        params["trade_name"] = binding.etTradeNameC.text.toString()
+        params["cer_od_incop"] = binding.etCertificateC.text.toString()
+        params["buss_ref_no"] = binding.etRegNoC.text.toString()
+        params["doi"] = binding.etDateIncorpC.text.toString()
+        params["pbn"] = binding.etPostBoxC.text.toString()
+        params["lno"] = binding.etLandLineC.text.toString()
+        params["fn"] = binding.etFaxC.text.toString()
+        params["email"] = binding.etEmailC.text.toString()
+        params["website"] = binding.etWebsiteC.text.toString()
+        params["noofpersons"] = binding.spNoOfPersons.selectedItem?.toString() ?: "0"
+        params["prisolidmini"] = "103"
+        params["branchdescmini"] = "Al Salam Bank Seychelles Limited"
+        return params
+    }
+
     private fun performCustomerCheck() {
         if (!validateMandatoryFields()) return
 
         // Hide the check button as requested
         binding.btnCustomerCheck.visibility = View.GONE
         
-        // Call API logic
-        val idToCheck = if (binding.layoutIndividual.visibility == View.VISIBLE) 
-            binding.etNationalIdI.text.toString() else binding.etRegNoC.text.toString()
+        val isCorporate = binding.spCustomerGroup1.selectedItem.toString() == "CORPORATE CUSTOMER"
+        val isJoint = !isCorporate && binding.spCustomerType.selectedItem.toString() == "Joint Account"
 
-        checkDuplicateApi(idToCheck) { hasDuplicate ->
-            // Show the results section
-            binding.layoutCustomerCheck.visibility = View.VISIBLE
-            
-            if (hasDuplicate) {
-                // Show duplicates, hide top Proceed
-                binding.btnProceedTop.visibility = View.GONE
-                
-                binding.tvDuplicateListResult.text = "Potential Duplicate: Customer already exists."
-                binding.tvDuplicateListResult.visibility = View.VISIBLE
-                binding.tvDuplicateListResult.setTextColor(android.graphics.Color.RED)
-            } else {
-                // No duplicates, show top Proceed
-                binding.btnProceedTop.visibility = View.VISIBLE
-                
-                binding.tvDuplicateListResult.text = "No Result found on Customer Check"
-                binding.tvDuplicateListResult.visibility = View.VISIBLE
-                binding.tvDuplicateListResult.setTextColor(android.graphics.Color.parseColor("#666666"))
-            }
-
-            // Always show no results for these in mock
-            binding.tvBlackListResult.text = "No Result found on Customer Check"
-            binding.tvNegativeListResult.text = "No Result found on Customer Check"
-            
-            android.widget.Toast.makeText(this, "Customer check completed", android.widget.Toast.LENGTH_SHORT).show()
+        val progressDialog = ProgressDialog(this).apply {
+            setMessage("Checking customer records...")
+            setCancelable(false)
+            show()
         }
-    }
 
-    /**
-     * API integration point. Replace mock logic with real API call.
-     */
-    private fun checkDuplicateApi(id: String, callback: (Boolean) -> Unit) {
-        // Mock logic: duplicates for specific values
-        val isDuplicate = (id == "44833" || id == "SAN")
-        
-        // Simulate network delay if desired, but here we just callback
-        callback(isDuplicate)
+        lifecycleScope.launch {
+            try {
+                val params = if (isCorporate) getCorporateParams() else getIndividualParams()
+                
+                val duplicateDeferred = async(Dispatchers.IO) {
+                    when {
+                        isCorporate -> RetrofitClient.api.checkDuplicateCor(params)
+                        isJoint -> RetrofitClient.api.checkDuplicateJoint(params)
+                        else -> RetrofitClient.api.checkDuplicateIndiv(params)
+                    }
+                }
+                
+                val blacklistDeferred = async(Dispatchers.IO) {
+                    when {
+                        isCorporate -> RetrofitClient.api.checkBlackListCor(params)
+                        isJoint -> RetrofitClient.api.checkBlackListJoint(params)
+                        else -> RetrofitClient.api.checkBlackListIndiv(params)
+                    }
+                }
+                
+                val negativeDeferred = async(Dispatchers.IO) {
+                    when {
+                        isCorporate -> RetrofitClient.api.checkNegativeListCor(params)
+                        isJoint -> RetrofitClient.api.checkNegativeListJoint(params)
+                        else -> RetrofitClient.api.checkNegativeListIndiv(params)
+                    }
+                }
+                
+                val duplicateResponse = duplicateDeferred.await()
+                val blacklistResponse = blacklistDeferred.await()
+                val negativeResponse = negativeDeferred.await()
+                
+                progressDialog.dismiss()
+                
+                // Show customer check layout
+                binding.layoutCustomerCheck.visibility = View.VISIBLE
+                
+                val dupText = if (duplicateResponse.isSuccessful) duplicateResponse.body()?.string() ?: "MATCH NOT FOUND" else "API ERROR"
+                val blackText = if (blacklistResponse.isSuccessful) blacklistResponse.body()?.string() ?: "MATCH NOT FOUND" else "API ERROR"
+                val negText = if (negativeResponse.isSuccessful) negativeResponse.body()?.string() ?: "MATCH NOT FOUND" else "API ERROR"
+                
+                // Process Dup List
+                val hasDuplicate = dupText.trim().uppercase() != "MATCH NOT FOUND"
+                if (hasDuplicate) {
+                    binding.tvDuplicateListResult.text = dupText
+                    binding.tvDuplicateListResult.setTextColor(android.graphics.Color.RED)
+                } else {
+                    binding.tvDuplicateListResult.text = "No Result found on Customer Check"
+                    binding.tvDuplicateListResult.setTextColor(android.graphics.Color.parseColor("#666666"))
+                }
+                binding.tvDuplicateListResult.visibility = View.VISIBLE
+                
+                // Process Blacklist
+                val hasBlacklist = blackText.trim().uppercase() != "MATCH NOT FOUND"
+                if (hasBlacklist) {
+                    binding.tvBlackListResult.text = blackText
+                    binding.tvBlackListResult.setTextColor(android.graphics.Color.RED)
+                } else {
+                    binding.tvBlackListResult.text = "No Result found on Customer Check"
+                    binding.tvBlackListResult.setTextColor(android.graphics.Color.parseColor("#666666"))
+                }
+                binding.tvBlackListResult.visibility = View.VISIBLE
+                
+                // Process Negative List
+                val hasNegative = negText.trim().uppercase() != "MATCH NOT FOUND"
+                if (hasNegative) {
+                    binding.tvNegativeListResult.text = negText
+                    binding.tvNegativeListResult.setTextColor(android.graphics.Color.RED)
+                } else {
+                    binding.tvNegativeListResult.text = "No Result found on Customer Check"
+                    binding.tvNegativeListResult.setTextColor(android.graphics.Color.parseColor("#666666"))
+                }
+                binding.tvNegativeListResult.visibility = View.VISIBLE
+                
+                // Show/hide proceed buttons based on check results (hide if ANY list matches a record)
+                if (hasDuplicate || hasBlacklist || hasNegative) {
+                    binding.btnProceedTop.visibility = View.GONE
+                    binding.btnProceed.visibility = View.GONE
+                    Toast.makeText(this@MinimalDataActivity, "Customer check failed: Match found in system lists.", Toast.LENGTH_LONG).show()
+                } else {
+                    binding.btnProceedTop.visibility = View.VISIBLE
+                    binding.btnProceed.visibility = View.VISIBLE
+                    Toast.makeText(this@MinimalDataActivity, "Customer check passed. No duplicates found.", Toast.LENGTH_SHORT).show()
+                }
+                
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                binding.btnCustomerCheck.visibility = View.VISIBLE // Show back check button on error
+                Toast.makeText(this@MinimalDataActivity, "Error during check: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun showDatePicker(editText: android.widget.EditText, isDob: Boolean = false) {
