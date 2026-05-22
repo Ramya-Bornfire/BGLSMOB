@@ -19,6 +19,8 @@ import com.example.bgls.DataModels.OrganizationViewResponse
 import com.example.bgls.DataModels.RefResponse
 import com.example.bgls.DataModels.SingleEmployeeResponse
 import com.example.bgls.DataModels.SingleUserResponse
+import com.example.bgls.DataModels.BglsTransactionAccount
+import com.example.bgls.DataModels.BglsTransactionAccountDetailResponse
 import com.example.bgls.DataModels.TransactionAccountsResponse
 import com.example.bgls.DataModels.TransactionDetailsResponse
 import com.example.bgls.DataModels.TransactionDto
@@ -301,6 +303,27 @@ interface ServiceApi {
         @Query("formmode") formmode: String?,
         @Query("id") id: Long?
     ): Call<Map<String, Any>>
+
+    @GET("api/transactionsAccounts")
+    fun getTransactionAccountDetail(
+        @Query("formmode") formmode: String,
+        @Query("id") id: Long
+    ): Call<BglsTransactionAccountDetailResponse>
+
+    @POST("api/transactionsAccounts")
+    fun addTransactionAccount(
+        @Body account: BglsTransactionAccount
+    ): Call<ResponseBody>
+
+    @PUT("api/transactionsAccounts")
+    fun updateTransactionAccount(
+        @Body account: BglsTransactionAccount
+    ): Call<ResponseBody>
+
+    @DELETE("api/transactionsAccounts")
+    fun deleteTransactionAccount(
+        @Query("id") id: Long
+    ): Call<ResponseBody>
 
     @GET("api/useractivities")
     fun getUserActivities(

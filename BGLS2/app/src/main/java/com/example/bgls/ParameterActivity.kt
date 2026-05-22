@@ -398,13 +398,20 @@ class ParameterActivity : AppCompatActivity() {
 
                     tv.setOnClickListener { view ->
                         val popup = PopupMenu(this@ParameterActivity, view)
+                        popup.menu.add("View")
                         popup.menu.add("Edit")
                         popup.menu.add("Delete")
 
                         popup.setOnMenuItemClickListener { menuItem ->
                             when (menuItem.title) {
+                                "View" -> {
+                                    val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.TransactionAccountViewActivity::class.java)
+                                    intent.putExtra("ID", item.id)
+                                    startActivity(intent)
+                                }
                                 "Edit" -> {
                                     val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.TransactionAccountModifyActivity::class.java)
+                                    intent.putExtra("ID", item.id)
                                     startActivity(intent)
                                 }
                                 "Delete" -> {
@@ -412,7 +419,20 @@ class ParameterActivity : AppCompatActivity() {
                                         .setTitle("Delete Account")
                                         .setMessage("Are you sure you want to delete this Transaction Account?")
                                         .setPositiveButton("Yes") { _, _ ->
-                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                            RetrofitClient.api.getTransactionsAccounts("delete", item.id.toLongOrNull())
+                                                .enqueue(object : Callback<Map<String, Any>> {
+                                                    override fun onResponse(call: Call<Map<String, Any>>, response: Response<Map<String, Any>>) {
+                                                        if (response.isSuccessful) {
+                                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                                            loadTransactionAccountsFromAPI()
+                                                        } else {
+                                                            Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                                                        }
+                                                    }
+                                                    override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                                                        Toast.makeText(this@ParameterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                })
                                         }
                                         .setNegativeButton("No", null)
                                         .show()
@@ -641,7 +661,7 @@ class ParameterActivity : AppCompatActivity() {
         tableLayout.removeAllViews()
 
         val headers = listOf(
-            "PRODUCT", "ID", "CATEGORY", "TYPE", "DESCRIPTION", "STATUS"
+            "PRODUCT", "ID", "CATEGORY", "TYPE", "DESCRIPTION", "STATUS", "ACTION"
         )
 
         val headerRow = TableRow(this)
@@ -676,7 +696,8 @@ class ParameterActivity : AppCompatActivity() {
                 item.category,
                 item.type,
                 item.description,
-                item.status
+                item.status,
+                "Action ▼"
             )
 
             values.forEachIndexed { index, value ->
@@ -687,6 +708,7 @@ class ParameterActivity : AppCompatActivity() {
                     tv.paint.isUnderlineText = true
                     tv.setOnClickListener {
                         val intent = Intent(this@ParameterActivity, SchemeCodeViewActivity::class.java).apply {
+                            putExtra("MODE", "VIEW")
                             putExtra("PRODUCT", item.product)
                             putExtra("ID", item.id)
                             putExtra("CATEGORY", item.category)
@@ -695,6 +717,71 @@ class ParameterActivity : AppCompatActivity() {
                             putExtra("STATUS", item.status)
                         }
                         startActivity(intent)
+                    }
+                }
+
+                if (index == values.lastIndex) {
+                    tv.setTextColor(Color.parseColor("#2196F3"))
+                    tv.paint.isUnderlineText = true
+                    tv.setOnClickListener { view ->
+                        val popup = PopupMenu(this@ParameterActivity, view)
+                        popup.menu.add("View")
+                        popup.menu.add("Modify")
+                        popup.menu.add("Delete")
+                        popup.setOnMenuItemClickListener { menuItem ->
+                            when (menuItem.title.toString()) {
+                                "View" -> {
+                                    val intent = Intent(this@ParameterActivity, SchemeCodeViewActivity::class.java).apply {
+                                        putExtra("MODE", "VIEW")
+                                        putExtra("PRODUCT", item.product)
+                                        putExtra("ID", item.id)
+                                        putExtra("CATEGORY", item.category)
+                                        putExtra("TYPE", item.type)
+                                        putExtra("DESCRIPTION", item.description)
+                                        putExtra("STATUS", item.status)
+                                    }
+                                    startActivity(intent)
+                                }
+                                "Modify" -> {
+                                    val intent = Intent(this@ParameterActivity, SchemeCodeViewActivity::class.java).apply {
+                                        putExtra("MODE", "MODIFY")
+                                        putExtra("PRODUCT", item.product)
+                                        putExtra("ID", item.id)
+                                        putExtra("CATEGORY", item.category)
+                                        putExtra("TYPE", item.type)
+                                        putExtra("DESCRIPTION", item.description)
+                                        putExtra("STATUS", item.status)
+                                    }
+                                    startActivity(intent)
+                                }
+                                "Delete" -> {
+                                    AlertDialog.Builder(this@ParameterActivity)
+                                        .setTitle("Delete Scheme")
+                                        .setMessage("Are you sure you want to delete ${item.id}?")
+                                        .setPositiveButton("Yes") { _, _ ->
+                                            RetrofitClient.api.deleteParameter(
+                                                com.example.bgls.DataModels.SchemeCode(id = item.id), "delete"
+                                            ).enqueue(object : Callback<ResponseBody> {
+                                                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                                    if (response.isSuccessful) {
+                                                        Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                                        loadSchemeCodesFromAPI()
+                                                    } else {
+                                                        Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                }
+                                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                                    Toast.makeText(this@ParameterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                                                }
+                                            })
+                                        }
+                                        .setNegativeButton("No", null)
+                                        .show()
+                                }
+                            }
+                            true
+                        }
+                        popup.show()
                     }
                 }
 
