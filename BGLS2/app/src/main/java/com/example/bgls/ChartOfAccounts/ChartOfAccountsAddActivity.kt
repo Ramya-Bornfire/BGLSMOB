@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import okhttp3.ResponseBody
+import android.view.WindowManager
 class ChartOfAccountsAddActivity : AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar
@@ -39,6 +40,9 @@ class ChartOfAccountsAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart_of_accounts_add)
 
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         loadDropdowns()
         setupSubmit()
