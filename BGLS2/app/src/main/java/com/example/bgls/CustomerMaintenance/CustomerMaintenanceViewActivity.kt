@@ -27,6 +27,9 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.example.bgls.DepositAccount.DepositAccountMaintenanceFlowActivity
+import okhttp3.ResponseBody
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CustomerMaintenanceViewActivity : AppCompatActivity() {
 
@@ -206,6 +209,57 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
         }
     }
 
+//    private fun submitModification(btnModify: Button, tvMainTitle: TextView) {
+//        if (currentCustomer == null) {
+//            showToast("No customer data to modify")
+//            return
+//        }
+//
+//        val fields = mutableMapOf<String, String>().apply {
+//            put("customer_id", getEditedText(R.id.rowCustomerId))
+//            put("first_name", getEditedText(R.id.rowFirstName))
+//            put("last_name", getEditedText(R.id.rowLastName))
+//            put("gender", getEditedText(R.id.rowGender))
+//           // put("birth_date", getEditedText(R.id.rowDob))
+//            put("birth_date", convertDateToBackendFormat(getEditedText(R.id.rowDob)))
+//            put("mobile_phone", getEditedText(R.id.rowMobileNo))
+//            put("email_address", getEditedText(R.id.rowEmailId))
+//            put("address_line1", getEditedText(R.id.rowAddress1))
+//            put("address_line2", getEditedText(R.id.rowAddress2))
+//            put("city", getEditedText(R.id.rowCity))
+//            put("suburb", getEditedText(R.id.rowSuburb))
+//            put("loan_cycle", getEditedText(R.id.rowLoanCycle))
+//            put("group_loan_cycle", getEditedText(R.id.rowGroupLoanCycle))
+//            put("assigned_user_key", getEditedText(R.id.rowAssignedUser))
+//            put("assigned_branch_key", branchKey)
+//        }
+//
+//        lifecycleScope.launch {
+//            try {
+//                val response: Response<okhttp3.ResponseBody> = RetrofitClient.api.modifyCustomer(fields)
+//                if (response.isSuccessful) {
+//                    Toast.makeText(this@CustomerMaintenanceViewActivity, "Modified successfully", Toast.LENGTH_SHORT).show()
+//
+//                    isEditMode = false
+//                    btnModify.text = "Modify"
+//                    tvMainTitle.text = "CUSTOMER MAINTENANCE - VIEW"
+//
+//                    for (row in formRows) {
+//                        val tvValue = row.findViewById<TextView>(R.id.tvValue)
+//                        val etValue = row.findViewById<EditText>(R.id.etValue)
+//                        tvValue.text = etValue.text
+//                        etValue.visibility = View.GONE
+//                        tvValue.visibility = View.VISIBLE
+//                    }
+//                } else {
+//                    showToast("Modification failed: ${response.code()}")
+//                }
+//            } catch (e: Exception) {
+//                showToast("Network error: ${e.message}")
+//            }
+//        }
+//    }
+
     private fun submitModification(btnModify: Button, tvMainTitle: TextView) {
         if (currentCustomer == null) {
             showToast("No customer data to modify")
@@ -217,7 +271,7 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
             put("first_name", getEditedText(R.id.rowFirstName))
             put("last_name", getEditedText(R.id.rowLastName))
             put("gender", getEditedText(R.id.rowGender))
-            put("birth_date", getEditedText(R.id.rowDob))
+            put("birth_date", convertDateToBackendFormat(getEditedText(R.id.rowDob)))   // ← changed
             put("mobile_phone", getEditedText(R.id.rowMobileNo))
             put("email_address", getEditedText(R.id.rowEmailId))
             put("address_line1", getEditedText(R.id.rowAddress1))
@@ -232,14 +286,13 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val response: Response<okhttp3.ResponseBody> = RetrofitClient.api.modifyCustomer(fields)
+                val response: Response<ResponseBody> = RetrofitClient.api.modifyCustomer(fields)
                 if (response.isSuccessful) {
                     Toast.makeText(this@CustomerMaintenanceViewActivity, "Modified successfully", Toast.LENGTH_SHORT).show()
-
+                    // Exit edit mode and refresh UI
                     isEditMode = false
                     btnModify.text = "Modify"
                     tvMainTitle.text = "CUSTOMER MAINTENANCE - VIEW"
-
                     for (row in formRows) {
                         val tvValue = row.findViewById<TextView>(R.id.tvValue)
                         val etValue = row.findViewById<EditText>(R.id.etValue)
@@ -255,7 +308,17 @@ class CustomerMaintenanceViewActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun convertDateToBackendFormat(dateStr: String): String {
+        if (dateStr.isBlank()) return ""
+        return try {
+            val inputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateStr)
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            outputFormat.format(date)  // e.g., "1989-06-10 00:00:00"
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
     private fun getEditedText(rowId: Int): String {
         val row = formRows.find { it.id == rowId } ?: return ""
         return row.findViewById<EditText>(R.id.etValue).text.toString()

@@ -7,17 +7,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
+import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
-
-import android.view.View
-import android.widget.ProgressBar
-import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
 
 class LoanScheduleListActivity : AppCompatActivity() {
 
@@ -31,19 +31,23 @@ class LoanScheduleListActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: LoanScheduleListActivityAdapter
 
+    private var currentPage = 1
+    private var totalPages = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_schedule_list)
+
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {
-            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
-            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(hIntent)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
-        
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -52,6 +56,8 @@ class LoanScheduleListActivity : AppCompatActivity() {
 
         initViews()
         setupRecyclerView()
+        setupSpinner()
+        setupButtons()
         fetchLoanScheduleList()
     }
 
@@ -63,11 +69,6 @@ class LoanScheduleListActivity : AppCompatActivity() {
         tvPageInfo    = findViewById(R.id.tvPageInfo)
         recyclerView  = findViewById(R.id.recyclerViewLoanScheduleList)
         progressBar   = findViewById(R.id.progressBar)
-
-        val filterOptions = listOf("Select Filter", "Loan Name", "Loan Id", "Retailer Name")
-        val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerFilter.adapter = filterAdapter
     }
 
     private fun setupRecyclerView() {
@@ -83,31 +84,84 @@ class LoanScheduleListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    private fun setupSpinner() {
+        val filterOptions = listOf("Select Filter", "Loan Name", "Loan Id", "Retailer Name")
+        val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerFilter.adapter = filterAdapter
+    }
+
+    private fun setupButtons() {
+        btnDownload.setOnClickListener {
+            downloadExcel()
+        }
+        btnPrev.setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                fetchLoanScheduleList()
+            }
+        }
+        btnNext.setOnClickListener {
+            if (currentPage < totalPages) {
+                currentPage++
+                fetchLoanScheduleList()
+            }
+        }
+    }
+
     private fun fetchLoanScheduleList() {
-        progressBar.visibility = View.VISIBLE
+        progressBar.visibility = android.view.View.VISIBLE
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getLoanScheduleList()
+                val response = RetrofitClient.api.getLoanScheduleList("listschedule")
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    val list = responseBody?.list ?: emptyList()
-                    // Map SNO based on index
-                    val mappedList = list.mapIndexed { index, model ->
-                        model.copy(sno = (index + 1).toString())
+                    val body = response.body()
+                    val list = body?.list ?: emptyList()
+                    val mappedList = list.mapIndexed { idx, model ->
+                        model.copy(sno = (idx + 1).toString())
                     }
                     adapter.updateList(mappedList)
-                    tvPageInfo.text = "Total: ${mappedList.size}"
-                    Toast.makeText(this@LoanScheduleListActivity, "Loaded ${mappedList.size} schedules", Toast.LENGTH_SHORT).show()
+
+                    // Simple pagination based on total count (no server pagination for this endpoint)
+                    totalPages = 1
+                    currentPage = 1
+                    tvPageInfo.text = "Page 1 of 1 · Total: ${mappedList.size}"
                 } else {
-                    val errorMsg = "Failed to load schedule: ${response.code()} ${response.message()}"
-                    Toast.makeText(this@LoanScheduleListActivity, errorMsg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoanScheduleListActivity, "Failed to load", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@LoanScheduleListActivity, 
-                    "Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@LoanScheduleListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
-                progressBar.visibility = View.GONE
+                progressBar.visibility = android.view.View.GONE
             }
+        }
+    }
+
+    private fun downloadExcel() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.downloadExcel("LoanSchedule") // adjust type as needed
+                if (response.isSuccessful) {
+                    saveFile(response.body(), "LoanSchedule.xlsx")
+                } else {
+                    Toast.makeText(this@LoanScheduleListActivity, "Download failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoanScheduleListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun saveFile(body: ResponseBody?, fileName: String) {
+        if (body == null) return
+        try {
+            val file = File(getExternalFilesDir(null), fileName)
+            val fos = FileOutputStream(file)
+            fos.write(body.bytes())
+            fos.close()
+            Toast.makeText(this, "Downloaded to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Failed to save file", Toast.LENGTH_SHORT).show()
         }
     }
 }

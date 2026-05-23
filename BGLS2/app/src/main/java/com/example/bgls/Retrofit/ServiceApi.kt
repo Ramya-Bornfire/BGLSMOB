@@ -135,6 +135,16 @@ interface ServiceApi {
         @Query("month") month: String?
     ): Response<CalendarResponse>
 
+    @FormUrlEncoded
+    @POST("api/holiday")
+    suspend fun submitHoliday(
+        @Query("formmode") formmode: String,
+        @FieldMap fields: Map<String, String>
+    ): Response<ResponseBody>
+
+    @POST("api/employeeProfile/verify")
+    fun verifyEmployee(@Query("employee_id") employeeId: String): Call<Void>
+
     @GET("api/chartOfAccounts")
     fun getChartOfAccountsList(
         @Query("formmode") formmode: String = "list"

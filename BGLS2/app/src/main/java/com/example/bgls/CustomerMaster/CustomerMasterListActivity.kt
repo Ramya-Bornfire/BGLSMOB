@@ -1,20 +1,14 @@
 package com.example.bgls.CustomerMaster
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +18,9 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
 
 class CustomerMasterListActivity : AppCompatActivity() {
 
@@ -59,14 +56,16 @@ class CustomerMasterListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_master_list)
+
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {
-            val hIntent = android.content.Intent(this, com.example.bgls.MainActivity::class.java)
-            hIntent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            val hIntent = Intent(this, com.example.bgls.MainActivity::class.java)
+            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(hIntent)
         }
+
         initViews()
         setupSpinners()
         setupSearchBox()
@@ -259,9 +258,6 @@ class CustomerMasterListActivity : AppCompatActivity() {
                 val res = RetrofitClient.api.getBranchNameByKey(key)
                 if (res.isSuccessful) {
                     val responseStr = res.body()?.string()?.trim() ?: ""
-                    // A valid branch name is short plain text.
-                    // If the response contains HTML tags or is suspiciously long,
-                    // the endpoint returned a login/error page instead – skip it.
                     val isValidBranchName = responseStr.isNotEmpty()
                             && !responseStr.contains("<", ignoreCase = false)
                             && responseStr.length < 200
@@ -328,11 +324,57 @@ class CustomerMasterListActivity : AppCompatActivity() {
         }
     }
 
-    // ─── Download ────────────────────────────────────────────────────────────
+    // ─── Download (Excel via API) ─────────────────────────────────────────────
 
     private fun setupDownload() {
         btnDownload.setOnClickListener {
-            Toast.makeText(this, "Downloading customer list…", Toast.LENGTH_SHORT).show()
+            downloadCustomerExcel()
+        }
+    }
+
+    private fun downloadCustomerExcel() {
+        lifecycleScope.launch {
+            showLoading(true)
+            try {
+                val response = RetrofitClient.api.downloadExcel("CUSTOMER")
+                if (response.isSuccessful && response.body() != null) {
+                    saveExcelFile(response.body()!!, "CustomerMaster.xlsx")
+                    Toast.makeText(this@CustomerMasterListActivity, "Download complete", Toast.LENGTH_SHORT).show()
+                } else {
+                    val error = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@CustomerMasterListActivity, "Download failed: $error", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CustomerMasterListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun saveExcelFile(body: ResponseBody, fileName: String) {
+        try {
+            val file = File(getExternalFilesDir(null), fileName)
+            FileOutputStream(file).use { fos ->
+                fos.write(body.bytes())
+            }
+            Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+
+            // Optionally open the file
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(
+                    FileProvider.getUriForFile(
+                        this@CustomerMasterListActivity,
+                        "${packageName}.fileprovider",
+                        file
+                    ),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, "Open Excel"))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 

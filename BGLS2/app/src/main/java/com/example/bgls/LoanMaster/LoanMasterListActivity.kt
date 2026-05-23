@@ -17,7 +17,10 @@ import com.example.bgls.DataModels.LoanMaster
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
-
+import okhttp3.ResponseBody
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.FileOutputStream
 class LoanMasterListActivity : AppCompatActivity() {
 
     private lateinit var spinnerFilter: Spinner
@@ -291,7 +294,53 @@ class LoanMasterListActivity : AppCompatActivity() {
 
     private fun setupDownload() {
         btnDownload.setOnClickListener {
-            Toast.makeText(this, "Downloading loan list...", Toast.LENGTH_SHORT).show()
+            downloadLoanExcel()
+        }
+    }
+
+    private fun downloadLoanExcel() {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.downloadExcel("LOAN")
+                if (response.isSuccessful && response.body() != null) {
+                    saveExcelFile(response.body()!!, "LoanMaster.xlsx")
+                    Toast.makeText(this@LoanMasterListActivity, "Download complete", Toast.LENGTH_SHORT).show()
+                } else {
+                    val error = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@LoanMasterListActivity, "Download failed: $error", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoanMasterListActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                showLoading(false)
+            }
+        }
+    }
+
+    private fun saveExcelFile(body: ResponseBody, fileName: String) {
+        try {
+            val file = File(getExternalFilesDir(null), fileName)
+            FileOutputStream(file).use { fos ->
+                fos.write(body.bytes())
+            }
+            Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+
+            // Optional: open the file
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(
+                    FileProvider.getUriForFile(
+                        this@LoanMasterListActivity,
+                        "${packageName}.fileprovider",
+                        file
+                    ),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, "Open Excel"))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }

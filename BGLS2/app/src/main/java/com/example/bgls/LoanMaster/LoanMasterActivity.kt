@@ -1,14 +1,26 @@
 package com.example.bgls.LoanMaster
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.bgls.MainActivity
 import com.example.bgls.R
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
+import java.util.Calendar
 
 class LoanMasterActivity : AppCompatActivity() {
 
@@ -81,6 +93,13 @@ class LoanMasterActivity : AppCompatActivity() {
     // ─── Buttons ───
     private lateinit var btnUpload: Button
     private lateinit var btnList: Button
+    private lateinit var progressBar: ProgressBar
+
+    // File picker launcher
+    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { uploadFile(it) }
+            ?: Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +118,7 @@ class LoanMasterActivity : AppCompatActivity() {
         initViews()
         populateFromIntent()
         setupButtons()
+        progressBar = findViewById(R.id.progressBar)
     }
 
     private fun initViews() {
@@ -216,7 +236,8 @@ class LoanMasterActivity : AppCompatActivity() {
 
     private fun setupButtons() {
         btnUpload.setOnClickListener {
-            Toast.makeText(this, "Upload clicked", Toast.LENGTH_SHORT).show()
+            // Launch file picker for Excel files
+            filePickerLauncher.launch("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }
         btnList.setOnClickListener {
             // TODO: Navigate to Loan Master List
@@ -225,4 +246,149 @@ class LoanMasterActivity : AppCompatActivity() {
             finish()
         }
     }
+    private fun uploadFile(uri: Uri) {
+        val file = getFileFromUri(uri)
+        if (file == null || !file.exists()) {
+            Toast.makeText(this, "Unable to access file", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Determine MIME type
+        val mimeType = when (file.extension.lowercase()) {
+            "xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "xls" -> "application/vnd.ms-excel"
+            "csv" -> "text/csv"
+            else -> "application/octet-stream"
+        }
+
+        val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val fileInput = "loan"   // adjust if backend expects a different identifier
+        val overwrite = true
+
+        progressBar.visibility = View.VISIBLE
+        btnUpload.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.uploadFileData(body, fileInput, overwrite)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    Toast.makeText(this@LoanMasterActivity, "Upload successful", Toast.LENGTH_SHORT).show()
+                    // Populate form fields from the response data
+                    populateFieldsFromResponse(result)
+                } else {
+                    val error = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@LoanMasterActivity, "Upload failed: $error", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoanMasterActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                progressBar.visibility = View.GONE
+                btnUpload.isEnabled = true
+            }
+        }
+    }
+
+    private fun populateFieldsFromResponse(data: Map<String, Any>?) {
+        if (data == null) {
+            Toast.makeText(this, "No data returned from server", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Map the response keys to your EditText fields
+        // Adjust the key names according to what the backend returns
+        etCustomerId.setText(data["customerId"]?.toString() ?: "")
+        etCustomerName.setText(data["customerName"]?.toString() ?: "")
+        etCustomerStatus.setText(data["customerStatus"]?.toString() ?: "")
+        etAccountType.setText(data["accountType"]?.toString() ?: "")
+        etLoanNo.setText(data["loanNo"]?.toString() ?: "")
+        etLoanName.setText(data["loanName"]?.toString() ?: "")
+        etAssignedBranch.setText(data["assignedBranch"]?.toString() ?: "")
+        etOpenDate.setText(data["openDate"]?.toString() ?: "")
+        etApprovalDate.setText(data["approvalDate"]?.toString() ?: "")
+        etLastModifiedDate.setText(data["lastModifiedDate"]?.toString() ?: "")
+        etLastReviewDate.setText(data["lastReviewDate"]?.toString() ?: "")
+        etAccountStatus.setText(data["accountStatus"]?.toString() ?: "")
+        etCurrencyCode.setText(data["currencyCode"]?.toString() ?: "")
+        etLoanAmount.setText(data["loanAmount"]?.toString() ?: "")
+        etSubStatus.setText(data["subStatus"]?.toString() ?: "")
+        etPaymentMethod.setText(data["paymentMethod"]?.toString() ?: "")
+        etPenaltyRate.setText(data["penaltyRate"]?.toString() ?: "")
+        etRateOfInterest.setText(data["rateOfInterest"]?.toString() ?: "")
+        etDisbursementDate.setText(data["disbursementDate"]?.toString() ?: "")
+        etFirstPaymentDate.setText(data["firstPaymentDate"]?.toString() ?: "")
+        etRemarks1.setText(data["remarks1"]?.toString() ?: "")
+        etRepaymentMethod.setText(data["repaymentMethod"]?.toString() ?: "")
+        etRepaymentInstalments.setText(data["repaymentInstalments"]?.toString() ?: "")
+        etWalletAccount.setText(data["walletAccount"]?.toString() ?: "")
+        etPrincipalDue.setText(data["principalDue"]?.toString() ?: "")
+        etPrincipalPaid.setText(data["principalPaid"]?.toString() ?: "")
+        etPrincipalBalance.setText(data["principalBalance"]?.toString() ?: "")
+        etInterestDue.setText(data["interestDue"]?.toString() ?: "")
+        etInterestPaid.setText(data["interestPaid"]?.toString() ?: "")
+        etInterestBalance.setText(data["interestBalance"]?.toString() ?: "")
+        etFeeDue.setText(data["feeDue"]?.toString() ?: "")
+        etFeePaid.setText(data["feePaid"]?.toString() ?: "")
+        etFeeBalance.setText(data["feeBalance"]?.toString() ?: "")
+        etPenaltyDue.setText(data["penaltyDue"]?.toString() ?: "")
+        etPenaltyPaid.setText(data["penaltyPaid"]?.toString() ?: "")
+        etPenaltyBalance.setText(data["penaltyBalance"]?.toString() ?: "")
+
+        // Additional details
+        etSalesProcessedByVGID.setText(data["salesProcessedByVGID"]?.toString() ?: "")
+        etSalesProcessedFor.setText(data["salesProcessedFor"]?.toString() ?: "")
+        etSalesReferredBy.setText(data["salesReferredBy"]?.toString() ?: "")
+        etEmploymentStatus.setText(data["employmentStatus"]?.toString() ?: "")
+        etJobTitle.setText(data["jobTitle"]?.toString() ?: "")
+        etEmployerName.setText(data["employerName"]?.toString() ?: "")
+        etTuCore.setText(data["tuCore"]?.toString() ?: "")
+        etTuProbability.setText(data["tuProbability"]?.toString() ?: "")
+        etTuFullName.setText(data["tuFullName"]?.toString() ?: "")
+        etTuReasons.setText(data["tuReasons"]?.toString() ?: "")
+        etTureason1.setText(data["tureason1"]?.toString() ?: "")
+        etTureason2.setText(data["tureason2"]?.toString() ?: "")
+        etDisposableIncome.setText(data["disposableIncome"]?.toString() ?: "")
+        etManualOverrideAmount.setText(data["manualOverrideAmount"]?.toString() ?: "")
+        etManualOverrideExpiryDate.setText(data["manualOverrideExpiryDate"]?.toString() ?: "")
+        etCpFees.setText(data["cpFees"]?.toString() ?: "")
+        etDepositAmount.setText(data["depositAmount"]?.toString() ?: "")
+        etTotalProductPrice.setText(data["totalProductPrice"]?.toString() ?: "")
+        etRetailerName.setText(data["retailerName"]?.toString() ?: "")
+        etRetailerBranch.setText(data["retailerBranch"]?.toString() ?: "")
+        etVgApplicationId.setText(data["vgApplicationId"]?.toString() ?: "")
+        etContractSigned.setText(data["contractSigned"]?.toString() ?: "")
+        etDateOfFirstCall.setText(data["dateOfFirstCall"]?.toString() ?: "")
+        etLastCallOutcome.setText(data["lastCallOutcome"]?.toString() ?: "")
+        etAsOnDate.setText(data["asOnDate"]?.toString() ?: "")
+        etRemarksAdditional.setText(data["remarksAdditional"]?.toString() ?: "")
+        etWalletAccountAdditional.setText(data["walletAccountAdditional"]?.toString() ?: "")
+    }
+
+    private fun getFileFromUri(uri: Uri): File? {
+        return try {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndex("_data")
+                    if (columnIndex != -1) {
+                        val path = it.getString(columnIndex)
+                        return File(path)
+                    }
+                }
+            }
+            // Fallback: copy to cache
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val tempFile = File(cacheDir, "temp_upload_${System.currentTimeMillis()}")
+            tempFile.outputStream().use { output ->
+                inputStream.copyTo(output)
+            }
+            tempFile
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }

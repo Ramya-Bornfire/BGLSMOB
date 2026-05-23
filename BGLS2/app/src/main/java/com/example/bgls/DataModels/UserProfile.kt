@@ -8,10 +8,12 @@ data class UserProfile(
     @SerializedName("username") val userName: String?,
     @SerializedName("user_status") val userStatus: String?,
     @SerializedName("auth_flg") val authFlg: String? = "Y",
+    @SerializedName("disable_flg") val disableFlg: String? = null,
+    @SerializedName("entity_flg") val entityFlg: String? = "Y",
+    @SerializedName("login_status") val loginStatus: String? = "Active",
     @SerializedName("modify_flg") val modifyFlg: String? = "N",
     @SerializedName("user_locked_flg") val userLockedFlg: String? = "N",
     @SerializedName("login_flg") val loginFlg: String? = "N",
-    @SerializedName("login_status") val loginStatus: String? = null,
 
     @SerializedName("mob_number") val mobileNumber: String? = null,
     @SerializedName("email_id") val emailId: String? = null,

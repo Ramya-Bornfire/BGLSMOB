@@ -1,24 +1,28 @@
 package com.example.bgls.LoanSchedule
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.LoanSchedule
-import com.example.bgls.LoanSchedule.LoanScheduleActivityAdapter
 import com.example.bgls.MainActivity
 import com.example.bgls.R
-import com.google.android.material.navigation.NavigationView
+import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class LoanScheduleActivity : AppCompatActivity() {
 
@@ -28,38 +32,36 @@ class LoanScheduleActivity : AppCompatActivity() {
     private lateinit var etAccountName: EditText
     private lateinit var etLoanAmount: EditText
     private lateinit var etLoanDate: EditText
-    
+
     private lateinit var btnUpload: Button
     private lateinit var btnList: Button
-    
+    private lateinit var progressBar: ProgressBar
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoanScheduleActivityAdapter
 
+    // File picker launcher
+    private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { uploadFile(it) }
+            ?: Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_loan_schedule)
-        
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
-            finish()
-        }
+
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {
-            val hIntent = Intent(this, MainActivity::class.java)
-            hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(hIntent)
-        }
-        
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         initViews()
-        setupButtons()
         setupRecyclerView()
-        loadDummyData()
+        setupButtons()
+        progressBar = findViewById(R.id.progressBar)
     }
 
     private fun initViews() {
@@ -69,21 +71,11 @@ class LoanScheduleActivity : AppCompatActivity() {
         etAccountName  = findViewById(R.id.etAccountName)
         etLoanAmount   = findViewById(R.id.etLoanAmount)
         etLoanDate     = findViewById(R.id.etLoanDate)
-        
-        btnUpload      = findViewById(R.id.btnUpload)
-        btnList        = findViewById(R.id.btnList)
-        
-        recyclerView   = findViewById(R.id.recyclerViewLoanSchedule)
-    }
 
-    private fun setupButtons() {
-        btnUpload.setOnClickListener {
-            Toast.makeText(this, "Uploading schedule...", Toast.LENGTH_SHORT).show()
-        }
-        btnList.setOnClickListener {
-            val intent = android.content.Intent(this, LoanScheduleListActivity::class.java)
-            startActivity(intent)
-        }
+        btnUpload = findViewById(R.id.btnUpload)
+        btnList   = findViewById(R.id.btnList)
+
+        recyclerView = findViewById(R.id.recyclerViewLoanSchedule)
     }
 
     private fun setupRecyclerView() {
@@ -92,34 +84,114 @@ class LoanScheduleActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun loadDummyData() {
-        // Sample data for demonstration
-        etCustomerId.setText("22187093")
-        etCustomerName.setText("BEATRICE KEMUNTO OBWOCHA")
-        etAccountId.setText("CCN78a879844c515110a41a")
-        etAccountName.setText("Consumer Credit New Client")
-        etLoanAmount.setText("127,285.00")
-        etLoanDate.setText("19-06-2023")
+    private fun setupButtons() {
+        btnUpload.setOnClickListener {
+            filePickerLauncher.launch("*/*")   // allow any file, or restrict to .xlsx
+        }
+        btnList.setOnClickListener {
+            startActivity(Intent(this, LoanScheduleListActivity::class.java))
+        }
+    }
 
-        val dummyList = listOf(
+    private fun uploadFile(uri: Uri) {
+        val file = getFileFromUri(uri)
+        if (file == null || !file.exists()) {
+            Toast.makeText(this, "Unable to access file", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val mimeType = when (file.extension.lowercase()) {
+            "xlsx" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            "xls" -> "application/vnd.ms-excel"
+            "csv" -> "text/csv"
+            else -> "application/octet-stream"
+        }
+
+        val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+        val fileInput = "loanSchedule"   // adjust to match backend expectation
+        val overwrite = true
+
+        progressBar.visibility = View.VISIBLE
+        btnUpload.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.uploadFileData(body, fileInput, overwrite)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    Toast.makeText(this@LoanScheduleActivity, "Upload successful", Toast.LENGTH_SHORT).show()
+                    populateFieldsFromResponse(result)
+                } else {
+                    val error = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@LoanScheduleActivity, "Upload failed: $error", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoanScheduleActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                progressBar.visibility = View.GONE
+                btnUpload.isEnabled = true
+            }
+        }
+    }
+
+    /**
+     * Fill form fields and schedule list from upload response.
+     * Update keys to match your backend response.
+     */
+    private fun populateFieldsFromResponse(data: Map<String, Any>?) {
+        if (data == null) return
+
+        etCustomerId.setText(data["customerId"]?.toString() ?: "")
+        etCustomerName.setText(data["customerName"]?.toString() ?: "")
+        etAccountId.setText(data["accountId"]?.toString() ?: "")
+        etAccountName.setText(data["accountName"]?.toString() ?: "")
+        etLoanAmount.setText(data["loanAmount"]?.toString() ?: "")
+        etLoanDate.setText(data["loanDate"]?.toString() ?: "")
+
+        // Populate schedule list if present
+        val scheduleList = data["scheduleList"] as? List<Map<String, Any>> ?: emptyList()
+        val mapped = scheduleList.map {
             LoanSchedule(
-                "19-07-2023",
-                "5,000.00",
-                "1,200.00",
-                "200.00",
-                "0.00",
-                "20-07-2023",
-                "5,000.00",
-                "1,200.00",
-                "200.00",
-                "0.00",
-                "0.00"
-            ),
-            LoanSchedule("19-08-2023", "5,000.00", "1,150.00", "200.00", "0.00", "21-08-2023", "5,000.00", "1,150.00", "200.00", "0.00", "0.00"),
-            LoanSchedule("19-09-2023", "5,000.00", "1,100.00", "200.00", "50.00", "25-09-2023", "5,000.00", "1,100.00", "200.00", "50.00", "0.00"),
-            LoanSchedule("19-10-2023", "5,000.00", "1,050.00", "200.00", "0.00", "19-10-2023", "5,000.00", "1,050.00", "200.00", "0.00", "0.00"),
-            LoanSchedule("19-11-2023", "5,000.00", "1,000.00", "200.00", "0.00", "", "0.00", "0.00", "0.00", "0.00", "6,200.00")
-        )
-        adapter.updateList(dummyList)
+                dueDate = it["dueDate"]?.toString() ?: "",
+                principalExpenses = it["principalExpenses"]?.toString() ?: "",
+                interestExpenses = it["interestExpenses"]?.toString() ?: "",
+                feeExpenses = it["feeExpenses"]?.toString() ?: "",
+                penaltyExpenses = it["penaltyExpenses"]?.toString() ?: "",
+                repaidDate = it["repaidDate"]?.toString() ?: "",
+                principalPaid = it["principalPaid"]?.toString() ?: "",
+                interestPaid = it["interestPaid"]?.toString() ?: "",
+                feePaid = it["feePaid"]?.toString() ?: "",
+                penaltyPaid = it["penaltyPaid"]?.toString() ?: "",
+                totalDues = it["totalDues"]?.toString() ?: ""
+            )
+        }
+        adapter.updateList(mapped)
+    }
+
+    private fun getFileFromUri(uri: Uri): File? {
+        return try {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndex("_data")
+                    if (columnIndex != -1) {
+                        val path = it.getString(columnIndex)
+                        return File(path)
+                    }
+                }
+            }
+            // Fallback: copy to cache
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val tempFile = File(cacheDir, "temp_upload_${System.currentTimeMillis()}")
+            tempFile.outputStream().use { output ->
+                inputStream.copyTo(output)
+            }
+            tempFile
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

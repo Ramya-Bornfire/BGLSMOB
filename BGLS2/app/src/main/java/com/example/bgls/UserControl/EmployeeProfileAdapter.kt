@@ -20,6 +20,7 @@ class EmployeeProfileAdapter(
         fun onView(employee: EmployeeProfile)
         fun onEdit(employee: EmployeeProfile)
         fun onDelete(employee: EmployeeProfile, position: Int)
+        fun onVerify(employee: EmployeeProfile, position: Int)
     }
 
     inner class EmployeeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,9 +49,9 @@ class EmployeeProfileAdapter(
         holder.tvCategory.text = emp.category ?: "-"
         holder.tvMobile.text = emp.mobile ?: "-"
         holder.tvEmail.text = emp.email ?: "-"
-        holder.tvStatus.text = if (emp.verifyFlg == "Y") "Pending" else "Verified"
+        holder.tvStatus.text = if (emp.verifyFlg == "Y") "Verified" else "Pending"
         holder.tvStatus.setTextColor(
-            if (emp.verifyFlg == "N") context.getColor(android.R.color.holo_green_dark)
+            if (emp.verifyFlg == "Y") context.getColor(android.R.color.holo_green_dark)
             else context.getColor(android.R.color.holo_orange_dark)
         )
 
@@ -59,7 +60,7 @@ class EmployeeProfileAdapter(
 
         holder.tvEmployeeId.setOnClickListener { listener.onView(emp) }
         holder.tvAction.setOnClickListener { anchor ->
-            showPopupMenu(anchor, emp, holder.adapterPosition)
+            showPopupMenu(anchor, emp, holder.bindingAdapterPosition)
         }
     }
 
@@ -69,12 +70,14 @@ class EmployeeProfileAdapter(
         val popup = PopupMenu(context, anchor)
         popup.menu.add(0, 1, 0, "View")
         popup.menu.add(0, 2, 1, "Edit")
-        popup.menu.add(0, 3, 2, "Delete")
+        popup.menu.add(0, 3, 2, "Verify")
+        popup.menu.add(0, 4, 3, "Delete")
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> { listener.onView(emp); true }
                 2 -> { listener.onEdit(emp); true }
-                3 -> { listener.onDelete(emp, position); true }
+                3 -> { listener.onVerify(emp, position); true }
+                4 -> { listener.onDelete(emp, position); true }
                 else -> false
             }
         }

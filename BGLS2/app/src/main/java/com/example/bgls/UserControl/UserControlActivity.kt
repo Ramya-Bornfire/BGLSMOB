@@ -157,7 +157,9 @@ class UserControlActivity : AppCompatActivity(),
                     userAdapter.updateList(users.toMutableList())
                     Log.d("API_DEBUG", "User count: ${users.size}")
                 } else {
-                    Toast.makeText(this@UserControlActivity, "Failed to load users", Toast.LENGTH_SHORT).show()
+                    val err = response.errorBody()?.string() ?: "HTTP ${response.code()}"
+                    Log.e("API_DEBUG", "User list failed: $err")
+                    Toast.makeText(this@UserControlActivity, "Failed to load users: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<UserProfileResponse>, t: Throwable) {
@@ -281,6 +283,29 @@ class UserControlActivity : AppCompatActivity(),
             putExtra(EmployeProfileAddActivity.EXTRA_EMPLOYEE_ID, employee.employeeId)
         }
         employeeResultLauncher.launch(intent)
+    }
+
+    override fun onVerify(employee: EmployeeProfile, position: Int) {
+        AlertDialog.Builder(this)
+            .setTitle("Verify Employee")
+            .setMessage("Verify ${employee.employeeName}?")
+            .setPositiveButton("Verify") { _, _ ->
+                RetrofitClient.api.verifyEmployee(employee.employeeId!!).enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@UserControlActivity, "Employee verified", Toast.LENGTH_SHORT).show()
+                            loadEmployeeProfiles()
+                        } else {
+                            Toast.makeText(this@UserControlActivity, "Verification failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Toast.makeText(this@UserControlActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onDelete(employee: EmployeeProfile, position: Int) {

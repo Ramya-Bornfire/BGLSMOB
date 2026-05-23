@@ -23,7 +23,7 @@ data class MultipleTransactionRequest(
 
 data class SettlementRecord(
     @SerializedName("acct_num") val acctNum: String,
-    val allocation: Double
+    val allocation: Double,
 )
 
 data class LoanFlowDetail(

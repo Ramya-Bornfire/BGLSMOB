@@ -43,7 +43,7 @@ class TransactionRecordAdapter(
     }
 
     override fun getItemCount(): Int = transactionList.size
-
+     fun getCurrentList(): List<TransactionRecord> = transactionList
     fun updateData(newList: List<TransactionRecord>) {
         transactionList = newList
         notifyDataSetChanged()

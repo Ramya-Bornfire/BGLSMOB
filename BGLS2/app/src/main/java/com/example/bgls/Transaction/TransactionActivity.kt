@@ -5,21 +5,16 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bgls.DataModels.TransactionDto
 import com.example.bgls.DataModels.TransactionMigrationResponse
 import com.example.bgls.DataModels.TransactionRecord
 import com.example.bgls.MainActivity
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import com.example.bgls.Retrofit.ServiceApi
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -31,6 +26,7 @@ class TransactionActivity : AppCompatActivity() {
     private lateinit var adapter: TransactionRecordAdapter
     private lateinit var btnDownload: Button
     private lateinit var spinnerFilter: Spinner
+    private lateinit var progressBar: ProgressBar   // add this to your XML
 
     private lateinit var tabDisbursement: TextView
     private lateinit var tabInterest: TextView
@@ -50,7 +46,7 @@ class TransactionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_transaction)
 
         initViews()
-        
+
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {
@@ -58,16 +54,13 @@ class TransactionActivity : AppCompatActivity() {
             hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(hIntent)
         }
-        
+
         setupSpinner()
         setupRecyclerView()
         setupTabs()
         setupDownload()
 
-        // Initialize Retrofit
         apiService = RetrofitClient.api
-
-        // Fetch data
         fetchAllTransactionData()
     }
 
@@ -75,6 +68,7 @@ class TransactionActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewTransactions)
         btnDownload = findViewById(R.id.btnDownload)
         spinnerFilter = findViewById(R.id.spinnerFilter)
+        progressBar = findViewById(R.id.progressBar)   // make sure you have this in XML
 
         tabDisbursement = findViewById(R.id.tabDisbursement)
         tabInterest = findViewById(R.id.tabInterest)
@@ -104,35 +98,35 @@ class TransactionActivity : AppCompatActivity() {
             currentFlowCode = "DISBT"
             currentTabName = "disbursement"
             loadDataForCurrentTab()
-            btnDownload.text = "Download Disbursement"
+            btnDownload.text = "Export Disbursement"
         }
         tabInterest.setOnClickListener {
             setActiveTab(tabInterest, tabs)
             currentFlowCode = "INDEM"
             currentTabName = "interest"
             loadDataForCurrentTab()
-            btnDownload.text = "Download Interest"
+            btnDownload.text = "Export Interest"
         }
         tabFees.setOnClickListener {
             setActiveTab(tabFees, tabs)
             currentFlowCode = "FEEDEM"
             currentTabName = "fees"
             loadDataForCurrentTab()
-            btnDownload.text = "Download Fees"
+            btnDownload.text = "Export Fees"
         }
         tabPenalty.setOnClickListener {
             setActiveTab(tabPenalty, tabs)
             currentFlowCode = "PENDEM"
             currentTabName = "penalty"
             loadDataForCurrentTab()
-            btnDownload.text = "Download Penalty"
+            btnDownload.text = "Export Penalty"
         }
         tabRecovery.setOnClickListener {
             setActiveTab(tabRecovery, tabs)
             currentFlowCode = "COLL"
             currentTabName = "recovery"
             loadDataForCurrentTab()
-            btnDownload.text = "Download Recovery"
+            btnDownload.text = "Export Recovery"
         }
     }
 
@@ -149,6 +143,7 @@ class TransactionActivity : AppCompatActivity() {
     }
 
     private fun fetchAllTransactionData() {
+        progressBar.visibility = android.view.View.VISIBLE
         lifecycleScope.launch {
             try {
                 val response = apiService.getTransactionMigration("add")
@@ -160,6 +155,8 @@ class TransactionActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@TransactionActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                progressBar.visibility = android.view.View.GONE
             }
         }
     }
@@ -189,42 +186,46 @@ class TransactionActivity : AppCompatActivity() {
 
     private fun setupDownload() {
         btnDownload.setOnClickListener {
-            val type = when (currentTabName) {
-                "disbursement" -> "disbursement"
-                "interest" -> "interest"
-                "fees" -> "fees"
-                "penalty" -> "penalty"
-                "recovery" -> "recovery"
-                else -> "disbursement"
-            }
-            downloadExcel(type)
+            exportCurrentTabToCsv()
         }
     }
 
-    private fun downloadExcel(type: String) {
-        lifecycleScope.launch {
-            try {
-                val response = apiService.downloadExcel(type)
-                if (response.isSuccessful && response.body() != null) {
-                    saveExcelFile(response.body()!!, type)
-                } else {
-                    Toast.makeText(this@TransactionActivity, "Download failed", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@TransactionActivity, "Download error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+    /**
+     * Export the currently displayed transaction records as a CSV file.
+     */
+    private fun exportCurrentTabToCsv() {
+        val records = adapter.getCurrentList()   // you need to expose this in adapter
+        if (records.isEmpty()) {
+            Toast.makeText(this, "No data to export", Toast.LENGTH_SHORT).show()
+            return
         }
-    }
 
-    private fun saveExcelFile(body: ResponseBody, type: String) {
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val timestamp = sdf.format(Date())
+        val fileName = "${currentTabName}_$timestamp.csv"
+
+        val csvContent = StringBuilder()
+        // Header
+        csvContent.append("S.No,Flow ID,Flow Date,Flow Code,Flow Amount,Account Number,Account Name\n")
+        // Rows
+        records.forEach { record ->
+            csvContent.append("${record.sNo},")
+                .append("${escapeCsv(record.flowId)},")
+                .append("${escapeCsv(record.flowDate)},")
+                .append("${escapeCsv(record.flowCode)},")
+                .append("${record.flowAmount},")
+                .append("${escapeCsv(record.accountNumber)},")
+                .append("${escapeCsv(record.accountName)}\n")
+        }
+
         try {
-            val file = File(getExternalFilesDir(null), "${type}_${System.currentTimeMillis()}.xlsx")
-            val inputStream = body.byteStream()
-            val outputStream = FileOutputStream(file)
-            inputStream.copyTo(outputStream)
-            outputStream.close()
-            Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
-            // Optional: open file
+            val file = File(getExternalFilesDir(null), fileName)
+            FileOutputStream(file).use { fos ->
+                fos.write(csvContent.toString().toByteArray())
+            }
+            Toast.makeText(this, "Exported to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+
+            // Optional: open file with a CSV viewer
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 setDataAndType(
                     androidx.core.content.FileProvider.getUriForFile(
@@ -232,48 +233,40 @@ class TransactionActivity : AppCompatActivity() {
                         "${packageName}.fileprovider",
                         file
                     ),
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    "text/csv"
                 )
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
-            startActivity(intent)
+            startActivity(Intent.createChooser(intent, "Open CSV"))
         } catch (e: Exception) {
-            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error saving CSV: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun escapeCsv(value: String): String {
+        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            return "\"${value.replace("\"", "\"\"")}\""
+        }
+        return value
     }
 
     private fun formatDate(dateStr: String?): String {
         if (dateStr == null || dateStr == "null" || dateStr.isEmpty()) return ""
         try {
-            // If already dd-MM-yyyy
-            if (dateStr.matches(Regex("\\d{2}-\\d{2}-\\d{4}"))) {
-                return dateStr
-            }
-            
-            // If timestamp
+            if (dateStr.matches(Regex("\\d{2}-\\d{2}-\\d{4}"))) return dateStr
             val timestamp = dateStr.toLongOrNull()
             if (timestamp != null) {
                 val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                 return sdf.format(Date(timestamp))
             }
-            
-            // If contains time component
-            val cleanDate = if (dateStr.contains("T")) {
-                dateStr.substringBefore("T")
-            } else if (dateStr.contains(" ")) {
-                dateStr.substringBefore(" ")
-            } else {
-                dateStr
-            }
-            
-            // Format from yyyy-MM-dd to dd-MM-yyyy
+            val cleanDate = if (dateStr.contains("T")) dateStr.substringBefore("T")
+            else if (dateStr.contains(" ")) dateStr.substringBefore(" ")
+            else dateStr
             val parts = cleanDate.split("-")
             if (parts.size == 3 && parts[0].length == 4) {
                 return "${parts[2]}-${parts[1]}-${parts[0]}"
             }
-        } catch (e: Exception) {
-            // Ignore
-        }
+        } catch (e: Exception) { }
         return dateStr
     }
 

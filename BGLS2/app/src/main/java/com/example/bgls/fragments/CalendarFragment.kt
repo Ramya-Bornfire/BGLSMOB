@@ -24,6 +24,9 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private var isFilterVisible = false
     private var allCalendarData = mutableListOf<CalendarModel>()
     private lateinit var calendarAdapter: CalendarAdapter
+    private var selectedHolidayMonth: String? = null
+    private val calendarYear: String
+        get() = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR).toString()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,11 +117,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
         // 🔥 SUBMIT
         btnSubmit.setOnClickListener {
-            Toast.makeText(requireContext(), "Holiday Added Successfully", Toast.LENGTH_SHORT).show()
-
-            layoutHoliday.visibility = View.GONE
-            recycler.visibility = View.VISIBLE
-            holidayHeader.visibility = View.VISIBLE
+            submitHoliday(layoutHoliday, recycler, holidayHeader, btnAdd)
         }
 
         tabCalendar.performClick()
@@ -128,7 +127,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun loadCalendar() {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getCalendar("calender", "2026", null)
+                val response = RetrofitClient.api.getCalendar("calender", calendarYear, null)
 
                 if (response.isSuccessful) {
                     val calList = response.body()?.calender_list ?: emptyList()
@@ -146,6 +145,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
                     allCalendarData = mappedList.toMutableList()
                     calendarAdapter = CalendarAdapter(allCalendarData) { selectedMonth ->
+                        selectedHolidayMonth = selectedMonth
                         // 1. Load holidays
                         loadHolidays(selectedMonth)
 
@@ -177,7 +177,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             try {
                 val response = RetrofitClient.api.getCalendar(
                     "calender",
-                    "2026",
+                    calendarYear,
                     month   // 🔥 null means ALL months
                 )
 
@@ -253,6 +253,63 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun clearColumnFilters() {
         view?.findViewById<EditText>(R.id.etFilterYear)?.text?.clear()
         view?.findViewById<EditText>(R.id.etFilterMonth)?.text?.clear()
+    }
+
+    private fun submitHoliday(
+        layoutHoliday: LinearLayout,
+        recycler: RecyclerView,
+        holidayHeader: LinearLayout,
+        btnAdd: Button
+    ) {
+        val root = view ?: return
+        val orgn = root.findViewById<EditText>(R.id.etOrganizationName).text.toString().trim()
+        val location = root.findViewById<EditText>(R.id.etOrganizationType).text.toString().trim()
+        val calYear = root.findViewById<EditText>(R.id.etDateOfRegistration).text.toString().trim()
+            .ifEmpty { calendarYear }
+        val calMonth = root.findViewById<EditText>(R.id.etCertificateReg).text.toString().trim()
+            .ifEmpty { selectedHolidayMonth ?: "" }
+        val recordDate = root.findViewById<EditText>(R.id.etVatReference).text.toString().trim()
+        val holidayDesc = root.findViewById<EditText>(R.id.etNoOfEmployees).text.toString().trim()
+        val holidayRemarks = root.findViewById<EditText>(R.id.etAsOn).text.toString().trim()
+        val holidayFlg = root.findViewById<EditText>(R.id.etRegOfficeAddr1).text.toString().trim()
+
+        if (recordDate.isEmpty() || holidayDesc.isEmpty()) {
+            Toast.makeText(requireContext(), "Date and Description are required", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val fields = mapOf(
+            "orgn" to orgn,
+            "location" to location,
+            "cal_year" to calYear,
+            "cal_month" to calMonth,
+            "record_date" to recordDate,
+            "holiday_desc" to holidayDesc,
+            "holiday_remarks" to holidayRemarks,
+            "holiday_flg" to holidayFlg.ifEmpty { "Y" }
+        )
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.submitHoliday("add", fields)
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "Holiday added successfully", Toast.LENGTH_SHORT).show()
+                    layoutHoliday.visibility = View.GONE
+                    recycler.visibility = View.VISIBLE
+                    holidayHeader.visibility = View.VISIBLE
+                    btnAdd.visibility = View.VISIBLE
+                    loadHolidays(calMonth.ifEmpty { selectedHolidayMonth })
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed: ${response.code()} ${response.errorBody()?.string()}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message ?: "Error", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
 }

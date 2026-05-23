@@ -1,21 +1,22 @@
 package com.example.bgls.DataModels
 
+import com.google.gson.annotations.SerializedName
+
 data class SchemeCode(
-    val product: String? = null,
-    val id: String? = null,
+    @SerializedName("product") val product: String? = null,
+    @SerializedName("id") val id: String? = null,
+    @SerializedName("state") val state: String? = null,
+    @SerializedName("productType") val productType: String? = null,
+    @SerializedName("productCategory") val productCategory: String? = null,
+    @SerializedName("productDescription") val productDescription: String? = null,
+    @SerializedName("availableTo") val availableTo: String? = null,
+    @SerializedName("branches") val branches: String? = null,
+    @SerializedName("entityFlg") val entityFlg: String? = null,
+    @SerializedName("delFlg") val delFlg: String? = null,
+    @SerializedName("modifyFlg") val modifyFlg: String? = null,
     val category: String? = null,
     val type: String? = null,
-    val description: String? = null,
-    val status: String? = null,
-    val state: String? = null,
-    val productType: String? = null,
-    val productCategory: String? = null,
-    val productDescription: String? = null,
-    val availableTo: String? = null,
-    val branches: String? = null,
-    val entity_flg: String? = null,
-    val del_flg: String? = null,
-    val modify_flg: String? = null
+    val description: String? = null
 )
 
 data class SchemeResponse(

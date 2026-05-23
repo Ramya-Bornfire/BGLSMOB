@@ -28,7 +28,9 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import okhttp3.ResponseBody
 import retrofit2.Response
-
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.FileOutputStream
 class CustomerMaintenanceActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
@@ -67,7 +69,10 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
             hIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(hIntent)
         }
-
+        val btnDownload = findViewById<ImageView>(R.id.btnDownload)
+        btnDownload.setOnClickListener {
+            downloadCustomerExcel()
+        }
         recyclerView = findViewById(R.id.recyclerViewCustomerMaintenance)
         recyclerView.layoutManager = LinearLayoutManager(this)
         progressBar = findViewById(R.id.progressBar)
@@ -79,7 +84,51 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
         // Initial load
         loadData()
     }
+    private fun downloadCustomerExcel() {
+        progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.downloadExcel("CUSTOMER")
+                if (response.isSuccessful && response.body() != null) {
+                    saveExcelFile(response.body()!!, "CustomerMaster.xlsx")
+                    Toast.makeText(this@CustomerMaintenanceActivity, "Download complete", Toast.LENGTH_SHORT).show()
+                } else {
+                    val error = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@CustomerMaintenanceActivity, "Download failed: $error", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CustomerMaintenanceActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
 
+    private fun saveExcelFile(body: ResponseBody, fileName: String) {
+        try {
+            val file = File(getExternalFilesDir(null), fileName)
+            FileOutputStream(file).use { fos ->
+                fos.write(body.bytes())
+            }
+            Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+
+            // Optionally open the file
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(
+                    FileProvider.getUriForFile(
+                        this@CustomerMaintenanceActivity,
+                        "${packageName}.fileprovider",
+                        file
+                    ),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(intent, "Open Excel"))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error saving file: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
     private fun setupSpinners() {
         val filterOptions = listOf("Select Filter", "ID", "Name", "Mobile")
         val filterSpinner = findViewById<Spinner>(R.id.spinnerFilter)

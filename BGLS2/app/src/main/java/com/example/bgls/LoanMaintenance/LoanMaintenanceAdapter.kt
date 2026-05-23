@@ -49,8 +49,8 @@ class LoanMaintenanceAdapter(
         holder.tvLoanId.setOnClickListener {
             val intent = Intent(context, LoanMaintananceViewActivity::class.java)
             intent.putExtra("loanId", item.loanId)
-            intent.putExtra("holderKey", "8a81878d91c781030191c95350901e14") // Dummy holderKey for testing
-            intent.putExtra("branchKey", "8a81878d91c781030191c95350901e14") // Dummy branchKey for testing
+            intent.putExtra("holderKey", "8a81878d91c781030191c95350901e14") // Dummy, replace with real data
+            intent.putExtra("branchKey", "8a81878d91c781030191c95350901e14") // Dummy, replace with real data
             intent.putExtra("source", "LoanMaintenance")
             context.startActivity(intent)
         }

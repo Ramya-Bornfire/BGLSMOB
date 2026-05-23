@@ -1442,7 +1442,7 @@ class ParameterActivity : AppCompatActivity() {
                         val body = response.body()
                         if (body != null) {
                             val list = body.lms_schemes?.map {
-                                val rawStatus = it.status ?: it.state ?: it.entity_flg ?: ""
+                                val rawStatus = it.state ?: it.entityFlg ?: ""
                                 val displayStatus = when (rawStatus.uppercase()) {
                                     "Y" -> "Active"
                                     "N" -> "Inactive"

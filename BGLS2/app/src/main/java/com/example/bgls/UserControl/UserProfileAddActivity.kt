@@ -221,7 +221,11 @@ class UserProfileAddActivity : AppCompatActivity() {
             }
             container.addView(title)
             for (item in items) {
-                val cb = CheckBox(this).apply { text = item.replace("_", " ").capitalize() }
+                val cb = CheckBox(this).apply {
+                    text = item.replace("_", " ").replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                    }
+                }
                 checkBoxMap[item] = cb
                 container.addView(cb)
             }
@@ -315,6 +319,8 @@ class UserProfileAddActivity : AppCompatActivity() {
             passwordExpiryDate = convertDateToBackend(etPasswordExpiryDate.text.toString()),
             accountExpiryDate = convertDateToBackend(etAccountExpiryDate.text.toString()),
             authFlg = "Y",
+            disableFlg = if (spinnerUserStatus.selectedItem.toString() == "Active") "N" else "Y",
+            entityFlg = "Y",
             modifyFlg = "N",
             userLockedFlg = "N",
             loginFlg = "N",
@@ -353,6 +359,8 @@ class UserProfileAddActivity : AppCompatActivity() {
             passwordExpiryDate = convertDateToBackend(etPasswordExpiryDate.text.toString()),
             accountExpiryDate = convertDateToBackend(etAccountExpiryDate.text.toString()),
             authFlg = "Y",
+            disableFlg = if (spinnerUserStatus.selectedItem.toString() == "Active") "N" else "Y",
+            entityFlg = "Y",
             modifyFlg = "N",
             userLockedFlg = "N",
             loginFlg = "N",
