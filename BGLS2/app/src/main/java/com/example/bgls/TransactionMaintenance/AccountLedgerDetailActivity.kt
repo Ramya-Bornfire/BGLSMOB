@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -29,7 +30,9 @@ class AccountLedgerDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_ledger_detail)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupListeners()
         loadDataFromIntent()

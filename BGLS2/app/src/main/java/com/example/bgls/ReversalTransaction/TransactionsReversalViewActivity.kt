@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
 import android.content.Intent
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 
@@ -28,7 +29,9 @@ class TransactionsReversalViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_reversal_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         setupNavigation()
         loadMockData()
         setupFields()

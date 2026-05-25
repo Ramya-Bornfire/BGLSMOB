@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.WindowManager
 
 import com.example.bgls.MainActivity
 import android.widget.ImageView
@@ -88,7 +89,9 @@ class JournalEntriesViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_journal_entries_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupButtons()
 

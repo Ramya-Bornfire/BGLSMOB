@@ -2,6 +2,7 @@ package com.example.bgls.CustomerOnBoarding
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -42,7 +43,9 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityCorporateCustomerAccountOpeningBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

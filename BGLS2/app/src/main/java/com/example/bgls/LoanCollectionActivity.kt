@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -48,7 +49,9 @@ class LoanCollectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_collection)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         progressDialog = ProgressDialog(this).apply {
             setMessage("Processing...")
             setCancelable(false)

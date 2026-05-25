@@ -2,6 +2,7 @@ package com.example.bgls.Transaction
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +45,9 @@ class TransactionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_transaction)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
 
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }

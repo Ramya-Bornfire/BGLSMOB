@@ -3,6 +3,7 @@ package com.example.bgls.ChartOfAccounts
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.DataModels.ChartOfAccountsDetailResponse
@@ -67,7 +68,9 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chart_of_accounts_detail)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         currentMode = intent.getStringExtra("MODE") ?: "VIEW"
         currentAcctNum = intent.getStringExtra("ACCT_NUM")
         initViews()

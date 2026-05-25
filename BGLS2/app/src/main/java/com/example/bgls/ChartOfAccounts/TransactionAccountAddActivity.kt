@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -30,7 +31,9 @@ class TransactionAccountAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_account_add)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         allEditTexts = getAllEditTexts(findViewById(android.R.id.content))
 
         val btnSubmitAddTransaction = findViewById<Button>(R.id.btnSubmitAddTransaction)

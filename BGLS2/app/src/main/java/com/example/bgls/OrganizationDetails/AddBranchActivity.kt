@@ -2,6 +2,7 @@
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -19,7 +20,9 @@ class AddBranchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_branch)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         val etBranchCode = findViewById<EditText>(R.id.etBranchCode)
         val etBranchName = findViewById<EditText>(R.id.etBranchName)
         val etBranchHead = findViewById<EditText>(R.id.etBranchHead)

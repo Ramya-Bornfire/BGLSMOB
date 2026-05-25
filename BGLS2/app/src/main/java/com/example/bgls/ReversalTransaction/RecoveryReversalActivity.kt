@@ -22,6 +22,7 @@ import android.content.Intent
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 import android.view.View
+import android.view.WindowManager
 
 class RecoveryReversalActivity : AppCompatActivity() {
 
@@ -53,7 +54,9 @@ class RecoveryReversalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery_reversal)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         rvRecoveryReversal = findViewById(R.id.rvRecoveryReversal)
         btnFilter = findViewById(R.id.btnFilter)
         headerRow = findViewById(R.id.headerRow)

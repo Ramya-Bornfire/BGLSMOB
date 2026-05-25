@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.example.bgls.Retrofit.RetrofitClient
 
 class SchemeCodeAddActivity : AppCompatActivity() {
@@ -123,7 +124,9 @@ class SchemeCodeAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheme_code_add)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initializeViews()
         setupClickListeners()
         clearAllFields() // Clear all fields on start

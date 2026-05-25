@@ -14,6 +14,7 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import android.app.DatePickerDialog
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 
@@ -55,7 +56,9 @@ class JournalEntriesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_journal_entries_list)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupButtons()
         loadData()

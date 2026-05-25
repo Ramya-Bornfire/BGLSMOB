@@ -18,6 +18,7 @@ import java.util.Locale
 import android.content.Intent
 import android.widget.ImageView
 import android.view.View
+import android.view.WindowManager
 import com.example.bgls.MainActivity
 
 class TransactionsReversalActivity : AppCompatActivity() {
@@ -54,7 +55,9 @@ class TransactionsReversalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions_reversal)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         //setupSpinner()

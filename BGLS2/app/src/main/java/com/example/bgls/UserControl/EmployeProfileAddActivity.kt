@@ -10,6 +10,7 @@ import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Base64   // ✅ ADD THIS IMPORT
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -93,7 +94,9 @@ class EmployeProfileAddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_employe_profile_add)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupSpinners()
         setupDatePickers()

@@ -3,6 +3,7 @@ package com.example.bgls
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -18,7 +19,9 @@ class SchemeCodeViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scheme_code_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         val tvProduct = findViewById<EditText>(R.id.tvProduct)
         val tvProductType = findViewById<EditText>(R.id.tvProductType)
         val tvId = findViewById<EditText>(R.id.tvId)

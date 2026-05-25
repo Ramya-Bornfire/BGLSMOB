@@ -13,6 +13,7 @@ import com.example.bgls.DataModels.ReversalSubmissionPayload
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import android.content.Intent
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 import com.google.gson.Gson
@@ -37,7 +38,9 @@ class RecoveryReversalEditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery_reversal_edit)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         setupNavigation()
         val tranId = intent.getStringExtra("tran_id") ?: ""
         val partTranId = intent.getStringExtra("part_tran_id") ?: ""

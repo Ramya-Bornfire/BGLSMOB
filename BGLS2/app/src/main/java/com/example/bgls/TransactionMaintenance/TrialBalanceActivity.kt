@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import android.content.Intent
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 
@@ -74,7 +75,9 @@ class TrialBalanceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trial_balance)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         setupRecyclerViews()

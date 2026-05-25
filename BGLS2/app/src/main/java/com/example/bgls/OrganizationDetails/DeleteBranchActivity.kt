@@ -2,6 +2,7 @@
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -20,7 +21,9 @@ class DeleteBranchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_branch)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         val btnBack = findViewById<ImageView>(R.id.btnBack)
         val btnDelete = findViewById<Button>(R.id.btnDelete)
 

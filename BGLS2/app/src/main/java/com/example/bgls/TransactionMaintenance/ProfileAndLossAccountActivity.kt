@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import android.content.Intent
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 
@@ -61,6 +62,9 @@ class ProfileAndLossAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_and_loss_account)
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
 
         initViews()
         setupNavigation()

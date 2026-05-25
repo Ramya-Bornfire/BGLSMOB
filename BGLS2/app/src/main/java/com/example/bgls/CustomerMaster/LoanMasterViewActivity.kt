@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -102,7 +103,9 @@ class LoanMasterViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_master_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             finish()
         }

@@ -17,6 +17,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
 import android.content.Intent
+import android.view.WindowManager
 import com.example.bgls.MainActivity
 
 class EndOfMonthReportActivity : AppCompatActivity() {
@@ -31,7 +32,9 @@ class EndOfMonthReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_end_of_month_report)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         setupListeners()

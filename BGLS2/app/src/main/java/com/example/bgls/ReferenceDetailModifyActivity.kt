@@ -2,6 +2,7 @@
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -28,7 +29,9 @@ class ReferenceDetailModifyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reference_detail_modify)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         // Init views
         btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)

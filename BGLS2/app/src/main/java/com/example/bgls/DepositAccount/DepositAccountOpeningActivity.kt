@@ -3,6 +3,7 @@ package com.example.bgls.DepositAccount
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.MainActivity
@@ -17,7 +18,9 @@ class DepositAccountOpeningActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDepositAccountOpeningBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         setupSpinners()
         setupDatePickers()
 

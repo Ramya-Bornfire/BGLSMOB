@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.DataModels.ReversalDetailModel
 import com.example.bgls.R
 import android.content.Intent
+import android.view.WindowManager
 import android.widget.ImageView
 import com.example.bgls.MainActivity
 import com.example.bgls.Retrofit.RetrofitClient
@@ -35,7 +36,9 @@ class FailedReversalViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_failed_reversal_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         setupNavigation()
         val tranId = intent.getStringExtra("tran_id") ?: ""
         val partTranId = intent.getStringExtra("part_tran_id") ?: ""

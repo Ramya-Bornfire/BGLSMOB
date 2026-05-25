@@ -2,6 +2,7 @@ package com.example.bgls.DepositAccount
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bgls.Adapter.DepositAccountAdapter
@@ -23,7 +24,9 @@ class DepositAccountMaintenanceListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDepositAccountMaintenanceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         binding.rvDepositAccounts.layoutManager = LinearLayoutManager(this)
 
         binding.btnHome.setOnClickListener {

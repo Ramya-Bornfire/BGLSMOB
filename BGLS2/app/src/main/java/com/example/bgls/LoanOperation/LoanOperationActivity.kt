@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -102,7 +103,9 @@ class LoanOperationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_operation)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupListeners()
         fetchInitialData()

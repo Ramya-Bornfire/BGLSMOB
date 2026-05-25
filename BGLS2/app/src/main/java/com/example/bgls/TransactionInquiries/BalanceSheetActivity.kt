@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.content.Intent
+import android.view.WindowManager
 import com.example.bgls.MainActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.R
@@ -41,7 +42,9 @@ class BalanceSheetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_balance_sheet)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         loadData()

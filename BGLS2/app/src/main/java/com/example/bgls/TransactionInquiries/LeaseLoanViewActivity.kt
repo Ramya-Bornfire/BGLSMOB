@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 import android.graphics.Color
+import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -34,7 +35,9 @@ class LeaseLoanViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lease_loan_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         loanId = intent.getStringExtra("id") ?: ""
         holderKey = intent.getStringExtra("holder_key") ?: ""
         branchKey = intent.getStringExtra("branch_key") ?: ""

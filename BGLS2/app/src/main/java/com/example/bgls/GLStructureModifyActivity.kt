@@ -1,6 +1,7 @@
 ﻿package com.example.bgls
 
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -31,7 +32,9 @@ class GLStructureModifyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_glstructure_modify)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         // Views
         btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)

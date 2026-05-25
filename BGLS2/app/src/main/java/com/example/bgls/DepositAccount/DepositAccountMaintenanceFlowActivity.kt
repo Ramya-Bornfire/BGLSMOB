@@ -3,6 +3,7 @@ package com.example.bgls.DepositAccount
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +32,9 @@ class DepositAccountMaintenanceFlowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDepositAccountMaintenanceFlowBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         currentActNo = intent.getStringExtra("ACCT_ID")
         val status = intent.getStringExtra("STATUS") ?: "UnVerified"
 

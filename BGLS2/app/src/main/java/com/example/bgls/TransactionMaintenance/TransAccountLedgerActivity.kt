@@ -2,6 +2,7 @@ package com.example.bgls.TransactionMaintenance
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,9 @@ class TransAccountLedgerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trans_account_ledger)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         rvTransLedger = findViewById(R.id.rvTransLedger)
         rvTransLedger.layoutManager = LinearLayoutManager(this)
         

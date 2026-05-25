@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -106,6 +107,9 @@ class LoanMaintananceViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_maintanance_view)
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         loanId = intent.getStringExtra("loanId") ?: ""
         holderKey = intent.getStringExtra("holderKey") ?: ""
         branchKey = intent.getStringExtra("branchKey") ?: ""

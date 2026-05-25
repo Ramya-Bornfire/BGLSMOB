@@ -1,6 +1,7 @@
 ﻿package com.example.bgls
 
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,7 +22,9 @@ class ReferenceDetailDeleteActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reference_detail_delete) // à®‰à®™à¯à®•à®³à¯ XML file name
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         // Views
         btnBack = findViewById(R.id.btnBack)
         toolbarTitle = findViewById(R.id.toolbarTitle)

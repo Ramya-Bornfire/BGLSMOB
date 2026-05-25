@@ -17,6 +17,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
 import android.content.Intent
+import android.view.WindowManager
 import com.example.bgls.MainActivity
 
 class GenericReportActivity : AppCompatActivity() {
@@ -33,7 +34,9 @@ class GenericReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_generic_report)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         setupListeners()

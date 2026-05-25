@@ -32,6 +32,7 @@ import com.example.bgls.DataModels.ChartOfAccountsListResponse
 import com.google.android.material.navigation.NavigationView
 import retrofit2.Callback
 import android.app.AlertDialog
+import android.view.WindowManager
 import com.example.bgls.CustomerMaster.AccountLedgerActivity
 import com.example.bgls.DataModels.ChartAccountApiItem
 import com.example.bgls.DataModels.TransactionAccountsResponse
@@ -129,7 +130,9 @@ class ParameterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding =  ActivityParameterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         tvTitle = binding.tvTitle
         tableLayout = binding.tableLayout
 

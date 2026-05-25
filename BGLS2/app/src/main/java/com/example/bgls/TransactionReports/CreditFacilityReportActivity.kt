@@ -18,6 +18,7 @@ import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import android.content.Intent
+import android.view.WindowManager
 import com.example.bgls.MainActivity
 import android.widget.ImageView
 
@@ -43,7 +44,9 @@ class CreditFacilityReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_credit_facility_report)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupNavigation()
         setupListeners()

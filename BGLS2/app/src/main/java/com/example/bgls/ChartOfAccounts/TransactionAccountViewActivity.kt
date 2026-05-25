@@ -3,6 +3,7 @@ package com.example.bgls.ChartOfAccounts
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -43,7 +44,9 @@ class TransactionAccountViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transaction_account_view)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         accountId = intent.getLongExtra("ID", -1L)
             .takeIf { it != -1L }
             ?: intent.getStringExtra("ID")?.toLongOrNull()

@@ -3,6 +3,7 @@ package com.example.bgls.OrganizationDetails
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,9 @@ class OrganizationDetialsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_organization_detials)
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         btnBack = findViewById(R.id.btnBack)

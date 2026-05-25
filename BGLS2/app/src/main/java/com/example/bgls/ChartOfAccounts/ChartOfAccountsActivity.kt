@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -102,7 +103,9 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_chart_of_accounts)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {

@@ -2,6 +2,7 @@
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -45,7 +46,9 @@ class EditBranchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_branch)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         // Initialize views
         btnBack = findViewById(R.id.btnBack)
         btnUpdate = findViewById(R.id.btnUpdate)

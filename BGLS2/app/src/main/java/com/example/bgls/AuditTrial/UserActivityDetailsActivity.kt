@@ -3,6 +3,7 @@ package com.example.bgls.AuditTrial
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,7 +35,9 @@ class UserActivityDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
         setContentView(R.layout.activity_user_details)
-
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             finish()
         }

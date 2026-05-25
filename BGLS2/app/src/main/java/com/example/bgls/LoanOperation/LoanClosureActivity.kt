@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,9 @@ class LoanClosureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_closure)
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         initViews()
         setupListeners()
         setMode(true)

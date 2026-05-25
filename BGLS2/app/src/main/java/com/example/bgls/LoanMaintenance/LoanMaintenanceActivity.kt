@@ -3,6 +3,7 @@ package com.example.bgls.LoanMaintenance
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -59,6 +60,9 @@ class LoanMaintenanceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_maintenance)
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         drawerLayout = findViewById(R.id.drawerLayout)
         navigationView = findViewById(R.id.navigationView)
         menuIcon = findViewById(R.id.menuIcon)

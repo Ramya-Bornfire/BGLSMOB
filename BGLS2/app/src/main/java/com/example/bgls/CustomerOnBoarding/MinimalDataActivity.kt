@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.Html
 import android.view.View
+import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -33,7 +34,9 @@ class MinimalDataActivity : AppCompatActivity() {
         
         binding = ActivityMinimalDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+        )
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
