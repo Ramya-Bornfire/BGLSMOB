@@ -55,6 +55,7 @@ class TabTransactionAdapter(
         holder.tvEvent.setOnClickListener {
             val intent = android.content.Intent(context, TransactionAccountViewActivity::class.java)
             intent.putExtra("MODE", "VIEW")
+            intent.putExtra("ID", item.id)
             context.startActivity(intent)
         }
 
@@ -69,6 +70,7 @@ class TabTransactionAdapter(
                 when (menuItem.title) {
                     "Edit" -> {
                         val intent = android.content.Intent(context, TransactionAccountModifyActivity::class.java)
+                        intent.putExtra("ID", item.id)
                         context.startActivity(intent)
                         true
                     }
@@ -80,10 +82,30 @@ class TabTransactionAdapter(
                                 val pos = holder.adapterPosition
                                 if (pos != RecyclerView.NO_POSITION) {
                                     val itemToDelete = list[pos]
-                                    val mutableList = fullList.toMutableList()
-                                    mutableList.remove(itemToDelete)
-                                    updateList(mutableList)
-                                    android.widget.Toast.makeText(context, "Deleted", android.widget.Toast.LENGTH_SHORT).show()
+                                    val idToDel = itemToDelete.id?.toLongOrNull()
+                                    if (idToDel != null) {
+                                        com.example.bgls.Retrofit.RetrofitClient.api.deleteTransactionAccount(idToDel)
+                                            .enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                                                override fun onResponse(
+                                                    call: retrofit2.Call<okhttp3.ResponseBody>,
+                                                    response: retrofit2.Response<okhttp3.ResponseBody>
+                                                ) {
+                                                    if (response.isSuccessful) {
+                                                        val mutableList = fullList.toMutableList()
+                                                        mutableList.remove(itemToDelete)
+                                                        updateList(mutableList)
+                                                        android.widget.Toast.makeText(context, "Deleted Successfully", android.widget.Toast.LENGTH_SHORT).show()
+                                                    } else {
+                                                        android.widget.Toast.makeText(context, "Delete failed: ${response.code()}", android.widget.Toast.LENGTH_SHORT).show()
+                                                    }
+                                                }
+                                                override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                                                    android.widget.Toast.makeText(context, "Network error: ${t.message}", android.widget.Toast.LENGTH_SHORT).show()
+                                                }
+                                            })
+                                    } else {
+                                        android.widget.Toast.makeText(context, "Invalid Account ID", android.widget.Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
                             .setNegativeButton("No", null)

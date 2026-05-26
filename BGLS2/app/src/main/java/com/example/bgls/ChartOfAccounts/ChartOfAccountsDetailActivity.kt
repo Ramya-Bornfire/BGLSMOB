@@ -138,6 +138,8 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
             "MODIFY" -> {
                 tvDetailTitle.text = "CHART OF ACCOUNTS - MODIFY"
                 setFieldsEnabled(true)
+                etAccountID.isEnabled = false
+
                 btnSubmit.visibility = View.VISIBLE
                 btnVerify.visibility = View.GONE
                 btnDelete.visibility = View.GONE

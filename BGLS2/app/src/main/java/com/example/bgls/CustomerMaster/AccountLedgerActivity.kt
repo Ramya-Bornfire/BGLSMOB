@@ -22,6 +22,17 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import com.example.bgls.MainActivity
+import android.content.ContentValues
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.Button
+import androidx.core.content.FileProvider
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class AccountLedgerActivity : AppCompatActivity() {
 
@@ -45,7 +56,7 @@ class AccountLedgerActivity : AppCompatActivity() {
     private lateinit var etFromDate: EditText
     private lateinit var etToDate: EditText
     private lateinit var etAcctStatus: EditText
-
+    private lateinit var btnDownload : Button
     private var acctNum: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +73,9 @@ class AccountLedgerActivity : AppCompatActivity() {
             fetchAccountLedger(acctNum)
         } else {
             Toast.makeText(this, "No account number provided", Toast.LENGTH_SHORT).show()
+        }
+        btnDownload.setOnClickListener {
+            downloadLedger()
         }
     }
 
@@ -84,6 +98,7 @@ class AccountLedgerActivity : AppCompatActivity() {
         etFromDate = findViewById(R.id.etFromDate)
         etToDate = findViewById(R.id.etToDate)
         etAcctStatus = findViewById(R.id.etAcctStatus)
+        btnDownload = findViewById(R.id.btnDownload)
 
         findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             finish()
@@ -140,7 +155,67 @@ class AccountLedgerActivity : AppCompatActivity() {
         etFromDate.setText(formatBackendDate(data.tranDate))
         etToDate.setText(formatBackendDate(data.tranDate))
     }
+    private fun downloadLedger() {
+        val acctNum = etAcctId.text.toString()
+        if (acctNum.isEmpty()) {
+            Toast.makeText(this, "Account number is missing", Toast.LENGTH_SHORT).show()
+            return
+        }
 
+        val fromDate = etFromDate.text.toString()
+        val toDate = etToDate.text.toString()
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.downloadAccountLedgerExcel(
+                    acctNum = acctNum,
+                    fromDate = fromDate.ifEmpty { null },
+                    toDate = toDate.ifEmpty { null }
+                )
+                if (response.isSuccessful && response.body() != null) {
+                    val body = response.body()!!
+                    saveAndOpenFile(body, "AccountLedger_$acctNum.xlsx")
+                } else {
+                    Toast.makeText(this@AccountLedgerActivity,
+                        "Download failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Download error", e)
+                Toast.makeText(this@AccountLedgerActivity,
+                    "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveAndOpenFile(body: ResponseBody, fileName: String) {
+        // Save to app's cache directory – no permission needed
+        val file = File(cacheDir, fileName)
+        try {
+            FileOutputStream(file).use { outputStream ->
+                body.byteStream().use { inputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            // Open the file
+            openFile(file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to save file", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openFile(file: File) {
+        val uri = FileProvider.getUriForFile(
+            this,
+            "${applicationContext.packageName}.provider",  // must match file_provider_paths
+            file
+        )
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(intent, "Open Ledger File"))
+    }
     private fun setupTransactions(dataList: List<List<Any?>>?) {
         if (dataList == null) return
 

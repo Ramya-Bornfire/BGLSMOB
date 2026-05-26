@@ -143,6 +143,8 @@
                 </LinearLayout>
             </LinearLayout>
 
+
+
             <ImageView
                 android:id="@+id/btnHome"
                 android:layout_width="32dp"
@@ -162,6 +164,41 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end|center_vertical"
+        android:padding="8dp"
+         >
+
+        <Button
+
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:backgroundTint="#007BFF"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify"
+            android:backgroundTint="#007BFF"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:backgroundTint="#007BFF"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -321,39 +358,5 @@
     </ScrollView>
 
     <!-- Bottom Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#E8EBEF">
-
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:backgroundTint="#007BFF"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/btnVerify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Verify"
-            android:backgroundTint="#007BFF"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete"
-            android:backgroundTint="#007BFF"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
 
 </LinearLayout>

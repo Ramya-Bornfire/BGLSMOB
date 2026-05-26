@@ -70,6 +70,10 @@ class TransactionAccountViewActivity : AppCompatActivity() {
             startActivity(Intent(this, TransactionAccountAddActivity::class.java))
         }
 
+        findViewById<Button>(R.id.btnDelete).setOnClickListener {
+            confirmDelete()
+        }
+
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
         findViewById<ImageView>(R.id.btnHome).setOnClickListener {
@@ -77,6 +81,34 @@ class TransactionAccountViewActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
         }
+    }
+
+    private fun confirmDelete() {
+        if (accountId == -1L) {
+            Toast.makeText(this, "No record to delete", Toast.LENGTH_SHORT).show()
+            return
+        }
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Delete Account")
+            .setMessage("Are you sure you want to delete this Transaction Account?")
+            .setPositiveButton("Yes") { _, _ ->
+                RetrofitClient.api.deleteTransactionAccount(accountId)
+                    .enqueue(object : Callback<okhttp3.ResponseBody> {
+                        override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
+                            if (response.isSuccessful) {
+                                Toast.makeText(this@TransactionAccountViewActivity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this@TransactionAccountViewActivity, "Delete failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {
+                            Toast.makeText(this@TransactionAccountViewActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
     private fun bindViews() {

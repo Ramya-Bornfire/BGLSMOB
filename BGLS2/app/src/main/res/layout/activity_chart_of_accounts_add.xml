@@ -142,6 +142,14 @@
                         android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#2196F3"
+                android:layout_marginEnd="8dp"/>0-
 
             <ImageView
                 android:id="@+id/btnHome"

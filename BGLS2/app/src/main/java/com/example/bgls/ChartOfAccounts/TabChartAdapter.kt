@@ -94,23 +94,10 @@ class TabChartAdapter(
                         true
                     }
                     "Delete" -> {
-                        AlertDialog.Builder(context)
-                            .setTitle("Delete Account")
-                            .setMessage("Are you sure you want to delete this Account?")
-                            .setPositiveButton("Yes") { _, _ ->
-                                val pos = holder.adapterPosition
-                                if (pos != RecyclerView.NO_POSITION) {
-                                    val itemToDelete = list[pos]
-                                    list.removeAt(pos)
-                                    // Also remove from fullList to keep it in sync if needed, 
-                                    // though usually fullList represents the server state.
-                                    fullList = fullList.filter { it != itemToDelete }
-                                    notifyItemRemoved(pos)
-                                    Toast.makeText(context, "Account Deleted", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            .setNegativeButton("No", null)
-                            .show()
+                        val intent = Intent(context, ChartOfAccountsDetailActivity::class.java)
+                        intent.putExtra("MODE", "DELETE")
+                        intent.putExtra("ACCT_NUM", item.acctId)
+                        context.startActivity(intent)
                         true
                     }
                     else -> false
