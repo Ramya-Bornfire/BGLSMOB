@@ -178,6 +178,7 @@
             android:background="@drawable/spinner_background"
             android:layout_marginEnd="8dp"/>
 
+
         <Button
             android:id="@+id/btnDownload"
             android:layout_width="wrap_content"
@@ -189,32 +190,6 @@
             android:textAllCaps="false"/>
     </LinearLayout>
 
-    <!-- ─── SEARCH ROW ─── -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
-        android:padding="8dp"
-        android:gravity="center_vertical">
-
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Select a filter above to search"
-            android:inputType="text"
-            android:singleLine="true"
-            android:background="@drawable/edittext_background"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="13sp"
-            android:textColor="#333333"
-            android:enabled="false"/>
-    </LinearLayout>
 
     <!-- ─── PROGRESS BAR (shown while loading) ─── -->
     <ProgressBar
@@ -233,8 +208,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true"
-        android:scrollbars="horizontal"
-        android:descendantFocusability="blocksDescendants">
+        android:scrollbars="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -242,22 +216,80 @@
             android:orientation="vertical"
             android:minWidth="1220dp">
 
-            <!-- TABLE HEADER -->
-            <LinearLayout
+            <!-- DUAL HEADER: Default vs Filter Row -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#E8EAED">
+                android:layout_height="wrap_content">
 
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER ID"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="110dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DOB"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="BRANCH NAME"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Mobile No"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Email"/>
-                <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
-            </LinearLayout>
+                <!-- 1. Default Table Header (TextViews) – shown by default -->
+                <LinearLayout
+                    android:id="@+id/layoutDefaultHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED"
+                    android:visibility="visible">
+
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp"  android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER ID"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="110dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DOB"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="BRANCH NAME"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Mobile No"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="Email"/>
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
+                </LinearLayout>
+
+                <!-- 2. Filter Table Header (per-column EditTexts) – hidden by default -->
+                <LinearLayout
+                    android:id="@+id/layoutFilterHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#E8EAED"
+                    android:visibility="gone">
+
+                    <!-- S.NO – rigid, not filterable -->
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
+
+                    <!-- CUSTOMER ID – click header to activate filter -->
+                    <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="140dp">
+                        <TextView android:id="@+id/tvHdrCustomerId" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER ID"/>
+                        <EditText android:id="@+id/etFilterCustomerId" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="CUSTOMER ID" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch" android:inputType="textCapCharacters"/>
+                    </FrameLayout>
+
+                    <!-- CUSTOMER NAME – click header to activate filter -->
+                    <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="220dp">
+                        <TextView android:id="@+id/tvHdrCustomerName" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="CUSTOMER NAME"/>
+                        <EditText android:id="@+id/etFilterCustomerName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="CUSTOMER NAME" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch" android:inputType="textCapCharacters"/>
+                    </FrameLayout>
+
+                    <!-- DOB – rigid, not filterable -->
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="110dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="DOB"/>
+
+                    <!-- BRANCH NAME – click header to activate filter -->
+                    <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="220dp">
+                        <TextView android:id="@+id/tvHdrBranchName" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="BRANCH NAME"/>
+                        <EditText android:id="@+id/etFilterBranchName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="BRANCH NAME" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch" android:inputType="textCapCharacters"/>
+                    </FrameLayout>
+
+                    <!-- MOBILE NO – click header to activate filter -->
+                    <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="150dp">
+                        <TextView android:id="@+id/tvHdrMobileNo" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="MOBILE NO"/>
+                        <EditText android:id="@+id/etFilterMobileNo" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="MOBILE NO" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch" android:inputType="textCapCharacters"/>
+                    </FrameLayout>
+
+                    <!-- EMAIL – click header to activate filter -->
+                    <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="220dp">
+                        <TextView android:id="@+id/tvHdrEmail" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="EMAIL"/>
+                        <EditText android:id="@+id/etFilterEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="EMAIL" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch" android:inputType="textCapCharacters"/>
+                    </FrameLayout>
+
+                    <!-- STATUS – rigid, controlled by spinner -->
+                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
+
+                </LinearLayout>
+            </FrameLayout>
 
 
             <!-- TABLE ROWS -->

@@ -28,7 +28,6 @@ class CustomerMasterListActivity : AppCompatActivity() {
     // ─── Views ───
     private lateinit var spinnerFilter: Spinner
     private lateinit var spinnerStatus: Spinner
-    private lateinit var etSearch: EditText
     private lateinit var btnDownload: Button
     private lateinit var btnPrev: Button
     private lateinit var btnNext: Button
@@ -37,6 +36,24 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: CustomerMasterAdapter
     private lateinit var btnBack: ImageView
+
+    // ─── Column-filter views ───
+    private lateinit var layoutDefault: LinearLayout
+    private lateinit var layoutFilter: LinearLayout
+
+    private lateinit var tvCustomerId: TextView
+    private lateinit var etCustomerId: EditText
+    private lateinit var tvCustomerName: TextView
+    private lateinit var etCustomerName: EditText
+    private lateinit var tvBranchName: TextView
+    private lateinit var etBranchName: EditText
+    private lateinit var tvMobileNo: TextView
+    private lateinit var etMobileNo: EditText
+    private lateinit var tvEmail: TextView
+    private lateinit var etEmail: EditText
+
+    private lateinit var allTvs: List<TextView>
+    private lateinit var allEts: List<EditText>
 
     // ─── Pagination state (server-side) ───
     private val pageSize = 200
@@ -54,12 +71,15 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private val filterOptions = listOf("Select Filter", "Customer Id", "Mobile No", "Email")
     private val statusOptions = listOf("Select Status", "ACTIVE", "INACTIVE", "BLACKLISTED", "EXITED", "PENDING_APPROVAL", "REJECTED")
 
+    // ─── Column-filter state ───
+    private var isFilterMode = false
+    private var fullList: List<CustomerMaster> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_master_list)
-        window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        )
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener { finish() }
 
@@ -70,8 +90,8 @@ class CustomerMasterListActivity : AppCompatActivity() {
         }
 
         initViews()
+        setupColumnFilter()
         setupSpinners()
-        setupSearchBox()
         setupRecyclerView()
         setupPagination()
         setupDownload()
@@ -83,13 +103,127 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private fun initViews() {
         spinnerFilter = findViewById(R.id.spinnerFilter)
         spinnerStatus = findViewById(R.id.spinnerStatus)
-        etSearch      = findViewById(R.id.etSearch)
         btnDownload   = findViewById(R.id.btnDownload)
         btnPrev       = findViewById(R.id.btnPrev)
         btnNext       = findViewById(R.id.btnNext)
         tvPageInfo    = findViewById(R.id.tvPageInfo)
         recyclerView  = findViewById(R.id.recyclerViewCustomers)
         progressBar   = findViewById(R.id.progressBar)
+
+        layoutDefault   = findViewById(R.id.layoutDefaultHeader)
+        layoutFilter    = findViewById(R.id.layoutFilterHeader)
+
+        tvCustomerId   = findViewById(R.id.tvHdrCustomerId)
+        etCustomerId   = findViewById(R.id.etFilterCustomerId)
+        tvCustomerName = findViewById(R.id.tvHdrCustomerName)
+        etCustomerName = findViewById(R.id.etFilterCustomerName)
+        tvBranchName   = findViewById(R.id.tvHdrBranchName)
+        etBranchName   = findViewById(R.id.etFilterBranchName)
+        tvMobileNo     = findViewById(R.id.tvHdrMobileNo)
+        etMobileNo     = findViewById(R.id.etFilterMobileNo)
+        tvEmail        = findViewById(R.id.tvHdrEmail)
+        etEmail        = findViewById(R.id.etFilterEmail)
+
+        allTvs = listOf(tvCustomerId, tvCustomerName, tvBranchName, tvMobileNo, tvEmail)
+        allEts = listOf(etCustomerId, etCustomerName, etBranchName, etMobileNo, etEmail)
+    }
+
+    // ─── Column-filter (dual header) ─────────────────────────────────────────
+
+    private fun activateColumn(clickedTv: TextView?, clickedEt: EditText?) {
+        isFilterMode = true
+        layoutDefault.visibility = View.GONE
+        layoutFilter.visibility  = View.VISIBLE
+
+        allTvs.forEachIndexed { i, tv ->
+            val et = allEts[i]
+            if (tv === clickedTv) {
+                tv.visibility = View.GONE
+                et.visibility = View.VISIBLE
+                et.requestFocus()
+            } else {
+                tv.visibility = View.VISIBLE
+                et.visibility = View.GONE
+                et.setText("")
+            }
+        }
+        applyColumnFilters()
+    }
+
+    private fun clearAllFilters() {
+        isFilterMode = false
+        layoutDefault.visibility = View.VISIBLE
+        layoutFilter.visibility  = View.GONE
+        allEts.forEach { it.setText("") }
+        allTvs.forEach { it.visibility = View.VISIBLE }
+        adapter.updateList(fullList)
+        spinnerFilter.setSelection(0, false)
+    }
+
+    private fun setupColumnFilter() {
+        // Column header click listeners
+        tvCustomerId.setOnClickListener   { activateColumn(tvCustomerId,   etCustomerId) }
+        tvCustomerName.setOnClickListener { activateColumn(tvCustomerName, etCustomerName) }
+        tvBranchName.setOnClickListener   { activateColumn(tvBranchName,   etBranchName) }
+        tvMobileNo.setOnClickListener     { activateColumn(tvMobileNo,     etMobileNo) }
+        tvEmail.setOnClickListener        { activateColumn(tvEmail,        etEmail) }
+
+        // TextWatcher on every filter EditText
+        allEts.forEach { et ->
+            et.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
+                override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val query = s.toString().trim()
+                    searchJob?.cancel()
+
+                    // Determine if this EditText is tied to an API search filter
+                    val apiSearchType = when (et) {
+                        etCustomerId -> "Customer Id"
+                        etMobileNo   -> "Mobile No"
+                        etEmail      -> "Email"
+                        else         -> null
+                    }
+
+                    if (query.isEmpty()) {
+                        applyColumnFilters() // Local fallback if cleared
+                    } else if (apiSearchType != null) {
+                        // This column supports API search, trigger debounced API search
+                        searchJob = lifecycleScope.launch {
+                            delay(400) // Debounce 400ms
+                            selectedFilter = apiSearchType
+                            // Sync spinner to match column
+                            val pos = filterOptions.indexOf(apiSearchType)
+                            if (pos >= 0 && spinnerFilter.selectedItemPosition != pos) {
+                                spinnerFilter.setSelection(pos, false)
+                            }
+                            triggerSearch(query)
+                        }
+                    } else {
+                        // This column is local-only (Name, Branch)
+                        applyColumnFilters()
+                    }
+                }
+            })
+        }
+    }
+
+    /** Applies client-side filtering across all active column EditTexts */
+    private fun applyColumnFilters() {
+        val qId     = etCustomerId.text.toString().trim().lowercase()
+        val qName   = etCustomerName.text.toString().trim().lowercase()
+        val qBranch = etBranchName.text.toString().trim().lowercase()
+        val qMobile = etMobileNo.text.toString().trim().lowercase()
+        val qEmail  = etEmail.text.toString().trim().lowercase()
+
+        val filtered = fullList.filter { c ->
+            (qId.isEmpty()     || (c.customerId   ?: "").lowercase().contains(qId))     &&
+            (qName.isEmpty()   || (c.customerName ?: "").lowercase().contains(qName))   &&
+            (qBranch.isEmpty() || (c.branchName   ?: "").lowercase().contains(qBranch)) &&
+            (qMobile.isEmpty() || (c.mobileNo     ?: "").lowercase().contains(qMobile)) &&
+            (qEmail.isEmpty()  || (c.email        ?: "").lowercase().contains(qEmail))
+        }
+        adapter.updateList(filtered)
     }
 
     // ─── Spinners ────────────────────────────────────────────────────────────
@@ -108,16 +242,21 @@ class CustomerMasterListActivity : AppCompatActivity() {
         spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 selectedFilter = filterOptions[pos]
-                etSearch.hint = when (selectedFilter) {
-                    "Customer Id" -> "Search by Customer ID…"
-                    "Mobile No"   -> "Search by Mobile Number…"
-                    "Email"       -> "Search by Email…"
-                    else          -> "Select a filter above to search"
+
+                if (selectedFilter == "Select Filter") {
+                    // Only clear and reload if we were previously in filter mode
+                    if (isFilterMode) {
+                        clearAllFilters()
+                        loadCustomersFromApi(1)
+                    }
+                } else {
+                    // Automatically activate the corresponding column header
+                    when (selectedFilter) {
+                        "Customer Id" -> activateColumn(tvCustomerId, etCustomerId)
+                        "Mobile No"   -> activateColumn(tvMobileNo, etMobileNo)
+                        "Email"       -> activateColumn(tvEmail, etEmail)
+                    }
                 }
-                etSearch.isEnabled = selectedFilter != "Select Filter"
-                etSearch.setText("")
-                // Reset to full list when filter type changes
-                if (selectedFilter == "Select Filter") loadCustomersFromApi(1)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
@@ -125,7 +264,15 @@ class CustomerMasterListActivity : AppCompatActivity() {
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 selectedStatus = statusOptions[pos]
-                val query = etSearch.text.toString().trim()
+                
+                // Determine active query from the active API column
+                val query = when {
+                    etCustomerId.visibility == View.VISIBLE && etCustomerId.text.isNotEmpty() -> etCustomerId.text.toString().trim()
+                    etMobileNo.visibility   == View.VISIBLE && etMobileNo.text.isNotEmpty()   -> etMobileNo.text.toString().trim()
+                    etEmail.visibility      == View.VISIBLE && etEmail.text.isNotEmpty()      -> etEmail.text.toString().trim()
+                    else -> ""
+                }
+
                 if (query.isNotEmpty() && selectedFilter != "Select Filter") {
                     triggerSearch(query)
                 } else if (selectedStatus != "Select Status") {
@@ -138,27 +285,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
         }
     }
 
-    // ─── Search box (debounced 400 ms) ───────────────────────────────────────
-
-    private fun setupSearchBox() {
-        etSearch.isEnabled = false   // enabled once a filter is selected
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                searchJob?.cancel()
-                val query = s.toString().trim()
-                if (query.isEmpty()) {
-                    loadCustomersFromApi(1)
-                    return
-                }
-                searchJob = lifecycleScope.launch {
-                    delay(400)            // debounce
-                    triggerSearch(query)
-                }
-            }
-        })
-    }
+    // ─── API Search ─────────────────────────────────────────────────────────
 
     private fun triggerSearch(query: String) {
         val statusParam = if (selectedStatus == "Select Status") null else selectedStatus
@@ -277,6 +404,7 @@ class CustomerMasterListActivity : AppCompatActivity() {
             val resolvedName = branchNameMap[it.branchKey]
             it.branchName = if (!resolvedName.isNullOrEmpty()) resolvedName else "UNKNOWN"
         }
+        fullList = list
         adapter.updateList(list)
     }
 
@@ -387,4 +515,4 @@ class CustomerMasterListActivity : AppCompatActivity() {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
         recyclerView.visibility = if (show) View.GONE else View.VISIBLE
     }
-}
+}

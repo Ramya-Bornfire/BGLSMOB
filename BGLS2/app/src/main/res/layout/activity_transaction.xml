@@ -250,22 +250,64 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <!-- TABLE HEADER -->
-                <LinearLayout
+                <!-- DUAL HEADER: Default vs Filter Row -->
+                <FrameLayout
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="#E8E8E8">
+                    android:minWidth="980dp">
 
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="S.NO" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW ID" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW DATE" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:text="FLOW CODE" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="120dp" android:text="FLOW AMOUNT" android:paddingTop="10dp" android:paddingBottom="10dp" android:gravity="end|center_vertical" android:paddingEnd="12dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NUMBER" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:text="ACCOUNT NAME" android:paddingTop="10dp" android:paddingBottom="10dp"/>
-                </LinearLayout>
+                    <!-- 1. Default Table Header -->
+                    <LinearLayout
+                        android:id="@+id/layoutDefaultHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="visible">
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="S.NO"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW DATE"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="100dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW CODE"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.8" android:minWidth="120dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW AMOUNT" android:gravity="end|center_vertical" android:paddingEnd="12dp"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="ACCOUNT NUMBER"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.5" android:minWidth="200dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="ACCOUNT NAME"/>
+                    </LinearLayout>
+
+                    <!-- 2. Filter Table Header -->
+                    <LinearLayout
+                        android:id="@+id/layoutFilterHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="gone">
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:minWidth="60dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="S.NO"/>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="100dp">
+                            <TextView android:id="@+id/tvHdrFlowId" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW ID"/>
+                            <EditText android:id="@+id/etFilterFlowId" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="FLOW ID" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="100dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW DATE"/>
+                        
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="100dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW CODE"/>
+                        
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.8" android:minWidth="120dp" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="FLOW AMOUNT" android:gravity="end|center_vertical" android:paddingEnd="12dp"/>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.5" android:minWidth="200dp">
+                            <TextView android:id="@+id/tvHdrAccountNumber" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="ACCOUNT NUMBER"/>
+                            <EditText android:id="@+id/etFilterAccountNumber" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="ACCOUNT NUMBER" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.5" android:minWidth="200dp">
+                            <TextView android:id="@+id/tvHdrAccountName" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingTop="10dp" android:paddingBottom="10dp" android:background="@drawable/table_cell_bg" android:text="ACCOUNT NAME"/>
+                            <EditText android:id="@+id/etFilterAccountName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="ACCOUNT NAME" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+                    </LinearLayout>
+                </FrameLayout>
 
 
 

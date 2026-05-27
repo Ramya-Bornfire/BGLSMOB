@@ -200,20 +200,64 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <!-- TABLE HEADER -->
-                <LinearLayout
+                <!-- DUAL HEADER: Default vs Filter Row -->
+                <FrameLayout
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:minWidth="870dp">
 
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:text="S.NO"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:text="LOAN NAME"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:text="LOAN ID"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:text="RETAILER NAME"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:text="RETAILER BRANCH ID"/>
-                    <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:text="STATUS"/>
-                </LinearLayout>
+                    <!-- 1. Default Table Header -->
+                    <LinearLayout
+                        android:id="@+id/layoutDefaultHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="visible">
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="0.8" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="LOAN NAME"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="140dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="LOAN ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="2.2" android:minWidth="220dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="RETAILER NAME"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.5" android:minWidth="150dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="RETAILER BRANCH ID"/>
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
+                    </LinearLayout>
+
+                    <!-- 2. Filter Table Header -->
+                    <LinearLayout
+                        android:id="@+id/layoutFilterHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E8EAED"
+                        android:visibility="gone">
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:minWidth="60dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="S.NO"/>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="220dp">
+                            <TextView android:id="@+id/tvHdrLoanName" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="LOAN NAME"/>
+                            <EditText android:id="@+id/etFilterLoanName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="LOAN NAME" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="140dp">
+                            <TextView android:id="@+id/tvHdrLoanId" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="LOAN ID"/>
+                            <EditText android:id="@+id/etFilterLoanId" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="LOAN ID" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2.2" android:minWidth="220dp">
+                            <TextView android:id="@+id/tvHdrRetailerName" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="RETAILER NAME"/>
+                            <EditText android:id="@+id/etFilterRetailerName" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="RETAILER NAME" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <FrameLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:minWidth="150dp">
+                            <TextView android:id="@+id/tvHdrRetailerBranchId" style="@style/TableHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="RETAILER BRANCH ID"/>
+                            <EditText android:id="@+id/etFilterRetailerBranchId" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/table_cell_bg" android:padding="8dp" android:hint="BRANCH ID" android:textSize="11sp" android:singleLine="true" android:visibility="gone" android:imeOptions="actionSearch"/>
+                        </FrameLayout>
+
+                        <TextView style="@style/TableHeader" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:minWidth="100dp" android:background="@drawable/table_cell_bg" android:padding="12dp" android:text="STATUS"/>
+                    </LinearLayout>
+                </FrameLayout>
 
                 <!-- Divider -->
                 <View android:layout_width="match_parent" android:layout_height="1dp"

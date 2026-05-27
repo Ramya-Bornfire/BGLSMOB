@@ -18,7 +18,8 @@ data class BglsTransactionAccount(
     @SerializedName("penalty_income") val penalty_income: String? = null,
     @SerializedName("loan_parking_account") val loan_parking_account: String? = null,
     @SerializedName("entity_flg") val entity_flg: String? = null,
-    @SerializedName("del_flg") val del_flg: String? = null
+    @SerializedName("del_flg") val del_flg: String? = null,
+    @SerializedName("glshDesc") val glshDesc: String? = null
 )
 
 data class BglsTransactionAccountDetailResponse(

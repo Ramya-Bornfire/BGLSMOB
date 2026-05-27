@@ -2,6 +2,8 @@ package com.example.bgls.LoanMaster
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -17,11 +19,14 @@ import com.example.bgls.CustomerMaster.LoanMasterViewActivity
 import com.example.bgls.DataModels.LoanMaster
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
+
 class LoanMasterListActivity : AppCompatActivity() {
 
     private lateinit var spinnerFilter: Spinner
@@ -32,14 +37,38 @@ class LoanMasterListActivity : AppCompatActivity() {
     private lateinit var tvPageInfo: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LoanMasterAdapter
-    private lateinit var etSearchFilter: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var btnBack: ImageView
+
+    // ─── Column-filter views ───
+    private lateinit var layoutDefault: LinearLayout
+    private lateinit var layoutFilter: LinearLayout
+
+    private lateinit var tvLoanId: TextView
+    private lateinit var etLoanId: EditText
+    private lateinit var tvLoanType: TextView
+    private lateinit var etLoanType: EditText
+    private lateinit var tvLoanName: TextView
+    private lateinit var etLoanName: EditText
+    private lateinit var tvMobileNo: TextView
+    private lateinit var etMobileNo: EditText
+    private lateinit var tvRetailerBranchId: TextView
+    private lateinit var etRetailerBranchId: EditText
+
+    private lateinit var allTvs: List<TextView>
+    private lateinit var allEts: List<EditText>
 
     // ─── Pagination ───
     private val pageSize = 200
     private var currentPage = 1
     private var totalPages = 1
+
+    // ─── Search debounce & Filter state ───
+    private var searchJob: Job? = null
+    private var isFilterMode = false
+    private var fullList: List<LoanMaster> = emptyList()
+    private val filterOptions = listOf("Select Filter", "Loan Id", "Loan Type", "Mobile No")
+    private val statusOptions = listOf("Select Status", "ACTIVE", "ACTIVE_IN_ARREARS", "APPROVED")
 
     private val TAG = "LoanMasterList"
 
@@ -47,9 +76,8 @@ class LoanMasterListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loan_master_list)
-        window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        )
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         btnBack = findViewById(R.id.btnBack)
         btnBack.setOnClickListener { finish() }
 
@@ -66,11 +94,12 @@ class LoanMasterListActivity : AppCompatActivity() {
         }
 
         initViews()
+        setupColumnFilter()
         setupSpinners()
         setupRecyclerView()
         setupPagination()
         setupDownload()
-        setupSearch()
+        
         loadLoansFromApi(1)
     }
 
@@ -82,68 +111,175 @@ class LoanMasterListActivity : AppCompatActivity() {
         btnNext        = findViewById(R.id.btnNext)
         tvPageInfo     = findViewById(R.id.tvPageInfo)
         recyclerView   = findViewById(R.id.recyclerViewLoansList)
-        etSearchFilter = findViewById(R.id.etSearchFilter)
         progressBar    = findViewById(R.id.progressBar)
+
+        layoutDefault  = findViewById(R.id.layoutDefaultHeader)
+        layoutFilter   = findViewById(R.id.layoutFilterHeader)
+
+        tvLoanId = findViewById(R.id.tvHdrLoanId)
+        etLoanId = findViewById(R.id.etFilterLoanId)
+        tvLoanType = findViewById(R.id.tvHdrLoanType)
+        etLoanType = findViewById(R.id.etFilterLoanType)
+        tvLoanName = findViewById(R.id.tvHdrLoanName)
+        etLoanName = findViewById(R.id.etFilterLoanName)
+        tvMobileNo = findViewById(R.id.tvHdrMobileNo)
+        etMobileNo = findViewById(R.id.etFilterMobileNo)
+        tvRetailerBranchId = findViewById(R.id.tvHdrRetailerBranchId)
+        etRetailerBranchId = findViewById(R.id.etFilterRetailerBranchId)
+
+        allTvs = listOf(tvLoanId, tvLoanType, tvLoanName, tvMobileNo, tvRetailerBranchId)
+        allEts = listOf(etLoanId, etLoanType, etLoanName, etMobileNo, etRetailerBranchId)
+    }
+
+    // ─── Column-filter (dual header) ─────────────────────────────────────────
+
+    private fun activateColumn(clickedTv: TextView?, clickedEt: EditText?) {
+        isFilterMode = true
+        layoutDefault.visibility = View.GONE
+        layoutFilter.visibility  = View.VISIBLE
+
+        allTvs.forEachIndexed { i, tv ->
+            val et = allEts[i]
+            if (tv === clickedTv) {
+                tv.visibility = View.GONE
+                et.visibility = View.VISIBLE
+                et.requestFocus()
+            } else {
+                tv.visibility = View.VISIBLE
+                et.visibility = View.GONE
+                et.setText("")
+            }
+        }
+        applyColumnFilters()
+    }
+
+    private fun clearAllFilters() {
+        isFilterMode = false
+        layoutDefault.visibility = View.VISIBLE
+        layoutFilter.visibility  = View.GONE
+        allEts.forEach { it.setText("") }
+        allTvs.forEach { it.visibility = View.VISIBLE }
+        adapter.updateList(fullList)
+        spinnerFilter.setSelection(0, false)
+    }
+
+    private fun setupColumnFilter() {
+        tvLoanId.setOnClickListener { activateColumn(tvLoanId, etLoanId) }
+        tvLoanType.setOnClickListener { activateColumn(tvLoanType, etLoanType) }
+        tvLoanName.setOnClickListener { activateColumn(tvLoanName, etLoanName) }
+        tvMobileNo.setOnClickListener { activateColumn(tvMobileNo, etMobileNo) }
+        tvRetailerBranchId.setOnClickListener { activateColumn(tvRetailerBranchId, etRetailerBranchId) }
+
+        allEts.forEach { et ->
+            et.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, st: Int, c: Int, a: Int) {}
+                override fun onTextChanged(s: CharSequence?, st: Int, b: Int, c: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    val query = s.toString().trim()
+                    searchJob?.cancel()
+
+                    val apiSearchType = when (et) {
+                        etLoanId -> "Loan Id"
+                        etLoanType -> "Loan Type"
+                        etMobileNo -> "Mobile No"
+                        else -> null
+                    }
+
+                    if (query.isEmpty()) {
+                        applyColumnFilters()
+                    } else if (apiSearchType != null) {
+                        // Trigger debounced API search
+                        searchJob = lifecycleScope.launch {
+                            delay(400)
+                            val pos = filterOptions.indexOf(apiSearchType)
+                            if (pos >= 0 && spinnerFilter.selectedItemPosition != pos) {
+                                spinnerFilter.setSelection(pos, false)
+                            }
+                            when (apiSearchType) {
+                                "Loan Id" -> searchByLoanId(query)
+                                "Loan Type" -> searchByLoanType(query)
+                                "Mobile No" -> searchByMobile(query)
+                            }
+                        }
+                    } else {
+                        // Local filter only (Loan Name, Branch Id)
+                        applyColumnFilters()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun applyColumnFilters() {
+        val qId = etLoanId.text.toString().trim().lowercase()
+        val qType = etLoanType.text.toString().trim().lowercase()
+        val qName = etLoanName.text.toString().trim().lowercase()
+        val qMobile = etMobileNo.text.toString().trim().lowercase()
+        val qBranch = etRetailerBranchId.text.toString().trim().lowercase()
+
+        val filtered = fullList.filter { c ->
+            (qId.isEmpty() || (c.id ?: "").lowercase().contains(qId)) &&
+            (qType.isEmpty() || (c.loanName ?: "").lowercase().contains(qType)) &&
+            (qName.isEmpty() || c.customerName.lowercase().contains(qName)) &&
+            (qMobile.isEmpty() || (c.mobilePhone ?: "").lowercase().contains(qMobile)) &&
+            (qBranch.isEmpty() || (c.retailerBranch ?: "").lowercase().contains(qBranch))
+        }
+        adapter.updateList(filtered)
     }
 
     private fun setupSpinners() {
-        // Filter spinner
-        val filterOptions = listOf("Select Filter", "Loan Id", "Loan Type", "Mobile No")
         val filterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerFilter.adapter = filterAdapter
 
-        // Status spinner – matches web's status options
-        val statusOptions = listOf("Select Status", "ACTIVE", "ACTIVE_IN_ARREARS", "APPROVED")
         val statusAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerStatus.adapter = statusAdapter
 
-        // When a filter is selected, show/hide the search box
         spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (pos == 0) {
-                    etSearchFilter.visibility = View.GONE
-                    etSearchFilter.setText("")
-                    loadLoansFromApi(1)
+                val selectedFilter = filterOptions[pos]
+                if (selectedFilter == "Select Filter") {
+                    if (isFilterMode) {
+                        clearAllFilters()
+                        loadLoansFromApi(1)
+                    }
                 } else {
-                    etSearchFilter.visibility = View.VISIBLE
-                    etSearchFilter.hint = filterOptions[pos]
-                    etSearchFilter.setText("")
-                    etSearchFilter.requestFocus()
+                    when (selectedFilter) {
+                        "Loan Id" -> activateColumn(tvLoanId, etLoanId)
+                        "Loan Type" -> activateColumn(tvLoanType, etLoanType)
+                        "Mobile No" -> activateColumn(tvMobileNo, etMobileNo)
+                    }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        // Filter by status when changed
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val selected = statusOptions[pos]
-                if (selected == "Select Status") {
-                    loadLoansFromApi(1)
-                } else {
+                
+                val query = when {
+                    etLoanId.visibility == View.VISIBLE && etLoanId.text.isNotEmpty() -> etLoanId.text.toString().trim()
+                    etLoanType.visibility == View.VISIBLE && etLoanType.text.isNotEmpty() -> etLoanType.text.toString().trim()
+                    etMobileNo.visibility == View.VISIBLE && etMobileNo.text.isNotEmpty() -> etMobileNo.text.toString().trim()
+                    else -> ""
+                }
+                
+                val apiSearchType = filterOptions.getOrNull(spinnerFilter.selectedItemPosition)
+                if (query.isNotEmpty() && apiSearchType != null && apiSearchType != "Select Filter") {
+                    when (apiSearchType) {
+                        "Loan Id" -> searchByLoanId(query)
+                        "Loan Type" -> searchByLoanType(query)
+                        "Mobile No" -> searchByMobile(query)
+                    }
+                } else if (selected != "Select Status") {
                     searchByStatus(selected)
+                } else {
+                    loadLoansFromApi(1)
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-    }
-
-    private fun setupSearch() {
-        etSearchFilter.setOnEditorActionListener { _, _, _ ->
-            val query = etSearchFilter.text.toString().trim()
-            if (query.isEmpty()) {
-                loadLoansFromApi(1)
-                return@setOnEditorActionListener true
-            }
-
-            when (spinnerFilter.selectedItemPosition) {
-                1 -> searchByLoanId(query)      // Loan Id
-                2 -> searchByLoanType(query)    // Loan Type
-                3 -> searchByMobile(query)      // Mobile No
-            }
-            true
         }
     }
 
@@ -172,7 +308,8 @@ class LoanMasterListActivity : AppCompatActivity() {
                     if (body != null) {
                         currentPage = body.currentPage
                         totalPages  = body.totalPages
-                        adapter.updateList(body.data)
+                        fullList = body.data ?: emptyList()
+                        adapter.updateList(fullList)
                         updatePaginationUI()
                     } else {
                         showNoData()
@@ -254,6 +391,7 @@ class LoanMasterListActivity : AppCompatActivity() {
         if (response.isSuccessful) {
             val list = response.body()
             if (!list.isNullOrEmpty()) {
+                fullList = list
                 adapter.updateList(list)
                 // Hide pagination for search results
                 totalPages = 1
@@ -271,6 +409,7 @@ class LoanMasterListActivity : AppCompatActivity() {
     // ─── UI HELPERS ───
 
     private fun showNoData() {
+        fullList = emptyList()
         adapter.updateList(emptyList())
         Toast.makeText(this, "No data available", Toast.LENGTH_SHORT).show()
     }
