@@ -24,6 +24,11 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
 class JournalEntriesActivity : AppCompatActivity() {
 
@@ -63,6 +68,24 @@ class JournalEntriesActivity : AppCompatActivity() {
     private lateinit var etPostTime: EditText
     private lateinit var etTranStatus: EditText
     private lateinit var etDeleted: EditText
+
+    // Table layouts
+    private lateinit var layoutGeneralLedger: HorizontalScrollView
+    private lateinit var layoutTransactions: HorizontalScrollView
+
+    // Buttons
+    private lateinit var btnSubmitTransaction: Button
+    private lateinit var btnSearchAcctId: ImageView
+
+    // RecyclerViews and Adapters
+    private lateinit var rvGeneralLedger: RecyclerView
+    private lateinit var rvTransactions: RecyclerView
+    private lateinit var generalLedgerAdapter: GeneralLedgerAdapter
+    private lateinit var transactionsAdapter: TransactionsAdapter
+
+    // Frontend lists
+    private val ledgerList = mutableListOf<com.example.bgls.DataModels.ChartAccountItem>()
+    private val transactionList = mutableListOf<com.example.bgls.DataModels.TransactionRequest>()
 
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -124,7 +147,26 @@ class JournalEntriesActivity : AppCompatActivity() {
         etTranStatus = findViewById(R.id.etTranStatus)
         etDeleted = findViewById(R.id.etDeleted)
 
-        // Setup dynamic totals text
+        // Bind Tables and buttons
+        layoutGeneralLedger = findViewById(R.id.layoutGeneralLedger)
+        layoutTransactions = findViewById(R.id.layoutTransactions)
+        btnSearchAcctId = findViewById(R.id.btnSearchAcctId)
+        btnSubmitTransaction = findViewById(R.id.btnSubmitTransaction)
+        rvGeneralLedger = findViewById(R.id.rvGeneralLedger)
+        rvTransactions = findViewById(R.id.rvTransactions)
+
+        // Setup RecyclerViews
+        rvGeneralLedger.layoutManager = LinearLayoutManager(this)
+        generalLedgerAdapter = GeneralLedgerAdapter(ledgerList)
+        rvGeneralLedger.adapter = generalLedgerAdapter
+
+        rvTransactions.layoutManager = LinearLayoutManager(this)
+        transactionsAdapter = TransactionsAdapter(transactionList) { index ->
+            deleteTransactionLeg(index)
+        }
+        rvTransactions.adapter = transactionsAdapter
+
+        // Setup dynamic totals text based on user input in the form
         etTranAmt.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -150,21 +192,22 @@ class JournalEntriesActivity : AppCompatActivity() {
         val partTranTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, partTranTypeOptions)
         spinnerPartTranType.adapter = partTranTypeAdapter
 
-        val ccyOptions = arrayOf("Select", "USD", "EUR", "GBP", "INR", "AED", "CAD", "AUD")
+        val ccyOptions = arrayOf("Select", "USD", "EUR", "GBP", "INR", "AED", "CAD", "AUD", "KES")
         val ccyAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, ccyOptions)
         spinnerAcctCcy.adapter = ccyAdapter
         spinnerRefCcy.adapter = ccyAdapter
     }
 
     private fun updateTotals() {
-        val amt = etTranAmt.text.toString().toDoubleOrNull() ?: 0.0
-        val partType = spinnerPartTranType.selectedItem?.toString() ?: ""
         var totalCredit = 0.0
         var totalDebit = 0.0
-        if (partType == "Credit") {
-            totalCredit = amt
-        } else if (partType == "Debit") {
-            totalDebit = amt
+        // Calculate totals from accumulated frontend list
+        for (req in transactionList) {
+            if (req.part_tran_type == "Credit") {
+                totalCredit += req.tran_amt
+            } else if (req.part_tran_type == "Debit") {
+                totalDebit += req.tran_amt
+            }
         }
         findViewById<TextView>(R.id.tvTotals)?.text = 
             String.format(Locale.US, "Total Credit: %,.2f  |  Total Debit: %,.2f", totalCredit, totalDebit)
@@ -183,10 +226,14 @@ class JournalEntriesActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnSaveTransaction).setOnClickListener {
-            submitTransaction()
+            addCurrentLegToList()
         }
 
-        findViewById<ImageView>(R.id.btnSearchAcctId).setOnClickListener {
+        btnSubmitTransaction.setOnClickListener {
+            submitAccumulatedTransactions()
+        }
+
+        btnSearchAcctId.setOnClickListener {
             openAccountSearchDialog()
         }
     }
@@ -219,9 +266,11 @@ class JournalEntriesActivity : AppCompatActivity() {
                 row.addView(TextView(this).apply { text = acc.acct_num; setPadding(8, 8, 8, 8); setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 11f) })
                 row.addView(TextView(this).apply { text = acc.acct_name; setPadding(8, 8, 8, 8); setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 11f) })
                 row.setOnClickListener {
-                    etAcctId.setText(acc.acct_num ?: "")
+                    val acctNum = acc.acct_num ?: ""
+                    etAcctId.setText(acctNum)
                     etAcctName.setText(acc.acct_name ?: "")
                     dialog.dismiss()
+                    fetchGLDetails(acctNum)
                 }
                 tlAccounts.addView(row)
             }
@@ -258,6 +307,25 @@ class JournalEntriesActivity : AppCompatActivity() {
         })
     }
 
+    private fun fetchGLDetails(acctNum: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getGLAccountDetails(acctNum)
+                if (response.isSuccessful && response.body() != null) {
+                    val gl = response.body()!!
+                    ledgerList.clear()
+                    ledgerList.add(gl)
+                    generalLedgerAdapter.notifyDataSetChanged()
+                    layoutGeneralLedger.visibility = View.VISIBLE
+                } else {
+                    Toast.makeText(this@JournalEntriesActivity, "Failed to load account ledger details", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@JournalEntriesActivity, "Error fetching details: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun setupSpinners() {
         val options = arrayOf("Select", "Add", "Mass Entries", "List", "Upload")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
@@ -279,8 +347,14 @@ class JournalEntriesActivity : AppCompatActivity() {
                         showUploadDialog()
                         spinner.setSelection(0)
                     }
-                    "add" -> loadAddScreenData()
-                    else -> clearForm()
+                    "add" -> {
+                        btnSearchAcctId.visibility = View.VISIBLE
+                        loadAddScreenData()
+                    }
+                    else -> {
+                        btnSearchAcctId.visibility = View.GONE
+                        clearForm()
+                    }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -311,8 +385,6 @@ class JournalEntriesActivity : AppCompatActivity() {
                     // If from migration, override with intent values!
                     if (intent.getBooleanExtra("from_migration", false)) {
                         intent.getStringExtra("flow_id")?.let { etTranId.setText(it) }
-                        intent.getStringExtra("account_number")?.let { etAcctId.setText(it) }
-                        intent.getStringExtra("account_name")?.let { etAcctName.setText(it) }
                         intent.getStringExtra("flow_code")?.let { etFlowCode.setText(it) }
                         intent.getStringExtra("flow_amount")?.let { etTranAmt.setText(it.replace(",", "")) }
                         intent.getStringExtra("flow_date")?.let { date ->
@@ -322,6 +394,12 @@ class JournalEntriesActivity : AppCompatActivity() {
                             etFlowDate.setText(date)
                             findViewById<EditText>(R.id.etHeaderDate)?.setText(date)
                         }
+
+                        intent.getStringExtra("account_number")?.let { 
+                            etAcctId.setText(it) 
+                            fetchGLDetails(it)
+                        }
+                        intent.getStringExtra("account_name")?.let { etAcctName.setText(it) }
 
                         // Set default spinner options if matching
                         val flowCode = intent.getStringExtra("flow_code") ?: ""
@@ -343,7 +421,7 @@ class JournalEntriesActivity : AppCompatActivity() {
         }
     }
 
-    private fun submitTransaction() {
+    private fun addCurrentLegToList() {
         val tranId = etTranId.text.toString().trim()
         val partTranId = etPartTranId.text.toString().trim()
         val acctNum = etAcctId.text.toString().trim()
@@ -394,9 +472,86 @@ class JournalEntriesActivity : AppCompatActivity() {
             srl_no = "1"
         )
 
+        transactionList.add(request)
+        reindexTransactionList()
+
+        transactionsAdapter.notifyDataSetChanged()
+        layoutTransactions.visibility = View.VISIBLE
+
+        etPartTranId.setText((transactionList.size + 1).toString())
+
+        // Clear leg-specific fields
+        etAcctId.setText("")
+        etAcctName.setText("")
+        spinnerPartTranType.setSelection(0)
+        etTranAmt.setText("")
+        etTranParticulars.setText("")
+        etTranRemarks.setText("")
+        spinnerAcctCcy.setSelection(0)
+        spinnerRefCcy.setSelection(0)
+        etRefCcyAmt.setText("")
+        etRateCode.setText("")
+        etRate.setText("")
+        etAdditionalDetails.setText("")
+        etPartitionDetails.setText("")
+        etPartitionType.setText("")
+        etInstrumentNo.setText("")
+        etInstrumentDate.setText("")
+        etTranReportCode.setText("")
+
+        // Hide General Ledger details of selected account since it's cleared
+        layoutGeneralLedger.visibility = View.GONE
+        ledgerList.clear()
+        generalLedgerAdapter.notifyDataSetChanged()
+
+        updateTotals()
+    }
+
+    private fun reindexTransactionList() {
+        val updated = transactionList.mapIndexed { index, req ->
+            req.copy(part_tran_id = (index + 1).toString())
+        }
+        transactionList.clear()
+        transactionList.addAll(updated)
+    }
+
+    private fun deleteTransactionLeg(index: Int) {
+        if (index in 0 until transactionList.size) {
+            transactionList.removeAt(index)
+            reindexTransactionList()
+            transactionsAdapter.notifyDataSetChanged()
+            etPartTranId.setText((transactionList.size + 1).toString())
+            updateTotals()
+            if (transactionList.isEmpty()) {
+                layoutTransactions.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun submitAccumulatedTransactions() {
+        if (transactionList.isEmpty()) {
+            Toast.makeText(this, "Please add at least one transaction leg before submitting", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        var totalCredit = 0.0
+        var totalDebit = 0.0
+        for (req in transactionList) {
+            if (req.part_tran_type == "Credit") {
+                totalCredit += req.tran_amt
+            } else if (req.part_tran_type == "Debit") {
+                totalDebit += req.tran_amt
+            }
+        }
+
+        if (totalCredit != totalDebit) {
+            Toast.makeText(this, String.format(Locale.US, "Submission failed: Total Credit must equal Total Debit. Currently - Credit: %,.2f, Debit: %,.2f", totalCredit, totalDebit), Toast.LENGTH_LONG).show()
+            return
+        }
+
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.addTransaction(listOf(request))
+                val response = RetrofitClient.api.addTransaction(transactionList)
                 if (response.isSuccessful) {
                     Toast.makeText(this@JournalEntriesActivity, "Transaction Added Successfully", Toast.LENGTH_SHORT).show()
                     finish()
@@ -507,5 +662,82 @@ class JournalEntriesActivity : AppCompatActivity() {
         spinnerPartTranType.setSelection(0)
         spinnerAcctCcy.setSelection(0)
         spinnerRefCcy.setSelection(0)
+
+        // Clear local listing structures and visibility
+        transactionList.clear()
+        ledgerList.clear()
+        generalLedgerAdapter.notifyDataSetChanged()
+        transactionsAdapter.notifyDataSetChanged()
+        layoutGeneralLedger.visibility = View.GONE
+        layoutTransactions.visibility = View.GONE
+        updateTotals()
+    }
+
+    inner class GeneralLedgerAdapter(private val list: List<com.example.bgls.DataModels.ChartAccountItem>) :
+        RecyclerView.Adapter<GeneralLedgerAdapter.ViewHolder>() {
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val tvGL: TextView = view.findViewById(R.id.tvGL)
+            val tvSubHead: TextView = view.findViewById(R.id.tvSubHead)
+            val tvCurrency: TextView = view.findViewById(R.id.tvCurrency)
+            val tvBalance: TextView = view.findViewById(R.id.tvBalance)
+            val tvBalanceInd: TextView = view.findViewById(R.id.tvBalanceInd)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_general_ledger_row, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val item = list[position]
+            holder.tvGL.text = item.gl_code ?: ""
+            holder.tvSubHead.text = item.glsh_code ?: ""
+            holder.tvCurrency.text = item.acct_crncy ?: ""
+            holder.tvBalance.text = if (item.acct_bal != null) String.format(Locale.US, "%,.2f", item.acct_bal.toDoubleOrNull() ?: 0.0) else "0.00"
+            holder.tvBalanceInd.text = if (item.add_det_flg == "C" || item.add_det_flg == "N") "Credit" else "Debit"
+        }
+
+        override fun getItemCount(): Int = list.size
+    }
+
+    inner class TransactionsAdapter(
+        private val list: List<com.example.bgls.DataModels.TransactionRequest>,
+        private val onDeleteClick: (Int) -> Unit
+    ) : RecyclerView.Adapter<TransactionsAdapter.ViewHolder>() {
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val tvTranDate: TextView = view.findViewById(R.id.tvTranDate)
+            val tvTranId: TextView = view.findViewById(R.id.tvTranId)
+            val tvPaTranTy: TextView = view.findViewById(R.id.tvPaTranTy)
+            val tvCurrency: TextView = view.findViewById(R.id.tvCurrency)
+            val tvAmount: TextView = view.findViewById(R.id.tvAmount)
+            val tvAcctId: TextView = view.findViewById(R.id.tvAcctId)
+            val tvAcctName: TextView = view.findViewById(R.id.tvAcctName)
+            val tvTranParticular: TextView = view.findViewById(R.id.tvTranParticular)
+            val btnDeleteRow: ImageView = view.findViewById(R.id.btnDeleteRow)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_journal_entry_add_row, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val item = list[position]
+            holder.tvTranDate.text = item.tran_date ?: ""
+            holder.tvTranId.text = "${item.tran_id}/${item.part_tran_id}"
+            holder.tvPaTranTy.text = item.part_tran_type
+            holder.tvCurrency.text = item.acct_crncy
+            holder.tvAmount.text = String.format(Locale.US, "%,.2f", item.tran_amt)
+            holder.tvAcctId.text = item.acct_num
+            holder.tvAcctName.text = item.acct_name
+            holder.tvTranParticular.text = item.tran_particular
+            holder.btnDeleteRow.setOnClickListener {
+                onDeleteClick(position)
+            }
+        }
+
+        override fun getItemCount(): Int = list.size
     }
 }

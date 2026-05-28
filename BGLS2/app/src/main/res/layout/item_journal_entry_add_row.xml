@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvTranDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvTranId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvPaTranTy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvCurrency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvAcctId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvAcctName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <TextView
+        android:id="@+id/tvTranParticular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:padding="8dp"
+        android:textSize="11sp"
+        android:textColor="#333333" />
+
+    <LinearLayout
+        android:id="@+id/layoutDelete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:padding="8dp">
+        <ImageView
+            android:id="@+id/btnDeleteRow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_minus_red"
+            android:contentDescription="Delete Row" />
+    </LinearLayout>
+</LinearLayout>
