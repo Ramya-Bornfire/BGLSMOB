@@ -197,7 +197,18 @@ class TransactionActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TransactionRecordAdapter(emptyList())
+        adapter = TransactionRecordAdapter(emptyList()) { record ->
+            val intent = Intent(this, com.example.bgls.TransactionMaintenance.JournalEntriesActivity::class.java).apply {
+                putExtra("from_migration", true)
+                putExtra("flow_id", record.flowId)
+                putExtra("flow_date", record.flowDate)
+                putExtra("flow_code", record.flowCode)
+                putExtra("flow_amount", record.flowAmount)
+                putExtra("account_number", record.accountNumber)
+                putExtra("account_name", record.accountName)
+            }
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
