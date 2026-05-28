@@ -1572,5 +1572,9 @@ class ParameterActivity : AppCompatActivity() {
                 }
             })
     }
+    override fun onResume() {
+        super.onResume()
+        loadModuleData(currentModule)
+    }
 }
 

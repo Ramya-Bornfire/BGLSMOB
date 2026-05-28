@@ -40,7 +40,7 @@
     </style>
 
     <style name="UppercaseEditText" parent="Widget.AppCompat.EditText">
-        <item name="android:textAllCaps">true</item>
+        <item name="android:inputType">textCapCharacters</item>
     </style>
 
 </resources>

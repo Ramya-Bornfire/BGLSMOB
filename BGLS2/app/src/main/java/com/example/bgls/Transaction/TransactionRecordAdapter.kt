@@ -9,7 +9,8 @@ import com.example.bgls.DataModels.TransactionRecord
 import com.example.bgls.R
 
 class TransactionRecordAdapter(
-    private var transactionList: List<TransactionRecord>
+    private var transactionList: List<TransactionRecord>,
+    private val onItemClick: (TransactionRecord) -> Unit
 ) : RecyclerView.Adapter<TransactionRecordAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -40,10 +41,14 @@ class TransactionRecordAdapter(
 
         // Zebra striping
         holder.itemView.setBackgroundColor(android.graphics.Color.WHITE)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(record)
+        }
     }
 
     override fun getItemCount(): Int = transactionList.size
-     fun getCurrentList(): List<TransactionRecord> = transactionList
+    fun getCurrentList(): List<TransactionRecord> = transactionList
     fun updateData(newList: List<TransactionRecord>) {
         transactionList = newList
         notifyDataSetChanged()
