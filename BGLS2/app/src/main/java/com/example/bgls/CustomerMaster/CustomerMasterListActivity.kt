@@ -486,21 +486,24 @@ class CustomerMasterListActivity : AppCompatActivity() {
     private fun saveExcelFile(body: ResponseBody, fileName: String) {
         try {
             val file = File(getExternalFilesDir(null), fileName)
-            FileOutputStream(file).use { fos ->
-                fos.write(body.bytes())
+            // Write file using buffered stream (avoids loading whole file into memory)
+            body.byteStream().use { inputStream ->
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
             }
+
             Toast.makeText(this, "Saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
 
-            // Optionally open the file
+            // Use the correct authority (match manifest)
+            val uri = FileProvider.getUriForFile(
+                this,
+                "${packageName}.provider",   // ✅ fixed
+                file
+            )
+
             val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(
-                    FileProvider.getUriForFile(
-                        this@CustomerMasterListActivity,
-                        "${packageName}.fileprovider",
-                        file
-                    ),
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+                setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             startActivity(Intent.createChooser(intent, "Open Excel"))
@@ -515,4 +518,4 @@ class CustomerMasterListActivity : AppCompatActivity() {
         progressBar.visibility = if (show) View.VISIBLE else View.GONE
         recyclerView.visibility = if (show) View.GONE else View.VISIBLE
     }
-}
+}

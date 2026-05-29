@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.Adapter.CalendarAdapter
 import com.example.bgls.Adapter.HolidayAdapter
+import com.example.bgls.DataModels.AddHolidayMasterRequest
 import com.example.bgls.DataModels.CalendarModel
 import com.example.bgls.DataModels.HolidayModel
 import com.example.bgls.R
@@ -175,23 +176,22 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun loadHolidays(month: String?) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getCalendar(
-                    "calender",
-                    calendarYear,
-                    month   // 🔥 null means ALL months
-                )
+                val response = RetrofitClient.api.getHolidayMasterList()
 
                 if (response.isSuccessful) {
-
-                    val holidayList = response.body()?.holidays_list ?: emptyList()
-
-                    val mapped = holidayList.map {
+                    val holidayList = response.body()?.listOfValues ?: emptyList()
+                    val filtered = if (month.isNullOrBlank()) {
+                        holidayList
+                    } else {
+                        holidayList.filter { it.calMonth.equals(month, ignoreCase = true) }
+                    }
+                    val mapped = filtered.map {
                         HolidayModel(
-                            it.year ?: "",
-                            it.month ?: "",
-                            it.date ?: "",
-                            it.description ?: "",
-                            it.remarks ?: ""
+                            it.calYear ?: "",
+                            it.calMonth ?: "",
+                            it.recordDate ?: "",
+                            it.holidayDesc ?: "",
+                            it.holidayRemarks ?: ""
                         )
                     }
 
@@ -278,20 +278,20 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             return
         }
 
-        val fields = mapOf(
-            "orgn" to orgn,
-            "location" to location,
-            "cal_year" to calYear,
-            "cal_month" to calMonth,
-            "record_date" to recordDate,
-            "holiday_desc" to holidayDesc,
-            "holiday_remarks" to holidayRemarks,
-            "holiday_flg" to holidayFlg.ifEmpty { "Y" }
-        )
-
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.submitHoliday("add", fields)
+                val request = AddHolidayMasterRequest(
+                    orgn = orgn,
+                    location = location,
+                    calYear = calYear,
+                    calMonth = calMonth,
+                    recordDate = formatRecordDateForHolidayMaster(recordDate),
+                    holidayDesc = holidayDesc,
+                    holidayRemarks = holidayRemarks,
+                    holidayFlg = holidayFlg.ifEmpty { "Y" }
+                )
+
+                val response = RetrofitClient.api.addHolidayMaster(request)
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "Holiday added successfully", Toast.LENGTH_SHORT).show()
                     layoutHoliday.visibility = View.GONE
@@ -310,6 +310,24 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 Toast.makeText(requireContext(), e.message ?: "Error", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun formatRecordDateForHolidayMaster(input: String): String {
+        val sourceFormats = listOf(
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH),
+            SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH),
+            SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+        )
+        val targetFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        sourceFormats.forEach { parser ->
+            try {
+                parser.isLenient = false
+                val parsed = parser.parse(input)
+                if (parsed != null) return targetFormat.format(parsed)
+            } catch (_: Exception) {
+            }
+        }
+        return input
     }
 
 }

@@ -98,6 +98,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
     private lateinit var etFilterTranType: android.widget.EditText
     
     private var isFilterVisible = false
+    private var isFirstResume = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -436,6 +437,31 @@ class ChartOfAccountsActivity : AppCompatActivity() {
             when (tabId) {
                 R.id.btnTabChart -> loadChartAccounts(options[0])
                 R.id.btnTabLedger -> loadLedgerAccounts(options[0])
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirstResume) {
+            isFirstResume = false
+            return
+        }
+        refreshActiveTabData()
+    }
+
+    private fun refreshActiveTabData() {
+        when (activeTabId) {
+            R.id.btnTabChart -> {
+                val selected = spinnerOffice.selectedItem?.toString() ?: "Office"
+                loadChartAccounts(selected)
+            }
+            R.id.btnTabLedger -> {
+                val selected = spinnerOffice.selectedItem?.toString() ?: "Office"
+                loadLedgerAccounts(selected)
+            }
+            R.id.btnTabTransaction -> {
+                loadTransactionAccounts()
             }
         }
     }

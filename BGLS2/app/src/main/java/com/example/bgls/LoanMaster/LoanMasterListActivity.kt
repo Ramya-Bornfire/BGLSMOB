@@ -474,7 +474,7 @@ class LoanMasterListActivity : AppCompatActivity() {
                 setDataAndType(
                     FileProvider.getUriForFile(
                         this@LoanMasterListActivity,
-                        "${packageName}.fileprovider",
+                        "${packageName}.provider",
                         file
                     ),
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

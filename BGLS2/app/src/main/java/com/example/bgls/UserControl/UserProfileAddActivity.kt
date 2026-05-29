@@ -18,6 +18,7 @@ import com.example.bgls.Retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 class UserProfileAddActivity : AppCompatActivity() {
@@ -177,10 +178,26 @@ class UserProfileAddActivity : AppCompatActivity() {
     private fun setupPasswordToggle() {
         ivTogglePassword.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
-            etPassword.transformationMethod = if (isPasswordVisible) HideReturnsTransformationMethod.getInstance()
-            else PasswordTransformationMethod.getInstance()
-            ivTogglePassword.setImageResource(if (isPasswordVisible) android.R.drawable.ic_menu_close_clear_cancel else android.R.drawable.ic_menu_view)
-            etPassword.setSelection(etPassword.text.length)
+            
+            // Remember the current cursor position
+            val selection = etPassword.selectionStart
+            
+            if (isPasswordVisible) {
+                // Show password: change both inputType and transformationMethod
+                etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                ivTogglePassword.setImageResource(R.drawable.ic_eye)
+            } else {
+                // Hide password: restore inputType and transformationMethod
+                etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                ivTogglePassword.setImageResource(R.drawable.ic_eye_off)
+            }
+            
+            // Restore selection (inputType change resets cursor)
+            if (selection >= 0 && selection <= etPassword.text.length) {
+                etPassword.setSelection(selection)
+            }
         }
         ivUserIdInfo.setOnClickListener { showEmployeePickerDialog() }
         ivAccessControl.setOnClickListener { showAccessControlDialog() }
@@ -208,7 +225,7 @@ class UserProfileAddActivity : AppCompatActivity() {
             "Transaction Maintenance" to listOf("journal_entries", "account_ledger_posting", "account_ledger", "trial_balance_t", "profit_and_loss_account_t"),
             "Collection Process" to listOf("participating_banks", "loan_collecting"),
             "Batch Job Execution" to listOf("batch_job"),
-            "Transaction Reports" to listOf("credit_facility_report1", "end_of_month_report", "dab_report", "consolidated_report", "transaction_report",
+            "Transaction Reports" to listOf("credit_facility_report", "end_of_month_report", "dab", "consolidated_report", "transaction_report",
                 "interest_accrual_report", "penalty_accrual_report", "recovery_report", "demand_generation"),
             "Transaction Inquiries" to listOf("account_balance_inq", "interset_summary_inq", "journal_book", "account_ledgers_i",
                 "trial_balance_i", "general_ledger", "profit_and_loss_account_i", "balance_sheet"),
@@ -241,6 +258,39 @@ class UserProfileAddActivity : AppCompatActivity() {
             checkBoxMap["reference_code_maintenance"]?.isChecked = role.refCodeMaint == "Y"
             checkBoxMap["audit_trail"]?.isChecked = role.auditTrail == "Y"
             checkBoxMap["notification_Reports"]?.isChecked = role.notificationReports == "Y"
+            checkBoxMap["customer_master"]?.isChecked = role.customerMaster == "Y"
+            checkBoxMap["loan_master"]?.isChecked = role.loanMaster == "Y"
+            checkBoxMap["loan_schedule_migration"]?.isChecked = role.loanScheduleMigration == "Y"
+            checkBoxMap["transaction_migration"]?.isChecked = role.transactionMigration == "Y"
+            checkBoxMap["loan_operation_ls"]?.isChecked = role.loanOperationLs == "Y"
+            checkBoxMap["loan_closure"]?.isChecked = role.loanClosure == "Y"
+            checkBoxMap["journal_entries"]?.isChecked = role.journalEntries == "Y"
+            checkBoxMap["account_ledger_posting"]?.isChecked = role.accountLedgerPosting == "Y"
+            checkBoxMap["account_ledger"]?.isChecked = role.accountLedger == "Y"
+            checkBoxMap["trial_balance_t"]?.isChecked = role.trialBalanceT == "Y"
+            checkBoxMap["profit_and_loss_account_t"]?.isChecked = role.profitLossT == "Y"
+            checkBoxMap["participating_banks"]?.isChecked = role.participatingBanks == "Y"
+            checkBoxMap["loan_collecting"]?.isChecked = role.loanCollecting == "Y"
+            checkBoxMap["batch_job"]?.isChecked = role.batchJob == "Y"
+            checkBoxMap["credit_facility_report"]?.isChecked = role.creditFacilityReport == "Y"
+            checkBoxMap["end_of_month_report"]?.isChecked = role.endOfMonthReport == "Y"
+            checkBoxMap["dab"]?.isChecked = role.dab == "Y"
+            checkBoxMap["consolidated_report"]?.isChecked = role.consolidatedReport == "Y"
+            checkBoxMap["transaction_report"]?.isChecked = role.transactionReport == "Y"
+            checkBoxMap["interest_accrual_report"]?.isChecked = role.interestAccrualReport == "Y"
+            checkBoxMap["penalty_accrual_report"]?.isChecked = role.penaltyAccrualReport == "Y"
+            checkBoxMap["recovery_report"]?.isChecked = role.recoveryReport == "Y"
+            checkBoxMap["demand_generation"]?.isChecked = role.demandGeneration == "Y"
+            checkBoxMap["account_balance_inq"]?.isChecked = role.accountBalanceInq == "Y"
+            checkBoxMap["interset_summary_inq"]?.isChecked = role.interestSummaryInq == "Y"
+            checkBoxMap["journal_book"]?.isChecked = role.journalBook == "Y"
+            checkBoxMap["account_ledgers_i"]?.isChecked = role.accountLedgersI == "Y"
+            checkBoxMap["trial_balance_i"]?.isChecked = role.trialBalanceI == "Y"
+            checkBoxMap["general_ledger"]?.isChecked = role.generalLedger == "Y"
+            checkBoxMap["profit_and_loss_account_i"]?.isChecked = role.profitLossI == "Y"
+            checkBoxMap["balance_sheet"]?.isChecked = role.balanceSheet == "Y"
+            checkBoxMap["transaction_reversal"]?.isChecked = role.transactionReversal == "Y"
+            checkBoxMap["transaction_accounts"]?.isChecked = role.transactionAccounts == "Y"
         }
 
         scrollView.addView(container)
@@ -248,27 +298,102 @@ class UserProfileAddActivity : AppCompatActivity() {
             .setTitle("User Access Modules")
             .setView(scrollView)
             .setPositiveButton("Submit") { _, _ ->
+                val isChecked = { key: String -> if (checkBoxMap[key]?.isChecked == true) "Y" else "N" }
+                val migrationVal = if (
+                    isChecked("customer_master") == "Y" ||
+                    isChecked("loan_master") == "Y" ||
+                    isChecked("loan_schedule_migration") == "Y" ||
+                    isChecked("transaction_migration") == "Y"
+                ) "Y" else "N"
+                val loanOpVal = if (
+                    isChecked("loan_operation_ls") == "Y" ||
+                    isChecked("loan_closure") == "Y"
+                ) "Y" else "N"
+                val transMaintVal = if (
+                    isChecked("journal_entries") == "Y" ||
+                    isChecked("account_ledger_posting") == "Y" ||
+                    isChecked("account_ledger") == "Y" ||
+                    isChecked("trial_balance_t") == "Y" ||
+                    isChecked("profit_and_loss_account_t") == "Y"
+                ) "Y" else "N"
+                val colVal = if (
+                    isChecked("participating_banks") == "Y" ||
+                    isChecked("loan_collecting") == "Y"
+                ) "Y" else "N"
+                val batchVal = if (
+                    isChecked("batch_job") == "Y"
+                ) "Y" else "N"
+                val inqRepVal = if (
+                    isChecked("account_balance_inq") == "Y" ||
+                    isChecked("interset_summary_inq") == "Y" ||
+                    isChecked("journal_book") == "Y" ||
+                    isChecked("account_ledgers_i") == "Y" ||
+                    isChecked("trial_balance_i") == "Y" ||
+                    isChecked("general_ledger") == "Y" ||
+                    isChecked("profit_and_loss_account_i") == "Y" ||
+                    isChecked("balance_sheet") == "Y" ||
+                    isChecked("credit_facility_report") == "Y" ||
+                    isChecked("end_of_month_report") == "Y" ||
+                    isChecked("dab") == "Y" ||
+                    isChecked("consolidated_report") == "Y" ||
+                    isChecked("transaction_report") == "Y" ||
+                    isChecked("interest_accrual_report") == "Y" ||
+                    isChecked("penalty_accrual_report") == "Y" ||
+                    isChecked("recovery_report") == "Y" ||
+                    isChecked("demand_generation") == "Y"
+                ) "Y" else "N"
+
                 accessRoleRequest = AccessRoleRequest(
                     userId = etUserId.text.toString(),
                     roleId = spinnerRoleId.selectedItem.toString(),
                     roleDesc = etRoleDescription.text.toString(),
                     permissions = spinnerPermissions.selectedItem.toString(),
                     workClass = spinnerWorkClass.selectedItem.toString(),
-                    admin = "N", orgDetails = if (checkBoxMap["orgnaization_details"]?.isChecked == true) "Y" else "N",
-                    userControls = if (checkBoxMap["user_controls"]?.isChecked == true) "Y" else "N",
-                    refCodeMaint = if (checkBoxMap["reference_code_maintenance"]?.isChecked == true) "Y" else "N",
-                    auditTrail = if (checkBoxMap["audit_trail"]?.isChecked == true) "Y" else "N",
-                    notificationReports = if (checkBoxMap["notification_Reports"]?.isChecked == true) "Y" else "N",
-                    migration = "N", customerMaster = "N", loanMaster = "N", loanScheduleMigration = "N",
-                    transactionMigration = "N", loanOperation = "N", loanOperationLs = "N", loanClosure = "N",
-                    transMaintenance = "N", journalEntries = "N", accountLedgerPosting = "N", accountLedger = "N",
-                    trialBalanceT = "N", profitLossT = "N", collectionProcess = "N", participatingBanks = "N",
-                    loanCollecting = "N", batchJobExecution = "N", batchJob = "N", inquiriesReports = "N",
-                    accountBalanceInq = "N", interestSummaryInq = "N", journalBook = "N", accountLedgersI = "N",
-                    trialBalanceI = "N", generalLedger = "N", profitLossI = "N", balanceSheet = "N",
-                    endOfMonthReport = "N", dab = "N", transactionReport = "N", consolidatedReport = "N",
-                    creditFacilityReport = "N", interestAccrualReport = "N", penaltyAccrualReport = "N",
-                    recoveryReport = "N", demandGeneration = "N", transactionReversal = "N", transactionAccounts = "N"
+                    admin = if (spinnerRoleId.selectedItem.toString() == "ADM") "Y" else "N",
+                    orgDetails = isChecked("orgnaization_details"),
+                    userControls = isChecked("user_controls"),
+                    refCodeMaint = isChecked("reference_code_maintenance"),
+                    auditTrail = isChecked("audit_trail"),
+                    notificationReports = isChecked("notification_Reports"),
+                    migration = migrationVal,
+                    customerMaster = isChecked("customer_master"),
+                    loanMaster = isChecked("loan_master"),
+                    loanScheduleMigration = isChecked("loan_schedule_migration"),
+                    transactionMigration = isChecked("transaction_migration"),
+                    loanOperation = loanOpVal,
+                    loanOperationLs = isChecked("loan_operation_ls"),
+                    loanClosure = isChecked("loan_closure"),
+                    transMaintenance = transMaintVal,
+                    journalEntries = isChecked("journal_entries"),
+                    accountLedgerPosting = isChecked("account_ledger_posting"),
+                    accountLedger = isChecked("account_ledger"),
+                    trialBalanceT = isChecked("trial_balance_t"),
+                    profitLossT = isChecked("profit_and_loss_account_t"),
+                    collectionProcess = colVal,
+                    participatingBanks = isChecked("participating_banks"),
+                    loanCollecting = isChecked("loan_collecting"),
+                    batchJobExecution = batchVal,
+                    batchJob = isChecked("batch_job"),
+                    inquiriesReports = inqRepVal,
+                    accountBalanceInq = isChecked("account_balance_inq"),
+                    interestSummaryInq = isChecked("interset_summary_inq"),
+                    journalBook = isChecked("journal_book"),
+                    accountLedgersI = isChecked("account_ledgers_i"),
+                    trialBalanceI = isChecked("trial_balance_i"),
+                    generalLedger = isChecked("general_ledger"),
+                    profitLossI = isChecked("profit_and_loss_account_i"),
+                    balanceSheet = isChecked("balance_sheet"),
+                    endOfMonthReport = isChecked("end_of_month_report"),
+                    dab = isChecked("dab"),
+                    transactionReport = isChecked("transaction_report"),
+                    consolidatedReport = isChecked("consolidated_report"),
+                    creditFacilityReport = isChecked("credit_facility_report"),
+                    interestAccrualReport = isChecked("interest_accrual_report"),
+                    penaltyAccrualReport = isChecked("penalty_accrual_report"),
+                    recoveryReport = isChecked("recovery_report"),
+                    demandGeneration = isChecked("demand_generation"),
+                    transactionReversal = isChecked("transaction_reversal"),
+                    transactionAccounts = isChecked("transaction_accounts")
                 )
                 Toast.makeText(this, "Access rights saved", Toast.LENGTH_SHORT).show()
             }
@@ -398,11 +523,15 @@ class UserProfileAddActivity : AppCompatActivity() {
     }
 
     // ----- date conversion helpers -----
-    private fun convertDateToBackend(dateStr: String): Long? {
+    private fun convertDateToBackend(dateStr: String): String? {
         if (dateStr.isBlank()) return null
         return try {
-            val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            sdf.parse(dateStr)?.time
+            val inputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateStr)
+            // Backend expects yyyy-MM-dd
+            if (date != null) {
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
+            } else null
         } catch (e: Exception) { null }
     }
 
@@ -416,18 +545,57 @@ class UserProfileAddActivity : AppCompatActivity() {
     }
 
     private fun convertToDisplay(dateObj: Any?): String {
-        val ymd = parseBackendTimestampToYMD(dateObj) ?: return ""
-        return try {
-            val ymdParts = ymd.split("-")
-            "${ymdParts[2]}-${ymdParts[1]}-${ymdParts[0]}"  // yyyy-MM-dd → dd-MM-yyyy
-        } catch (e: Exception) { "" }
+        if (dateObj == null) return ""
+        return when (dateObj) {
+            is Double -> {
+                // Gson deserializes JSON numbers as Double for Any? fields
+                val cal = Calendar.getInstance().apply { timeInMillis = dateObj.toLong() }
+                SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(cal.time)
+            }
+            is Long -> {
+                val cal = Calendar.getInstance().apply { timeInMillis = dateObj }
+                SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(cal.time)
+            }
+            is String -> {
+                // Try to parse ISO format (e.g., "2026-05-21T00:00:00.000+0000")
+                try {
+                    val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault())
+                    val date = isoFormat.parse(dateObj)
+                    if (date != null) {
+                        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
+                    } else {
+                        dateObj
+                    }
+                } catch (e: Exception) {
+                    // Try plain yyyy-MM-dd format
+                    try {
+                        val simpleFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val date = simpleFormat.parse(dateObj)
+                        if (date != null) {
+                            SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
+                        } else {
+                            dateObj
+                        }
+                    } catch (e2: Exception) {
+                        // If all parsing fails, return the original string
+                        dateObj
+                    }
+                }
+            }
+            else -> ""
+        }
     }
 
     private fun loadUserData(userId: String) {
-        RetrofitClient.api.getUserDetail("view", userId).enqueue(object : Callback<SingleUserResponse> {
+        val mode = if (currentMode == MODE_EDIT) "modify" else "view"
+        RetrofitClient.api.getUserDetail(mode, userId).enqueue(object : Callback<SingleUserResponse> {
             override fun onResponse(call: Call<SingleUserResponse>, response: Response<SingleUserResponse>) {
                 if (response.isSuccessful && response.body()?.userProfile != null) {
-                    populateForm(response.body()!!.userProfile!!)
+                    val body = response.body()!!
+                    populateForm(body.userProfile!!)
+                    body.access?.let { accessResponse ->
+                        accessRoleRequest = accessResponse.toRequest()
+                    }
                 } else {
                     Toast.makeText(this@UserProfileAddActivity, "Failed to load user", Toast.LENGTH_SHORT).show()
                     finish()
@@ -438,6 +606,61 @@ class UserProfileAddActivity : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    private fun com.example.bgls.DataModels.AccessRoleResponse.toRequest(): AccessRoleRequest {
+        return AccessRoleRequest(
+            userId = this.user_id ?: "",
+            roleId = this.role_id ?: "",
+            roleDesc = this.role_desc,
+            permissions = this.permissions,
+            workClass = this.work_class,
+            admin = this.admin ?: "N",
+            orgDetails = this.orgnaization_details ?: "N",
+            userControls = this.user_controls ?: "N",
+            refCodeMaint = this.reference_code_maintenance ?: "N",
+            auditTrail = this.audit_trail ?: "N",
+            notificationReports = this.notification_Reports ?: "N",
+            migration = this.migration ?: "N",
+            customerMaster = this.customer_master ?: "N",
+            loanMaster = this.loan_master ?: "N",
+            loanScheduleMigration = this.loan_schedule_migration ?: "N",
+            transactionMigration = this.transaction_migration ?: "N",
+            loanOperation = this.loan_operation ?: "N",
+            loanOperationLs = this.loan_operation_ls ?: "N",
+            loanClosure = this.loan_closure ?: "N",
+            transMaintenance = this.transaction_maintenance ?: "N",
+            journalEntries = this.journal_entries ?: "N",
+            accountLedgerPosting = this.account_ledger_posting ?: "N",
+            accountLedger = this.account_ledger ?: "N",
+            trialBalanceT = this.trial_balance_t ?: "N",
+            profitLossT = this.profit_and_loss_account_t ?: "N",
+            collectionProcess = this.collection_process ?: "N",
+            participatingBanks = this.participating_banks ?: "N",
+            loanCollecting = this.loan_collecting ?: "N",
+            batchJobExecution = this.batch_job_execution ?: "N",
+            batchJob = this.batch_job ?: "N",
+            inquiriesReports = this.inquiries_and_reports ?: "N",
+            accountBalanceInq = this.account_balance_inq ?: "N",
+            interestSummaryInq = this.interset_summary_inq ?: "N",
+            journalBook = this.journal_book ?: "N",
+            accountLedgersI = this.account_ledgers_i ?: "N",
+            trialBalanceI = this.trial_balance_i ?: "N",
+            generalLedger = this.general_ledger ?: "N",
+            profitLossI = this.profit_and_loss_account_i ?: "N",
+            balanceSheet = this.balance_sheet ?: "N",
+            endOfMonthReport = this.end_of_month_report ?: "N",
+            dab = this.dab ?: "N",
+            transactionReport = this.transaction_report ?: "N",
+            consolidatedReport = this.consolidated_report ?: "N",
+            creditFacilityReport = this.credit_facility_report ?: "N",
+            interestAccrualReport = this.interest_accrual_report ?: "N",
+            penaltyAccrualReport = this.penalty_accrual_report ?: "N",
+            recoveryReport = this.recovery_report ?: "N",
+            demandGeneration = this.demand_generation ?: "N",
+            transactionReversal = this.transaction_reversal ?: "N",
+            transactionAccounts = this.transaction_accounts ?: "N"
+        )
     }
 
     private fun populateForm(user: UserProfile) {

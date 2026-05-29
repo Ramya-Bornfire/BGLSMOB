@@ -326,7 +326,7 @@
                             android:textSize="13sp" android:inputType="textPassword"/>
                         <ImageView android:id="@+id/ivTogglePassword"
                             android:layout_width="32dp" android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_view"
+                            android:src="@drawable/ic_eye_off"
                             android:padding="6dp"
                             android:clickable="true"
                             android:focusable="true"

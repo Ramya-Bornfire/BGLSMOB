@@ -350,7 +350,7 @@ class LoanMaintananceListActivity : AppCompatActivity() {
                 setDataAndType(
                     FileProvider.getUriForFile(
                         this@LoanMaintananceListActivity,
-                        "${packageName}.fileprovider",
+                                                 "${packageName}.provider",
                         file
                     ),
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

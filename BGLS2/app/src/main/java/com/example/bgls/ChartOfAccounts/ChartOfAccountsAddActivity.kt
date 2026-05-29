@@ -1,6 +1,7 @@
 package com.example.bgls.ChartOfAccounts
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import okhttp3.ResponseBody
 import android.view.WindowManager
+import androidx.constraintlayout.helper.widget.MotionEffect.TAG
+
 class ChartOfAccountsAddActivity : AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar
@@ -160,19 +163,21 @@ class ChartOfAccountsAddActivity : AppCompatActivity() {
 
             progressBar.visibility = View.VISIBLE
             RetrofitClient.api.addChartOfAccount(fields)
-                .enqueue(object : Callback<okhttp3.ResponseBody> {
-                    override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
+                .enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                         progressBar.visibility = View.GONE
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@ChartOfAccountsAddActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
+                        val bodyString = response.body()?.string() ?: ""
+                        if (response.isSuccessful && bodyString.contains("Successfully", ignoreCase = true)) {
+                            Log.i(TAG, "Add success: $bodyString")
                             finish()
                         } else {
-                            Toast.makeText(this@ChartOfAccountsAddActivity, "Add failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                            Log.e(TAG, "Add failed: $bodyString")
+                            // Optionally show a Snackbar – but you said you only want logs.
                         }
                     }
-                    override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this@ChartOfAccountsAddActivity, t.message, Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "Network error", t)
                     }
                 })
         }

@@ -41,8 +41,10 @@ import com.example.bgls.DataModels.ApprovalDetailResponse
 import com.example.bgls.DataModels.ApprovalListResponse
 import com.example.bgls.DataModels.ApprovalViewResponse
 import com.example.bgls.DataModels.AssetLiabilityResponse
+import com.example.bgls.DataModels.AddHolidayMasterRequest
 import com.example.bgls.DataModels.BalanceSheetResponse
 import com.example.bgls.DataModels.BalancingReportResponse
+import com.example.bgls.DataModels.HolidayMasterListResponse
 import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
 import com.example.bgls.DataModels.KycListResponse
@@ -135,11 +137,21 @@ interface ServiceApi {
         @Query("month") month: String?
     ): Response<CalendarResponse>
 
+    @GET("api/organizationDetails")
+    suspend fun getHolidayMasterList(
+        @Query("formmode") formmode: String = "listholiday"
+    ): Response<HolidayMasterListResponse>
+
     @FormUrlEncoded
     @POST("api/holiday")
     suspend fun submitHoliday(
         @Query("formmode") formmode: String,
         @FieldMap fields: Map<String, String>
+    ): Response<ResponseBody>
+
+    @POST("api/addHoliday")
+    suspend fun addHolidayMaster(
+        @Body request: AddHolidayMasterRequest
     ): Response<ResponseBody>
 
     @POST("api/employeeProfile/verify")
@@ -155,6 +167,7 @@ interface ServiceApi {
         @Query("formmode") formmode: String,
         @Query("acct_num") acctNum: String
     ): Call<ChartOfAccountsDetailResponse>
+/*
 
     @FormUrlEncoded
     @POST("api/AddScreens")
@@ -180,6 +193,25 @@ interface ServiceApi {
     fun deleteChartOfAccount(
         @Query("acct_num") acctNum: String
     ): Call<ResponseBody>
+*/
+@FormUrlEncoded
+@POST("api/AddScreens")
+fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/ModifyScreens")
+    fun modifyChartOfAccount(
+        @Query("acct_num") acctNum: String,
+        @FieldMap fields: Map<String, String>
+    ): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/VerifyScreens")
+    fun verifyChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("api/DeleteScreens")
+    fun deleteChartOfAccount(@Query("acct_num") acctNum: String): Call<ResponseBody>
 
     @GET("api/chartaccounts/filter")
     fun filterChartOfAccounts(

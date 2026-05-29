@@ -120,7 +120,7 @@ class CustomerMaintenanceActivity : AppCompatActivity() {
                 setDataAndType(
                     FileProvider.getUriForFile(
                         this@CustomerMaintenanceActivity,
-                        "${packageName}.fileprovider",
+                        "${packageName}.provider",
                         file
                     ),
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
