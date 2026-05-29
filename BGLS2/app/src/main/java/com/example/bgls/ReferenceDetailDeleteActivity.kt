@@ -1,4 +1,4 @@
-﻿package com.example.bgls
+package com.example.bgls
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -91,8 +91,13 @@ class ReferenceDetailDeleteActivity: AppCompatActivity() {
             ).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
                 override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ReferenceDetailDeleteActivity, "Reference Code Deleted Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@ReferenceDetailDeleteActivity, "Reference Code Deleted Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ReferenceDetailDeleteActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(this@ReferenceDetailDeleteActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }

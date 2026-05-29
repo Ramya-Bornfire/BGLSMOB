@@ -113,13 +113,13 @@ class ParameterActivity : AppCompatActivity() {
     )
     data class TransactionAccountItem(
         val id: String,
-        val event: String,
-        val debitAccNo: String,
-        val debitAccName: String,
-        val creditAccNo: String,
-        val creditAccName: String,
-        val tranParticular: String,
-        val type: String
+        val glCode: String,
+        val schemeCode: String,
+        val glshCode: String,
+        val glDesc: String,
+        val schemeDesc: String,
+        val productKey: String,
+        val collectionAccount: String
     )
 
     private var currentModule: String = "Reference Code Maintenance"
@@ -337,10 +337,8 @@ class ParameterActivity : AppCompatActivity() {
         tableLayout.removeAllViews()
 
         val headers = listOf(
-            "ID", "EVENT",
-            "DEBIT ACCOUNT NUMBER", "DEBIT ACCOUNT NAME",
-            "CREDIT ACCOUNT NUMBER", "CREDIT ACCOUNT NAME",
-            "TRAN PARTICULAR", "TYPE", "ACTIONS"
+            "ID", "GL CODE", "SCHEME", "GLSH",
+            "GL DESC", "SCHEME DESC", "PRODUCT", "COLLECTION", "ACTIONS"
         )
 
         val headerRow = TableRow(this)
@@ -371,13 +369,13 @@ class ParameterActivity : AppCompatActivity() {
 
             val values = listOf(
                 item.id,
-                item.event,
-                item.debitAccNo,
-                item.debitAccName,
-                item.creditAccNo,
-                item.creditAccName,
-                item.tranParticular,
-                item.type,
+                item.glCode,
+                item.schemeCode,
+                item.glshCode,
+                item.glDesc,
+                item.schemeDesc,
+                item.productKey,
+                item.collectionAccount,
                 "Action ▼"
             )
 
@@ -390,6 +388,7 @@ class ParameterActivity : AppCompatActivity() {
                     tv.setOnClickListener {
                         val intent = Intent(this@ParameterActivity, com.example.bgls.ChartOfAccounts.TransactionAccountViewActivity::class.java)
                         intent.putExtra("MODE", "VIEW")
+                        intent.putExtra("ID", item.id)
                         startActivity(intent)
                     }
                 }
@@ -418,21 +417,31 @@ class ParameterActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                                 "Delete" -> {
+                                    val recordId = item.id.toLongOrNull()
+                                    if (recordId == null) {
+                                        Toast.makeText(this@ParameterActivity, "Invalid record id", Toast.LENGTH_SHORT).show()
+                                        return@setOnMenuItemClickListener true
+                                    }
                                     android.app.AlertDialog.Builder(this@ParameterActivity)
                                         .setTitle("Delete Account")
                                         .setMessage("Are you sure you want to delete this Transaction Account?")
                                         .setPositiveButton("Yes") { _, _ ->
-                                            RetrofitClient.api.getTransactionsAccounts("delete", item.id.toLongOrNull())
-                                                .enqueue(object : Callback<Map<String, Any>> {
-                                                    override fun onResponse(call: Call<Map<String, Any>>, response: Response<Map<String, Any>>) {
+                                            RetrofitClient.api.deleteTransactionAccount(recordId)
+                                                .enqueue(object : Callback<ResponseBody> {
+                                                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                                         if (response.isSuccessful) {
-                                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
-                                                            loadTransactionAccountsFromAPI()
+                                                            val msg = response.body()?.string() ?: ""
+                                                            if (msg.contains("Success", ignoreCase = true)) {
+                                                                Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                                                loadTransactionAccountsFromAPI()
+                                                            } else {
+                                                                Toast.makeText(this@ParameterActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                                                            }
                                                         } else {
                                                             Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
                                                         }
                                                     }
-                                                    override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                                                         Toast.makeText(this@ParameterActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                                                     }
                                                 })
@@ -631,8 +640,13 @@ class ParameterActivity : AppCompatActivity() {
                                                 .enqueue(object : Callback<ResponseBody> {
                                                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                                         if (response.isSuccessful) {
-                                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
-                                                            loadChartOfAccountsFromAPI() // refresh list
+                                                            val msg = response.body()?.string() ?: ""
+                                                            if (msg.contains("Success", ignoreCase = true)) {
+                                                                Toast.makeText(this@ParameterActivity, msg, Toast.LENGTH_SHORT).show()
+                                                                loadChartOfAccountsFromAPI() // refresh list
+                                                            } else {
+                                                                Toast.makeText(this@ParameterActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                                                            }
                                                         } else {
                                                             Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
                                                         }
@@ -767,8 +781,13 @@ class ParameterActivity : AppCompatActivity() {
                                             ).enqueue(object : Callback<ResponseBody> {
                                                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                                     if (response.isSuccessful) {
-                                                        Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
-                                                        loadSchemeCodesFromAPI()
+                                                        val msg = response.body()?.string() ?: ""
+                                                        if (msg.contains("Success", ignoreCase = true)) {
+                                                            Toast.makeText(this@ParameterActivity, "Deleted", Toast.LENGTH_SHORT).show()
+                                                            loadSchemeCodesFromAPI()
+                                                        } else {
+                                                            Toast.makeText(this@ParameterActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                                                        }
                                                     } else {
                                                         Toast.makeText(this@ParameterActivity, "Delete failed", Toast.LENGTH_SHORT).show()
                                                     }
@@ -892,12 +911,6 @@ class ParameterActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                                 "Modify" ->  {
-                                    Toast.makeText(
-                                        this@ParameterActivity,
-                                        "View clicked for GL: ${item.glCode}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
                                     val intent = Intent(
                                         this@ParameterActivity,
                                         GLStructureModifyActivity::class.java
@@ -921,12 +934,6 @@ class ParameterActivity : AppCompatActivity() {
                                     startActivity(intent)
                                 }
                                 "Delete" -> {
-                                    Toast.makeText(
-                                        this@ParameterActivity,
-                                        "View clicked for GL: ${item.glCode}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
                                     val intent = Intent(
                                         this@ParameterActivity,
                                         GLStructureDeleteActivity::class.java
@@ -1325,18 +1332,9 @@ class ParameterActivity : AppCompatActivity() {
 
     private fun getTransactionAccountsTableData(): List<TransactionAccountItem> {
         return listOf(
-            TransactionAccountItem(
-                "1", "Deposit", "ACC001", "Cash Account",
-                "ACC002", "Bank Account", "Cash Deposit", "CR"
-            ),
-            TransactionAccountItem(
-                "2", "Withdrawal", "ACC002", "Bank Account",
-                "ACC001", "Cash Account", "ATM Withdrawal", "DR"
-            ),
-            TransactionAccountItem(
-                "3", "Transfer", "ACC003", "Customer Account",
-                "ACC004", "Vendor Account", "Fund Transfer", "TR"
-            )
+            TransactionAccountItem("1", "GL001", "SCH001", "GLSH01", "General Ledger", "Scheme A", "PK1", "COL001"),
+            TransactionAccountItem("2", "GL002", "SCH002", "GLSH02", "General Ledger 2", "Scheme B", "PK2", "COL002"),
+            TransactionAccountItem("3", "GL003", "SCH003", "GLSH03", "General Ledger 3", "Scheme C", "PK3", "COL003")
         )
     }
     private fun loadReferenceCodesFromAPI() {
@@ -1549,14 +1547,14 @@ class ParameterActivity : AppCompatActivity() {
                         val apiList = response.body()!!.list ?: emptyList()
                         val localList = apiList.map { item ->
                             TransactionAccountItem(
-                                id = item.id ?: "",
-                                event = item.event ?: "",
-                                debitAccNo = item.debitAccountNumber ?: "",
-                                debitAccName = item.debitAccountName ?: "",
-                                creditAccNo = item.creditAccountNumber ?: "",
-                                creditAccName = item.creditAccountName ?: "",
-                                tranParticular = item.tranParticular ?: "",
-                                type = item.accountType ?: ""
+                                id = item.id?.toString() ?: "",
+                                glCode = item.glCode ?: item.event ?: "",
+                                schemeCode = item.schmCode ?: item.debitAccountNumber ?: "",
+                                glshCode = item.glshCode ?: item.debitAccountName ?: "",
+                                glDesc = item.glDesc ?: item.creditAccountNumber ?: "",
+                                schemeDesc = item.schmDesc ?: item.creditAccountName ?: "",
+                                productKey = item.productKey ?: item.tranParticular ?: "",
+                                collectionAccount = item.collectionAccount ?: item.accountType ?: ""
                             )
                         }
                         populateTransactionAccountsTable(localList)

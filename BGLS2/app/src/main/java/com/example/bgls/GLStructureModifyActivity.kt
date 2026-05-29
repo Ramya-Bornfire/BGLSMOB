@@ -1,4 +1,4 @@
-﻿package com.example.bgls
+package com.example.bgls
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -82,26 +82,40 @@ class GLStructureModifyActivity : AppCompatActivity() {
 
         // Submit Button
         btnUpdate.setOnClickListener {
-            // API call here
+            val glshCode = etGlSub.text.toString().trim()
+            if (glshCode.isEmpty()) {
+                Toast.makeText(this, "GL Sub-Head code is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val fields = mapOf(
                 "branch_id" to etBranchId.text.toString(),
                 "branch_desc" to etBranchDes.text.toString(),
                 "glCode" to etGlCode.text.toString(),
                 "glDescription" to etGlDes.text.toString(),
-                "glsh_code" to etGlsh.text.toString(),
+                "glsh_desc" to etGlsh.text.toString(),
                 "crncy_code" to etCurrencyCode.text.toString(),
-                "total_balance" to etBal.text.toString()
+                "bal_sheet_group" to etBal.text.toString(),
+                "seq_order" to etSeq.text.toString(),
+                "total_balance" to etTol.text.toString(),
+                "no_acct_opened" to etActOpen.text.toString(),
+                "no_acct_closed" to etActClose.text.toString()
             )
 
-            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("edit", fields["glCode"], fields["glsh_code"], fields).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
-                override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@GLStructureModifyActivity, "GL Structure Updated Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
-                        Toast.makeText(this@GLStructureModifyActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("edit", etGlCode.text.toString(), glshCode, fields)
+                .enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                    override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                        if (response.isSuccessful) {
+                            val msg = response.body()?.string() ?: ""
+                            if (msg.contains("Success", ignoreCase = true)) {
+                                Toast.makeText(this@GLStructureModifyActivity, "Modified Successfully", Toast.LENGTH_SHORT).show()
+                                finish()
+                            } else {
+                                Toast.makeText(this@GLStructureModifyActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                            }
+                        } else {
+                            Toast.makeText(this@GLStructureModifyActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
                 override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
                     Toast.makeText(this@GLStructureModifyActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()

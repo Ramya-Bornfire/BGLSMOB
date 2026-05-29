@@ -167,7 +167,7 @@ class TransactionAccountViewActivity : AppCompatActivity() {
         etProductKey.setText(a.product_key ?: "")
         etGLDescription.setText(a.gl_description ?: "")
         etSchemeDescription.setText(a.scheme_description ?: "")
-        etGLSHDescription.setText(a.glshDesc ?: "")
+        etGLSHDescription.setText(a.glsh_description ?: "")
         etInterestReceivable.setText(a.interest_receivable ?: "")
         etPenaltyIncome.setText(a.penalty_income ?: "")
         etLoanParkingAccount.setText(a.loan_parking_account ?: "")

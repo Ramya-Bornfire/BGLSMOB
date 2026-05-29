@@ -11,10 +11,23 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bgls.DataModels.SchemeCode
+import com.example.bgls.Retrofit.RetrofitClient
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SchemeCodeViewActivity : AppCompatActivity() {
 
     private var isEditMode = false
+    private lateinit var tvProduct: EditText
+    private lateinit var tvProductType: EditText
+    private lateinit var tvId: EditText
+    private lateinit var tvState: EditText
+    private lateinit var tvProductCategory: EditText
+    private lateinit var tvProductDescription: EditText
+    private lateinit var btnModify: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +35,13 @@ class SchemeCodeViewActivity : AppCompatActivity() {
         window.setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
         )
-        val tvProduct = findViewById<EditText>(R.id.tvProduct)
-        val tvProductType = findViewById<EditText>(R.id.tvProductType)
-        val tvId = findViewById<EditText>(R.id.tvId)
-        val tvState = findViewById<EditText>(R.id.tvState)
-        val tvProductCategory = findViewById<EditText>(R.id.tvProductCategory)
-        val tvProductDescription = findViewById<EditText>(R.id.tvProductDescription)
+        tvProduct = findViewById(R.id.tvProduct)
+        tvProductType = findViewById(R.id.tvProductType)
+        tvId = findViewById(R.id.tvId)
+        tvState = findViewById(R.id.tvState)
+        tvProductCategory = findViewById(R.id.tvProductCategory)
+        tvProductDescription = findViewById(R.id.tvProductDescription)
+        btnModify = findViewById(R.id.btnModify)
 
         // Populate from intent
         intent.extras?.let { bundle: android.os.Bundle ->
@@ -40,6 +54,13 @@ class SchemeCodeViewActivity : AppCompatActivity() {
         }
 
         val mode = intent.getStringExtra("MODE") ?: "VIEW"
+        if (mode == "MODIFY") {
+            isEditMode = true
+            btnModify.text = "Submit"
+            window.decorView.post {
+                setFormEnabled(findViewById(android.R.id.content), true)
+            }
+        }
         if (mode == "ADD") {
             isEditMode = true
             tvProduct.setText("")
@@ -60,7 +81,6 @@ class SchemeCodeViewActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val btnModify = findViewById<Button>(R.id.btnModify)
         btnModify.setOnClickListener {
             if (!isEditMode) {
                 isEditMode = true
@@ -68,9 +88,7 @@ class SchemeCodeViewActivity : AppCompatActivity() {
                 setFormEnabled(findViewById(android.R.id.content), true)
                 Toast.makeText(this, "Edit mode enabled", Toast.LENGTH_SHORT).show()
             } else {
-                val message = if (mode == "ADD") "Scheme Code Added successfully" else "Data Submitted successfully"
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                finish()
+                submitScheme(mode)
             }
         }
 
@@ -78,9 +96,8 @@ class SchemeCodeViewActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Confirm Deletion")
                 .setMessage("Are you sure you want to delete this Scheme Code?")
-                .setPositiveButton("Yes") { dialogInterface: DialogInterface, i: Int ->
-                    Toast.makeText(this, "Scheme Code deleted", Toast.LENGTH_SHORT).show()
-                    finish()
+                .setPositiveButton("Yes") { _: DialogInterface, _: Int ->
+                    deleteScheme()
                 }
                 .setNegativeButton("No", null)
                 .show()
@@ -231,6 +248,87 @@ class SchemeCodeViewActivity : AppCompatActivity() {
         row.addView(createFeeField(label3, val3))
 
         return row
+    }
+
+    private fun buildSchemeCode(): SchemeCode {
+        val status = tvState.text.toString().trim()
+        val state = when (status.uppercase()) {
+            "ACTIVE" -> "Y"
+            "INACTIVE" -> "N"
+            else -> status
+        }
+        return SchemeCode(
+            product = tvProduct.text.toString().trim(),
+            productType = tvProductType.text.toString().trim(),
+            id = tvId.text.toString().trim(),
+            state = state,
+            productCategory = tvProductCategory.text.toString().trim(),
+            productDescription = tvProductDescription.text.toString().trim()
+        )
+    }
+
+    private fun submitScheme(mode: String) {
+        val schemeCode = buildSchemeCode()
+        if (schemeCode.id.isNullOrBlank()) {
+            Toast.makeText(this, "Scheme ID is required", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val apiCall = if (mode == "ADD") {
+            RetrofitClient.api.addParameter(schemeCode)
+        } else {
+            RetrofitClient.api.updateParameter(schemeCode)
+        }
+        apiCall.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val msg = response.body()?.string() ?: ""
+                    if (msg.contains("Success", ignoreCase = true)) {
+                        Toast.makeText(
+                            this@SchemeCodeViewActivity,
+                            if (mode == "ADD") "Scheme Code added successfully" else "Scheme Code updated successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    } else {
+                        Toast.makeText(this@SchemeCodeViewActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(this@SchemeCodeViewActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Toast.makeText(this@SchemeCodeViewActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun deleteScheme() {
+        val id = tvId.text.toString().trim()
+        if (id.isEmpty()) {
+            Toast.makeText(this, "Scheme ID is required", Toast.LENGTH_SHORT).show()
+            return
+        }
+        RetrofitClient.api.deleteParameter(SchemeCode(id = id))
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@SchemeCodeViewActivity, "Scheme Code deleted", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@SchemeCodeViewActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        Toast.makeText(this@SchemeCodeViewActivity, "Delete failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(this@SchemeCodeViewActivity, "Failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     private fun createFeeField(label: String, value: String): android.widget.LinearLayout {

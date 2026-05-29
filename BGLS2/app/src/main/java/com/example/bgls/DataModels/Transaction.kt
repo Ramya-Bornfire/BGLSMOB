@@ -15,7 +15,17 @@ data class TransactionAccountsResponse(
 )
 
 data class TransactionItem(
-    @SerializedName("id") val id: String? = null,
+    @SerializedName("id") val id: Long? = null,
+    @SerializedName("glCode") val glCode: String? = null,
+    @SerializedName("glDesc") val glDesc: String? = null,
+    @SerializedName("glshCode") val glshCode: String? = null,
+    @SerializedName("glshDesc") val glshDesc: String? = null,
+    @SerializedName("schmCode") val schmCode: String? = null,
+    @SerializedName("schmDesc") val schmDesc: String? = null,
+    @SerializedName("productKey") val productKey: String? = null,
+    @SerializedName("collectionAccount") val collectionAccount: String? = null,
+    @SerializedName("interestIncome") val interestIncome: String? = null,
+    // Legacy BGLS_ACCOUNTS_TBL fields (kept for backward compatibility)
     @SerializedName("event") val event: String? = null,
     @SerializedName("debitAccountNumber") val debitAccountNumber: String? = null,
     @SerializedName("debitAccountName") val debitAccountName: String? = null,

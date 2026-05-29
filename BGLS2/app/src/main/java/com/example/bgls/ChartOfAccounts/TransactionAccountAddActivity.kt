@@ -94,13 +94,15 @@ class TransactionAccountAddActivity : AppCompatActivity() {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@TransactionAccountAddActivity,
-                            "Added Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@TransactionAccountAddActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@TransactionAccountAddActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
                     } else {
-                        Toast.makeText(this@TransactionAccountAddActivity,
-                            "Error: ${response.code()} - ${response.errorBody()?.string()}",
-                            Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@TransactionAccountAddActivity, "Error: ${response.code()} - ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
                     }
                 }
 

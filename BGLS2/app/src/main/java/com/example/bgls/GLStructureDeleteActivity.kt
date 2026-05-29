@@ -1,4 +1,4 @@
-﻿package com.example.bgls
+package com.example.bgls
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -83,16 +83,24 @@ class GLStructureDeleteActivity : AppCompatActivity() {
         // Submit Button
         btnUpdate.setOnClickListener {
             // API call here
-            val fields = mapOf(
-                "glCode" to etGlCode.text.toString(),
-                "glsh_code" to etGlSub.text.toString()
-            )
+            val glCode = etGlCode.text.toString().trim()
+            val glshCode = etGlSub.text.toString().trim()
+            if (glshCode.isEmpty()) {
+                Toast.makeText(this, "GL Sub-Head code is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val fields = emptyMap<String, String>()
 
-            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("delete", fields["glCode"], fields["glsh_code"], fields).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+            com.example.bgls.Retrofit.RetrofitClient.api.manageGLStructure("delete", glCode, glshCode, fields).enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
                 override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@GLStructureDeleteActivity, "GL Structure Deleted Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@GLStructureDeleteActivity, "GL Structure Deleted Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@GLStructureDeleteActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(this@GLStructureDeleteActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }

@@ -312,14 +312,22 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Account ID is required", Toast.LENGTH_SHORT).show()
             return
         }
+        val fields = collectFields().toMutableMap()
+        fields.remove("acct_num") // Sent as Query parameter, avoid sending as form field to prevent duplicate string "123,123"
+
         showProgress(true)
-        RetrofitClient.api.modifyChartOfAccount(acctNum, collectFields())
+        RetrofitClient.api.modifyChartOfAccount(acctNum, fields)
             .enqueue(object : Callback<okhttp3.ResponseBody> {
                 override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
                     showProgress(false)
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ChartOfAccountsDetailActivity, "Modified Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@ChartOfAccountsDetailActivity, "Modified Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ChartOfAccountsDetailActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(this@ChartOfAccountsDetailActivity, "Modify failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -338,8 +346,13 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
                     showProgress(false)
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ChartOfAccountsDetailActivity, "Verified Successfully", Toast.LENGTH_SHORT).show()
-                        finish()
+                        val msg = response.body()?.string() ?: ""
+                        if (msg.contains("Success", ignoreCase = true)) {
+                            Toast.makeText(this@ChartOfAccountsDetailActivity, "Verified Successfully", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this@ChartOfAccountsDetailActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                        }
                     } else {
                         Toast.makeText(this@ChartOfAccountsDetailActivity, "Verify failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -362,8 +375,13 @@ class ChartOfAccountsDetailActivity : AppCompatActivity() {
                         override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
                             showProgress(false)
                             if (response.isSuccessful) {
-                                Toast.makeText(this@ChartOfAccountsDetailActivity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
-                                finish()
+                                val msg = response.body()?.string() ?: ""
+                                if (msg.contains("Success", ignoreCase = true)) {
+                                    Toast.makeText(this@ChartOfAccountsDetailActivity, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@ChartOfAccountsDetailActivity, "Failed: $msg", Toast.LENGTH_LONG).show()
+                                }
                             } else {
                                 Toast.makeText(this@ChartOfAccountsDetailActivity, "Delete failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                             }
