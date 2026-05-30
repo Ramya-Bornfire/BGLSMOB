@@ -181,6 +181,12 @@ class JournalEntriesActivity : AppCompatActivity() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
+        // Populate header user details from SharedPreferences
+        val prefs = getSharedPreferences("ASPIRA_PREFS", MODE_PRIVATE)
+        findViewById<TextView>(R.id.txtUserIdInfo)?.text = prefs.getString("userid", "EMP04")
+        findViewById<TextView>(R.id.txtUserNameInfo)?.text = prefs.getString("username", "Manivanan")
+        findViewById<TextView>(R.id.txtLoginTimeInfo)?.text = prefs.getString("loginTime", "--")
     }
 
     private fun setupFormSpinners() {
@@ -214,6 +220,17 @@ class JournalEntriesActivity : AppCompatActivity() {
     }
 
     private fun setupNavigationAndButtons() {
+        findViewById<ImageView>(R.id.btnBack)?.setOnClickListener {
+            finish()
+        }
+
+        findViewById<ImageView>(R.id.btnHome)?.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
+        }
+
         findViewById<Button>(R.id.btnBackBottom).setOnClickListener {
             finish()
         }
@@ -499,10 +516,7 @@ class JournalEntriesActivity : AppCompatActivity() {
         etInstrumentDate.setText("")
         etTranReportCode.setText("")
 
-        // Hide General Ledger details of selected account since it's cleared
-        layoutGeneralLedger.visibility = View.GONE
-        ledgerList.clear()
-        generalLedgerAdapter.notifyDataSetChanged()
+
 
         updateTotals()
     }
