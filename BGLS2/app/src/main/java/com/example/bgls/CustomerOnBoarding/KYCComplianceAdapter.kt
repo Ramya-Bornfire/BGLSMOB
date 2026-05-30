@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bgls.R
 
 data class KYCItem(
-    val srNo: String,
-    val customerGroup: String,
-    val applRefNo: String,
-    val accountType: String,
-    val customerName: String,
-    val nationalId: String,
+    val srNo: String? = "",
+    val customerGroup: String? = "",
+    val applRefNo: String? = "",
+    val accountType: String? = "",
+    val customerName: String? = "",
+    val nationalId: String? = "",
     val status: String? = null,
     var isSelected: Boolean = false
 )

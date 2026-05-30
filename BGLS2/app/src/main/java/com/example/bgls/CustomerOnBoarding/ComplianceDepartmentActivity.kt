@@ -45,6 +45,7 @@ class ComplianceDepartmentActivity : AppCompatActivity() {
             insets
         }
 
+        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener { finish() }
         setupRecyclerView()
         setupFilterLogic()
         loadDataFromApi()   // ✅ replaced hardcoded data
@@ -182,12 +183,12 @@ class ComplianceDepartmentActivity : AppCompatActivity() {
         val qNatId = natId.trim()
 
         val filteredList = fullData.filter { item ->
-            (qSrNo.isEmpty() || item.srNo.contains(qSrNo, ignoreCase = true)) &&
-            (qGroup.isEmpty() || item.customerGroup.contains(qGroup, ignoreCase = true)) &&
-            (qAppRef.isEmpty() || item.applRefNo.contains(qAppRef, ignoreCase = true)) &&
-            (qType.isEmpty() || item.accountType.contains(qType, ignoreCase = true)) &&
-            (qName.isEmpty() || item.customerName.contains(qName, ignoreCase = true)) &&
-            (qNatId.isEmpty() || item.nationalId.contains(qNatId, ignoreCase = true))
+            (qSrNo.isEmpty() || item.srNo?.contains(qSrNo, ignoreCase = true) == true) &&
+            (qGroup.isEmpty() || item.customerGroup?.contains(qGroup, ignoreCase = true) == true) &&
+            (qAppRef.isEmpty() || item.applRefNo?.contains(qAppRef, ignoreCase = true) == true) &&
+            (qType.isEmpty() || item.accountType?.contains(qType, ignoreCase = true) == true) &&
+            (qName.isEmpty() || item.customerName?.contains(qName, ignoreCase = true) == true) &&
+            (qNatId.isEmpty() || item.nationalId?.contains(qNatId, ignoreCase = true) == true)
         }
         adapter.updateList(filteredList)
     }

@@ -148,6 +148,10 @@ class MinimalDataActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.btnHeaderBack.setOnClickListener {
+            finish()
+        }
+
         binding.btnProceed.setOnClickListener {
             binding.btnProceedTop.performClick()
         }

@@ -44,6 +44,7 @@ class ApprovalActivity : AppCompatActivity() {
             insets
         }
 
+        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener { finish() }
         setupRecyclerView()
         setupSpinnerFilter()
         setupColumnFilterLogic()
