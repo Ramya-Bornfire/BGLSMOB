@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import java.text.SimpleDateFormat
 
 class JournalEntriesActivity : AppCompatActivity() {
 
@@ -324,6 +325,19 @@ class JournalEntriesActivity : AppCompatActivity() {
         })
     }
 
+    private fun formatDateForApi(dateStr: String): String {
+        return try {
+            // Parse from display format (dd-MM-yyyy) to yyyy-MM-dd
+            val sdfInput = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+            val date = sdfInput.parse(dateStr)
+            val sdfOutput = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            sdfOutput.format(date)
+        } catch (e: Exception) {
+            // Fallback: if parsing fails, return original (maybe already yyyy-MM-dd)
+            dateStr
+        }
+    }
+
     private fun fetchGLDetails(acctNum: String) {
         lifecycleScope.launch {
             try {
@@ -465,9 +479,9 @@ class JournalEntriesActivity : AppCompatActivity() {
             tran_particular = etTranParticulars.text.toString(),
             tran_remarks = etTranRemarks.text.toString(),
             flow_code = etFlowCode.text.toString(),
-            flow_date = etFlowDate.text.toString(),
-            tran_date = etTranDate.text.toString(),
-            value_date = etValueDate.text.toString(),
+            flow_date = formatDateForApi(etFlowDate.text.toString()),
+            tran_date = formatDateForApi(etTranDate.text.toString()),
+            value_date = formatDateForApi(etValueDate.text.toString()),
             tran_code = etTranCode.text.toString(),
             tran_rpt_code = etTranReportCode.text.toString(),
             tran_ref_no = etTranRefNo.text.toString(),
@@ -475,15 +489,15 @@ class JournalEntriesActivity : AppCompatActivity() {
             partition_type = etPartitionType.text.toString(),
             partition_det = etPartitionDetails.text.toString(),
             instr_num = etInstrumentNo.text.toString(),
-            instr_date = etInstrumentDate.text.toString(),
+            instr_date = formatDateForApi(etInstrumentDate.text.toString()),
             ref_crncy = spinnerRefCcy.selectedItem?.toString() ?: "",
             ref_crncy_amt = etRefCcyAmt.text.toString().toDoubleOrNull() ?: 0.0,
             rate_code = etRateCode.text.toString(),
             rate = etRate.text.toString().toDoubleOrNull() ?: 0.0,
             entry_user = etEntryUser.text.toString(),
             post_user = etPostUser.text.toString(),
-            entry_time = etEntryTime.text.toString(),
-            post_time = etPostTime.text.toString(),
+            entry_time = formatDateForApi(etEntryTime.text.toString()),
+            post_time = formatDateForApi(etPostTime.text.toString()),
             tran_status = etTranStatus.text.toString(),
             del_flg = etDeleted.text.toString(),
             srl_no = "1"
@@ -754,4 +768,5 @@ class JournalEntriesActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = list.size
     }
+
 }

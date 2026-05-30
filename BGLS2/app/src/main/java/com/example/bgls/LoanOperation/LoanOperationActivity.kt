@@ -1,8 +1,8 @@
 package com.example.bgls.LoanOperation
 
 import android.app.DatePickerDialog
-import android.graphics.Color
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -18,13 +18,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.bgls.DataModels.LoanClosureDataResponse
 import com.example.bgls.DataModels.LoanFlowDetail
-import com.example.bgls.DataModels.LoanFlowTransactionRequest
 import com.example.bgls.DataModels.MultipleTransactionRequest
 import com.example.bgls.DataModels.SettlementRecord
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
-import retrofit2.Response
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -59,12 +58,12 @@ class LoanOperationActivity : AppCompatActivity() {
     private lateinit var btnHome: ImageView
     private lateinit var btnBack: ImageView
     private lateinit var ivSearchAccount: ImageView
-    
+
     // Upload mode views
     private lateinit var layoutStandardOperation: View
     private lateinit var layoutFileUpload: View
     private lateinit var layoutTableArea: View
-    private lateinit var tlTableContent: LinearLayout // The container inside layoutTableArea ScrollView
+    private lateinit var tlTableContent: LinearLayout
     private lateinit var tvNoRecords: TextView
     private lateinit var btnChooseFile: Button
     private lateinit var tvFileName: TextView
@@ -90,6 +89,7 @@ class LoanOperationActivity : AppCompatActivity() {
     private var bookingDays: Int = 0
     private var interestPercentage: Double = 0.0
     private var initialCollection: List<List<Any>>? = null
+    private var isInitialDataLoaded = false
 
     private val filePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -103,9 +103,7 @@ class LoanOperationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan_operation)
-        window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
-        )
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         initViews()
         setupListeners()
         fetchInitialData()
@@ -116,35 +114,35 @@ class LoanOperationActivity : AppCompatActivity() {
         rgAccountType = findViewById(R.id.rgAccountType)
         rgCollectionType = findViewById(R.id.rgCollectionType)
         layoutCollectionType = findViewById(R.id.layoutCollectionType)
-        
+
         tvTranDateLabel = findViewById(R.id.tvTranDateLabel)
         etTranDate = findViewById(R.id.etTranDate)
         tvFromDateLabel = findViewById(R.id.tvFromDateLabel)
         etFromDate = findViewById(R.id.etFromDate)
         tvToDateLabel = findViewById(R.id.tvToDateLabel)
         etToDate = findViewById(R.id.etToDate)
-        
+
         etAccountNo = findViewById(R.id.etAccountNo)
         etAcctName = findViewById(R.id.etAcctName)
         tvAcctBalanceLabel = findViewById(R.id.tvAcctBalanceLabel)
         etAcctBalance = findViewById(R.id.etAcctBalance)
         tvRecoveryPaidLabel = findViewById(R.id.tvRecoveryPaidLabel)
         etRecoveryPaid = findViewById(R.id.etRecoveryPaid)
-        
+
         tvRoutingAcctLabel = findViewById(R.id.tvRoutingAcctLabel)
         etRoutingAcct = findViewById(R.id.etRoutingAcct)
         tvColTranAmt = findViewById(R.id.tvColTranAmt)
-        
+
         btnHome = findViewById(R.id.btnHome)
         btnBack = findViewById(R.id.btnBack)
         ivSearchAccount = findViewById(R.id.ivSearchAccount)
-        
+
         layoutStandardOperation = findViewById(R.id.layoutStandardOperation)
         layoutFileUpload = findViewById(R.id.layoutFileUpload)
         layoutTableArea = findViewById(R.id.layoutTableArea)
         tlTableContent = (layoutTableArea as HorizontalScrollView).getChildAt(0) as LinearLayout
         tvNoRecords = findViewById(R.id.tvNoRecords)
-        
+
         btnChooseFile = findViewById(R.id.btnChooseFile)
         tvFileName = findViewById(R.id.tvFileName)
         btnList = findViewById(R.id.btnList)
@@ -153,13 +151,18 @@ class LoanOperationActivity : AppCompatActivity() {
 
         layoutBulkCollection = findViewById(R.id.layoutBulkCollection)
         llBulkRows = findViewById(R.id.llBulkRows)
+
         btnBulkUpload = findViewById(R.id.btnBulkUpload)
         btnBulkAdd = findViewById(R.id.btnBulkAdd)
         btnBulkSubmit = findViewById(R.id.btnBulkSubmit)
         btnBulkHome = findViewById(R.id.btnBulkHome)
         btnBulkBack = findViewById(R.id.btnBulkBack)
 
-        // Set default dates
+        // --- Prepare bulk rows: remove any static XML children and add header + one empty row
+        llBulkRows.removeAllViews()
+        addHeaderRow()
+        addBulkRow()
+
         val today = sdfUI.format(Date())
         etTranDate.setText(today)
         etFromDate.setText(today)
@@ -181,7 +184,7 @@ class LoanOperationActivity : AppCompatActivity() {
         }
 
         val isCollection = rgOperationType.checkedRadioButtonId == R.id.rbCollection
-        val operation = when(rgOperationType.checkedRadioButtonId) {
+        val operation = when (rgOperationType.checkedRadioButtonId) {
             R.id.rbCollection -> "Collection"
             R.id.rbInterest -> "Interest"
             R.id.rbFees -> "Fees"
@@ -194,7 +197,6 @@ class LoanOperationActivity : AppCompatActivity() {
             try {
                 val api = RetrofitClient.api
                 if (isCollection) {
-                    // Bulk submission for Collection
                     val records = mutableListOf<SettlementRecord>()
                     for (i in 2 until tlTableContent.childCount) {
                         val row = tlTableContent.getChildAt(i) as? LinearLayout ?: continue
@@ -205,34 +207,35 @@ class LoanOperationActivity : AppCompatActivity() {
                             records.add(SettlementRecord(loanAcctNo, amt))
                         }
                     }
-                    
+
                     if (records.isEmpty()) {
                         Toast.makeText(this@LoanOperationActivity, "No allocation to submit", Toast.LENGTH_SHORT).show()
                         return@launch
                     }
-                    
+
                     val response = api.settlementCollection(records)
                     if (response.isSuccessful) {
-                        Toast.makeText(this@LoanOperationActivity, "Success: ${response.body()}", Toast.LENGTH_LONG).show()
+                        val message = response.body()?.string() ?: "Success"
+                        Toast.makeText(this@LoanOperationActivity, "Success: $message", Toast.LENGTH_LONG).show()
                         refreshFlows()
                     } else {
-                        Toast.makeText(this@LoanOperationActivity, "Error: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                        val error = response.errorBody()?.string() ?: "Unknown error"
+                        Toast.makeText(this@LoanOperationActivity, "Error: $error", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    // Sequential submission for other modes
                     var successCount = 0
                     var totalRows = 0
                     for (i in 2 until tlTableContent.childCount) {
                         val row = tlTableContent.getChildAt(i) as? LinearLayout ?: continue
                         totalRows++
-                        
+
                         val flowDate = (row.getChildAt(0) as TextView).text.toString()
                         val flowId = (row.getChildAt(1) as TextView).text.toString()
                         val flowCode = (row.getChildAt(2) as TextView).text.toString()
                         val flowAmt = (row.getChildAt(3) as TextView).text.toString().replace(",", "")
                         val loanAcctNo = (row.getChildAt(4) as TextView).text.toString()
                         val acctName = (row.getChildAt(5) as TextView).text.toString()
-                        
+
                         val response = api.transactionInterest(
                             flowCode = flowCode,
                             flowDate = flowDate,
@@ -242,12 +245,12 @@ class LoanOperationActivity : AppCompatActivity() {
                             accountName = acctName,
                             operation = operation
                         )
-                        
+
                         if (response.isSuccessful) {
                             successCount++
                         }
                     }
-                    
+
                     if (successCount == totalRows && totalRows > 0) {
                         Toast.makeText(this@LoanOperationActivity, "All transactions processed successfully", Toast.LENGTH_SHORT).show()
                         refreshFlows()
@@ -264,12 +267,12 @@ class LoanOperationActivity : AppCompatActivity() {
     private fun updateTableValueSequentially() {
         val totalAmount = etRecoveryPaid.text.toString().toDoubleOrNull() ?: 0.0
         var remaining = totalAmount
-        
+
         for (i in 2 until tlTableContent.childCount) {
             val row = tlTableContent.getChildAt(i) as? LinearLayout ?: continue
             val flowAmt = (row.getChildAt(3) as TextView).text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
             val tranAmtTv = row.getChildAt(4) as TextView
-            
+
             val applied = minOf(remaining, flowAmt)
             tranAmtTv.text = String.format("%.2f", applied)
             remaining -= applied
@@ -393,7 +396,7 @@ class LoanOperationActivity : AppCompatActivity() {
             tvRecoveryPaidLabel.visibility = View.GONE
             etRecoveryPaid.visibility = View.GONE
             tvColTranAmt.visibility = View.GONE
-            
+
             layoutStandardOperation.visibility = View.VISIBLE
             layoutFileUpload.visibility = View.GONE
             layoutBulkCollection.visibility = View.GONE
@@ -426,6 +429,7 @@ class LoanOperationActivity : AppCompatActivity() {
                 layoutFileUpload.visibility = View.VISIBLE
                 layoutBulkCollection.visibility = View.GONE
                 layoutTableArea.visibility = View.GONE
+                btnSubmit.visibility = View.GONE
             }
             R.id.rbMultipleEntries -> {
                 layoutStandardOperation.visibility = View.GONE
@@ -439,37 +443,79 @@ class LoanOperationActivity : AppCompatActivity() {
 
     private fun refreshFlows() {
         val accNo = etAccountNo.text.toString()
-        val toDateUI = if (rgOperationType.checkedRadioButtonId == R.id.rbCollection) etTranDate.text.toString() else etToDate.text.toString()
-        val fromDateUI = etFromDate.text.toString()
         if (accNo.isEmpty()) return
 
-        val toDateISO = try { val d = sdfUI.parse(toDateUI); sdfISO.format(d!!) } catch (e: Exception) { toDateUI }
-        val fromDateISO = try { val d = sdfUI.parse(fromDateUI); sdfISO.format(d!!) } catch (e: Exception) { fromDateUI }
+        val operationType = rgOperationType.checkedRadioButtonId
 
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.api
-                val response = when (rgOperationType.checkedRadioButtonId) {
-                    R.id.rbCollection, R.id.rbFees, R.id.rbInterest, R.id.rbPenalty -> {
+                val response = when (operationType) {
+                    R.id.rbCollection -> {
+                        val toDateUI = etTranDate.text.toString()
+                        val toDateISO = convertUIToISO(toDateUI)
                         api.loanFlowDetails11(toDateISO, accNo)
                     }
+                    R.id.rbInterest -> {
+                        val toDateUI = etToDate.text.toString()
+                        val toDateISO = convertUIToISO(toDateUI)
+                        api.loanFlowDetails(toDateISO, toDateISO, accNo)
+                    }
+                    R.id.rbFees -> {
+                        val toDateUI = etToDate.text.toString()
+                        val toDateISO = convertUIToISO(toDateUI)
+                        api.loanFlowDetailsFees(toDateISO, toDateISO, accNo)
+                    }
+                    R.id.rbPenalty -> {
+                        val toDateUI = etToDate.text.toString()
+                        val toDateISO = convertUIToISO(toDateUI)
+                        api.loanFlowDetailsPenalty(toDateISO, toDateISO, accNo)
+                    }
                     R.id.rbBooking -> {
-                        api.getLoanClosureDatas(accNo) // Using closure datas as fallback for Booking if specific endpoint missing
+                        val fromDateUI = etFromDate.text.toString()
+                        val toDateUI = etToDate.text.toString()
+                        val fromDateISO = convertUIToISO(fromDateUI)
+                        val toDateISO = convertUIToISO(toDateUI)
+                        api.loanFlowDetailsBooking(accNo, fromDateISO, toDateISO)
                     }
                     else -> null
                 }
 
                 if (response?.isSuccessful == true) {
                     val body = response.body()
-                    if (body is LoanClosureDataResponse) {
-                        if (rgOperationType.checkedRadioButtonId == R.id.rbCollection) {
-                            etAcctBalance.setText(String.format("%.2f", body.flowTotalAmt ?: 0.0))
+                    when (operationType) {
+                        R.id.rbCollection -> {
+                            if (body is LoanClosureDataResponse) {
+                                etAcctBalance.setText(String.format("%.2f", body.flowTotalAmt ?: 0.0))
+                                populateTable(body.loanFlows)
+                            }
                         }
-                        populateTable(body.loanFlows)
+                        R.id.rbInterest, R.id.rbFees, R.id.rbPenalty -> {
+                            if (body is List<*>) {
+                                @Suppress("UNCHECKED_CAST")
+                                val flows = body as List<LoanFlowDetail>
+                                populateTable(flows)
+                            }
+                        }
+                        R.id.rbBooking -> {
+                            if (body is Map<*, *>) {
+                                val flow = LoanFlowDetail(
+                                    flowDate = body["flow_date"].toString(),
+                                    flowId = body["flow_id"].toString(),
+                                    flowCode = body["flow_code"].toString(),
+                                    flowAmt = (body["flow_amt"] as Number).toDouble(),
+                                    tranAmt = null,
+                                    loanAcctNo = body["loan_acct_no"].toString(),
+                                    acctName = body["acct_name"].toString(),
+                                    encodedKey = body["encoded_key"]?.toString() ?: ""
+                                )
+                                populateTable(listOf(flow))
+                            }
+                        }
                     }
                 }
             } catch (e: Exception) {
-                Log.e("LoanOp", "Refresh flows error: ${e.message}")
+                Log.e("LoanOp", "Refresh error: ${e.message}")
             }
         }
     }
@@ -486,7 +532,6 @@ class LoanOperationActivity : AppCompatActivity() {
                                 val datePart = if (tDate.length >= 10) tDate.substring(0, 10) else tDate
                                 if (tDate.indexOf("-") == 4) sdfISO.parse(datePart) else sdfUI.parse(datePart)
                             } else null
-                            
                             date?.let {
                                 val formatted = sdfUI.format(it)
                                 etTranDate.setText(formatted)
@@ -498,6 +543,7 @@ class LoanOperationActivity : AppCompatActivity() {
                         }
                     }
                     initialCollection = data?.collection
+                    isInitialDataLoaded = true
                     if (formmode == "list1") {
                         populateBulkRows(data?.getlist)
                     }
@@ -509,7 +555,6 @@ class LoanOperationActivity : AppCompatActivity() {
     }
 
     private fun populateTable(flows: List<LoanFlowDetail>?) {
-        // Keep header (index 0) and tvNoRecords (index 1)
         while (tlTableContent.childCount > 2) {
             tlTableContent.removeViewAt(2)
         }
@@ -520,26 +565,23 @@ class LoanOperationActivity : AppCompatActivity() {
         tvColTranAmt.visibility = if (isCollection) View.VISIBLE else View.GONE
 
         flows.forEach { flow ->
-            val rowIndex = tlTableContent.childCount - 2
-            val bgColor = Color.WHITE
-            
             val row = LinearLayout(this).apply {
                 orientation = LinearLayout.HORIZONTAL
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                setBackgroundColor(bgColor)
+                setBackgroundColor(Color.WHITE)
             }
 
             val values = mutableListOf(
-                flow.flowDate,           // index 0
-                flow.flowId,             // index 1
-                flow.flowCode,           // index 2
-                String.format("%.2f", flow.flowAmt)  // index 3
+                flow.flowDate,
+                flow.flowId,
+                flow.flowCode,
+                String.format("%.2f", flow.flowAmt)
             )
             if (isCollection) {
-                values.add(String.format("%.2f", flow.tranAmt ?: 0.0))  // index 4 (if collection)
+                values.add(String.format("%.2f", flow.tranAmt ?: 0.0))
             }
-            values.add(flow.loanAcctNo)  // account no - index changes
-            values.add(flow.acctName)    // account name - last index
+            values.add(flow.loanAcctNo)
+            values.add(flow.acctName)
 
             val weights = mutableListOf(1.2f, 1.0f, 1.0f, 1.2f)
             if (isCollection) weights.add(1.2f)
@@ -551,12 +593,9 @@ class LoanOperationActivity : AppCompatActivity() {
                     text = value
                     textSize = 10f
                     setPadding(10, 12, 10, 12)
-                    // Set gravity based on column type
                     gravity = when (idx) {
-                        0, 1, 2,                     // Flow Date, Flow ID, Flow Code
-                        values.size - 2,             // Account No (second last)
-                        values.size - 1 -> Gravity.START   // Account Name (last)
-                        3, if (isCollection) 4 else -1 -> Gravity.END  // Flow Amt, Tran Amt
+                        0, 1, 2, values.size - 2, values.size - 1 -> Gravity.START
+                        3, if (isCollection) 4 else -1 -> Gravity.END
                         else -> Gravity.CENTER
                     }
                     setBackgroundColor(Color.TRANSPARENT)
@@ -565,23 +604,23 @@ class LoanOperationActivity : AppCompatActivity() {
                 row.addView(textView)
             }
 
-
             row.setOnClickListener {
-                if (rgOperationType.checkedRadioButtonId != R.id.rbCollection) {
-                    performTransactionInterest(flow)
+                when (rgOperationType.checkedRadioButtonId) {
+                    R.id.rbCollection -> { /* optional allocation dialog */ }
+                    else -> performTransaction(flow)
                 }
             }
             tlTableContent.addView(row)
         }
     }
 
-    private fun performTransactionInterest(flow: LoanFlowDetail) {
+    private fun performTransaction(flow: LoanFlowDetail) {
         val operation = when (rgOperationType.checkedRadioButtonId) {
             R.id.rbInterest -> "Interest"
             R.id.rbFees -> "Fees"
             R.id.rbPenalty -> "Penalty"
             R.id.rbBooking -> "Booking"
-            else -> ""
+            else -> return
         }
 
         lifecycleScope.launch {
@@ -596,22 +635,51 @@ class LoanOperationActivity : AppCompatActivity() {
                     operation = operation
                 )
                 if (response.isSuccessful) {
-                    Toast.makeText(this@LoanOperationActivity, "Transaction Success: ${response.body()?.get("tranId")}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoanOperationActivity,
+                        "Transaction successful: ${response.body()?.get("tranId")}", Toast.LENGTH_LONG).show()
+                    refreshFlows()
+                } else {
+                    Toast.makeText(this@LoanOperationActivity,
+                        "Error: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Log.e("LoanOp", "Interest error: ${e.message}")
+                Toast.makeText(this@LoanOperationActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun addBulkRow(data: Map<String, Any>? = null) {
-        val rowIndex = llBulkRows.childCount
-        val bgColor = Color.WHITE
+    // ----------------------------------------------------------------------
+    // BULK COLLECTION HELPERS
+    // ----------------------------------------------------------------------
 
+    private fun addHeaderRow() {
+        val headerRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            setBackgroundColor(Color.parseColor("#E9ECEF"))
+        }
+        val headers = listOf("Transaction ID", "Names", "Reference", "Mobile Number", "Amount", "Allocated Amount", "Trans. Time", "Status", "Allocated")
+        val weights = listOf(1f, 1.5f, 1f, 1.2f, 1f, 1f, 1.2f, 1.2f, 0.8f)
+        headers.forEachIndexed { idx, text ->
+            val tv = TextView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, weights[idx])
+                this.text = text
+                textSize = 10f
+                setPadding(10, 12, 10, 12)
+                gravity = Gravity.CENTER
+                setTextColor(Color.BLACK)
+                setTypeface(null, android.graphics.Typeface.BOLD)
+            }
+            headerRow.addView(tv)
+        }
+        llBulkRows.addView(headerRow)
+    }
+
+    private fun addBulkRow(data: Map<String, Any>? = null) {
         val row = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             orientation = LinearLayout.HORIZONTAL
-            setBackgroundColor(bgColor)
+            setBackgroundColor(Color.WHITE)
         }
 
         val weights = listOf(1f, 1.5f, 1f, 1.2f, 1f, 1f, 1.2f, 1.2f)
@@ -660,46 +728,75 @@ class LoanOperationActivity : AppCompatActivity() {
 
     private fun populateBulkRows(list: List<Any>?) {
         llBulkRows.removeAllViews()
+        addHeaderRow()
         list?.forEach { item ->
             if (item is Map<*, *>) {
                 @Suppress("UNCHECKED_CAST")
                 addBulkRow(item as Map<String, Any>)
             }
         }
+        if (list.isNullOrEmpty()) {
+            addBulkRow()
+        }
     }
 
     private fun submitBulkTransactions() {
         val transactions = mutableListOf<MultipleTransactionRequest>()
-        for (i in 0 until llBulkRows.childCount) {
+        // Skip index 0 (header row) -> start from 1
+        for (i in 1 until llBulkRows.childCount) {
             val row = llBulkRows.getChildAt(i) as LinearLayout
             val tranId = (row.getChildAt(0) as EditText).text.toString()
             val name = (row.getChildAt(1) as EditText).text.toString()
             val ref = (row.getChildAt(2) as EditText).text.toString()
             val mobile = (row.getChildAt(3) as EditText).text.toString()
             val amt = (row.getChildAt(4) as EditText).text.toString()
-            
-            transactions.add(MultipleTransactionRequest(
-                acctNamedata = name,
-                tranId = tranId,
-                transactionDate = sdfUI.format(Date()),
-                tranParticulardata = amt,
-                acctNum = ref,
-                tranRemarks = "",
-                globalAuthUser = "SYSTEM"
-            ))
+
+            transactions.add(
+                MultipleTransactionRequest(
+                    acctNamedata = name,
+                    tranId = tranId,
+                    transactionDate = sdfUI.format(Date()),
+                    tranParticulardata = amt,
+                    acctNum = ref,
+                    tranRemarks = "",
+                    globalAuthUser = "SYSTEM"
+                )
+            )
+        }
+
+        if (transactions.isEmpty()) {
+            Toast.makeText(this, "No data rows to submit", Toast.LENGTH_SHORT).show()
+            return
         }
 
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.api.saveMultipleTransactions1(transactions)
                 if (response.isSuccessful) {
-                    Toast.makeText(this@LoanOperationActivity, "Bulk collection submitted: ${response.body()?.get("message")}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@LoanOperationActivity,
+                        "Bulk collection submitted: ${response.body()?.get("message")}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    llBulkRows.removeAllViews()
+                    addHeaderRow()
+                    addBulkRow()
+                } else {
+                    Toast.makeText(
+                        this@LoanOperationActivity,
+                        "Submission failed: ${response.errorBody()?.string()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@LoanOperationActivity, "Submission failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    // ----------------------------------------------------------------------
+    // FILE UPLOAD & DISPLAY UPLOADED RECORDS
+    // ----------------------------------------------------------------------
 
     private fun uploadProcessFile() {
         val uri = selectedFileUri ?: return
@@ -708,10 +805,13 @@ class LoanOperationActivity : AppCompatActivity() {
                 val file = uriToFile(uri)
                 val requestFile = file.asRequestBody("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet".toMediaTypeOrNull())
                 val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                
+
                 val response = RetrofitClient.api.leaseUploadExcel(body, "LOAN_OP", "SYSTEM")
                 if (response.isSuccessful) {
-                    Toast.makeText(this@LoanOperationActivity, "File uploaded successfully", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoanOperationActivity, "File uploaded successfully", Toast.LENGTH_SHORT).show()
+                    fetchUploadedRecords()
+                } else {
+                    Toast.makeText(this@LoanOperationActivity, "Upload failed: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@LoanOperationActivity, "Upload failed: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -719,74 +819,182 @@ class LoanOperationActivity : AppCompatActivity() {
         }
     }
 
-    private fun openAccountSearchDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_account_search, null)
-        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
-
-        val etSearchAccNo = dialogView.findViewById<EditText>(R.id.etSearchAccNo)
-        val btnFilter = dialogView.findViewById<Button>(R.id.btnFilter)
-        val btnClose = dialogView.findViewById<Button>(R.id.btnCloseDialog)
-        val tlAccounts = dialogView.findViewById<TableLayout>(R.id.tlAccounts)
-
-        fun populateSearchTable(list: List<List<Any>>) {
-            tlAccounts.removeAllViews()
-            for (acc in list) {
-                if (acc.size < 2) continue
-                val rowIndex = tlAccounts.childCount
-                val bgColor = Color.WHITE
-                val row = TableRow(this@LoanOperationActivity).apply { setBackgroundColor(bgColor) }
-                val tvNo = TextView(this@LoanOperationActivity).apply {
-                    text = acc[0].toString()
-                    textSize = 10f
-                    setPadding(16, 16, 16, 16)
-                    setBackgroundColor(Color.TRANSPARENT)
-                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-                }
-                val tvName = TextView(this).apply {
-                    text = acc[1].toString()
-                    textSize = 10f
-                    setPadding(16, 16, 16, 16)
-                    setBackgroundColor(Color.TRANSPARENT)
-                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
-                }
-                row.addView(tvNo); row.addView(tvName)
-                row.setOnClickListener {
-                    etAccountNo.setText(acc[0].toString())
-                    etAcctName.setText(acc[1].toString())
-                    etRecoveryPaid.setText("0.00")
-                    fetchAccountBalance(acc[0].toString())
-                    refreshFlows()
-                    dialog.dismiss()
-                }
-                tlAccounts.addView(row)
-            }
-        }
-
-        btnFilter.setOnClickListener {
-            val query = etSearchAccNo.text.toString()
-            if (query.isEmpty() && rgOperationType.checkedRadioButtonId == R.id.rbCollection && initialCollection != null) {
-                populateSearchTable(initialCollection!!)
-                return@setOnClickListener
-            }
-            
-            lifecycleScope.launch {
-                try {
-                    val api = RetrofitClient.api
-                    val response = api.search(query)
-                    if (response.isSuccessful) {
-                        response.body()?.let { populateSearchTable(it) }
+    private fun fetchUploadedRecords() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.leaseCollection("uploadlist")
+                if (response.isSuccessful && response.body() != null) {
+                    @Suppress("UNCHECKED_CAST")
+                    val data = response.body() as Map<String, Any>
+                    val list = data["Listofvalues"] as? List<Map<String, Any>> ?: emptyList()
+                    if (list.isNotEmpty()) {
+                        populateUploadedTable(list)
+                    } else {
+                        Toast.makeText(this@LoanOperationActivity, "No records found", Toast.LENGTH_SHORT).show()
                     }
-                } catch (e: Exception) { Log.e("LoanOp", "Search error: ${e.message}") }
+                } else {
+                    Toast.makeText(this@LoanOperationActivity, "Failed to fetch records", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("LoanOp", "Fetch uploaded records error: ${e.message}")
             }
         }
+    }
 
-        btnClose.setOnClickListener { dialog.dismiss() }
-        
-        if (rgOperationType.checkedRadioButtonId == R.id.rbCollection && initialCollection != null) {
-            populateSearchTable(initialCollection!!)
+    private fun populateUploadedTable(records: List<Map<String, Any>>) {
+        while (tlTableContent.childCount > 2) {
+            tlTableContent.removeViewAt(2)
         }
-        
-        dialog.show()
+        tvNoRecords.visibility = if (records.isEmpty()) View.VISIBLE else View.GONE
+        if (records.isEmpty()) return
+
+        val weights = listOf(1.2f, 1.5f, 1.2f, 1.2f, 1.0f, 1.0f, 1.2f, 1.2f)
+        records.forEach { item ->
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                setBackgroundColor(Color.WHITE)
+            }
+            val values = listOf(
+                item["transaction_id"]?.toString() ?: "",
+                item["names"]?.toString() ?: "",
+                item["reference"]?.toString() ?: "",
+                item["mobile_number"]?.toString() ?: "",
+                item["amount"]?.toString() ?: "0",
+                item["allocated_amount"]?.toString() ?: "0",
+                item["trans_time"]?.toString() ?: "",
+                item["status"]?.toString() ?: ""
+            )
+            values.forEachIndexed { idx, value ->
+                val tv = TextView(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, weights[idx])
+                    text = value
+                    textSize = 10f
+                    setPadding(10, 12, 10, 12)
+                    gravity = Gravity.CENTER
+                    setBackgroundColor(Color.TRANSPARENT)
+                    setTextColor(Color.BLACK)
+                }
+                row.addView(tv)
+            }
+            tlTableContent.addView(row)
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // ACCOUNT SEARCH DIALOG & BALANCE FETCH
+    // ----------------------------------------------------------------------
+
+    private fun openAccountSearchDialog() {
+        // Create a progress dialog using AlertDialog with a ProgressBar (modern approach)
+        val progressView = ProgressBar(this@LoanOperationActivity).apply {
+            isIndeterminate = true
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
+        val progressDialog = AlertDialog.Builder(this@LoanOperationActivity).apply {
+            setTitle("Loading")
+            setMessage("Loading accounts...")
+            setView(progressView)
+            setCancelable(false)
+        }.create()
+        progressDialog.show()
+
+        lifecycleScope.launch {
+            var retries = 0
+            while (!isInitialDataLoaded && retries < 50) {
+                delay(100)
+                retries++
+            }
+            progressDialog.dismiss()
+
+            val dialogView = layoutInflater.inflate(R.layout.dialog_account_search, null)
+            val dialog = AlertDialog.Builder(this@LoanOperationActivity).setView(dialogView).create()
+
+            val etSearchAccNo = dialogView.findViewById<EditText>(R.id.etSearchAccNo)
+            val btnFilter = dialogView.findViewById<Button>(R.id.btnFilter)
+            val btnClose = dialogView.findViewById<Button>(R.id.btnCloseDialog)
+            val tlAccounts = dialogView.findViewById<TableLayout>(R.id.tlAccounts)
+
+            fun populateSearchTable(list: List<List<Any>>) {
+                tlAccounts.removeAllViews()
+                if (list.isEmpty()) {
+                    val emptyRow = TableRow(this@LoanOperationActivity)
+                    val tv = TextView(this@LoanOperationActivity).apply {
+                        text = "No accounts found"
+                        gravity = Gravity.CENTER
+                        setPadding(16, 16, 16, 16)
+                        layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+                    }
+                    emptyRow.addView(tv)
+                    tlAccounts.addView(emptyRow)
+                    return
+                }
+                for (acc in list) {
+                    if (acc.size < 2) continue
+                    val row = TableRow(this@LoanOperationActivity).apply { setBackgroundColor(Color.WHITE) }
+                    val tvNo = TextView(this@LoanOperationActivity).apply {
+                        text = acc[0].toString()
+                        textSize = 10f
+                        setPadding(16, 16, 16, 16)
+                        setBackgroundColor(Color.TRANSPARENT)
+                        layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    }
+                    val tvName = TextView(this@LoanOperationActivity).apply {
+                        text = acc[1].toString()
+                        textSize = 10f
+                        setPadding(16, 16, 16, 16)
+                        setBackgroundColor(Color.TRANSPARENT)
+                        layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f)
+                    }
+                    row.addView(tvNo)
+                    row.addView(tvName)
+                    row.setOnClickListener {
+                        etAccountNo.setText(acc[0].toString())
+                        etAcctName.setText(acc[1].toString())
+                        etRecoveryPaid.setText("0.00")
+                        fetchAccountBalance(acc[0].toString())
+                        refreshFlows()
+                        dialog.dismiss()
+                    }
+                    tlAccounts.addView(row)
+                }
+            }
+
+            if (initialCollection != null && initialCollection!!.isNotEmpty()) {
+                populateSearchTable(initialCollection!!)
+            } else {
+                try {
+                    val response = RetrofitClient.api.search("")
+                    if (response.isSuccessful && response.body() != null) {
+                        populateSearchTable(response.body()!!)
+                    } else {
+                        Toast.makeText(this@LoanOperationActivity, "Failed to load accounts", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this@LoanOperationActivity, "Error loading accounts: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            btnFilter.setOnClickListener {
+                val query = etSearchAccNo.text.toString()
+                lifecycleScope.launch {
+                    try {
+                        val response = RetrofitClient.api.search(query)
+                        if (response.isSuccessful && response.body() != null) {
+                            populateSearchTable(response.body()!!)
+                        } else {
+                            populateSearchTable(emptyList())
+                        }
+                    } catch (e: Exception) {
+                        Log.e("LoanOp", "Search error: ${e.message}")
+                        populateSearchTable(emptyList())
+                    }
+                }
+            }
+
+            btnClose.setOnClickListener { dialog.dismiss() }
+            dialog.show()
+        }
     }
 
     private fun fetchAccountBalance(accNo: String) {
@@ -796,9 +1004,15 @@ class LoanOperationActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     etAcctBalance.setText(response.body())
                 }
-            } catch (e: Exception) { Log.e("LoanOp", "Balance error: ${e.message}") }
+            } catch (e: Exception) {
+                Log.e("LoanOp", "Balance error: ${e.message}")
+            }
         }
     }
+
+    // ----------------------------------------------------------------------
+    // UTILITIES
+    // ----------------------------------------------------------------------
 
     private fun getFileName(uri: Uri): String {
         return uri.path?.substringAfterLast('/') ?: "Selected File"
@@ -815,6 +1029,13 @@ class LoanOperationActivity : AppCompatActivity() {
     }
 
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()
-    private fun View.setAllPadding(padding: Int) = setPadding(padding, padding, padding, padding)
-}
 
+    private fun convertUIToISO(dateStr: String): String {
+        return try {
+            val date = sdfUI.parse(dateStr)
+            sdfISO.format(date)
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
+}
