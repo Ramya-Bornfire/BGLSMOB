@@ -44,6 +44,8 @@ import com.example.bgls.DataModels.AssetLiabilityResponse
 import com.example.bgls.DataModels.AddHolidayMasterRequest
 import com.example.bgls.DataModels.BalanceSheetResponse
 import com.example.bgls.DataModels.BalancingReportResponse
+import com.example.bgls.DataModels.DepositFlowItem
+import com.example.bgls.DataModels.DepositOpenResponse
 import com.example.bgls.DataModels.HolidayMasterListResponse
 import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
@@ -1375,5 +1377,31 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Query("ApprefNO") appRefNo: String,
         @Query("rec_no") recNo: String = "1",
         @Query("hold_remarks") holdRemarks: String? = null
+    ): Response<ResponseBody>
+
+    // Deposit Add – Get data for opening screen (generated account number, customer list, etc.)
+    @GET("api/depositsopen")
+    suspend fun getDepositOpenScreen(
+        @Query("formmode") formmode: String = "list"
+    ): Response<DepositOpenResponse>
+
+    // Generate flow schedule (returns list of flow entries)
+    @GET("api/getDepositFlow")
+    suspend fun getDepositFlow(
+        @Query("deposit_date") depositDate: String,
+        @Query("deposit_type") depositType: String,
+        @Query("depo_actno") depoActNo: String,
+        @Query("deposit_period") depositPeriod: String,
+        @Query("deposit_amt") depositAmt: String,
+        @Query("rate_of_int") rateOfInt: String,
+        @Query("frequency") frequency: String,
+        @Query("deposit_frequency") depositFrequency: String
+    ): Response<List<DepositFlowItem>>
+
+    // Submit new deposit (Add)
+    @FormUrlEncoded
+    @POST("api/depositAdd")
+    suspend fun addDeposit(
+        @FieldMap fields: Map<String, String>
     ): Response<ResponseBody>
 }

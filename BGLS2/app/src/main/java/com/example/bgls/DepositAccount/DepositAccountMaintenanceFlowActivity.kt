@@ -184,47 +184,99 @@ class DepositAccountMaintenanceFlowActivity : AppCompatActivity() {
         }
     }
 
-    private fun performModify() {
-        val fields = mutableMapOf<String, String>()
-        fields["branch_desc"] = binding.etBranchDesc.text.toString()
-        fields["branch_id"] = binding.etBranchId.text.toString()
-        fields["currency"] = binding.etCurrency.text.toString()
-        fields["cust_id"] = binding.etCustId.text.toString()
-        fields["cust_name"] = binding.etCustName.text.toString()
-        fields["deposit_amt"] = binding.etAmount.text.toString().replace(",", "")
-        fields["int_amt"] = binding.etInterestAmount.text.toString().replace(",", "")
-        fields["maturity_amt"] = binding.etMaturityAmount.text.toString().replace(",", "")
-        fields["deposit_date"] = binding.etDepositDate.text.toString()
-        fields["deposit_period"] = binding.etPeriod.text.toString()
-        fields["deposit_type"] = binding.etDepositType.text.toString()
-        fields["frequency"] = binding.etFrequency.text.toString()
-        fields["rate_of_int"] = binding.etRoi.text.toString()
-        fields["scheme_code"] = binding.etSchemeCode.text.toString()
-        fields["glsh_code"] = binding.etGlshCode.text.toString()
-        fields["glsh_desc"] = binding.etGlshDesc.text.toString()
+//    private fun performModify() {
+//        val fields = mutableMapOf<String, String>()
+//        fields["branch_desc"] = binding.etBranchDesc.text.toString()
+//        fields["branch_id"] = binding.etBranchId.text.toString()
+//        fields["currency"] = binding.etCurrency.text.toString()
+//        fields["cust_id"] = binding.etCustId.text.toString()
+//        fields["cust_name"] = binding.etCustName.text.toString()
+//        fields["deposit_amt"] = binding.etAmount.text.toString().replace(",", "")
+//        fields["int_amt"] = binding.etInterestAmount.text.toString().replace(",", "")
+//        fields["maturity_amt"] = binding.etMaturityAmount.text.toString().replace(",", "")
+//        fields["deposit_date"] = binding.etDepositDate.text.toString()
+//        fields["deposit_period"] = binding.etPeriod.text.toString()
+//        fields["deposit_type"] = binding.etDepositType.text.toString()
+//        fields["frequency"] = binding.etFrequency.text.toString()
+//        fields["rate_of_int"] = binding.etRoi.text.toString()
+//        fields["scheme_code"] = binding.etSchemeCode.text.toString()
+//        fields["glsh_code"] = binding.etGlshCode.text.toString()
+//        fields["glsh_desc"] = binding.etGlshDesc.text.toString()
+//
+//        CoroutineScope(Dispatchers.IO).launch {
+//            try {
+//                val response = RetrofitClient.api.modifyDepositMaintenance(currentActNo!!, fields)
+//                if (response.isSuccessful) {
+//                    val msg = response.body()?.string() ?: "Updated successfully"
+//                    withContext(Dispatchers.Main) {
+//                        Toast.makeText(this@DepositAccountMaintenanceFlowActivity, msg, Toast.LENGTH_SHORT).show()
+//                        finish()
+//                    }
+//                } else {
+//                    withContext(Dispatchers.Main) {
+//                        Toast.makeText(this@DepositAccountMaintenanceFlowActivity, "Modification failed", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                withContext(Dispatchers.Main) {
+//                    Toast.makeText(this@DepositAccountMaintenanceFlowActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//    }
+private fun performModify() {
+    val fields = mutableMapOf<String, String>()
+    fields["branch_id"] = binding.etBranchId.text.toString()
+    fields["branch_desc"] = binding.etBranchDesc.text.toString()
+    fields["cust_id"] = binding.etCustId.text.toString()
+    fields["cust_name"] = binding.etCustName.text.toString()
+    fields["deposit_type"] = binding.etDepositType.text.toString()
+    fields["scheme_code"] = binding.etSchemeCode.text.toString()
+    fields["glsh_code"] = binding.etGlshCode.text.toString()
+    fields["glsh_desc"] = binding.etGlshDesc.text.toString()
+    fields["deposit_date"] = binding.etDepositDate.text.toString()
+    fields["deposit_period"] = binding.etPeriod.text.toString()
+    fields["deposit_amt"] = binding.etAmount.text.toString().replace(",", "")
+    fields["rate_of_int"] = binding.etRoi.text.toString()
+    fields["int_amt"] = binding.etInterestAmount.text.toString().replace(",", "")
+    fields["frequency"] = binding.etFrequency.text.toString()
+    fields["currency"] = binding.etCurrency.text.toString()
+    fields["maturity_date"] = binding.etMaturityDate.text.toString()
+    fields["maturity_amt"] = binding.etMaturityAmount.text.toString().replace(",", "")
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = RetrofitClient.api.modifyDepositMaintenance(currentActNo!!, fields)
-                if (response.isSuccessful) {
-                    val msg = response.body()?.string() ?: "Updated successfully"
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@DepositAccountMaintenanceFlowActivity, msg, Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@DepositAccountMaintenanceFlowActivity, "Modification failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
+    fun convertToBackendDate(dateStr: String): String {
+        return try {
+            val parts = dateStr.split("-")
+            if (parts.size == 3) "${parts[2]}-${parts[1]}-${parts[0]}" else dateStr
+        } catch (e: Exception) { dateStr }
+    }
+
+    fields["deposit_date"] = convertToBackendDate(binding.etDepositDate.text.toString())
+    fields["maturity_date"] = convertToBackendDate(binding.etMaturityDate.text.toString())
+
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val response = RetrofitClient.api.modifyDepositMaintenance(currentActNo!!, fields)
+            if (response.isSuccessful) {
+                val msg = response.body()?.string() ?: "Modified successfully"
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@DepositAccountMaintenanceFlowActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DepositAccountMaintenanceFlowActivity, msg, Toast.LENGTH_SHORT).show()
+                    finish()
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@DepositAccountMaintenanceFlowActivity,
+                        "Modify failed: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@DepositAccountMaintenanceFlowActivity,
+                    "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
+}
     private fun enterVerifyMode() {
         binding.tvTitle.text = "DEPOSIT MAINTENANCE - Verify"
         binding.btnVerify.text = "Submit"
@@ -326,4 +378,6 @@ class DepositAccountMaintenanceFlowActivity : AppCompatActivity() {
             dateStr
         }
     }
+
+    /**/
 }
