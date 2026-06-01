@@ -50,7 +50,6 @@ import com.example.bgls.DataModels.HolidayMasterListResponse
 import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
 import com.example.bgls.DataModels.KycListResponse
-import com.example.bgls.DataModels.LoanClosureRequest
 import com.example.bgls.DataModels.LoanMaintenanceViewResponse
 import com.example.bgls.DataModels.LoginRequest
 import com.example.bgls.DataModels.LoginResponse
@@ -1410,13 +1409,5 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
     suspend fun leaseCollection(
         @Query("formmode") formmode: String?
     ): Response<Map<String, Any>>
-    @POST("api/saveLoanpreClosureDetails")
-    suspend fun saveLoanpreClosureDetails(
-        @Body request: LoanClosureRequest
-    ): Response<String>
 
-    @POST("api/saveLoanClosureDetails")
-    suspend fun saveLoanClosureDetails(
-        @Body request: LoanClosureRequest
-    ): Response<String>
 }
