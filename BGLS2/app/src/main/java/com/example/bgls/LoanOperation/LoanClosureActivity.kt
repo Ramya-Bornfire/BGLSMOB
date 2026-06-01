@@ -14,7 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.bgls.DataModels.LoanClosureDataResponse
+import com.example.bgls.DataModels.LoanClosureRequest
 import com.example.bgls.DataModels.LoanFlowDetail
+import com.example.bgls.DataModels.LoanPreClosureRequest
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
@@ -104,10 +106,10 @@ class LoanClosureActivity : AppCompatActivity() {
     private fun setMode(isPreClosure: Boolean) {
         val savedId = currentAccountNo
         val savedName = etAccountName.text.toString()
-        
+
         isPreClosureMode = isPreClosure
         clearForm()
-        
+
         // Restore account if it was selected
         if (savedId.isNotEmpty()) {
             currentAccountNo = savedId
@@ -313,7 +315,7 @@ class LoanClosureActivity : AppCompatActivity() {
     private fun onAccountSelected(accountNo: String, accountName: String) {
         // Isolate ID if it's combined (e.g., "1001 / JOHN DOE")
         val isolatedId = accountNo.split(" / ").firstOrNull()?.trim() ?: accountNo.split(" - ").firstOrNull()?.trim() ?: accountNo.trim()
-        
+
         currentAccountNo = isolatedId
         etAccountId.setText(isolatedId)
         etAccountName.setText(accountName)
@@ -345,8 +347,8 @@ class LoanClosureActivity : AppCompatActivity() {
                     val loanDetailResp = api.fetchLoanDetails(accountNo)
                     if (loanDetailResp.isSuccessful && loanDetailResp.body() != null) {
                         val data = loanDetailResp.body()
-                        val amt = data?.get("loan_amount")?.toString() 
-                            ?: data?.get("disbursement_amt")?.toString() 
+                        val amt = data?.get("loan_amount")?.toString()
+                            ?: data?.get("disbursement_amt")?.toString()
                             ?: "0.00"
                         val disb = amt.replace(",", "").toDoubleOrNull() ?: 0.0
                         etDisbursement.setText(formatCurrency(disb))
@@ -642,6 +644,67 @@ private fun createTableRow(
             .show()
     }
 
+//    private fun performSubmit() {
+//        val rowDataList = mutableListOf<Map<String, Any>>()
+//
+//        for (i in 0 until llRows.childCount) {
+//            val row = llRows.getChildAt(i) as? LinearLayout ?: continue
+//            val flowDate = (row.getChildAt(0) as EditText).text.toString()
+//            val flowCode = (row.getChildAt(1) as EditText).text.toString()
+//            val flowAmt = (row.getChildAt(2) as EditText).text.toString().replace(",", "")
+//            val tranAmt = (row.getChildAt(3) as EditText).text.toString().replace(",", "")
+//            val waiver = (row.getChildAt(4) as EditText).text.toString().replace(",", "")
+//            val additional = (row.getChildAt(5) as EditText).text.toString().replace(",", "")
+//
+//            rowDataList.add(
+//                mapOf(
+//                    "flow_date" to flowDate,
+//                    "flow_code" to flowCode,
+//                    "flow_amt" to (flowAmt.ifEmpty { "0" }),
+//                    "tran_amt" to (tranAmt.ifEmpty { "0" }),
+//                    "waiver_total_amt" to (waiver.ifEmpty { "0" }),
+//                    "additional_amt" to (additional.ifEmpty { "0" })
+//                )
+//            )
+//        }
+//
+//        val data = mapOf<String, Any>(
+//            "list" to rowDataList,
+//            "acct_num" to currentAccountNo,
+//            "total_flow_amt_db" to totalFlowAmtFromDb.toString()
+//        )
+//
+//        lifecycleScope.launch {
+//            try {
+//                val api = RetrofitClient.api
+//                val response = if (isPreClosureMode) {
+//                    api.saveLoanpreClosureDetails(data)
+//                } else {
+//                    api.saveLoanClosureDetails(data)
+//                }
+//
+//                if (response.isSuccessful) {
+//                    val msg = response.body() ?: "Success"
+//                    AlertDialog.Builder(this@LoanClosureActivity)
+//                        .setMessage(msg)
+//                        .setPositiveButton("Close") { d, _ ->
+//                            d.dismiss()
+//                            clearForm()
+//                            setMode(isPreClosureMode)
+//                        }
+//                        .show()
+//                } else {
+//                    Toast.makeText(this@LoanClosureActivity,
+//                        "Error: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
+//                }
+//            } catch (e: Exception) {
+//                Log.e(TAG, "Submit error: ${e.message}")
+//                Toast.makeText(this@LoanClosureActivity,
+//                    "Error saving data: ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+
     private fun performSubmit() {
         val rowDataList = mutableListOf<Map<String, Any>>()
 
@@ -666,19 +729,23 @@ private fun createTableRow(
             )
         }
 
-        val data = mapOf<String, Any>(
-            "list" to rowDataList,
-            "acct_num" to currentAccountNo,
-            "total_flow_amt_db" to totalFlowAmtFromDb.toString()
-        )
-
         lifecycleScope.launch {
             try {
                 val api = RetrofitClient.api
                 val response = if (isPreClosureMode) {
-                    api.saveLoanpreClosureDetails(data)
+                    val request = LoanPreClosureRequest(
+                        list = rowDataList,
+                        acct_num = currentAccountNo,
+                        total_flow_amt_db = totalFlowAmtFromDb.toString()
+                    )
+                    api.saveLoanpreClosureDetails(request)
                 } else {
-                    api.saveLoanClosureDetails(data)
+                    val request = LoanClosureRequest(
+                        list = rowDataList,
+                        acct_num = currentAccountNo,
+                        total_flow_amt_db = totalFlowAmtFromDb.toString()
+                    )
+                    api.saveLoanClosureDetails(request)
                 }
 
                 if (response.isSuccessful) {
@@ -696,10 +763,26 @@ private fun createTableRow(
                         "Error: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Submit error: ${e.message}")
-                Toast.makeText(this@LoanClosureActivity,
-                    "Error saving data: ${e.message}", Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "Submit error: ${e.message}")
+            var errorMsg = "Unknown error"
+            if (e is retrofit2.HttpException && e.response()?.errorBody() != null) {
+                try {
+                    val errorJson = e.response()?.errorBody()?.string()
+                    // Parse JSON to get the "message" field
+                    val jsonObject = org.json.JSONObject(errorJson ?: "{}")
+                    errorMsg = jsonObject.optString("message", "Backend error occurred")
+                } catch (parseEx: Exception) {
+                    errorMsg = "Server error: ${e.message}"
+                }
+            } else {
+                errorMsg = "Network error: ${e.message}"
             }
+            AlertDialog.Builder(this@LoanClosureActivity)
+                .setTitle("Submission Failed")
+                .setMessage(errorMsg)
+                .setPositiveButton("OK", null)
+                .show()
+        }
         }
     }
 
@@ -774,7 +857,7 @@ private fun createTableRow(
     private fun formatFlowDate(dateStr: String?): String {
         if (dateStr.isNullOrEmpty()) return ""
         val input = dateStr.split(" ").firstOrNull() ?: dateStr // Remove time if present
-        
+
         val formats = listOf(
             SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH),
             SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH),

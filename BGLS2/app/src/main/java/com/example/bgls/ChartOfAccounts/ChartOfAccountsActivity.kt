@@ -124,7 +124,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
         // Initial tab selection (optional)
         when (intent.getStringExtra("SELECT_TAB")) {
             "LEDGER" -> selectTab(btnTabLedger, scrollTabLedger)
-            "TRANSACTION" -> selectTab(btnTabTransaction, scrollTabTransaction)
+            //"TRANSACTION" -> selectTab(btnTabTransaction, scrollTabTransaction)
             else -> selectTab(btnTabChart, scrollTabChart)
         }
     }
@@ -400,12 +400,12 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                 tvMainTitle.text = "ACCOUNT LEDGER"
                 updateSpinnerForTab(R.id.btnTabLedger)
             }
-            R.id.btnTabTransaction -> {
+            /*R.id.btnTabTransaction -> {
                 btnAdd.visibility = View.VISIBLE
                 spinnerOffice.visibility = View.GONE
                 tvMainTitle.text = "TRANSACTION ACCOUNTS"
                 loadTransactionAccounts()
-            }
+            }*/
         }
     }
 
@@ -460,9 +460,9 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                 val selected = spinnerOffice.selectedItem?.toString() ?: "Office"
                 loadLedgerAccounts(selected)
             }
-            R.id.btnTabTransaction -> {
+            /*R.id.btnTabTransaction -> {
                 loadTransactionAccounts()
-            }
+            }*/
         }
     }
 
@@ -550,7 +550,7 @@ class ChartOfAccountsActivity : AppCompatActivity() {
     // ------------------------------------------------------------
     // Transaction Accounts Tab
     // ------------------------------------------------------------
-    private fun loadTransactionAccounts() {
+    /*private fun loadTransactionAccounts() {
         RetrofitClient.api.getTransactionAccountsList("list")
             .enqueue(object : Callback<com.example.bgls.DataModels.TransactionAccountsResponse> {
                 override fun onResponse(
@@ -582,5 +582,5 @@ class ChartOfAccountsActivity : AppCompatActivity() {
                     Toast.makeText(this@ChartOfAccountsActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
-    }
+    }*/
 }

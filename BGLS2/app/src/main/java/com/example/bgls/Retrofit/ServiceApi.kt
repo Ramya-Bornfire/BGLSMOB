@@ -50,7 +50,9 @@ import com.example.bgls.DataModels.HolidayMasterListResponse
 import com.example.bgls.DataModels.InterestSummaryResponse
 import com.example.bgls.DataModels.JournalBookResponse
 import com.example.bgls.DataModels.KycListResponse
+import com.example.bgls.DataModels.LoanClosureRequest
 import com.example.bgls.DataModels.LoanMaintenanceViewResponse
+import com.example.bgls.DataModels.LoanPreClosureRequest
 import com.example.bgls.DataModels.LoginRequest
 import com.example.bgls.DataModels.LoginResponse
 import com.example.bgls.DataModels.ProfitLossResponse
@@ -877,12 +879,12 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
 
     @POST("api/saveLoanpreClosureDetails")
     suspend fun saveLoanpreClosureDetails(
-        @Body request: Map<String, Any>
+        @Body request: LoanPreClosureRequest
     ): Response<String>
 
     @POST("api/saveLoanClosureDetails")
     suspend fun saveLoanClosureDetails(
-        @Body request: Map<String, Any>
+        @Body request: LoanClosureRequest
     ): Response<String>
 
     // Add these two endpoints to your existing ServiceApi interface
