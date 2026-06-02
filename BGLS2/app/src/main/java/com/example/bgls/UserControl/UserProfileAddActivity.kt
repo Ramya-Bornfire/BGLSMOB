@@ -176,31 +176,56 @@ class UserProfileAddActivity : AppCompatActivity() {
     }
 
     private fun setupPasswordToggle() {
+
         ivTogglePassword.setOnClickListener {
+            if (currentMode == MODE_VIEW) {
+                // In VIEW mode, optionally allow toggling between "********" and real password
+                val realPwd = etPassword.tag as? String
+                if (realPwd != null && realPwd != "********") {
+                    // Toggle between real password and asterisks
+                    val currentText = etPassword.text.toString()
+                    if (currentText == "********") {
+                        etPassword.setText(realPwd)
+                        etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        ivTogglePassword.setImageResource(R.drawable.ic_eye)
+                    } else {
+                        etPassword.setText("********")
+                        etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        ivTogglePassword.setImageResource(R.drawable.ic_eye_off)
+                    }
+                } else {
+                    Toast.makeText(this, "No actual password to show", Toast.LENGTH_SHORT).show()
+                }
+                return@setOnClickListener
+            }
+
+            // Original toggle logic for EDIT/ADD modes (unchanged)
+            if (etPassword.text.isNullOrEmpty() && currentMode != MODE_VIEW) {
+                Toast.makeText(this, "No password to show", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             isPasswordVisible = !isPasswordVisible
-            
-            // Remember the current cursor position
             val selection = etPassword.selectionStart
-            
             if (isPasswordVisible) {
-                // Show password: change both inputType and transformationMethod
                 etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 ivTogglePassword.setImageResource(R.drawable.ic_eye)
             } else {
-                // Hide password: restore inputType and transformationMethod
                 etPassword.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
                 etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
                 ivTogglePassword.setImageResource(R.drawable.ic_eye_off)
             }
-            
-            // Restore selection (inputType change resets cursor)
             if (selection >= 0 && selection <= etPassword.text.length) {
                 etPassword.setSelection(selection)
             }
         }
         ivUserIdInfo.setOnClickListener { showEmployeePickerDialog() }
-        ivAccessControl.setOnClickListener { showAccessControlDialog() }
+        ivAccessControl.setOnClickListener {
+            val isEditable = currentMode != MODE_VIEW   // true for ADD/EDIT, false for VIEW
+            showAccessControlDialog(isEditable)
+        }
     }
 
     private fun showEmployeePickerDialog() {
@@ -208,7 +233,200 @@ class UserProfileAddActivity : AppCompatActivity() {
     }
 
     // Programmatic Access Control dialog (no extra XML)
-    private fun showAccessControlDialog() {
+//    private fun showAccessControlDialog() {
+//        val scrollView = ScrollView(this)
+//        val container = LinearLayout(this).apply {
+//            orientation = LinearLayout.VERTICAL
+//            setPadding(40, 40, 40, 40)
+//        }
+//
+//        val checkBoxMap = mutableMapOf<String, CheckBox>()
+//
+//        // Define permission groups (simplified – add all as needed)
+//        val groups = listOf(
+//            "Admin" to listOf("orgnaization_details", "user_controls", "reference_code_maintenance", "audit_trail", "notification_Reports"),
+//            "Migration" to listOf("customer_master", "loan_master", "loan_schedule_migration", "transaction_migration"),
+//            "Loan Operation" to listOf("loan_operation_ls", "loan_closure"),
+//            "Transaction Maintenance" to listOf("journal_entries", "account_ledger_posting", "account_ledger", "trial_balance_t", "profit_and_loss_account_t"),
+//            "Collection Process" to listOf("participating_banks", "loan_collecting"),
+//            "Batch Job Execution" to listOf("batch_job"),
+//            "Transaction Reports" to listOf("credit_facility_report", "end_of_month_report", "dab", "consolidated_report", "transaction_report",
+//                "interest_accrual_report", "penalty_accrual_report", "recovery_report", "demand_generation"),
+//            "Transaction Inquiries" to listOf("account_balance_inq", "interset_summary_inq", "journal_book", "account_ledgers_i",
+//                "trial_balance_i", "general_ledger", "profit_and_loss_account_i", "balance_sheet"),
+//            "Reversal Transactions" to listOf("transaction_reversal", "transaction_accounts")
+//        )
+//
+//        for ((groupName, items) in groups) {
+//            val title = TextView(this).apply {
+//                text = groupName
+//                textSize = 18f
+//                setTypeface(typeface, android.graphics.Typeface.BOLD)
+//                setPadding(0, 20, 0, 10)
+//            }
+//            container.addView(title)
+//            for (item in items) {
+//                val cb = CheckBox(this).apply {
+//                    text = item.replace("_", " ").replaceFirstChar {
+//                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+//                    }
+//                }
+//                checkBoxMap[item] = cb
+//                container.addView(cb)
+//            }
+//        }
+//
+//        // Preload existing permissions if available
+//        accessRoleRequest?.let { role ->
+//            checkBoxMap["orgnaization_details"]?.isChecked = role.orgDetails == "Y"
+//            checkBoxMap["user_controls"]?.isChecked = role.userControls == "Y"
+//            checkBoxMap["reference_code_maintenance"]?.isChecked = role.refCodeMaint == "Y"
+//            checkBoxMap["audit_trail"]?.isChecked = role.auditTrail == "Y"
+//            checkBoxMap["notification_Reports"]?.isChecked = role.notificationReports == "Y"
+//            checkBoxMap["customer_master"]?.isChecked = role.customerMaster == "Y"
+//            checkBoxMap["loan_master"]?.isChecked = role.loanMaster == "Y"
+//            checkBoxMap["loan_schedule_migration"]?.isChecked = role.loanScheduleMigration == "Y"
+//            checkBoxMap["transaction_migration"]?.isChecked = role.transactionMigration == "Y"
+//            checkBoxMap["loan_operation_ls"]?.isChecked = role.loanOperationLs == "Y"
+//            checkBoxMap["loan_closure"]?.isChecked = role.loanClosure == "Y"
+//            checkBoxMap["journal_entries"]?.isChecked = role.journalEntries == "Y"
+//            checkBoxMap["account_ledger_posting"]?.isChecked = role.accountLedgerPosting == "Y"
+//            checkBoxMap["account_ledger"]?.isChecked = role.accountLedger == "Y"
+//            checkBoxMap["trial_balance_t"]?.isChecked = role.trialBalanceT == "Y"
+//            checkBoxMap["profit_and_loss_account_t"]?.isChecked = role.profitLossT == "Y"
+//            checkBoxMap["participating_banks"]?.isChecked = role.participatingBanks == "Y"
+//            checkBoxMap["loan_collecting"]?.isChecked = role.loanCollecting == "Y"
+//            checkBoxMap["batch_job"]?.isChecked = role.batchJob == "Y"
+//            checkBoxMap["credit_facility_report"]?.isChecked = role.creditFacilityReport == "Y"
+//            checkBoxMap["end_of_month_report"]?.isChecked = role.endOfMonthReport == "Y"
+//            checkBoxMap["dab"]?.isChecked = role.dab == "Y"
+//            checkBoxMap["consolidated_report"]?.isChecked = role.consolidatedReport == "Y"
+//            checkBoxMap["transaction_report"]?.isChecked = role.transactionReport == "Y"
+//            checkBoxMap["interest_accrual_report"]?.isChecked = role.interestAccrualReport == "Y"
+//            checkBoxMap["penalty_accrual_report"]?.isChecked = role.penaltyAccrualReport == "Y"
+//            checkBoxMap["recovery_report"]?.isChecked = role.recoveryReport == "Y"
+//            checkBoxMap["demand_generation"]?.isChecked = role.demandGeneration == "Y"
+//            checkBoxMap["account_balance_inq"]?.isChecked = role.accountBalanceInq == "Y"
+//            checkBoxMap["interset_summary_inq"]?.isChecked = role.interestSummaryInq == "Y"
+//            checkBoxMap["journal_book"]?.isChecked = role.journalBook == "Y"
+//            checkBoxMap["account_ledgers_i"]?.isChecked = role.accountLedgersI == "Y"
+//            checkBoxMap["trial_balance_i"]?.isChecked = role.trialBalanceI == "Y"
+//            checkBoxMap["general_ledger"]?.isChecked = role.generalLedger == "Y"
+//            checkBoxMap["profit_and_loss_account_i"]?.isChecked = role.profitLossI == "Y"
+//            checkBoxMap["balance_sheet"]?.isChecked = role.balanceSheet == "Y"
+//            checkBoxMap["transaction_reversal"]?.isChecked = role.transactionReversal == "Y"
+//            checkBoxMap["transaction_accounts"]?.isChecked = role.transactionAccounts == "Y"
+//        }
+//
+//        scrollView.addView(container)
+//        AlertDialog.Builder(this)
+//            .setTitle("User Access Modules")
+//            .setView(scrollView)
+//            .setPositiveButton("Submit") { _, _ ->
+//                val isChecked = { key: String -> if (checkBoxMap[key]?.isChecked == true) "Y" else "N" }
+//                val migrationVal = if (
+//                    isChecked("customer_master") == "Y" ||
+//                    isChecked("loan_master") == "Y" ||
+//                    isChecked("loan_schedule_migration") == "Y" ||
+//                    isChecked("transaction_migration") == "Y"
+//                ) "Y" else "N"
+//                val loanOpVal = if (
+//                    isChecked("loan_operation_ls") == "Y" ||
+//                    isChecked("loan_closure") == "Y"
+//                ) "Y" else "N"
+//                val transMaintVal = if (
+//                    isChecked("journal_entries") == "Y" ||
+//                    isChecked("account_ledger_posting") == "Y" ||
+//                    isChecked("account_ledger") == "Y" ||
+//                    isChecked("trial_balance_t") == "Y" ||
+//                    isChecked("profit_and_loss_account_t") == "Y"
+//                ) "Y" else "N"
+//                val colVal = if (
+//                    isChecked("participating_banks") == "Y" ||
+//                    isChecked("loan_collecting") == "Y"
+//                ) "Y" else "N"
+//                val batchVal = if (
+//                    isChecked("batch_job") == "Y"
+//                ) "Y" else "N"
+//                val inqRepVal = if (
+//                    isChecked("account_balance_inq") == "Y" ||
+//                    isChecked("interset_summary_inq") == "Y" ||
+//                    isChecked("journal_book") == "Y" ||
+//                    isChecked("account_ledgers_i") == "Y" ||
+//                    isChecked("trial_balance_i") == "Y" ||
+//                    isChecked("general_ledger") == "Y" ||
+//                    isChecked("profit_and_loss_account_i") == "Y" ||
+//                    isChecked("balance_sheet") == "Y" ||
+//                    isChecked("credit_facility_report") == "Y" ||
+//                    isChecked("end_of_month_report") == "Y" ||
+//                    isChecked("dab") == "Y" ||
+//                    isChecked("consolidated_report") == "Y" ||
+//                    isChecked("transaction_report") == "Y" ||
+//                    isChecked("interest_accrual_report") == "Y" ||
+//                    isChecked("penalty_accrual_report") == "Y" ||
+//                    isChecked("recovery_report") == "Y" ||
+//                    isChecked("demand_generation") == "Y"
+//                ) "Y" else "N"
+//
+//                accessRoleRequest = AccessRoleRequest(
+//                    userId = etUserId.text.toString(),
+//                    roleId = spinnerRoleId.selectedItem.toString(),
+//                    roleDesc = etRoleDescription.text.toString(),
+//                    permissions = spinnerPermissions.selectedItem.toString(),
+//                    workClass = spinnerWorkClass.selectedItem.toString(),
+//                    admin = if (spinnerRoleId.selectedItem.toString() == "ADM") "Y" else "N",
+//                    orgDetails = isChecked("orgnaization_details"),
+//                    userControls = isChecked("user_controls"),
+//                    refCodeMaint = isChecked("reference_code_maintenance"),
+//                    auditTrail = isChecked("audit_trail"),
+//                    notificationReports = isChecked("notification_Reports"),
+//                    migration = migrationVal,
+//                    customerMaster = isChecked("customer_master"),
+//                    loanMaster = isChecked("loan_master"),
+//                    loanScheduleMigration = isChecked("loan_schedule_migration"),
+//                    transactionMigration = isChecked("transaction_migration"),
+//                    loanOperation = loanOpVal,
+//                    loanOperationLs = isChecked("loan_operation_ls"),
+//                    loanClosure = isChecked("loan_closure"),
+//                    transMaintenance = transMaintVal,
+//                    journalEntries = isChecked("journal_entries"),
+//                    accountLedgerPosting = isChecked("account_ledger_posting"),
+//                    accountLedger = isChecked("account_ledger"),
+//                    trialBalanceT = isChecked("trial_balance_t"),
+//                    profitLossT = isChecked("profit_and_loss_account_t"),
+//                    collectionProcess = colVal,
+//                    participatingBanks = isChecked("participating_banks"),
+//                    loanCollecting = isChecked("loan_collecting"),
+//                    batchJobExecution = batchVal,
+//                    batchJob = isChecked("batch_job"),
+//                    inquiriesReports = inqRepVal,
+//                    accountBalanceInq = isChecked("account_balance_inq"),
+//                    interestSummaryInq = isChecked("interset_summary_inq"),
+//                    journalBook = isChecked("journal_book"),
+//                    accountLedgersI = isChecked("account_ledgers_i"),
+//                    trialBalanceI = isChecked("trial_balance_i"),
+//                    generalLedger = isChecked("general_ledger"),
+//                    profitLossI = isChecked("profit_and_loss_account_i"),
+//                    balanceSheet = isChecked("balance_sheet"),
+//                    endOfMonthReport = isChecked("end_of_month_report"),
+//                    dab = isChecked("dab"),
+//                    transactionReport = isChecked("transaction_report"),
+//                    consolidatedReport = isChecked("consolidated_report"),
+//                    creditFacilityReport = isChecked("credit_facility_report"),
+//                    interestAccrualReport = isChecked("interest_accrual_report"),
+//                    penaltyAccrualReport = isChecked("penalty_accrual_report"),
+//                    recoveryReport = isChecked("recovery_report"),
+//                    demandGeneration = isChecked("demand_generation"),
+//                    transactionReversal = isChecked("transaction_reversal"),
+//                    transactionAccounts = isChecked("transaction_accounts")
+//                )
+//                Toast.makeText(this, "Access rights saved", Toast.LENGTH_SHORT).show()
+//            }
+//            .setNegativeButton("Cancel", null)
+//            .show()
+//    }
+
+    private fun showAccessControlDialog(editable: Boolean = true) {
         val scrollView = ScrollView(this)
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -217,7 +435,7 @@ class UserProfileAddActivity : AppCompatActivity() {
 
         val checkBoxMap = mutableMapOf<String, CheckBox>()
 
-        // Define permission groups (simplified – add all as needed)
+        // Permission groups (unchanged)
         val groups = listOf(
             "Admin" to listOf("orgnaization_details", "user_controls", "reference_code_maintenance", "audit_trail", "notification_Reports"),
             "Migration" to listOf("customer_master", "loan_master", "loan_schedule_migration", "transaction_migration"),
@@ -245,13 +463,14 @@ class UserProfileAddActivity : AppCompatActivity() {
                     text = item.replace("_", " ").replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                     }
+                    isEnabled = editable   // ✅ Disabled in VIEW mode
                 }
                 checkBoxMap[item] = cb
                 container.addView(cb)
             }
         }
 
-        // Preload existing permissions if available
+        // Preload existing permissions if available (keep your original mapping)
         accessRoleRequest?.let { role ->
             checkBoxMap["orgnaization_details"]?.isChecked = role.orgDetails == "Y"
             checkBoxMap["user_controls"]?.isChecked = role.userControls == "Y"
@@ -294,10 +513,14 @@ class UserProfileAddActivity : AppCompatActivity() {
         }
 
         scrollView.addView(container)
-        AlertDialog.Builder(this)
+
+        val builder = AlertDialog.Builder(this)
             .setTitle("User Access Modules")
             .setView(scrollView)
-            .setPositiveButton("Submit") { _, _ ->
+
+        if (editable) {
+            // Editable mode: Submit + Cancel
+            builder.setPositiveButton("Submit") { _, _ ->
                 val isChecked = { key: String -> if (checkBoxMap[key]?.isChecked == true) "Y" else "N" }
                 val migrationVal = if (
                     isChecked("customer_master") == "Y" ||
@@ -397,8 +620,13 @@ class UserProfileAddActivity : AppCompatActivity() {
                 )
                 Toast.makeText(this, "Access rights saved", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+            builder.setNegativeButton("Cancel", null)
+        } else {
+            // VIEW mode: only a Close button (no saving)
+            builder.setPositiveButton("Close", null)
+        }
+
+        builder.show()
     }
 
     private fun setupButtons() {
@@ -684,6 +912,36 @@ class UserProfileAddActivity : AppCompatActivity() {
         setSpinnerSelection(spinnerAccountAccessCode, user.acctAccessCode ?: "ALL")
         setSpinnerSelection(spinnerDocumentAccessCode, user.docAccessCode ?: "ALL")
         etRoleDescription.setText(user.roleDesc ?: "")
+
+        when (currentMode) {
+            MODE_VIEW -> {
+                // Show dummy asterisks (visual placeholder)
+                etPassword.setText("********")
+                etPassword.hint = null
+                etPassword.isEnabled = false
+                // If the backend actually returns a password (e.g., for demo), store it as tag
+                user.password?.takeIf { it.isNotBlank() }?.let { realPwd ->
+                    etPassword.tag = realPwd   // store real password for toggle later
+                }
+            }
+            MODE_EDIT -> {
+                // In edit mode, show the real password if available, otherwise blank
+                val realPwd = user.password?.takeIf { it.isNotBlank() }
+                if (realPwd != null) {
+                    etPassword.setText(realPwd)
+                    etPassword.tag = realPwd
+                } else {
+                    etPassword.setText("")
+                    etPassword.hint = "Leave blank to keep current password"
+                }
+                etPassword.isEnabled = true
+            }
+            MODE_ADD -> {
+                etPassword.setText("")
+                etPassword.hint = "Enter password"
+                etPassword.isEnabled = true
+            }
+        }
     }
 
     private fun setSpinnerSelection(spinner: Spinner, value: String) {

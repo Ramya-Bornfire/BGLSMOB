@@ -16,7 +16,17 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    packaging {
+        resources {
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/NOTICE"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "/META-INF/*.kotlin_module"
+        }
+    }
     buildTypes {
         release {
 
@@ -60,4 +70,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("org.apache.poi:poi-ooxml:5.2.5") {
+        exclude(group = "org.apache.logging.log4j")
+        exclude(group = "commons-logging")
+    }
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.20.0")
+    implementation("org.slf4j:slf4j-nop:2.0.9")
 }
