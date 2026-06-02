@@ -750,6 +750,17 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Body transactions: List<MultipleTransactionRequest>
     ): Response<Map<String, Any>>
 
+    @GET("api/getAccountDetails")
+    suspend fun getAccountDetails(
+        @Query("customerId") customerId: String,
+        @Query("transactionAmt") transactionAmt: Double
+    ): Response<List<Map<String, Any>>>
+
+//    @POST("api/updateMultipleTransactions")
+//    suspend fun updateMultipleTransactions(
+//        @Body transactions: List<Map<String, Any>>
+//    ): Response<Map<String, Any>>
+
     @Multipart
     @POST("api/UploadFileData")
     suspend fun uploadFileData(
@@ -1412,4 +1423,8 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Query("formmode") formmode: String?
     ): Response<Map<String, Any>>
 
+    @POST("api/updateMultipleTransactions")
+    suspend fun updateMultipleTransactions(
+        @Body transactions: List<@JvmSuppressWildcards Map<String, Any>>
+    ): Response<Map<String, Any>>
 }
