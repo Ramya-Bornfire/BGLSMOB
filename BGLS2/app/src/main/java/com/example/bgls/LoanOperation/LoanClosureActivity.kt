@@ -13,6 +13,8 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.bgls.CustomerMaster.AccountLedgerActivity
+import com.example.bgls.CustomerMaster.LoanScheduleViewActivity
 import com.example.bgls.DataModels.LoanClosureDataResponse
 import com.example.bgls.DataModels.LoanClosureRequest
 import com.example.bgls.DataModels.LoanFlowDetail
@@ -22,6 +24,7 @@ import com.example.bgls.Retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class LoanClosureActivity : AppCompatActivity() {
 
@@ -68,7 +71,7 @@ class LoanClosureActivity : AppCompatActivity() {
         tvTitle = findViewById(R.id.tvTitle)
         tvAccountLabel = findViewById(R.id.tvAccountLabel)
         tvBalanceLabel = findViewById(R.id.tvBalanceLabel)
-        btnScheduler = findViewById(R.id.btnScheduler)
+        btnScheduler = findViewById(R.id.btnSchedule)
         btnLedger = findViewById(R.id.btnLedger)
         btnPreClosureMode = findViewById(R.id.btnPreClosureMode)
         btnClosureMode = findViewById(R.id.btnClosureMode)
@@ -787,6 +790,51 @@ private fun createTableRow(
     }
 
     // ── Scheduler Navigation ───────────────────────────────────────────────
+//    private fun navigateToScheduler() {
+//        val accNo = currentAccountNo
+//        if (accNo.isEmpty()) {
+//            Toast.makeText(this, "Account number is required!", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//
+//        lifecycleScope.launch {
+//            try {
+//                val response = RetrofitClient.api.fetchLoanDetails(accNo)
+//                if (response.isSuccessful) {
+//                    val data = response.body()
+//                    val holderKey = data?.get("account_holderkey")?.toString() ?: ""
+//                    val encodedKey = data?.get("encoded_key")?.toString() ?: ""
+//                    val id = data?.get("id")?.toString() ?: accNo
+//
+//                    if (holderKey.isNotEmpty() && encodedKey.isNotEmpty()) {
+//                        try {
+//                            val cls = Class.forName(
+//                                "com.example.bgls.LoanSchedule.LoanScheduleViewActivity"
+//                            )
+//                            val intent = Intent(this@LoanClosureActivity, cls).apply {
+//                                putExtra("LOAN_ID", id)
+//                                putExtra("HOLDER_KEY", holderKey)
+//                                putExtra("ENCODED_KEY", encodedKey)
+//                                putExtra("FORMMODE", "viewloanschedule1")
+//                            }
+//                            startActivity(intent)
+//                        } catch (e: ClassNotFoundException) {
+//                            Toast.makeText(this@LoanClosureActivity,
+//                                "Scheduler screen not found", Toast.LENGTH_SHORT).show()
+//                        }
+//                    } else {
+//                        Toast.makeText(this@LoanClosureActivity,
+//                            "No Data!", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.e(TAG, "Scheduler error: ${e.message}")
+//                Toast.makeText(this@LoanClosureActivity,
+//                    "Error fetching loan details", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+
     private fun navigateToScheduler() {
         val accNo = currentAccountNo
         if (accNo.isEmpty()) {
@@ -796,43 +844,62 @@ private fun createTableRow(
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.fetchLoanDetails(accNo)
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    val holderKey = data?.get("account_holderkey")?.toString() ?: ""
-                    val encodedKey = data?.get("encoded_key")?.toString() ?: ""
-                    val id = data?.get("id")?.toString() ?: accNo
+                val response = RetrofitClient.api.getLoanMaintenanceView(id = accNo)
+                val view = response.body()?.view
+
+                if (view != null) {
+                    // Correct camelCase property names (capital 'K' for 'Key')
+                    val loanId = view.id ?: accNo
+                    val holderKey = view.accountHolderKey ?: ""
+                    val encodedKey = view.encodedKey ?: ""
+                    val branchKey = view.assignedBranchKey ?: ""
 
                     if (holderKey.isNotEmpty() && encodedKey.isNotEmpty()) {
-                        try {
-                            val cls = Class.forName(
-                                "com.example.bgls.LoanSchedule.LoanScheduleViewActivity"
-                            )
-                            val intent = Intent(this@LoanClosureActivity, cls).apply {
-                                putExtra("LOAN_ID", id)
-                                putExtra("HOLDER_KEY", holderKey)
-                                putExtra("ENCODED_KEY", encodedKey)
-                                putExtra("FORMMODE", "viewloanschedule1")
-                            }
-                            startActivity(intent)
-                        } catch (e: ClassNotFoundException) {
-                            Toast.makeText(this@LoanClosureActivity,
-                                "Scheduler screen not found", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoanClosureActivity, LoanScheduleViewActivity::class.java)
+                        intent.apply {
+                            putExtra("loanId", loanId)
+                            putExtra("holder_key", holderKey)
+                            putExtra("encoded_key", encodedKey)
+                            putExtra("branchKey", branchKey)
                         }
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this@LoanClosureActivity,
-                            "No Data!", Toast.LENGTH_SHORT).show()
+                            "Missing holder or encoded key", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Toast.makeText(this@LoanClosureActivity,
+                        "Loan details not found for account: $accNo", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Scheduler error: ${e.message}")
                 Toast.makeText(this@LoanClosureActivity,
-                    "Error fetching loan details", Toast.LENGTH_SHORT).show()
+                    "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     // ── Ledger Navigation ──────────────────────────────────────────────────
+//    private fun navigateToLedger() {
+//        val accNo = currentAccountNo
+//        if (accNo.isEmpty()) {
+//            Toast.makeText(this, "Account number is required!", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//        try {
+//            val cls = Class.forName(
+//                "com.example.bgls.AccountLedger.AccountLedgerDetailActivity"
+//            )
+//            val intent = Intent(this, cls).apply {
+//                putExtra("ACCT_NUM", accNo)
+//                putExtra("FORMMODE", "view")
+//            }
+//            startActivity(intent)
+//        } catch (e: ClassNotFoundException) {
+//            Toast.makeText(this, "Ledger screen not found", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
     private fun navigateToLedger() {
         val accNo = currentAccountNo
         if (accNo.isEmpty()) {
@@ -840,16 +907,13 @@ private fun createTableRow(
             return
         }
         try {
-            val cls = Class.forName(
-                "com.example.bgls.AccountLedger.AccountLedgerDetailActivity"
-            )
-            val intent = Intent(this, cls).apply {
-                putExtra("ACCT_NUM", accNo)
-                putExtra("FORMMODE", "view")
-            }
+            // Use the same ledger activity as in LoanScheduleViewActivity
+            val intent = Intent(this, AccountLedgerActivity::class.java)
+            intent.putExtra("acct_num", accNo)
             startActivity(intent)
-        } catch (e: ClassNotFoundException) {
-            Toast.makeText(this, "Ledger screen not found", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e(TAG, "Ledger error: ${e.message}")
+            Toast.makeText(this, "Ledger screen not found: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 

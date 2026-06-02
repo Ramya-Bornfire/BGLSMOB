@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- SLEEK PROFESSIONAL HEADER (Single Row) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/header_bg"
+        android:layout_marginTop="30dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow_back"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tvMainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOAN Remitance"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_centerInParent="true"/>
+
+        <!-- Right Side Container (User Info + Buttons) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+            <!-- Vertical User Info -->
+            <LinearLayout
+                android:id="@+id/userInfoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User ID"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserIdInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMP04"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtUserNameInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manivanan"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:text="Login Time"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textColor="#AACFFF"
+                        android:textSize="10sp"
+                        android:layout_marginEnd="4dp"/>
+                    <TextView
+                        android:id="@+id/txtLoginTimeInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btnHome"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/home"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ROW 1: OPERATION TYPE & ACCOUNT TYPE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <!-- OPERATION TYPE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp"
+                    android:layout_marginEnd="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPERATION TYPE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="8dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgOperationType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbCollection" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Collection" android:textSize="10sp" android:checked="true" android:paddingEnd="8dp"/>
+<!--                        <RadioButton android:id="@+id/rbInterest" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Interest" android:textSize="10sp" android:paddingEnd="8dp"/>-->
+<!--                        <RadioButton android:id="@+id/rbFees" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fees" android:textSize="10sp" android:paddingEnd="8dp"/>-->
+<!--                        <RadioButton android:id="@+id/rbPenalty" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Penalty" android:textSize="10sp" android:paddingEnd="8dp"/>-->
+<!--                        <RadioButton android:id="@+id/rbBooking" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Booking" android:textSize="10sp"/>-->
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- ACCOUNT TYPE -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACCOUNT TYPE"
+                        android:textStyle="bold"
+                        android:textSize="11sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="8dp"/>
+
+                    <RadioGroup
+                        android:id="@+id/rgAccountType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <RadioButton android:id="@+id/rbLoan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Loan" android:textSize="10sp" android:checked="true" android:paddingEnd="8dp"/>
+                        <RadioButton android:id="@+id/rbDeposit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Deposit" android:textSize="10sp" />
+                    </RadioGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ROW 2: COLLECTION TYPE -->
+            <LinearLayout
+                android:id="@+id/layoutCollectionType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="12dp"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COLLECTION TYPE"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:textColor="#333333"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioGroup
+                    android:id="@+id/rgCollectionType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RadioButton android:id="@+id/rbCash" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Cash" android:textSize="10sp" android:checked="true" android:paddingEnd="16dp"/>
+                    <RadioButton android:id="@+id/rbOfficeRouting" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Office Routing A/C" android:textSize="10sp" android:paddingEnd="16dp"/>
+<!--                    <RadioButton android:id="@+id/rbStandingInstruction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Standing Instruction" android:textSize="10sp" android:paddingEnd="16dp"/>-->
+
+<!--                    <RadioButton-->
+<!--                        android:id="@+id/rbMultipleEntries"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Multiple Entries"-->
+<!--                        android:textSize="10sp" />-->
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- STANDARD OPERATION SECTION -->
+            <LinearLayout
+                android:id="@+id/layoutStandardOperation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- OPERATION DATE SECTION -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OPERATION DATE"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:textColor="#333333"
+                        android:layout_marginBottom="12dp"/>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="4dp">
+
+                            <!-- TRANSACTION DATE -->
+                            <TextView
+                                android:id="@+id/tvTranDateLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Transaction"
+                                android:textSize="11sp"
+                                android:padding="6dp"
+                                android:textColor="#333333"/>
+                            <EditText
+                                android:id="@+id/etTranDate"
+                                android:layout_width="110dp"
+                                android:layout_height="36dp"
+                                android:text="01-05-2026"
+                                android:textSize="11sp"
+                                android:padding="6dp"
+                                android:background="@drawable/edittext_background"
+                                android:layout_marginEnd="16dp"/>
+
+                            <!-- FROM/TO DATES (Hidden by default) -->
+                            <TextView android:id="@+id/tvFromDateLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="From Date" android:textSize="11sp" android:padding="6dp" android:visibility="gone"/>
+                            <EditText android:id="@+id/etFromDate" android:layout_width="110dp" android:layout_height="36dp" android:text="04-05-2026" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginEnd="16dp" android:visibility="gone"/>
+
+                            <TextView android:id="@+id/tvToDateLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="To Date" android:textSize="11sp" android:padding="6dp" android:visibility="gone"/>
+                            <EditText android:id="@+id/etToDate" android:layout_width="110dp" android:layout_height="36dp" android:text="04-05-2026" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginEnd="16dp" android:visibility="gone"/>
+
+                            <!-- ACCOUNT NO -->
+                            <TextView
+                                android:id="@+id/tvAccountNoLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Account No"
+                                android:textSize="11sp"
+                                android:padding="6dp"
+                                android:textColor="#333333"/>
+                            <LinearLayout
+                                android:id="@+id/layoutAccountNo"
+                                android:layout_width="160dp"
+                                android:layout_height="36dp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/edittext_background"
+                                android:layout_marginEnd="16dp">
+                                <EditText android:id="@+id/etAccountNo" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:hint="Select Account" android:textSize="11sp" android:background="@null" android:padding="6dp" android:inputType="none" android:focusable="false"/>
+                                <ImageView android:id="@+id/ivSearchAccount" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_search" android:padding="4dp" android:layout_gravity="center_vertical" android:tint="#333333"/>
+                            </LinearLayout>
+
+                            <!-- ACCT NAME -->
+                            <TextView android:id="@+id/tvAcctNameLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Acct Name" android:textSize="11sp" android:padding="6dp" android:textColor="#333333"/>
+                            <EditText android:id="@+id/etAcctName" android:layout_width="180dp" android:layout_height="36dp" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginEnd="16dp"/>
+
+                            <!-- ACCT BALANCE -->
+                            <TextView android:id="@+id/tvAcctBalanceLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Acct Balance" android:textSize="11sp" android:padding="6dp" android:textColor="#333333"/>
+                            <EditText android:id="@+id/etAcctBalance" android:layout_width="120dp" android:layout_height="36dp" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginEnd="16dp"/>
+
+                            <!-- RECOVERY PAID -->
+                            <TextView android:id="@+id/tvRecoveryPaidLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Recovery Paid" android:textSize="11sp" android:padding="6dp" android:textColor="#333333"/>
+                            <EditText android:id="@+id/etRecoveryPaid" android:layout_width="100dp" android:layout_height="36dp" android:text="0.00" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:layout_marginEnd="16dp"/>
+
+                            <!-- ROUTING ACCT -->
+                            <TextView android:id="@+id/tvRoutingAcctLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Routing Acct" android:textSize="11sp" android:padding="6dp" android:visibility="gone"/>
+                            <EditText android:id="@+id/etRoutingAcct" android:layout_width="160dp" android:layout_height="36dp" android:textSize="11sp" android:padding="6dp" android:background="@drawable/edittext_background" android:visibility="gone" android:hint="Select Routing A/C"/>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- FILE UPLOAD SECTION (Visible when Standing Instruction is selected) -->
+            <LinearLayout
+                android:id="@+id/layoutFileUpload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="COLLECTION PROCESS - FILE UPLOAD"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:textColor="#333333"
+                    android:background="#E9ECEF"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:background="#FFFFFF"
+                    android:elevation="1dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload"
+                        android:textSize="12sp"
+                        android:layout_marginEnd="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edittext_background"
+                        android:padding="2dp">
+                        <Button
+                            android:id="@+id/btnChooseFile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:text="Choose File"
+                            android:textSize="10sp"
+                            android:textAllCaps="false"
+                            android:backgroundTint="#F0F0F0"
+                            android:textColor="#333333"/>
+                        <TextView
+                            android:id="@+id/tvFileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="No file chosen"
+                            android:textSize="10sp"
+                            android:padding="8dp"
+                            android:textColor="#888888"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Extra buttons for this mode -->
+                <LinearLayout
+                    android:id="@+id/layoutFileUploadButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+                    <Button android:id="@+id/btnList" android:layout_width="wrap_content" android:layout_height="36dp" android:text="List" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnList1" android:layout_width="wrap_content" android:layout_height="36dp" android:text="List1" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnUpload" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Upload" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- BULK COLLECTION SECTION (Visible when Multiple Entries is selected) -->
+            <LinearLayout
+                android:id="@+id/layoutBulkCollection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#E9ECEF"
+                    android:padding="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bulk Collection"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:textColor="#333333"/>
+                    <Button
+                        android:id="@+id/btnBulkUpload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:text="Upload"
+                        android:textSize="10sp"
+                        android:textAllCaps="false"
+                        android:backgroundTint="#007BFF"
+                        android:textColor="#FFFFFF"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnBulkAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Add"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    android:backgroundTint="#28A745"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="#FFFFFF"
+                    android:fillViewport="true"
+                    android:scrollbars="horizontal">
+                    <LinearLayout
+                        android:id="@+id/llBulkRows"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <!-- Bulk Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="#E9ECEF">
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Transaction ID" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Names" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Reference" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Mobile Number" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Allocated Amount" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Trans. Time" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Status" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.8" android:text="Allocated" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        </LinearLayout>
+
+                        <!-- Bulk Input Row Template -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.5" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="0" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="01-05-2026 13:00" android:gravity="center"/>
+                            <EditText android:layout_width="0dp" android:layout_weight="1.2" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:textSize="10sp" android:padding="4dp" android:text="UNALLOCATED" android:gravity="center"/>
+                            <RadioButton android:layout_width="0dp" android:layout_weight="0.8" android:layout_height="40dp" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- Bulk Footer buttons -->
+                <LinearLayout
+                    android:id="@+id/layoutBulkFooterButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="20dp">
+                    <Button android:id="@+id/btnBulkHome" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Home" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnBulkSubmit" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Submit" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF" android:layout_marginEnd="8dp"/>
+                    <Button android:id="@+id/btnBulkBack" android:layout_width="wrap_content" android:layout_height="36dp" android:text="Back" android:textSize="11sp" android:textAllCaps="false" android:backgroundTint="#007BFF"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!-- TABLE AREA -->
+            <HorizontalScrollView
+                android:id="@+id/layoutTableArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="#FFFFFF"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- Table Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#E9ECEF">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Flow Date" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Flow ID" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Flow Code" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Flow Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:id="@+id/tvColTranAmt" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Tran Amt" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.2" android:text="Acct No" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.5" android:text="Acct Name" android:padding="10dp" android:textStyle="bold" android:textSize="10sp" android:textColor="#444444" android:background="@drawable/table_cell_bg" android:gravity="center"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvNoRecords"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/table_cell_bg"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="No records available"
+                        android:textColor="#888888"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM ACTION BUTTONS -->
+    <LinearLayout
+        android:id="@+id/layoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:backgroundTint="#007BFF"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</LinearLayout>

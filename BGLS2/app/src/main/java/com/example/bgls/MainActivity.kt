@@ -23,6 +23,7 @@ import com.example.bgls.LoanMaintenance.LoanMaintananceListActivity
 import com.example.bgls.LoanMaster.LoanMasterActivity
 import com.example.bgls.LoanOperation.LoanClosureActivity
 import com.example.bgls.LoanOperation.LoanOperationActivity
+import com.example.bgls.LoanOperation.LoanRemitance
 import com.example.bgls.LoanSchedule.LoanScheduleActivity
 import com.example.bgls.OrganizationDetails.OrganizationDetialsActivity
 import com.example.bgls.ReversalTransaction.*
@@ -57,7 +58,8 @@ class MainActivity : AppCompatActivity() {
         Module("Collection Process", "📥", listOf("Loan Collection")),
         Module("Batch Job", "⚡", listOf("Batch Job")),
         Module("Reports", "📄", listOf("Credit Facility Report","End Of Month Report","DAB Reports","Consolidated Loan Reports","Transaction Reports","Recovery Report","Demand generation Report","Interest Accrual Report","Penalty Accrual Report")),
-        Module("Transaction Inquiries", "🔍", listOf("Account Balances","Interest Summary","Journal Book","Account Ledger","Trial Balance","Profile and Loss Account","Balance Sheet","Balancing Report"))
+        Module("Transaction Inquiries", "🔍", listOf("Account Balances","Interest Summary","Journal Book","Account Ledger","Trial Balance","Profile and Loss Account","Balance Sheet","Balancing Report")),
+        Module("LoanRemitance", "📊", listOf("LoanRemitance"))
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -332,6 +334,9 @@ class MainActivity : AppCompatActivity() {
             "Credit Facility Report"    -> Intent(this, CreditFacilityReportActivity::class.java)
             "End Of Month Report"       -> Intent(this, EndOfMonthReportActivity::class.java)
             "DAB Reports"               -> Intent(this, DABReportActivity::class.java)
+            "LoanRemitance"             ->Intent(this, LoanRemitance::class.java)
+
+
             "Consolidated Loan Reports" -> Intent(this, GenericReportActivity::class.java).apply {
                 putExtra("REPORT_TITLE", "Consolidated Loan - Reports") }
             "Transaction Reports"       -> Intent(this, GenericReportActivity::class.java).apply {

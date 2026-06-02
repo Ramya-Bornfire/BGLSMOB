@@ -714,6 +714,7 @@ class UserProfileAddActivity : AppCompatActivity() {
         spinnerRoleId.isEnabled = enabled
         spinnerPermissions.isEnabled = enabled
         spinnerWorkClass.isEnabled = enabled
-        ivTogglePassword.isEnabled = enabled
+        ivTogglePassword.isEnabled = true
+        
     }
 }

@@ -165,7 +165,7 @@
         android:padding="8dp"
         android:background="#E9ECEF">
         <Button
-            android:id="@+id/btnScheduler"
+            android:id="@+id/btnSchedule"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:text="SCHEDULER"
