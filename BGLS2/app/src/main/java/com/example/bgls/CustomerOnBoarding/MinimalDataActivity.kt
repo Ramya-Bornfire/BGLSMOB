@@ -80,11 +80,17 @@ class MinimalDataActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val responseString = response.body()?.string() ?: ""
                             var cifId = ""
+                            var appRefNo = binding.etAppRefNo.text.toString()
+                            var json: org.json.JSONObject? = null
                             try {
-                                val json = org.json.JSONObject(responseString)
+                                json = org.json.JSONObject(responseString)
                                 cifId = json.optString("CifId", "")
                                 if (cifId.isEmpty()) {
                                     cifId = json.optString("cif_id", "")
+                                }
+                                val apiAppRefNo = json.optString("appreNO", json.optString("ApplRefNO", ""))
+                                if (apiAppRefNo.isNotEmpty()) {
+                                    appRefNo = apiAppRefNo
                                 }
                             } catch (e: Exception) {
                                 e.printStackTrace()
@@ -96,14 +102,14 @@ class MinimalDataActivity : AppCompatActivity() {
                                 android.content.Intent(this@MinimalDataActivity, CustomerAccountOpeningActivity::class.java)
                             }
                             
-                            intent.putExtra("app_ref_no", binding.etAppRefNo.text.toString())
+                            intent.putExtra("app_ref_no", appRefNo)
                             intent.putExtra("customer_group", binding.spCustomerGroup1.selectedItem.toString())
                             intent.putExtra("cif_id", cifId)
                             
                             if (isCorporate) {
                                 intent.putExtra("customer_type", "CORPORATE")
-                                intent.putExtra("primary_branch", "103")
-                                intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
+                                intent.putExtra("primary_branch", binding.etPrimaryBranchC.text.toString())
+                                intent.putExtra("branch_name", binding.etBranchDescC.text.toString())
                                 intent.putExtra("first_name", binding.etCorporateNameC.text.toString())
                                 intent.putExtra("short_name", binding.etTradeNameC.text.toString())
                                 intent.putExtra("full_name", binding.etCorporateNameC.text.toString())
@@ -111,8 +117,8 @@ class MinimalDataActivity : AppCompatActivity() {
                                 intent.putExtra("email_id", binding.etEmailC.text.toString())
                             } else {
                                 intent.putExtra("customer_type", binding.spCustomerType.selectedItem.toString())
-                                intent.putExtra("primary_branch", "103")
-                                intent.putExtra("branch_name", "Al Salam Bank Seychelles Limited")
+                                intent.putExtra("primary_branch", binding.etPrimaryBranchI.text.toString())
+                                intent.putExtra("branch_name", binding.etBranchNameI.text.toString())
                                 intent.putExtra("first_name", binding.etFirstNameI.text.toString())
                                 intent.putExtra("middle_name", binding.etMiddleNameI.text.toString())
                                 intent.putExtra("last_name", binding.etLastNameI.text.toString())
@@ -121,6 +127,8 @@ class MinimalDataActivity : AppCompatActivity() {
                                 intent.putExtra("dob", binding.etDateOfBirthI.text.toString())
                                 intent.putExtra("mobile_no", binding.tvCountryCodeI.text.toString() + binding.etMobileI.text.toString())
                                 intent.putExtra("email_id", "")
+                                intent.putExtra("passno", binding.etPassportI.text.toString())
+                                intent.putExtra("nationalid", binding.etNationalIdI.text.toString())
                             }
                             
                             startActivity(intent)
@@ -154,6 +162,44 @@ class MinimalDataActivity : AppCompatActivity() {
 
         binding.btnProceed.setOnClickListener {
             binding.btnProceedTop.performClick()
+        }
+
+        fetchInitialData()
+    }
+
+    private fun fetchInitialData() {
+        val progressDialog = ProgressDialog(this).apply {
+            setMessage("Generating ARN...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.getCustomerOnboardingAddScreen()
+                }
+                
+                progressDialog.dismiss()
+                
+                if (response.isSuccessful) {
+                    val responseString = response.body()?.string() ?: ""
+                    try {
+                        val json = org.json.JSONObject(responseString)
+                        val apiAppRefNo = json.optString("appreNO", json.optString("ApplRefNO", ""))
+                        if (apiAppRefNo.isNotEmpty()) {
+                            binding.etAppRefNo.setText(apiAppRefNo)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Toast.makeText(this@MinimalDataActivity, "Failed to generate ARN", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                progressDialog.dismiss()
+                Toast.makeText(this@MinimalDataActivity, "Error generating ARN: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -201,8 +247,8 @@ class MinimalDataActivity : AppCompatActivity() {
         params["nationalid"] = binding.etNationalIdI.text.toString()
         params["noofpersons"] = binding.spNoOfPersons.selectedItem?.toString() ?: "1"
         params["accType"] = binding.spCustomerType.selectedItem?.toString() ?: ""
-        params["prisolidmini"] = "103"
-        params["branchdescmini"] = "Al Salam Bank Seychelles Limited"
+        params["branchid"] = binding.etPrimaryBranchI.text.toString()
+        params["branchdesc"] = binding.etBranchNameI.text.toString()
         return params
     }
 
@@ -220,8 +266,8 @@ class MinimalDataActivity : AppCompatActivity() {
         params["email"] = binding.etEmailC.text.toString()
         params["website"] = binding.etWebsiteC.text.toString()
         params["noofpersons"] = binding.spNoOfPersons.selectedItem?.toString() ?: "0"
-        params["prisolidmini"] = "103"
-        params["branchdescmini"] = "Al Salam Bank Seychelles Limited"
+        params["branchid"] = binding.etPrimaryBranchC.text.toString()
+        params["branchdesc"] = binding.etBranchDescC.text.toString()
         return params
     }
 
@@ -244,27 +290,36 @@ class MinimalDataActivity : AppCompatActivity() {
             try {
                 val params = if (isCorporate) getCorporateParams() else getIndividualParams()
                 
+                val checkParams = params.toMutableMap()
+                if (!isCorporate) {
+                    checkParams["id"] = params["nationalid"] ?: ""
+                    checkParams["Mobile_num"] = params["mobileno"] ?: ""
+                    checkParams["Passport_num"] = params["passno"] ?: ""
+                } else {
+                    checkParams["id"] = ""
+                }
+                
                 val duplicateDeferred = async(Dispatchers.IO) {
                     when {
-                        isCorporate -> RetrofitClient.api.checkDuplicateCor(params)
-                        isJoint -> RetrofitClient.api.checkDuplicateJoint(params)
-                        else -> RetrofitClient.api.checkDuplicateIndiv(params)
+                        isCorporate -> RetrofitClient.api.checkDuplicateCor(checkParams)
+                        isJoint -> RetrofitClient.api.checkDuplicateJoint(checkParams)
+                        else -> RetrofitClient.api.checkDuplicateIndiv(checkParams)
                     }
                 }
                 
                 val blacklistDeferred = async(Dispatchers.IO) {
                     when {
-                        isCorporate -> RetrofitClient.api.checkBlackListCor(params)
-                        isJoint -> RetrofitClient.api.checkBlackListJoint(params)
-                        else -> RetrofitClient.api.checkBlackListIndiv(params)
+                        isCorporate -> RetrofitClient.api.checkBlackListCor(checkParams)
+                        isJoint -> RetrofitClient.api.checkBlackListJoint(checkParams)
+                        else -> RetrofitClient.api.checkBlackListIndiv(checkParams)
                     }
                 }
                 
                 val negativeDeferred = async(Dispatchers.IO) {
                     when {
-                        isCorporate -> RetrofitClient.api.checkNegativeListCor(params)
-                        isJoint -> RetrofitClient.api.checkNegativeListJoint(params)
-                        else -> RetrofitClient.api.checkNegativeListIndiv(params)
+                        isCorporate -> RetrofitClient.api.checkNegativeListCor(checkParams)
+                        isJoint -> RetrofitClient.api.checkNegativeListJoint(checkParams)
+                        else -> RetrofitClient.api.checkNegativeListIndiv(checkParams)
                     }
                 }
                 
@@ -284,7 +339,7 @@ class MinimalDataActivity : AppCompatActivity() {
                 // Process Dup List
                 val hasDuplicate = dupText.trim().uppercase() != "MATCH NOT FOUND"
                 if (hasDuplicate) {
-                    binding.tvDuplicateListResult.text = dupText
+                    binding.tvDuplicateListResult.text = Html.fromHtml(dupText)
                     binding.tvDuplicateListResult.setTextColor(android.graphics.Color.RED)
                 } else {
                     binding.tvDuplicateListResult.text = "No Result found on Customer Check"
@@ -295,7 +350,7 @@ class MinimalDataActivity : AppCompatActivity() {
                 // Process Blacklist
                 val hasBlacklist = blackText.trim().uppercase() != "MATCH NOT FOUND"
                 if (hasBlacklist) {
-                    binding.tvBlackListResult.text = blackText
+                    binding.tvBlackListResult.text = Html.fromHtml(blackText)
                     binding.tvBlackListResult.setTextColor(android.graphics.Color.RED)
                 } else {
                     binding.tvBlackListResult.text = "No Result found on Customer Check"
@@ -306,7 +361,7 @@ class MinimalDataActivity : AppCompatActivity() {
                 // Process Negative List
                 val hasNegative = negText.trim().uppercase() != "MATCH NOT FOUND"
                 if (hasNegative) {
-                    binding.tvNegativeListResult.text = negText
+                    binding.tvNegativeListResult.text = Html.fromHtml(negText)
                     binding.tvNegativeListResult.setTextColor(android.graphics.Color.RED)
                 } else {
                     binding.tvNegativeListResult.text = "No Result found on Customer Check"
@@ -453,8 +508,6 @@ class MinimalDataActivity : AppCompatActivity() {
     private fun switchToCorporate() {
         layoutIndividualVisible(false)
         
-        binding.etAppRefNo.setText("ARN0916")
-        
         // Hide spinner, show ReadOnly EditText for Customer Type
         binding.spCustomerType.visibility = View.GONE
         binding.etCustomerTypeReadOnly.visibility = View.VISIBLE
@@ -468,8 +521,6 @@ class MinimalDataActivity : AppCompatActivity() {
 
     private fun switchToIndividual() {
         layoutIndividualVisible(true)
-        
-        binding.etAppRefNo.setText("ARN0915")
         
         // Show spinner, hide ReadOnly EditText for Customer Type
         binding.spCustomerType.visibility = View.VISIBLE

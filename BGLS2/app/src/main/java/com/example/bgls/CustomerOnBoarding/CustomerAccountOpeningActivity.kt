@@ -88,8 +88,21 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         binding.spSchemeType.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selected = parent?.getItemAtPosition(position).toString()
-                if (selected != "SELECT") {
-                    fetchSchemeDetails(selected)
+                when (selected) {
+                    "LOAN ACCOUNT"-> {
+                        binding.layoutLoanFields.visibility = View.VISIBLE
+                        binding.layoutDepositFields.visibility = View.GONE
+                        if (selected != "SELECT") fetchSchemeDetails(selected)
+                    }
+                    "DEPOSIT ACCOUNT" -> {
+                        binding.layoutLoanFields.visibility = View.GONE
+                        binding.layoutDepositFields.visibility = View.VISIBLE
+                        fetchSchemeDetails(selected)
+                    }
+                    else -> {
+                        binding.layoutLoanFields.visibility = View.GONE
+                        binding.layoutDepositFields.visibility = View.GONE
+                    }
                 }
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
@@ -97,14 +110,16 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun fetchSchemeDetails(selected: String) {
-        val schemeType = when (selected) {
+        val schemeCode = when (selected) {
             "FIXED DEPOSIT" -> "TDFIXED"
+            "SAVINGS ACCOUNT" -> "SBRET"
+            "CURRENT ACCOUNT" -> "CARET"
             else -> "LSRET"
         }
         lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.getSchemeDetails(schemeType)
+                    RetrofitClient.api.getSchemeDetails(schemeCode)
                 }
                 if (response.isSuccessful) {
                     val responseString = response.body()?.string() ?: ""
@@ -115,6 +130,24 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     schemeGlDesc = data?.optString("gldesc") ?: ""
                     schemeGlshCode = data?.optString("glsh_code") ?: ""
                     schemeGlshDesc = data?.optString("glsh_desc") ?: ""
+
+                    // Populate read-only scheme fields
+                    binding.etSchemeCode.setText(schemeCode)
+                    binding.etGlCode.setText(schemeGlCode)
+                    binding.etGlDesc.setText(schemeGlDesc)
+                    binding.etGlshCode.setText(schemeGlshCode)
+                    binding.etGlshDesc.setText(schemeGlshDesc)
+                    binding.etAccountBranchId.setText(intent.getStringExtra("primary_branch") ?: "")
+                    binding.etAccountBranchName.setText(intent.getStringExtra("branch_name") ?: "")
+
+                    val today = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault()).format(java.util.Date())
+                    if (selected == "FIXED DEPOSIT") {
+                        binding.etDepositAccountNo.setText(generatedAccountNo)
+                        binding.etDateOfDeposit.setText(today)
+                    } else {
+                        binding.etLoanAccountNo.setText(generatedAccountNo)
+                        binding.etDateOfLoan.setText(today)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -131,39 +164,85 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         
         lifecycleScope.launch {
             try {
-                val params = mutableMapOf<String, String>()
-                params["customer_type"] = binding.etCustomerType.text.toString()
-                params["first_name"] = binding.etFirstName.text.toString()
-                params["middle_name"] = binding.etMiddleName.text.toString()
-                params["last_name"] = binding.etLastName.text.toString()
-                params["full_name"] = binding.etFullName.text.toString()
-                params["dob"] = binding.etDateOfBirth.text.toString()
-                params["mobile_no"] = binding.etMobileNoAO.text.toString()
-                params["email_id"] = binding.etEmailIdAO.text.toString()
-                params["salutation"] = binding.spSalutation.selectedItem.toString()
-                params["gender"] = binding.spGender.selectedItem.toString()
-                params["martial_status"] = binding.spMartialStatus.selectedItem.toString()
-                params["occupation"] = binding.spOccupation.selectedItem.toString()
-                params["annual_income"] = binding.etAnnualIncome.text.toString()
-                params["monthly_income"] = binding.etMonthlyIncome.text.toString()
-                params["address_type"] = binding.spAddressType.selectedItem.toString()
-                params["house_no"] = binding.etHouseNo.text.toString()
-                params["street_no"] = binding.etStreetNo.text.toString()
-                params["street_name"] = binding.etStreetName.text.toString()
-                params["city"] = binding.spCity.selectedItem.toString()
-                params["address_valid_from"] = binding.etAddressValidFrom.text.toString()
-                params["nationality"] = binding.spNationality.selectedItem.toString()
-                params["country_of_birth"] = binding.spCountryOfBirth.selectedItem.toString()
+                val customerType = binding.etCustomerType.text.toString()
+                val request = com.example.bgls.DataModels.CustomerRequest(
+                    la_customer_type = intent.getStringExtra("customer_type") ?: "",
+                    cif_id = intent.getStringExtra("cif_id") ?: "",
+                    ca_solid = intent.getStringExtra("primary_branch") ?: "",
+                    ca_acct_opendate = binding.etAccountOpenDate.text?.toString() ?: "",
+                    ca_remarks = "", // Update dynamically if you have an etRemarks binding
+                    shortName = intent.getStringExtra("short_name") ?: "",
+                    ca_customer_type = customerType,
+                    ca_customer_type_1 = customerType, 
+                    ca_first_name = binding.etFirstName.text?.toString() ?: "",
+                    mid_name = binding.etMiddleName.text?.toString() ?: "",
+                    ca_last_name = binding.etLastName.text?.toString() ?: "",
+                    ca_preferred_name = binding.etFullName.text?.toString() ?: "",
+                    ca_date_of_birth = binding.etDateOfBirth.text?.toString() ?: "",
+                    ca_currency = intent.getStringExtra("currency") ?: "", 
+                    loan_obligations = "",
+                    family_maintenance = "",
+                    ca_email_id = binding.etEmailIdAO.text?.toString() ?: "",
+                    ca_countrycode_1 = "",
+                    ca_mobile_number = binding.etMobileNoAO.text?.toString() ?: "",
+                    ca_saluation = binding.spSalutation.selectedItem?.toString() ?: "",
+                    ca_gender = binding.spGender.selectedItem?.toString() ?: "",
+                    ca_martial_staus = binding.spMartialStatus.selectedItem?.toString() ?: "",
+                    ca_occupation1 = binding.spOccupation.selectedItem?.toString() ?: "",
+                    annual_income = binding.etAnnualIncome.text?.toString() ?: "",
+                    monthly_income = binding.etMonthlyIncome.text?.toString() ?: "",
+                    ca_address_type = binding.spAddressType.selectedItem?.toString() ?: "",
+                    ca_house_no = binding.etHouseNo.text?.toString() ?: "",
+                    ca_street_no = binding.etStreetNo.text?.toString() ?: "",
+                    ca_street_name = binding.etStreetName.text?.toString() ?: "",
+                    ca_country = "", // Not explicitly found in Spinners; fetch if added
+                    ca_state = "",
+                    ca_city = binding.spCity.selectedItem?.toString() ?: "",
+                    ca_postal_code = "",
+                    ca_address_validation_form = binding.etAddressValidFrom.text?.toString() ?: "",
+                    ca_nationality = binding.spNationality.selectedItem?.toString() ?: "",
+                    ca_country_of_birth = binding.spCountryOfBirth.selectedItem?.toString() ?: "",
+                    countryOrigin = binding.spCountryOfOrigin.selectedItem?.toString() ?: "",
+                    branch_desc = intent.getStringExtra("branch_name") ?: "",
+                    ca_cif_id_1 = intent.getStringExtra("cif_id") ?: ""
+                )
                 
-                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val params = request.toMap()
+
+                val passno = intent.getStringExtra("passno") ?: ""
+                val nationalid = intent.getStringExtra("nationalid") ?: ""
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: ""
+                
+                val recNo = if (customerType.equals("Joint Account", ignoreCase = true)) "2" else "1"
+                
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", params)
+                    RetrofitClient.api.savePersonalDetail(appRefNo, recNo, passno, nationalid, params)
                 }
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Personal Details Saved", android.widget.Toast.LENGTH_SHORT).show()
-                    binding.tabLayout.getTabAt(1)?.select()
+                    val rawJson = response.body()?.string()
+                    var msg = "Personal Details Saved"
+                    if (!rawJson.isNullOrBlank()) {
+                        try {
+                            val jsonObject = org.json.JSONObject(rawJson)
+                            if (jsonObject.has("message")) {
+                                msg = jsonObject.getString("message")
+                            } else {
+                                msg = rawJson
+                            }
+                        } catch (e: Exception) {
+                            msg = rawJson
+                        }
+                    }
+                    android.app.AlertDialog.Builder(this@CustomerAccountOpeningActivity)
+                        .setMessage(msg)
+                        .setPositiveButton("Okay") { dialog, _ ->
+                            dialog.dismiss()
+                            binding.tabLayout.getTabAt(1)?.select()
+                        }
+                        .setCancelable(false)
+                        .show()
                 } else {
                     android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
                 }
@@ -180,54 +259,89 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
             setCancelable(false)
             show()
         }
-        
+
         lifecycleScope.launch {
             try {
-                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
-                
-                val formData = mutableMapOf<String, Any>()
-                val scheme = binding.spSchemeType.selectedItem.toString()
-                formData["schemetype"] = if (scheme == "FIXED DEPOSIT") "TD" else "LA"
-                formData["schemecode"] = if (scheme == "FIXED DEPOSIT") "TDFIXED" else "LSRET"
-                formData["currency"] = "SCR"
-                formData["prisolid"] = binding.etPrimaryBranch.text.toString()
-                formData["branch_desc"] = binding.etBranchName.text.toString()
-                formData["nationalid"] = binding.etNationalIdAO.text.toString()
-                formData["passno"] = binding.etPassportNoAO.text.toString()
-                formData["issuedate"] = binding.etIssueDate.text.toString()
-                formData["expdate"] = binding.etExpiryDate.text.toString()
-                
-                if (formData["schemetype"] == "LA") {
-                    formData["gl_code_loan"] = schemeGlCode
-                    formData["gl_desc_loan"] = schemeGlDesc
-                    formData["glsh_code_loan"] = schemeGlshCode
-                    formData["glsh_desc_loan"] = schemeGlshDesc
-                    formData["account_no"] = generatedAccountNo
-                } else {
-                    formData["gl_code"] = schemeGlCode
-                    formData["gl_desc"] = schemeGlDesc
-                    formData["glsh_code"] = schemeGlshCode
-                    formData["glsh_desc"] = schemeGlshDesc
-                    formData["deposit_account_no"] = generatedAccountNo
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: ""
+                val selected = binding.spSchemeType.selectedItem?.toString() ?: ""
+                val isDeposit = selected == "FIXED DEPOSIT"
+                val schemetype = if (isDeposit) "TD" else "LA"
+
+                fun formatDateForBackend(s: String): String {
+                    return try {
+                        val parts = s.split("-")
+                        if (parts.size == 3 && parts[2].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else s
+                    } catch (e: Exception) { s }
                 }
-                
-                val body = mapOf(
-                    "formData" to formData,
-                    "loanAccountNo" to generatedAccountNo,
-                    "accountNo" to generatedAccountNo,
-                    "scheduleList" to emptyList<Any>()
+
+                val formData = mutableMapOf<String, Any>(
+                    "schemetype"  to schemetype,
+                    "schemecode"  to (binding.etSchemeCode.text?.toString() ?: ""),
+                    "currency"    to "SCR",
+                    "prisolid"    to (binding.etAccountBranchId.text?.toString() ?: ""),
+                    "branch_desc" to (binding.etAccountBranchName.text?.toString() ?: ""),
+                    "nationalid"  to (binding.etNationalIdAO.text?.toString() ?: ""),
+                    "passno"      to (binding.etPassportNoAO.text?.toString() ?: ""),
+                    "issuedate"   to formatDateForBackend(binding.etIssueDate.text?.toString() ?: ""),
+                    "expdate"     to formatDateForBackend(binding.etExpiryDate.text?.toString() ?: "")
                 )
-                
+
+                if (isDeposit) {
+                    formData["gl_code"]           = schemeGlCode
+                    formData["gl_desc"]           = schemeGlDesc
+                    formData["glsh_code"]         = schemeGlshCode
+                    formData["glsh_desc"]         = schemeGlshDesc
+                    formData["deposit_account_no"]= generatedAccountNo
+                    formData["deposit_date"]      = binding.etDateOfDeposit.text?.toString() ?: ""
+                    formData["deposit_amt"]       = binding.etDepositAmount.text?.toString() ?: ""
+                    formData["deposit_period"]    = binding.etDepositPeriod.text?.toString() ?: ""
+                    formData["maturity_date"]     = formatDateForBackend(binding.etMaturityDate.text?.toString() ?: "")
+                    formData["rate_of_int"]       = binding.etRateOfInterest.text?.toString() ?: ""
+                    formData["int_amt"]           = binding.etInterestAmount.text?.toString() ?: ""
+                    formData["compounding_factor"]= binding.etCompoundingFactor.text?.toString() ?: ""
+                    formData["maturity_amt"]      = binding.etMaturityAmount.text?.toString() ?: ""
+                } else {
+                    formData["gl_code_loan"]      = schemeGlCode
+                    formData["gl_desc_loan"]      = schemeGlDesc
+                    formData["glsh_code_loan"]    = schemeGlshCode
+                    formData["glsh_desc_loan"]    = schemeGlshDesc
+                    formData["account_no"]        = generatedAccountNo
+                    formData["loan_sanctioned"]   = binding.etLoanSanctioned.text?.toString() ?: ""
+                    formData["margin_limit"]      = binding.etMargin.text?.toString() ?: ""
+                    formData["recovery_method"]   = binding.spRecoveryMethod.selectedItem?.toString() ?: ""
+                    formData["la_remarks"]        = binding.etLoanRemarks.text?.toString() ?: ""
+                    formData["loan_period"]       = binding.etLoanPeriod.text?.toString() ?: ""
+                    formData["effective_fees_rate"]= binding.etFeesRate.text?.toString() ?: ""
+                    formData["customer_type"]     = intent.getStringExtra("customer_type") ?: ""
+                    formData["monthly_income"]    = intent.getStringExtra("monthly_income") ?: ""
+                    formData["annual_income"]     = intent.getStringExtra("annual_income") ?: ""
+                }
+
+                val body = mapOf(
+                    "formData"      to formData,
+                    "loanAccountNo" to generatedAccountNo,
+                    "accountNo"     to generatedAccountNo,
+                    "scheduleList"  to emptyList<Any>()
+                )
+
                 val response = withContext(Dispatchers.IO) {
                     RetrofitClient.api.saveAccountDetails(appRefNo, body)
                 }
-                
+
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Account Details Saved", android.widget.Toast.LENGTH_SHORT).show()
-                    binding.tabLayout.getTabAt(2)?.select()
+                    val msg = response.body()?.string()?.takeIf { it.isNotBlank() } ?: "Account Details Saved Successfully"
+                    android.app.AlertDialog.Builder(this@CustomerAccountOpeningActivity)
+                        .setMessage(msg)
+                        .setPositiveButton("Okay") { dialog, _ ->
+                            dialog.dismiss()
+                            binding.tabLayout.getTabAt(2)?.select()
+                        }
+                        .setCancelable(false)
+                        .show()
                 } else {
-                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                    val errBody = response.errorBody()?.string() ?: "Failed to save Account Details"
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, errBody.take(200), android.widget.Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
@@ -257,7 +371,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Documents Uploaded", android.widget.Toast.LENGTH_SHORT).show()
+                    val msg = response.body()?.string() ?: "Documents Uploaded"
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, msg, android.widget.Toast.LENGTH_SHORT).show()
                     onComplete()
                 } else {
                     android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to upload documents", android.widget.Toast.LENGTH_SHORT).show()
@@ -302,7 +417,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     
                     progressDialog.dismiss()
                     if (finalResponse.isSuccessful) {
-                        android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Application Submitted Successfully", android.widget.Toast.LENGTH_LONG).show()
+                        val msg = finalResponse.body()?.string() ?: "Application Submitted Successfully"
+                        android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, msg, android.widget.Toast.LENGTH_LONG).show()
                         finish()
                     } else {
                         android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to finalize", android.widget.Toast.LENGTH_SHORT).show()
@@ -329,7 +445,71 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
             }
         }
         binding.btnSubmitDoc.setOnClickListener {
-            android.widget.Toast.makeText(this, "Documents Submitted Successfully", android.widget.Toast.LENGTH_SHORT).show()
+            val dynamicValues = mutableListOf<Map<String, String>>()
+            for (i in 0 until binding.containerDocumentRows.childCount) {
+                val row = binding.containerDocumentRows.getChildAt(i) as android.widget.LinearLayout
+                val spinner = row.getChildAt(0) as android.widget.Spinner
+                val etCode = row.getChildAt(1) as android.widget.EditText
+                val etDesc = row.getChildAt(2) as android.widget.EditText
+                val etId = row.getChildAt(3) as android.widget.EditText
+                val etPlace = row.getChildAt(4) as android.widget.EditText
+                val etIssueDate = row.getChildAt(5) as android.widget.EditText
+                val etExpiryDate = row.getChildAt(6) as android.widget.EditText
+                val uploadLayout = row.getChildAt(7) as android.widget.LinearLayout
+                val tvStatus = uploadLayout.getChildAt(1) as android.widget.TextView
+
+                val docType = spinner.selectedItem?.toString() ?: ""
+                val fileName = tvStatus.text.toString().takeIf { it != "No file" } ?: ""
+
+                val map = mapOf(
+                    "filename" to fileName,
+                    "doctype" to docType,
+                    "doccode" to etCode.text.toString(),
+                    "doctypesesc" to etDesc.text.toString(),
+                    "uniqueid" to etId.text.toString(),
+                    "placeofissue" to etPlace.text.toString(),
+                    "issuedate" to etIssueDate.text.toString(),
+                    "exprydate" to etExpiryDate.text.toString()
+                )
+                dynamicValues.add(map)
+            }
+
+            val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+            val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
+            val recNo = "1"
+
+            val progressDialog = android.app.ProgressDialog(this).apply {
+                setMessage("Submitting Documents...")
+                setCancelable(false)
+                show()
+            }
+
+            lifecycleScope.launch {
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        RetrofitClient.api.uploadDocumentMaster(
+                            applRefNo = appRefNo,
+                            recNo = recNo,
+                            cifId = cifId,
+                            dynamicValues = dynamicValues
+                        )
+                    }
+
+                    progressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        android.app.AlertDialog.Builder(this@CustomerAccountOpeningActivity)
+                            .setMessage("Document Master Submitted Successfully")
+                            .setPositiveButton("Okay") { dialog, _ -> dialog.dismiss() }
+                            .setCancelable(false)
+                            .show()
+                    } else {
+                        android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Failed to submit documents", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -623,6 +803,19 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
             if (binding.spCountryOfBirth.selectedItemPosition == 0) { android.widget.Toast.makeText(this, "Please select Country of Birth", android.widget.Toast.LENGTH_SHORT).show(); isValid = false }
         } else if (currentTab == 1) { // Account Details
             if (binding.spSchemeType.selectedItemPosition == 0) { android.widget.Toast.makeText(this, "Please select Scheme Type", android.widget.Toast.LENGTH_SHORT).show(); isValid = false }
+            
+            val selected = binding.spSchemeType.selectedItem?.toString() ?: ""
+            if (selected == "LOAN ACCOUNT") {
+                if (binding.etLoanSanctioned.text.isNullOrBlank()) { binding.etLoanSanctioned.error = "Required field to enter"; isValid = false }
+                if (binding.etLoanPeriod.text.isNullOrBlank()) { binding.etLoanPeriod.error = "Required field to enter"; isValid = false }
+                if (binding.etMargin.text.isNullOrBlank()) { binding.etMargin.error = "Required field to enter"; isValid = false }
+                if (binding.etFeesRate.text.isNullOrBlank()) { binding.etFeesRate.error = "Required field to enter"; isValid = false }
+            } else if (selected == "FIXED DEPOSIT") {
+                if (binding.etDepositAmount.text.isNullOrBlank()) { binding.etDepositAmount.error = "Required field to enter"; isValid = false }
+                if (binding.etDepositPeriod.text.isNullOrBlank()) { binding.etDepositPeriod.error = "Required field to enter"; isValid = false }
+                if (binding.etRateOfInterest.text.isNullOrBlank()) { binding.etRateOfInterest.error = "Required field to enter"; isValid = false }
+            }
+
             if (binding.etNationalIdAO.text.isNullOrBlank()) { binding.etNationalIdAO.error = "Required field to enter"; isValid = false }
             if (binding.etIssueDate.text.isNullOrBlank()) { binding.etIssueDate.error = "Required field to enter"; isValid = false }
             if (binding.etPassportNoAO.text.isNullOrBlank()) { binding.etPassportNoAO.error = "Required field to enter"; isValid = false }
@@ -633,10 +826,13 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun setupDatePickers() {
-        binding.etAccountOpenDate.setOnClickListener { showDatePicker(binding.etAccountOpenDate) }
-        binding.etAddressValidFrom.setOnClickListener { showDatePicker(binding.etAddressValidFrom) }
-        binding.etIssueDate.setOnClickListener { showDatePicker(binding.etIssueDate) }
-        binding.etExpiryDate.setOnClickListener { showDatePicker(binding.etExpiryDate) }
+        binding.etAccountOpenDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etAddressValidFrom.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etIssueDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etExpiryDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etLoanExpiryDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etInstallmentStartDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
+        binding.etMaturityDate.apply { setOnClickListener { showDatePicker(this) }; isFocusable = false }
     }
 
     private fun showDatePicker(editText: android.widget.EditText) {
@@ -749,25 +945,58 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         addrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spAddressType.adapter = addrAdapter
 
-        val cities = listOf("SELECT", "Victoria", "Anse Boileau", "Beau Vallon")
+        val cities = listOf("SELECT", "CHENNAI", "SALEM", "THANJAVUR")
         val cityAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cities)
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spCity.adapter = cityAdapter
 
-        val nationalities = listOf("SELECT", "Seychellois", "Indian", "British")
+        val nationalities = listOf("SELECT", "Seychellois", "Indian","USA")
         val natAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nationalities)
         natAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spNationality.adapter = natAdapter
 
-        val countries = listOf("SELECT", "Seychelles", "India", "UK")
+        val countries = listOf("SELECT", "Seychelles", "India", "USA")
         val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries)
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spCountryOfBirth.adapter = countryAdapter
         binding.spCountryOfOrigin.adapter = countryAdapter
 
-        val schemeTypes = listOf("SELECT", "SAVINGS ACCOUNT", "CURRENT ACCOUNT", "FIXED DEPOSIT")
+        val schemeTypes = listOf("SELECT", "LOAN ACCOUNT", "DEPOSIT ACCOUNT")
         val schAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, schemeTypes)
         schAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spSchemeType.adapter = schAdapter
+
+        val recoveryMethods = listOf("SELECT", "EMI", "BULLET", "REDUCING BALANCE")
+        val recAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, recoveryMethods)
+        recAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spRecoveryMethod.adapter = recAdapter
+
+        val instFreqs = listOf("SELECT", "MONTHLY", "QUARTERLY", "HALF-YEARLY", "YEARLY")
+        val freqAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, instFreqs)
+        freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spPrincipalInstFreq.adapter = freqAdapter
+        binding.spInterestInstFreq.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, instFreqs).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+        val interestTypes = listOf("SELECT", "SIMPLE", "COMPOUND")
+        val intTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, interestTypes)
+        intTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spInterestType.adapter = intTypeAdapter
+
+        val frequencies = listOf("SELECT","MONTHLY","YEARLY")
+        val freqAdp = ArrayAdapter(this, android.R.layout.simple_spinner_item, frequencies)
+        freqAdp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spFrequency.adapter = freqAdp
+
+        val depositTypes = listOf("SELECT","RECURRING", "FIXED","REINVESTMENT")
+        val depTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, depositTypes)
+        depTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spDepositType.adapter = depTypeAdapter
+
+        val depositFreqs = listOf("SELECT", "MONTHLY", "QUARTERLY", "HALF-YEARLY", "YEARLY")
+        val depFreqAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, depositFreqs)
+        depFreqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spDepositFrequency.adapter = depFreqAdapter
     }
 }

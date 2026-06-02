@@ -343,12 +343,12 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelPrimaryBranchI" android:layout_width="140dp" android:layout_height="wrap_content" android:text="Primary Branch *" android:textSize="12sp" android:textColor="#333333"/>
-                        <EditText android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="103" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etPrimaryBranchI" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="103" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
                     </LinearLayout>
                     <View android:layout_width="40dp" android:layout_height="1dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Branch Name" android:textSize="12sp" android:textColor="#333333"/>
-                        <EditText android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="Al Salam Bank Seychelles Limited" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etBranchNameI" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="Al Salam Bank Seychelles Limited" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
                     </LinearLayout>
                 </LinearLayout>
                 <!-- Row 2 -->
@@ -468,12 +468,12 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelPrimaryBranchC" android:layout_width="140dp" android:layout_height="wrap_content" android:text="Primary Branch *" android:textSize="12sp" android:textColor="#333333"/>
-                        <EditText android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="103" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etPrimaryBranchC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="103" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
                     </LinearLayout>
                     <View android:layout_width="40dp" android:layout_height="1dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:layout_width="140dp" android:layout_height="wrap_content" android:text="Branch Desc" android:textSize="12sp" android:textColor="#333333"/>
-                        <EditText android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="Al Salam Bank Seychelles Limited" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etBranchDescC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:text="Al Salam Bank Seychelles Limited" android:textSize="11sp" android:paddingHorizontal="8dp" android:background="@drawable/readonly_background" android:enabled="false" android:textColor="#333333"/>
                     </LinearLayout>
                 </LinearLayout>
                 <!-- Row 2: Customer Group | Constitution Name * -->

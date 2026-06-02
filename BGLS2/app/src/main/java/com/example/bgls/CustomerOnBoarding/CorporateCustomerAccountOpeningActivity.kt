@@ -129,32 +129,58 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         
         lifecycleScope.launch {
             try {
-                val params = mutableMapOf<String, String>()
-                params["customer_type"] = binding.etCustomerType.text.toString()
-                params["corporate_name"] = binding.etCorporateName.text.toString()
-                params["trade_name"] = binding.etTradeName.text.toString()
-                params["date_of_incorp"] = binding.etDateOfIncorp.text.toString()
-                params["email_id"] = binding.etEmailIdAO.text.toString()
-                params["mobile_no"] = binding.etMobileNoAO.text.toString()
-                params["monthly_income"] = binding.etMonthlyIncome.text.toString()
-                params["address_type"] = binding.spAddressType.selectedItem.toString()
-                params["house_no"] = binding.etHouseNo.text.toString()
-                params["street_no"] = binding.etStreetNo.text.toString()
-                params["street_name"] = binding.etStreetName.text.toString()
-                params["city"] = binding.spCity.selectedItem.toString()
-                params["address_valid_from"] = binding.etAddressValidFrom.text.toString()
-                params["nationality"] = binding.spNationality.selectedItem.toString()
-                params["country_of_birth"] = binding.spCountryOfBirth.selectedItem.toString()
+                val customerType = binding.etCustomerType.text.toString()
+                val request = com.example.bgls.DataModels.CustomerRequest(
+                    ca_customer_type_1 = customerType,
+                    corporateName = binding.etCorporateName.text.toString(),
+                    tradeName = binding.etTradeName.text.toString(),
+                    date_incorporation = binding.etDateOfIncorp.text.toString(),
+                    ca_email_id = binding.etEmailIdAO.text.toString(),
+                    ca_mobile_number = binding.etMobileNoAO.text.toString(),
+                    monthly_income = binding.etMonthlyIncome.text.toString(),
+                    ca_address_type = binding.spAddressType.selectedItem.toString(),
+                    ca_house_no = binding.etHouseNo.text.toString(),
+                    ca_street_no = binding.etStreetNo.text.toString(),
+                    ca_street_name = binding.etStreetName.text.toString(),
+                    ca_city = binding.spCity.selectedItem.toString(),
+                    ca_address_validation_form = binding.etAddressValidFrom.text.toString(),
+                    ca_nationality = binding.spNationality.selectedItem.toString(),
+                    ca_country_of_birth = binding.spCountryOfBirth.selectedItem.toString(),
+                    branch_desc = intent.getStringExtra("branch_name") ?: "",
+                    ca_cif_id_1 = intent.getStringExtra("cif_id") ?: ""
+                )
                 
-                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val params = request.toMap()
+                
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: ""
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", params)
+                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", "", "", params)
                 }
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Corporate Details Saved", android.widget.Toast.LENGTH_SHORT).show()
-                    binding.tabLayout.getTabAt(1)?.select()
+                    val rawJson = response.body()?.string()
+                    var msg = "Corporate Details Saved"
+                    if (!rawJson.isNullOrBlank()) {
+                        try {
+                            val jsonObject = org.json.JSONObject(rawJson)
+                            if (jsonObject.has("message")) {
+                                msg = jsonObject.getString("message")
+                            } else {
+                                msg = rawJson
+                            }
+                        } catch (e: Exception) {
+                            msg = rawJson
+                        }
+                    }
+                    android.app.AlertDialog.Builder(this@CorporateCustomerAccountOpeningActivity)
+                        .setMessage(msg)
+                        .setPositiveButton("Okay") { dialog, _ ->
+                            dialog.dismiss()
+                            binding.tabLayout.getTabAt(1)?.select()
+                        }
+                        .setCancelable(false)
+                        .show()
                 } else {
                     android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
                 }
@@ -183,10 +209,10 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 formData["currency"] = "SCR"
                 formData["prisolid"] = binding.etPrimaryBranch.text.toString()
                 formData["branch_desc"] = binding.etBranchDesc.text.toString()
-                formData["cert_reg"] = binding.etCertReg.text.toString()
-                formData["bus_reg"] = binding.etBusReg.text.toString()
-                formData["date_incorp"] = binding.etDateIncorp.text.toString()
-                formData["country_operation"] = binding.spCountryOperation.selectedItem.toString()
+                formData["certificate_registration"] = binding.etCertReg.text.toString()
+                formData["business_registration"] = binding.etBusReg.text.toString()
+                formData["date_incorporation"] = binding.etDateIncorp.text.toString()
+                formData["countryOrigin"] = binding.spCountryOperation.selectedItem.toString()
                 
                 if (formData["schemetype"] == "LA") {
                     formData["gl_code_loan"] = schemeGlCode
@@ -215,10 +241,18 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Account Details Saved", android.widget.Toast.LENGTH_SHORT).show()
-                    binding.tabLayout.getTabAt(2)?.select()
+                    val msg = response.body()?.string()?.takeIf { it.isNotBlank() } ?: "Account Details Saved"
+                    android.app.AlertDialog.Builder(this@CorporateCustomerAccountOpeningActivity)
+                        .setMessage(msg)
+                        .setPositiveButton("Okay") { dialog, _ ->
+                            dialog.dismiss()
+                            binding.tabLayout.getTabAt(2)?.select()
+                        }
+                        .setCancelable(false)
+                        .show()
                 } else {
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to save details", android.widget.Toast.LENGTH_SHORT).show()
+                    val errBody = response.errorBody()?.string() ?: "Failed to save details"
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, errBody.take(200), android.widget.Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
@@ -248,7 +282,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Documents Uploaded", android.widget.Toast.LENGTH_SHORT).show()
+                    val msg = response.body()?.string() ?: "Documents Uploaded"
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, msg, android.widget.Toast.LENGTH_SHORT).show()
                     onComplete()
                 } else {
                     android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to upload documents", android.widget.Toast.LENGTH_SHORT).show()
@@ -293,7 +328,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                     
                     progressDialog.dismiss()
                     if (finalResponse.isSuccessful) {
-                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Application Submitted Successfully", android.widget.Toast.LENGTH_LONG).show()
+                        val msg = finalResponse.body()?.string() ?: "Application Submitted Successfully"
+                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, msg, android.widget.Toast.LENGTH_LONG).show()
                         finish()
                     } else {
                         android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to finalize", android.widget.Toast.LENGTH_SHORT).show()
@@ -320,7 +356,71 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             }
         }
         binding.btnSubmitDoc.setOnClickListener {
-            android.widget.Toast.makeText(this, "Documents Submitted Successfully", android.widget.Toast.LENGTH_SHORT).show()
+            val dynamicValues = mutableListOf<Map<String, String>>()
+            for (i in 0 until binding.containerDocumentRows.childCount) {
+                val row = binding.containerDocumentRows.getChildAt(i) as android.widget.LinearLayout
+                val spinner = row.getChildAt(0) as android.widget.Spinner
+                val etCode = row.getChildAt(1) as android.widget.EditText
+                val etDesc = row.getChildAt(2) as android.widget.EditText
+                val etId = row.getChildAt(3) as android.widget.EditText
+                val etPlace = row.getChildAt(4) as android.widget.EditText
+                val etIssueDate = row.getChildAt(5) as android.widget.EditText
+                val etExpiryDate = row.getChildAt(6) as android.widget.EditText
+                val uploadLayout = row.getChildAt(7) as android.widget.LinearLayout
+                val tvStatus = uploadLayout.getChildAt(1) as android.widget.TextView
+
+                val docType = spinner.selectedItem?.toString() ?: ""
+                val fileName = tvStatus.text.toString().takeIf { it != "No file" } ?: ""
+
+                val map = mapOf(
+                    "filename" to fileName,
+                    "doctype" to docType,
+                    "doccode" to etCode.text.toString(),
+                    "doctypesesc" to etDesc.text.toString(),
+                    "uniqueid" to etId.text.toString(),
+                    "placeofissue" to etPlace.text.toString(),
+                    "issuedate" to etIssueDate.text.toString(),
+                    "exprydate" to etExpiryDate.text.toString()
+                )
+                dynamicValues.add(map)
+            }
+
+            val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+            val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
+            val recNo = "1"
+
+            val progressDialog = android.app.ProgressDialog(this).apply {
+                setMessage("Submitting Documents...")
+                setCancelable(false)
+                show()
+            }
+
+            lifecycleScope.launch {
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        RetrofitClient.api.uploadDocumentMaster(
+                            applRefNo = appRefNo,
+                            recNo = recNo,
+                            cifId = cifId,
+                            dynamicValues = dynamicValues
+                        )
+                    }
+
+                    progressDialog.dismiss()
+                    if (response.isSuccessful) {
+                        android.app.AlertDialog.Builder(this@CorporateCustomerAccountOpeningActivity)
+                            .setMessage("Document Master Submitted Successfully")
+                            .setPositiveButton("Okay") { dialog, _ -> dialog.dismiss() }
+                            .setCancelable(false)
+                            .show()
+                    } else {
+                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to submit documents", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

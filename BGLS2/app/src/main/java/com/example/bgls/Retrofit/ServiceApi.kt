@@ -1305,50 +1305,50 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
     fun getApprovalList(@Query("formmode") formmode: String = "list"): Call<ApprovalListResponse>
 
     // --- Customer Onboarding (MinimalDataActivity) Endpoints ---
-    @GET("CheckDuplicateIndiv")
-    suspend fun checkDuplicateIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckBlackListIndiv")
-    suspend fun checkBlackListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckNegativeListIndiv")
-    suspend fun checkNegativeListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckDuplicateJoint")
-    suspend fun checkDuplicateJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckBlackListJoint")
-    suspend fun checkBlackListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckNegativeListJoint")
-    suspend fun checkNegativeListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckDuplicateCor")
-    suspend fun checkDuplicateCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckBlackListCor")
-    suspend fun checkBlackListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CheckNegativeListCor")
-    suspend fun checkNegativeListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
-
-    @GET("CustomerOnboarding")
-    suspend fun proceedIndividual(
-        @Query("formmode") formmode: String = "proceed",
-        @QueryMap params: Map<String, String>
-    ): Response<ResponseBody>
-
-    @GET("CustomerJoint")
-    suspend fun proceedJoint(
-        @Query("formmode") formmode: String = "proceed",
-        @QueryMap params: Map<String, String>
-    ): Response<ResponseBody>
-
-    @GET("CustomerOnboarding")
-    suspend fun proceedCorporate(
-        @Query("formmode") formmode: String = "corporate",
-        @QueryMap params: Map<String, String>
-    ): Response<ResponseBody>
+//    @GET("CheckDuplicateIndiv")
+//    suspend fun checkDuplicateIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckBlackListIndiv")
+//    suspend fun checkBlackListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckNegativeListIndiv")
+//    suspend fun checkNegativeListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckDuplicateJoint")
+//    suspend fun checkDuplicateJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckBlackListJoint")
+//    suspend fun checkBlackListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckNegativeListJoint")
+//    suspend fun checkNegativeListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckDuplicateCor")
+//    suspend fun checkDuplicateCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckBlackListCor")
+//    suspend fun checkBlackListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CheckNegativeListCor")
+//    suspend fun checkNegativeListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+//
+//    @GET("CustomerOnboarding")
+//    suspend fun proceedIndividual(
+//        @Query("formmode") formmode: String = "proceed",
+//        @QueryMap params: Map<String, String>
+//    ): Response<ResponseBody>
+//
+//    @GET("CustomerJoint")
+//    suspend fun proceedJoint(
+//        @Query("formmode") formmode: String = "proceed",
+//        @QueryMap params: Map<String, String>
+//    ): Response<ResponseBody>
+//
+//    @GET("CustomerOnboarding")
+//    suspend fun proceedCorporate(
+//        @Query("formmode") formmode: String = "corporate",
+//        @QueryMap params: Map<String, String>
+//    ): Response<ResponseBody>
 
     @POST("api/personalDetail1")
     suspend fun savePersonalDetail(
@@ -1427,4 +1427,80 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
     suspend fun updateMultipleTransactions(
         @Body transactions: List<@JvmSuppressWildcards Map<String, Any>>
     ): Response<Map<String, Any>>
+
+
+
+
+    // --- Customer Onboarding (MinimalDataActivity) Endpoints ---
+    @GET("api/CheckDuplicateIndiv")
+    suspend fun checkDuplicateIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckBlackListIndiv")
+    suspend fun checkBlackListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckNegativeListIndiv")
+    suspend fun checkNegativeListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckDuplicateJoint")
+    suspend fun checkDuplicateJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckBlackListJoint")
+    suspend fun checkBlackListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckNegativeListJoint")
+    suspend fun checkNegativeListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckDuplicateCor")
+    suspend fun checkDuplicateCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckBlackListCor")
+    suspend fun checkBlackListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CheckNegativeListCor")
+    suspend fun checkNegativeListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
+
+    @GET("api/CustomerOnboarding")
+    suspend fun getCustomerOnboardingAddScreen(
+        @Query("formmode") formmode: String = "add"
+    ): Response<ResponseBody>
+
+    @GET("api/CustomerOnboarding")
+    suspend fun proceedIndividual(
+        @Query("formmode") formmode: String = "proceed",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @GET("api/CustomerJoint")
+    suspend fun proceedJoint(
+        @Query("formmode") formmode: String = "proceed",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    @GET("api/CustomerOnboarding")
+    suspend fun proceedCorporate(
+        @Query("formmode") formmode: String = "corporate",
+        @QueryMap params: Map<String, String>
+    ): Response<ResponseBody>
+
+    // Note: params must be the serialized Map from CustomerRequest.toMap()
+    // because Retrofit @QueryMap does not accept data classes directly,
+    // and the Spring Boot backend expects query parameters (not JSON @Body).
+    @FormUrlEncoded
+    @POST("api/personalDetail")
+    suspend fun savePersonalDetail(
+        @Query("refnumber") refnumber: String,
+        @Query("rec_no") recNo: String,
+        @Query("passno") passno: String,
+        @Query("nationalid") nationalid: String,
+        @FieldMap params: Map<String, String>
+
+    ): Response<ResponseBody>
+    // Document Master Submission
+    @POST("api/multiline")
+    suspend fun uploadDocumentMaster(
+        @Query("appl_ref_no") applRefNo: String,
+        @Query("rec_no") recNo: String,
+        @Query("cif_id") cifId: String,
+        @Body dynamicValues: @JvmSuppressWildcards List<Map<String, String>>
+    ): Response<ResponseBody>
 }
