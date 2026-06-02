@@ -208,7 +208,6 @@ class LoanOperationActivity : AppCompatActivity() {
             }
             row.addView(et)
         }
-
         // RadioButton cell (Allocated)
         val rbCell = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0.9f)
@@ -218,6 +217,12 @@ class LoanOperationActivity : AppCompatActivity() {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT)
+                setOnClickListener {
+                    val names = (row.getChildAt(1) as? EditText)?.text?.toString().orEmpty()
+                    val amountStr = (row.getChildAt(4) as? EditText)?.text?.toString() ?: "0"
+                    val amount = amountStr.toDoubleOrNull() ?: 0.0
+                    showAllocationDialog(names, amount)
+                }
             })
         }
         row.addView(rbCell)
@@ -768,10 +773,16 @@ class LoanOperationActivity : AppCompatActivity() {
             gravity = Gravity.CENTER
             addView(RadioButton(this@LoanOperationActivity).apply {
                 isChecked = data?.get("status")?.toString() == "ALLOCATED"
+                setOnClickListener {
+                    // Read current values from the row (EditTexts at indices 1 and 4)
+                    val names = (row.getChildAt(1) as? EditText)?.text?.toString().orEmpty()
+                    val amountStr = (row.getChildAt(4) as? EditText)?.text?.toString() ?: "0"
+                    val amount = amountStr.toDoubleOrNull() ?: 0.0
+                    showAllocationDialog(names, amount)
+                }
             })
         }
         row.addView(rbCell)
-
         // Delete cell – weight 0.8
         val deleteCell = LinearLayout(this).apply {
             layoutParams = LinearLayout.LayoutParams(0, MATCH_PARENT, 0.8f)
