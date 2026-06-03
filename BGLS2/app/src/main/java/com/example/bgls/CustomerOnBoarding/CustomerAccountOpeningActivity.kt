@@ -63,6 +63,11 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         setupMandatoryLabels()
         setupDocumentMaster()
         setupSignatureUpload()
+        setupCalculations()
+        
+        binding.btnDtiValidation.setOnClickListener { showDtiValidationDialog() }
+        binding.btnSchedule.setOnClickListener { showScheduleDialog() }
+        binding.btnDepositFlow.setOnClickListener { showDepositFlowDialog() }
 
         binding.btnPrevious.setOnClickListener {
             finish()
@@ -110,46 +115,89 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun fetchSchemeDetails(selected: String) {
+        val isDeposit = selected == "FIXED DEPOSIT"
         val schemeCode = when (selected) {
             "FIXED DEPOSIT" -> "TDFIXED"
             "SAVINGS ACCOUNT" -> "SBRET"
             "CURRENT ACCOUNT" -> "CARET"
             else -> "LSRET"
         }
+
+        val glCode   = if (isDeposit) "2000" else "1000"
+        val glDesc   = if (isDeposit) "Liability" else "Asset"
+        val glshCode = if (isDeposit) "2500" else "1500"
+        val glshDesc = if (isDeposit) "TERM DEPOSIT GENERAL" else "LOAN ACCOUNT GENERAL"
+
+        val branchId   = intent.getStringExtra("primary_branch") ?: ""
+        val branchName = intent.getStringExtra("branch_name") ?: ""
+        val today      = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault()).format(java.util.Date())
+
+        binding.etSchemeCode.setText(schemeCode)
+        binding.etGlCode.setText(glCode)
+        binding.etGlDesc.setText(glDesc)
+        binding.etGlshCode.setText(glshCode)
+        binding.etGlshDesc.setText(glshDesc)
+        binding.etAccountBranchId.setText(branchId)
+        binding.etAccountBranchName.setText(branchName)
+
         lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     RetrofitClient.api.getSchemeDetails(schemeCode)
                 }
                 if (response.isSuccessful) {
-                    val responseString = response.body()?.string() ?: ""
-                    val json = org.json.JSONObject(responseString)
-                    val data = json.optJSONObject("data")
-                    generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
-                    schemeGlCode = data?.optString("glcode") ?: ""
-                    schemeGlDesc = data?.optString("gldesc") ?: ""
-                    schemeGlshCode = data?.optString("glsh_code") ?: ""
-                    schemeGlshDesc = data?.optString("glsh_desc") ?: ""
+                    val rawJson = response.body()?.string() ?: ""
+                    android.util.Log.d("SchemeDetails", "Response: $rawJson")
+                    try {
+                        val json = org.json.JSONObject(rawJson)
+                        generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
 
-                    // Populate read-only scheme fields
-                    binding.etSchemeCode.setText(schemeCode)
-                    binding.etGlCode.setText(schemeGlCode)
-                    binding.etGlDesc.setText(schemeGlDesc)
-                    binding.etGlshCode.setText(schemeGlshCode)
-                    binding.etGlshDesc.setText(schemeGlshDesc)
-                    binding.etAccountBranchId.setText(intent.getStringExtra("primary_branch") ?: "")
-                    binding.etAccountBranchName.setText(intent.getStringExtra("branch_name") ?: "")
+                        val data = json.optJSONObject("data")
+                        if (data != null) {
+                            schemeGlCode   = data.optString("gl_code", glCode)
+                            schemeGlDesc   = data.optString("schmdesc", glDesc)
+                            schemeGlshCode = data.optString("glsh", glshCode)
+                            schemeGlshDesc = glshDesc
+                        } else {
+                            schemeGlCode   = glCode
+                            schemeGlDesc   = glDesc
+                            schemeGlshCode = glshCode
+                            schemeGlshDesc = glshDesc
+                        }
+                    } catch (jsonEx: Exception) {
+                        android.util.Log.e("SchemeDetails", "JSON parse error: ${jsonEx.message}")
+                        generatedAccountNo = ""
+                        schemeGlCode   = glCode
+                        schemeGlDesc   = glDesc
+                        schemeGlshCode = glshCode
+                        schemeGlshDesc = glshDesc
+                    }
 
-                    val today = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault()).format(java.util.Date())
-                    if (selected == "FIXED DEPOSIT") {
-                        binding.etDepositAccountNo.setText(generatedAccountNo)
-                        binding.etDateOfDeposit.setText(today)
-                    } else {
-                        binding.etLoanAccountNo.setText(generatedAccountNo)
-                        binding.etDateOfLoan.setText(today)
+                    withContext(Dispatchers.Main) {
+                        binding.etSchemeCode.setText(schemeCode)
+                        binding.etGlCode.setText(schemeGlCode)
+                        binding.etGlDesc.setText(schemeGlDesc)
+                        binding.etGlshCode.setText(schemeGlshCode)
+                        binding.etGlshDesc.setText(schemeGlshDesc)
+                        binding.etAccountBranchId.setText(branchId)
+                        binding.etAccountBranchName.setText(branchName)
+                        if (isDeposit) {
+                            binding.etDepositAccountNo.setText(generatedAccountNo)
+                            binding.etDateOfDeposit.setText(today)
+                        } else {
+                            binding.etLoanAccountNo.setText(generatedAccountNo)
+                            binding.etDateOfLoan.setText(today)
+                        }
+                    }
+                } else {
+                    android.util.Log.e("SchemeDetails", "API error: ${response.code()}")
+                    withContext(Dispatchers.Main) {
+                        if (isDeposit) binding.etDateOfDeposit.setText(today)
+                        else binding.etDateOfLoan.setText(today)
                     }
                 }
             } catch (e: Exception) {
+                android.util.Log.e("SchemeDetails", "Exception: ${e.message}")
                 e.printStackTrace()
             }
         }
@@ -169,7 +217,9 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     la_customer_type = intent.getStringExtra("customer_type") ?: "",
                     cif_id = intent.getStringExtra("cif_id") ?: "",
                     ca_solid = intent.getStringExtra("primary_branch") ?: "",
-                    ca_acct_opendate = binding.etAccountOpenDate.text?.toString() ?: "",
+                    ca_acct_opendate = formatDateForBackend(binding.etAccountOpenDate.text?.toString() ?: ""),
+                    ca_date_of_birth = formatDateForBackend(binding.etDateOfBirth.text?.toString() ?: ""),
+                    ca_address_validation_form = formatDateForBackend(binding.etAddressValidFrom.text?.toString() ?: ""),
                     ca_remarks = "", // Update dynamically if you have an etRemarks binding
                     shortName = intent.getStringExtra("short_name") ?: "",
                     ca_customer_type = customerType,
@@ -178,7 +228,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     mid_name = binding.etMiddleName.text?.toString() ?: "",
                     ca_last_name = binding.etLastName.text?.toString() ?: "",
                     ca_preferred_name = binding.etFullName.text?.toString() ?: "",
-                    ca_date_of_birth = binding.etDateOfBirth.text?.toString() ?: "",
+                    
                     ca_currency = intent.getStringExtra("currency") ?: "", 
                     loan_obligations = "",
                     family_maintenance = "",
@@ -199,7 +249,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     ca_state = "",
                     ca_city = binding.spCity.selectedItem?.toString() ?: "",
                     ca_postal_code = "",
-                    ca_address_validation_form = binding.etAddressValidFrom.text?.toString() ?: "",
+                    
                     ca_nationality = binding.spNationality.selectedItem?.toString() ?: "",
                     ca_country_of_birth = binding.spCountryOfBirth.selectedItem?.toString() ?: "",
                     countryOrigin = binding.spCountryOfOrigin.selectedItem?.toString() ?: "",
@@ -875,7 +925,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun receiveData() {
-        // Populate fields with data from MinimalDataActivity
+        // Populate Personal Details fields with data from MinimalDataActivity
         binding.etCustomerType.setText(intent.getStringExtra("customer_type"))
         binding.etPrimaryBranch.setText(intent.getStringExtra("primary_branch"))
         binding.etBranchName.setText(intent.getStringExtra("branch_name"))
@@ -894,6 +944,13 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         }
 
         binding.etEmailIdAO.setText(intent.getStringExtra("email_id"))
+
+        // Also pre-fill Account Details tab branch fields immediately from intent
+        // (so they show even before user selects a scheme type)
+        val primaryBranch = intent.getStringExtra("primary_branch") ?: ""
+        val branchName    = intent.getStringExtra("branch_name") ?: ""
+        binding.etAccountBranchId.setText(primaryBranch)
+        binding.etAccountBranchName.setText(branchName)
     }
 
     private fun setupTabs() {
@@ -999,4 +1056,280 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         depFreqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDepositFrequency.adapter = depFreqAdapter
     }
+    
+    private fun showDtiValidationDialog() {
+        val layout = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            setPadding(50, 40, 50, 40)
+        }
+
+        val etMonthlyIncome = android.widget.EditText(this).apply {
+            hint = "Monthly Income"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            setText(binding.etMonthlyIncome.text.toString().replace(",", ""))
+        }
+
+        val etMonthlyRepayment = android.widget.EditText(this).apply {
+            hint = "Monthly Repayment"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            setText(binding.etInstallmentAmount.text.toString().replace(",", ""))
+        }
+
+        val tvStatus = android.widget.TextView(this).apply {
+            textSize = 16f
+            setPadding(0, 20, 0, 0)
+        }
+
+        layout.addView(etMonthlyIncome)
+        layout.addView(etMonthlyRepayment)
+        layout.addView(tvStatus)
+
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setTitle("DTI Validation")
+            .setView(layout)
+            .setPositiveButton("Calculate", null)
+            .setNegativeButton("Close", null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val income = etMonthlyIncome.text.toString().toDoubleOrNull() ?: 0.0
+                val repayment = etMonthlyRepayment.text.toString().toDoubleOrNull() ?: 0.0
+
+                if (income > 0) {
+                    val dtiRatio = (repayment / income) * 100
+                    val status = when {
+                        dtiRatio <= 35 -> "Favorable"
+                        dtiRatio <= 49 -> "Adequate"
+                        else -> "Not Favorable"
+                    }
+                    tvStatus.text = "DTI Ratio: ${String.format("%.2f", dtiRatio)}%\nStatus: $status"
+                } else {
+                    tvStatus.text = "Please enter valid Monthly Income"
+                }
+            }
+        }
+        dialog.show()
+    }
+
+    private fun showScheduleDialog() {
+        val creationDate = binding.etDateOfLoan.text.toString()
+        val interestRate = binding.etInterestRate.text.toString().replace(",", "")
+        val installID = "1"
+        val installStartDate = binding.etInstallmentStartDate.text.toString()
+        val pricipleFreq = binding.spPrincipalInstFreq.selectedItem?.toString() ?: ""
+        val noOfInstallment = binding.etNoOfInstallments.text.toString()
+        val installAmount = binding.etInstallmentAmount.text.toString().replace(",", "")
+        val interestFreq = binding.spInterestInstFreq.selectedItem?.toString() ?: ""
+        val feesRate = binding.etFeesRate.text.toString().replace(",", "")
+
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Demand Schedule Details")
+            .setMessage("Fetching Schedule...")
+            .setPositiveButton("Close", null)
+            .create()
+        dialog.show()
+
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.getInterestDetails(
+                        creationDate, interestRate, installID, installStartDate,
+                        pricipleFreq, noOfInstallment, installAmount, interestFreq, feesRate
+                    )
+                }
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null && data.isNotEmpty()) {
+                        val sb = StringBuilder()
+                        for (row in data) {
+                            sb.append("Inst No: ${row["no_of_instalment"]}, Date: ${row["installment_date"]}, Amt: ${row["installment_amount"]}\n")
+                        }
+                        dialog.setMessage(sb.toString())
+                    } else {
+                        dialog.setMessage("No Schedule Found")
+                    }
+                } else {
+                    dialog.setMessage("Error fetching schedule")
+                }
+            } catch (e: Exception) {
+                dialog.setMessage("Error: ${e.message}")
+            }
+        }
+    }
+
+    private fun showDepositFlowDialog() {
+        val depositType = binding.spDepositType.selectedItem?.toString() ?: ""
+        val depoActNo = binding.etDepositAccountNo.text.toString()
+        val depositDate = binding.etDateOfDeposit.text.toString()
+        val depositAmt = binding.etDepositAmount.text.toString().replace(",", "")
+        val currency = binding.etDepositCurrency.text.toString()
+        val depositPeriod = binding.etDepositPeriod.text.toString()
+        val maturityDate = binding.etMaturityDate.text.toString()
+        val branchId = binding.etAccountBranchId.text.toString()
+        val branchName = binding.etAccountBranchName.text.toString()
+        val depositFrequency = binding.spDepositFrequency.selectedItem?.toString() ?: ""
+        val interestType = binding.spInterestType.selectedItem?.toString() ?: ""
+        val intAmt = binding.etInterestAmount.text.toString().replace(",", "")
+        val rateOfInt = binding.etRateOfInterest.text.toString().replace(",", "")
+
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setTitle("Deposit Flow Details")
+            .setMessage("Fetching Flow...")
+            .setPositiveButton("Close", null)
+            .create()
+        dialog.show()
+
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.getDepositFlow(
+                        depositType, depoActNo, depositDate, depositAmt, currency, depositPeriod, maturityDate, branchId, branchName, depositFrequency, interestType, intAmt, rateOfInt
+                    )
+                }
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    if (data != null && data.isNotEmpty()) {
+                        val sb = StringBuilder()
+                        for (row in data) {
+                            sb.append("Date: ${row["deposit_date"]}, Amt: ${row["deposit_amt"]}, Mat Amt: ${row["maturity_amt"]}\n")
+                        }
+                        dialog.setMessage(sb.toString())
+                    } else {
+                        dialog.setMessage("No Flow Found")
+                    }
+                } else {
+                    dialog.setMessage("Error fetching flow")
+                }
+            } catch (e: Exception) {
+                dialog.setMessage("Error: ${e.message}")
+            }
+        }
+    }
+
+        private fun formatDateForBackend(dateString: String): String {
+        if (dateString.isBlank()) return ""
+        return try {
+            val s = dateString.replace("/", "-")
+            val parts = s.split("-")
+            if (parts.size == 3) {
+                if (parts[0].length <= 2 && parts[2].length == 4) {
+                    "${parts[2]}-${parts[1]}-${parts[0]}"
+                } else {
+                    s
+                }
+            } else {
+                s
+            }
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+
+    private fun setupCalculations() {
+        // Income Calculation
+        binding.etAnnualIncome.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (binding.etAnnualIncome.hasFocus()) {
+                    try {
+                        val rawValue = s.toString().replace(",", "")
+                        if (rawValue.isNotEmpty()) {
+                            val annualIncome = rawValue.toDouble()
+                            val monthlyIncome = annualIncome / 12
+                            val formatter = java.text.NumberFormat.getNumberInstance(java.util.Locale("en", "IN"))
+                            formatter.minimumFractionDigits = 2
+                            formatter.maximumFractionDigits = 2
+                            binding.etMonthlyIncome.setText(formatter.format(monthlyIncome))
+                        } else {
+                            binding.etMonthlyIncome.setText("")
+                        }
+                    } catch (e: Exception) {
+                        binding.etMonthlyIncome.setText("")
+                    }
+                }
+            }
+        })
+
+        // Expiry Date Calculation
+        val calculateExpiry = {
+            try {
+                val loanPeriodStr = binding.etLoanPeriod.text.toString()
+                val startDateStr = binding.etInstallmentStartDate.text.toString()
+                if (loanPeriodStr.isNotEmpty() && startDateStr.isNotEmpty()) {
+                    val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                    val date = sdf.parse(startDateStr)
+                    if (date != null) {
+                        val cal = java.util.Calendar.getInstance()
+                        cal.time = date
+                        cal.add(java.util.Calendar.MONTH, loanPeriodStr.toInt())
+                        binding.etLoanExpiryDate.setText(sdf.format(cal.time))
+                    }
+                } else {
+                    binding.etLoanExpiryDate.setText("")
+                }
+            } catch (e: Exception) {
+                // ignore
+            }
+        }
+        
+        binding.etLoanPeriod.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateExpiry() }
+        })
+        binding.etInstallmentStartDate.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateExpiry() }
+        })
+
+        // Maturity Date Calculation
+        val calculateMaturity = {
+            try {
+                val depositPeriodStr = binding.etDepositPeriod.text.toString()
+                val depositDateStr = binding.etDateOfDeposit.text.toString()
+                val frequency = binding.spFrequency.selectedItem?.toString() ?: ""
+                
+                if (depositPeriodStr.isNotEmpty() && depositDateStr.isNotEmpty()) {
+                    val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                    val date = sdf.parse(depositDateStr)
+                    if (date != null) {
+                        val cal = java.util.Calendar.getInstance()
+                        cal.time = date
+                        if (frequency.equals("Yearly", ignoreCase = true)) {
+                            cal.add(java.util.Calendar.YEAR, depositPeriodStr.toInt())
+                        } else {
+                            cal.add(java.util.Calendar.MONTH, depositPeriodStr.toInt())
+                        }
+                        binding.etMaturityDate.setText(sdf.format(cal.time))
+                    }
+                } else {
+                    binding.etMaturityDate.setText("")
+                }
+            } catch (e: Exception) {
+                // ignore
+            }
+        }
+        
+        binding.etDepositPeriod.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateMaturity() }
+        })
+        binding.etDateOfDeposit.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateMaturity() }
+        })
+        binding.spFrequency.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                calculateMaturity()
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
+    }
 }
+
+

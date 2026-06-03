@@ -1357,10 +1357,10 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @QueryMap params: Map<String, String>
     ): Response<ResponseBody>
 
-    @GET("api/Onschemetype1cordocument")
-    suspend fun getSchemeDetails(
-        @Query("schemetype") schemetype: String
-    ): Response<ResponseBody>
+//    @GET("api/Onschemetype1cordocument")
+//    suspend fun getSchemeDetails(
+//        @Query("schemetype") schemetype: String
+//    ): Response<ResponseBody>
 
     @POST("api/AccountDetailNxt")
     suspend fun saveAccountDetails(
@@ -1503,4 +1503,44 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Query("cif_id") cifId: String,
         @Body dynamicValues: @JvmSuppressWildcards List<Map<String, String>>
     ): Response<ResponseBody>
+
+    @GET("api/getglshCode")
+    suspend fun getglshCode(
+        @Query("glsh") glsh: String
+    ): Response<List<String>>
+
+    @GET("api/Onschemetype1document")
+    suspend fun getSchemeDetails(
+        @Query("schemetype") schemeType: String
+    ): Response<okhttp3.ResponseBody>
+
+    @GET("api/getInterestDetails")
+    suspend fun getInterestDetails(
+        @Query("creation_Date") creationDate: String,
+        @Query("interestRate") interestRate: String,
+        @Query("installID") installID: String,
+        @Query("installStartDate") installStartDate: String,
+        @Query("pricipleFreq") pricipleFreq: String,
+        @Query("noOfInstallment") noOfInstallment: String,
+        @Query("installAmount") installAmount: String,
+        @Query("interestFreq") interestFreq: String,
+        @Query("feesRate") feesRate: String
+    ): Response<List<Map<String, Any>>>
+
+    @GET("api/getDepositFlow")
+    suspend fun getDepositFlow(
+        @Query("deposit_type") depositType: String,
+        @Query("depo_actno") depoActNo: String,
+        @Query("deposit_date") depositDate: String,
+        @Query("deposit_amt") depositAmt: String,
+        @Query("currency") currency: String,
+        @Query("deposit_period") depositPeriod: String,
+        @Query("maturity_date") maturityDate: String,
+        @Query("branch_id") branchId: String,
+        @Query("branch_name") branchName: String,
+        @Query("depositfrequency") depositFrequency: String,
+        @Query("interesttype") interestType: String,
+        @Query("int_amt") intAmt: String,
+        @Query("rate_of_int") rateOfInt: String
+    ): Response<List<Map<String, Any>>>
 }

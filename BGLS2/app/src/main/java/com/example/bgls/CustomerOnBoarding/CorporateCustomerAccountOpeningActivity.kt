@@ -95,24 +95,69 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun fetchSchemeDetails(selected: String) {
+        val isDeposit = selected == "FIXED DEPOSIT"
         val schemeType = when (selected) {
             "FIXED DEPOSIT" -> "TDFIXED"
-            else -> "LSRET"
+            else -> "LSRET"  // LOAN ACCOUNT
         }
+        // GL values matching web: Loan=Asset(1000/1500), Deposit=Liability(2000/2500)
+        val glCode   = if (isDeposit) "2000" else "1000"
+        val glDesc   = if (isDeposit) "Liability" else "Asset"
+        val glshCode = if (isDeposit) "2500" else "1500"
+        val glshDesc = if (isDeposit) "TERM DEPOSIT GENERAL" else "LOAN ACCOUNT GENERAL"
+        val branchId   = intent.getStringExtra("primary_branch") ?: ""
+        val branchName = intent.getStringExtra("branch_name") ?: ""
+
+        // Populate immediately (before API responds) so fields are never blank
+        binding.etSchemeCode.setText(schemeType)
+        binding.etGlCode.setText(glCode)
+        binding.etGlDesc.setText(glDesc)
+        binding.etGlshCode.setText(glshCode)
+        binding.etGlshDesc.setText(glshDesc)
+        binding.etAccountBranchId.setText(branchId)
+        binding.etAccountBranchName.setText(branchName)
+
         lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     RetrofitClient.api.getSchemeDetails(schemeType)
                 }
                 if (response.isSuccessful) {
-                    val responseString = response.body()?.string() ?: ""
-                    val json = org.json.JSONObject(responseString)
-                    val data = json.optJSONObject("data")
-                    generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
-                    schemeGlCode = data?.optString("glcode") ?: ""
-                    schemeGlDesc = data?.optString("gldesc") ?: ""
-                    schemeGlshCode = data?.optString("glsh_code") ?: ""
-                    schemeGlshDesc = data?.optString("glsh_desc") ?: ""
+                    // MUST use .string() not .toString() — .toString() returns object reference
+                    val rawJson = response.body()?.string() ?: ""
+                    android.util.Log.d("CorporateScheme", "Response: $rawJson")
+                    try {
+                        val json = org.json.JSONObject(rawJson)
+                        generatedAccountNo = json.optString("loanAccountNo",
+                            json.optString("accountNo", ""))
+                        val data = json.optJSONObject("data")
+                        if (data != null) {
+                            // Backend field names from BACP_PARAMETER table:
+                            // gl_code  → "gl_code"   (confirmed in ParametersDetails.java)
+                            // gl_desc  → "schmdesc"  (no gl_desc column; schmdesc is the description)
+                            // glsh     → "glsh"      (field is "glsh", NOT "glsh_code")
+                            // glsh_desc→ hardcoded in web JS switch; not stored in DB
+                            schemeGlCode   = data.optString("gl_code", glCode)
+                            schemeGlDesc   = data.optString("schmdesc", glDesc)  // correct DB column
+                            schemeGlshCode = data.optString("glsh", glshCode)    // correct DB column name
+                            schemeGlshDesc = glshDesc  // hardcoded: "LOAN ACCOUNT GENERAL" / "TERM DEPOSIT GENERAL"
+                        } else {
+                            schemeGlCode = glCode; schemeGlDesc = glDesc
+                            schemeGlshCode = glshCode; schemeGlshDesc = glshDesc
+                        }
+                    } catch (jsonEx: Exception) {
+                        schemeGlCode = glCode; schemeGlDesc = glDesc
+                        schemeGlshCode = glshCode; schemeGlshDesc = glshDesc
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.etSchemeCode.setText(schemeType)
+                        binding.etGlCode.setText(schemeGlCode)
+                        binding.etGlDesc.setText(schemeGlDesc)
+                        binding.etGlshCode.setText(schemeGlshCode)
+                        binding.etGlshDesc.setText(schemeGlshDesc)
+                        binding.etAccountBranchId.setText(branchId)
+                        binding.etAccountBranchName.setText(branchName)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -752,9 +797,12 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun receiveData() {
+        val primaryBranch = intent.getStringExtra("primary_branch") ?: "103"
+        val branchName    = intent.getStringExtra("branch_name") ?: "Al Salam Bank Seychelles Limited"
+
         binding.etCustomerType.setText(intent.getStringExtra("customer_type") ?: "CORPORATE")
-        binding.etPrimaryBranch.setText(intent.getStringExtra("primary_branch") ?: "103")
-        binding.etBranchDesc.setText(intent.getStringExtra("branch_name") ?: "Al Salam Bank Seychelles Limited")
+        binding.etPrimaryBranch.setText(primaryBranch)
+        binding.etBranchDesc.setText(branchName)
         
         binding.etCorporateName.setText(intent.getStringExtra("full_name") ?: "")
         binding.etTradeName.setText(intent.getStringExtra("short_name") ?: "")
@@ -762,6 +810,10 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         binding.etDateIncorp.setText(intent.getStringExtra("dob") ?: "")
         binding.etEmail.setText(intent.getStringExtra("email_id") ?: "")
         binding.etEmailIdAO.setText(intent.getStringExtra("email_id") ?: "")
+
+        // Also pre-fill Account Details tab branch fields immediately from intent
+        binding.etAccountBranchId.setText(primaryBranch)
+        binding.etAccountBranchName.setText(branchName)
     }
 
     private fun setupTabs() {
