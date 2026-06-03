@@ -63,6 +63,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         setupMandatoryLabels()
         setupDocumentMaster()
         setupSignatureUpload()
+        setupPersonalDetails()
         setupCalculations()
         
         binding.btnDtiValidation.setOnClickListener { showDtiValidationDialog() }
@@ -115,9 +116,10 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun fetchSchemeDetails(selected: String) {
-        val isDeposit = selected == "FIXED DEPOSIT"
+        val isDeposit = selected == "DEPOSIT ACCOUNT"
         val schemeCode = when (selected) {
-            "FIXED DEPOSIT" -> "TDFIXED"
+            "DEPOSIT ACCOUNT" -> "TDFIXED"
+            "LOAN ACCOUNT" -> "LSRET"
             "SAVINGS ACCOUNT" -> "SBRET"
             "CURRENT ACCOUNT" -> "CARET"
             else -> "LSRET"
@@ -148,16 +150,46 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val rawJson = response.body()?.string() ?: ""
                     android.util.Log.d("SchemeDetails", "Response: $rawJson")
+                    
+                    var loanAmount = ""
+                    var loanPeriod = ""
+                    var interestRateLoan = ""
+                    var collateralMargin = ""
+                    var recoveryMethod = ""
+                    var repaymentPeriod = ""
+                    
+                    var depositAmount = ""
+                    var depositPeriod = ""
+                    var interestRateDeposit = ""
+                    var interestCompoundFrequency = ""
+
                     try {
                         val json = org.json.JSONObject(rawJson)
                         generatedAccountNo = json.optString("loanAccountNo", json.optString("accountNo", ""))
 
                         val data = json.optJSONObject("data")
                         if (data != null) {
-                            schemeGlCode   = data.optString("gl_code", glCode)
-                            schemeGlDesc   = data.optString("schmdesc", glDesc)
-                            schemeGlshCode = data.optString("glsh", glshCode)
+                            val safeString = { key: String, fallback: String ->
+                                val value = data.optString(key)
+                                if (value == "null" || value.isEmpty()) fallback else value
+                            }
+
+                            schemeGlCode   = safeString("gl_code", glCode)
+                            schemeGlDesc   = safeString("schmdesc", glDesc)
+                            schemeGlshCode = safeString("glsh", glshCode)
                             schemeGlshDesc = glshDesc
+                            
+                            loanAmount = safeString("loan_amount", "")
+                            loanPeriod = safeString("loan_period", "")
+                            interestRateLoan = safeString("interest_rate_loan", "")
+                            collateralMargin = safeString("collateral_margin", "")
+                            recoveryMethod = safeString("recovery_method", "")
+                            repaymentPeriod = safeString("repayment_period", "")
+                            
+                            depositAmount = safeString("deposit_amount", "")
+                            depositPeriod = safeString("deposit_period", "")
+                            interestRateDeposit = safeString("interest_rate_deposit", "")
+                            interestCompoundFrequency = safeString("interest_compund_frequency", "")
                         } else {
                             schemeGlCode   = glCode
                             schemeGlDesc   = glDesc
@@ -184,9 +216,32 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                         if (isDeposit) {
                             binding.etDepositAccountNo.setText(generatedAccountNo)
                             binding.etDateOfDeposit.setText(today)
+                            binding.etDepositAmount.setText(depositAmount)
+                            binding.etDepositPeriod.setText(depositPeriod)
+                            binding.etRateOfInterest.setText(interestRateDeposit)
+                            binding.etCompoundingFactor.setText(interestCompoundFrequency)
                         } else {
                             binding.etLoanAccountNo.setText(generatedAccountNo)
                             binding.etDateOfLoan.setText(today)
+                            binding.etLoanSanctioned.setText(loanAmount)
+                            binding.etLoanPeriod.setText(loanPeriod)
+                            binding.etInterestRate.setText(interestRateLoan)
+                            binding.etFeesRate.setText(interestRateLoan) // assuming fees rate and interest rate fall back to this, adjust as needed
+                            binding.etMargin.setText(collateralMargin)
+                            binding.etRepaymentTerms.setText(repaymentPeriod)
+
+                            // Setup recovery method spinner if applicable
+                            if (recoveryMethod.isNotEmpty()) {
+                                val adapter = binding.spRecoveryMethod.adapter
+                                if (adapter != null) {
+                                    for (i in 0 until adapter.count) {
+                                        if (adapter.getItem(i).toString().equals(recoveryMethod, ignoreCase = true)) {
+                                            binding.spRecoveryMethod.setSelection(i)
+                                            break
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 } else {
@@ -1227,6 +1282,13 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun setupCalculations() {
+        val formatCurrency = { amount: Double ->
+            val formatter = java.text.NumberFormat.getNumberInstance(java.util.Locale("en", "IN"))
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            formatter.format(amount)
+        }
+
         // Income Calculation
         binding.etAnnualIncome.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -1238,10 +1300,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                         if (rawValue.isNotEmpty()) {
                             val annualIncome = rawValue.toDouble()
                             val monthlyIncome = annualIncome / 12
-                            val formatter = java.text.NumberFormat.getNumberInstance(java.util.Locale("en", "IN"))
-                            formatter.minimumFractionDigits = 2
-                            formatter.maximumFractionDigits = 2
-                            binding.etMonthlyIncome.setText(formatter.format(monthlyIncome))
+                            binding.etMonthlyIncome.setText(formatCurrency(monthlyIncome))
                         } else {
                             binding.etMonthlyIncome.setText("")
                         }
@@ -1251,6 +1310,99 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                 }
             }
         })
+
+        val calculateLoanFinancials = {
+            try {
+                val loanStr = binding.etLoanSanctioned.text.toString().replace(",", "")
+                val marginStr = binding.etMargin.text.toString().replace(",", "")
+                val periodStr = binding.etLoanPeriod.text.toString()
+                
+                val loanAmount = loanStr.toDoubleOrNull() ?: 0.0
+                val marginPct = marginStr.toDoubleOrNull() ?: 0.0
+                val period = periodStr.toDoubleOrNull() ?: 0.0
+                
+                if (loanAmount > 0) {
+                    binding.etOutstanding.setText(formatCurrency(loanAmount))
+                    binding.etDisbursement.setText(formatCurrency(loanAmount))
+                    
+                    val drawingLimit = loanAmount * (marginPct / 100.0)
+                    binding.etDrawingLimit.setText(formatCurrency(drawingLimit))
+                    
+                    if (period > 0) {
+                        binding.etNoOfInstallments.setText(period.toInt().toString())
+                        val installment = loanAmount / period
+                        binding.etInstallmentAmount.setText(formatCurrency(installment))
+                        
+                        val pct = Math.round((installment / loanAmount) * 100).toInt()
+                        binding.etInstallmentPct.setText(pct.toString())
+                    } else {
+                        binding.etNoOfInstallments.setText("")
+                        binding.etInstallmentAmount.setText("")
+                        binding.etInstallmentPct.setText("")
+                    }
+                } else {
+                    binding.etOutstanding.setText("")
+                    binding.etDisbursement.setText("")
+                    binding.etDrawingLimit.setText("")
+                    binding.etNoOfInstallments.setText("")
+                    binding.etInstallmentAmount.setText("")
+                    binding.etInstallmentPct.setText("")
+                }
+            } catch (e: Exception) {}
+        }
+
+        val calculateDepositFinancials = {
+            try {
+                val depositStr = binding.etDepositAmount.text.toString().replace(",", "")
+                val rateStr = binding.etRateOfInterest.text.toString().replace(",", "")
+                val periodStr = binding.etDepositPeriod.text.toString()
+                val compFactorStr = binding.etCompoundingFactor.text.toString()
+                
+                val depositAmt = depositStr.toDoubleOrNull() ?: 0.0
+                val rate = rateStr.toDoubleOrNull() ?: 0.0
+                val period = periodStr.toDoubleOrNull() ?: 0.0
+                val compFactor = compFactorStr.toDoubleOrNull() ?: 1.0
+                
+                val frequency = binding.spFrequency.selectedItem?.toString() ?: ""
+                val interestType = binding.spInterestType.selectedItem?.toString() ?: "Simple"
+                
+                if (depositAmt > 0 && rate > 0 && period > 0) {
+                    val periodInYears = if (frequency.equals("Yearly", ignoreCase = true)) period else period / 12.0
+                    val rateDecimal = rate / 100.0
+                    
+                    val interestAmt = if (interestType.equals("Compound", ignoreCase = true)) {
+                        val n = if (compFactor > 0) compFactor else 1.0
+                        depositAmt * (Math.pow(1.0 + (rateDecimal / n), n * periodInYears)) - depositAmt
+                    } else {
+                        depositAmt * rateDecimal * periodInYears
+                    }
+                    
+                    val maturityAmt = depositAmt + interestAmt
+                    binding.etInterestAmount.setText(formatCurrency(interestAmt))
+                    binding.etMaturityAmount.setText(formatCurrency(maturityAmt))
+                } else {
+                    binding.etInterestAmount.setText("")
+                    binding.etMaturityAmount.setText("")
+                }
+            } catch (e: Exception) {}
+        }
+
+        val loanWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanFinancials() }
+        }
+        binding.etLoanSanctioned.addTextChangedListener(loanWatcher)
+        binding.etMargin.addTextChangedListener(loanWatcher)
+
+        val depositWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateDepositFinancials() }
+        }
+        binding.etDepositAmount.addTextChangedListener(depositWatcher)
+        binding.etRateOfInterest.addTextChangedListener(depositWatcher)
+        binding.etCompoundingFactor.addTextChangedListener(depositWatcher)
 
         // Expiry Date Calculation
         val calculateExpiry = {
@@ -1277,7 +1429,10 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         binding.etLoanPeriod.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) { calculateExpiry() }
+            override fun afterTextChanged(s: android.text.Editable?) { 
+                calculateExpiry() 
+                calculateLoanFinancials()
+            }
         })
         binding.etInstallmentStartDate.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -1316,20 +1471,208 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         binding.etDepositPeriod.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) { calculateMaturity() }
+            override fun afterTextChanged(s: android.text.Editable?) { 
+                calculateMaturity() 
+                calculateDepositFinancials()
+            }
         })
         binding.etDateOfDeposit.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: android.text.Editable?) { calculateMaturity() }
         })
+        
         binding.spFrequency.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
                 calculateMaturity()
+                calculateDepositFinancials()
+            }
+            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
+        }
+        
+        binding.spInterestType.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+                calculateDepositFinancials()
             }
             override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
         }
     }
+
+    private fun setupPersonalDetails() {
+        // Auto-update Full Name
+        val updateFullName = {
+            val first = binding.etFirstName.text.toString().trim()
+            val middle = binding.etMiddleName.text.toString().trim()
+            val last = binding.etLastName.text.toString().trim()
+            val nameParts = listOf(first, middle, last).filter { it.isNotEmpty() }
+            binding.etFullName.setText(nameParts.joinToString(" "))
+        }
+
+        val nameWatcher = object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { updateFullName() }
+        }
+        binding.etFirstName.addTextChangedListener(nameWatcher)
+        binding.etMiddleName.addTextChangedListener(nameWatcher)
+        binding.etLastName.addTextChangedListener(nameWatcher)
+
+        // Auto-update Short Name
+        binding.etFirstName.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val shortName = binding.etShortName.text.toString().trim()
+                val firstName = binding.etFirstName.text.toString().trim()
+                if (shortName.isEmpty() && firstName.length >= 3) {
+                    binding.etShortName.setText(firstName.take(5).uppercase())
+                }
+            }
+        }
+
+        // Date of Birth validation
+        binding.etDateOfBirth.isEnabled = true
+        binding.etDateOfBirth.isFocusable = false
+        binding.etDateOfBirth.setOnClickListener { 
+            val calendar = java.util.Calendar.getInstance()
+            val datePickerDialog = android.app.DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+                val formattedDate = String.format("%02d-%02d-%d", selectedDay, selectedMonth + 1, selectedYear)
+                binding.etDateOfBirth.setText(formattedDate)
+            }, calendar.get(java.util.Calendar.YEAR), calendar.get(java.util.Calendar.MONTH), calendar.get(java.util.Calendar.DAY_OF_MONTH))
+            
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            datePickerDialog.show()
+        }
+
+        binding.etDateOfBirth.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val dobStr = s.toString()
+                if (dobStr.isNotEmpty()) {
+                    try {
+                        val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                        val dob = sdf.parse(dobStr)
+                        if (dob != null) {
+                            val today = java.util.Calendar.getInstance()
+                            val dobCal = java.util.Calendar.getInstance()
+                            dobCal.time = dob
+                            
+                            var age = today.get(java.util.Calendar.YEAR) - dobCal.get(java.util.Calendar.YEAR)
+                            if (today.get(java.util.Calendar.DAY_OF_YEAR) < dobCal.get(java.util.Calendar.DAY_OF_YEAR)) {
+                                age--
+                            }
+                            
+                            if (age < 18) {
+                                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Customer is a Minor, Not Eligible.", android.widget.Toast.LENGTH_LONG).show()
+                                binding.etDateOfBirth.setText("")
+                            } else if (age >= 60) {
+                                android.widget.Toast.makeText(this@CustomerAccountOpeningActivity, "Senior Citizen", android.widget.Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } catch (e: Exception) {}
+                }
+            }
+        })
+
+        // Mobile Number
+        binding.etMobileNoAO.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val valStr = s.toString().replace(Regex("\\D"), "")
+                if (valStr.length > 7) {
+                    val trimmed = valStr.substring(0, 7)
+                    if (s.toString() != trimmed) {
+                        binding.etMobileNoAO.setText(trimmed)
+                        binding.etMobileNoAO.setSelection(trimmed.length)
+                    }
+                }
+            }
+        })
+        
+        // Loan Installment Freq Spinners
+        val freqOptions = arrayOf("SELECT", "Monthly")
+        val freqAdapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_item, freqOptions)
+        freqAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spPrincipalInstFreq.adapter = freqAdapter
+        binding.spInterestInstFreq.adapter = freqAdapter
+        
+        // Installment Defaults
+        binding.etInstallmentId.setText("1")
+        
+        if (binding.etInstallmentStartDate.text.toString().isEmpty()) {
+            val cal = java.util.Calendar.getInstance()
+            cal.add(java.util.Calendar.MONTH, 1)
+            val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+            binding.etInstallmentStartDate.setText(sdf.format(cal.time))
+        }
+    }
+
+    private fun getFullMobileNumber(): String {
+        val mobile = binding.etMobileNoAO.text.toString().trim()
+        return if (mobile.isNotEmpty()) "+248$mobile" else ""
+    }
+
+    private fun getCapAtMaturity(): String {
+        return if (binding.rbCapYes.isChecked) "Y" else "N"
+    }
+
+    private fun validateSubmission(): Boolean {
+        val startDateStr = binding.etInstallmentStartDate.text.toString()
+        if (startDateStr.isNotEmpty()) {
+            try {
+                val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                val startDate = sdf.parse(startDateStr)
+                if (startDate != null) {
+                    val today = java.util.Calendar.getInstance()
+                    today.set(java.util.Calendar.HOUR_OF_DAY, 0)
+                    today.set(java.util.Calendar.MINUTE, 0)
+                    today.set(java.util.Calendar.SECOND, 0)
+                    today.set(java.util.Calendar.MILLISECOND, 0)
+                    
+                    if (startDate.before(today.time)) {
+                        android.widget.Toast.makeText(this, "Installment Start Date cannot be in the past.", android.widget.Toast.LENGTH_SHORT).show()
+                        return false
+                    }
+                }
+            } catch (e: Exception) {}
+        } else {
+             android.widget.Toast.makeText(this, "Installment Start Date is required.", android.widget.Toast.LENGTH_SHORT).show()
+             return false
+        }
+        
+        if (binding.spPrincipalInstFreq.selectedItem?.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "Please select Principal Installment Freq", android.widget.Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (binding.spInterestInstFreq.selectedItem?.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "Please select Interest Installment Freq", android.widget.Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        val dobStr = binding.etDateOfBirth.text.toString()
+        if (dobStr.isNotEmpty()) {
+            try {
+                val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.getDefault())
+                val dob = sdf.parse(dobStr)
+                if (dob != null) {
+                    val today = java.util.Calendar.getInstance()
+                    val dobCal = java.util.Calendar.getInstance()
+                    dobCal.time = dob
+                    
+                    var age = today.get(java.util.Calendar.YEAR) - dobCal.get(java.util.Calendar.YEAR)
+                    if (today.get(java.util.Calendar.DAY_OF_YEAR) < dobCal.get(java.util.Calendar.DAY_OF_YEAR)) {
+                        age--
+                    }
+                    
+                    if (age < 18) {
+                        android.widget.Toast.makeText(this, "Customer is a Minor, Not Eligible.", android.widget.Toast.LENGTH_LONG).show()
+                        return false
+                    }
+                }
+            } catch (e: Exception) {}
+        }
+        
+        return true
+    }
 }
-
-
