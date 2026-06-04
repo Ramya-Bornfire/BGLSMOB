@@ -352,15 +352,54 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
                 val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
                 
-                val schedulerBody = "[{\"appl_ref_no\":\"$appRefNo\",\"rec_no\":\"1\",\"img_access_code\":\"GRP\",\"img_group\":\"COR\",\"keyword\":\"SIG\"}]".toRequestBody("application/json".toMediaTypeOrNull())
-                val schedulerPart = MultipartBody.Part.createFormData("scheduler", "scheduler.json", schedulerBody)
+                val schedulerList = org.json.JSONArray()
+                val photoParts = mutableListOf<okhttp3.MultipartBody.Part>()
+                val signParts = mutableListOf<okhttp3.MultipartBody.Part>()
                 
-                val dummyBody = byteArrayOf(0).toRequestBody("image/png".toMediaTypeOrNull())
-                val photoPart = listOf(MultipartBody.Part.createFormData("photo", "photo.png", dummyBody))
-                val signPart = listOf(MultipartBody.Part.createFormData("sign", "sign.png", dummyBody))
+                for (i in 0 until binding.containerSignatureRows.childCount) {
+                    val row = binding.containerSignatureRows.getChildAt(i) as? android.widget.LinearLayout ?: continue
+                    val spinner = row.getChildAt(0) as? android.widget.Spinner
+                    val etGroup = row.getChildAt(1) as? android.widget.EditText
+                    val etKeyword = row.getChildAt(2) as? android.widget.EditText
+                    val photoBox = row.getChildAt(3) as? android.widget.FrameLayout
+                    val sigBox = row.getChildAt(4) as? android.widget.FrameLayout
+                    
+                    val photoImageView = photoBox?.getChildAt(0) as? android.widget.ImageView
+                    val sigImageView = sigBox?.getChildAt(0) as? android.widget.ImageView
+                    
+                    val groupValue = spinner?.selectedItem?.toString() ?: "COR"
+                    val accessCode = etGroup?.text?.toString()?.ifEmpty { "GRP" } ?: "GRP"
+                    val keyword = etKeyword?.text?.toString()?.ifEmpty { "SIG" } ?: "SIG"
+                    
+                    val obj = org.json.JSONObject().apply {
+                        put("appl_ref_no", appRefNo)
+                        put("rec_no", (i + 1).toString())
+                        put("img_access_code", accessCode)
+                        put("img_group", groupValue)
+                        put("keyword", keyword)
+                    }
+                    schedulerList.put(obj)
+                    
+                    val photoBytes = photoImageView?.let { getBytesFromImageView(it) } ?: ByteArray(0)
+                    val pBody = photoBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                    photoParts.add(okhttp3.MultipartBody.Part.createFormData("photo", "photo_${i + 1}.png", pBody))
+                    
+                    val signBytes = sigImageView?.let { getBytesFromImageView(it) } ?: ByteArray(0)
+                    val sBody = signBytes.toRequestBody("image/png".toMediaTypeOrNull())
+                    signParts.add(okhttp3.MultipartBody.Part.createFormData("sign", "sign_${i + 1}.png", sBody))
+                }
+                
+                if (schedulerList.length() == 0) {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "No signatures to upload", android.widget.Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                
+                val schedulerBody = schedulerList.toString().toRequestBody("application/json".toMediaTypeOrNull())
+                val schedulerPart = okhttp3.MultipartBody.Part.createFormData("scheduler", "scheduler.json", schedulerBody)
                 
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.addSignatureCorporate(schedulerPart, photoPart, signPart, cifId)
+                    RetrofitClient.api.addSignatureCorporate(schedulerPart, photoParts, signParts, cifId)
                 }
                 
                 if (response.isSuccessful) {
@@ -565,7 +604,114 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             }
         }
         binding.btnSubmitSig.setOnClickListener {
-            android.widget.Toast.makeText(this, "Signatures Uploaded Successfully", android.widget.Toast.LENGTH_SHORT).show()
+            uploadSignatures()
+        }
+    }
+
+    private fun getMultipartBody(tag: Any?, paramName: String, context: android.content.Context, index: Int): okhttp3.MultipartBody.Part {
+        if (tag == null) {
+            val emptyBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+            return okhttp3.MultipartBody.Part.createFormData(paramName, "", emptyBody)
+        }
+        return try {
+            when (tag) {
+                is android.net.Uri -> {
+                    val inputStream = context.contentResolver.openInputStream(tag)
+                    val bytes = inputStream?.readBytes()
+                    inputStream?.close()
+                    if (bytes != null) {
+                        val requestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
+                        okhttp3.MultipartBody.Part.createFormData(paramName, "file_${index}.jpg", requestBody)
+                    } else {
+                        val emptyBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+                        okhttp3.MultipartBody.Part.createFormData(paramName, "", emptyBody)
+                    }
+                }
+                is android.graphics.Bitmap -> {
+                    val stream = java.io.ByteArrayOutputStream()
+                    tag.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
+                    val bytes = stream.toByteArray()
+                    val requestBody = bytes.toRequestBody("image/png".toMediaTypeOrNull())
+                    okhttp3.MultipartBody.Part.createFormData(paramName, "file_${index}.png", requestBody)
+                }
+                else -> {
+                    val emptyBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+                    okhttp3.MultipartBody.Part.createFormData(paramName, "", emptyBody)
+                }
+            }
+        } catch (e: Exception) {
+            val emptyBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+            okhttp3.MultipartBody.Part.createFormData(paramName, "", emptyBody)
+        }
+    }
+
+    private fun uploadSignatures() {
+        val childCount = binding.containerSignatureRows.childCount
+        if (childCount == 0) {
+            android.widget.Toast.makeText(this, "Please add at least one signature row", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setMessage("Uploading Signatures...")
+            setCancelable(false)
+            show()
+        }
+        
+        lifecycleScope.launch {
+            try {
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val cifId = binding.etCifId.text.toString().takeIf { it.isNotEmpty() } ?: "CUST0000140901"
+                
+                val requestsList = mutableListOf<Map<String, Any>>()
+                val photoParts = mutableListOf<okhttp3.MultipartBody.Part>()
+                val signParts = mutableListOf<okhttp3.MultipartBody.Part>()
+                
+                for (i in 0 until childCount) {
+                    val row = binding.containerSignatureRows.getChildAt(i) as? android.widget.LinearLayout ?: continue
+                    
+                    val spinner = row.getChildAt(0) as android.widget.Spinner
+                    val etGroup = row.getChildAt(1) as android.widget.EditText
+                    val etKeyword = row.getChildAt(2) as android.widget.EditText
+                    
+                    val photoBox = row.getChildAt(3) as android.widget.FrameLayout
+                    val sigBox = row.getChildAt(4) as android.widget.FrameLayout
+                    
+                    val photoTag = photoBox.getChildAt(0).tag
+                    val signTag = sigBox.getChildAt(0).tag
+                    
+                    val sigData = mapOf(
+                        "appl_ref_no" to appRefNo,
+                        "rec_no" to (i + 1).toString(),
+                        "img_access_code" to spinner.selectedItem.toString(),
+                        "img_group" to etGroup.text.toString(),
+                        "keyword" to etKeyword.text.toString()
+                    )
+                    requestsList.add(sigData)
+                    
+                    photoParts.add(getMultipartBody(photoTag, "photo", this@CorporateCustomerAccountOpeningActivity, i))
+                    signParts.add(getMultipartBody(signTag, "sign", this@CorporateCustomerAccountOpeningActivity, i))
+                }
+                
+                val gson = com.google.gson.Gson()
+                val schedulerJson = gson.toJson(requestsList)
+                val schedulerBody = schedulerJson.toRequestBody("application/json".toMediaTypeOrNull())
+                val schedulerPart = okhttp3.MultipartBody.Part.createFormData("scheduler", "scheduler.json", schedulerBody)
+                
+                val response = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    RetrofitClient.api.addSignatureCorporate(schedulerPart, photoParts, signParts, cifId)
+                }
+                
+                if (response.isSuccessful) {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Signatures Uploaded Successfully", android.widget.Toast.LENGTH_SHORT).show()
+                } else {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Upload Failed: ${response.code()}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            } finally {
+                progressDialog.dismiss()
+            }
         }
     }
 
@@ -675,6 +821,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             if (!signatureView.isEmpty()) {
                 val bitmap = signatureView.getSignatureBitmap()
                 imageView.setImageBitmap(bitmap)
+                imageView.tag = bitmap
                 textView.visibility = android.view.View.GONE
                 dialog.dismiss()
             } else {
@@ -774,12 +921,14 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         pickPhotoLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia()) { uri ->
             uri?.let { 
                 activeImageTarget?.setImageURI(it)
+                activeImageTarget?.tag = it
                 activeTextTarget?.visibility = android.view.View.GONE
             }
         }
         pickSignatureLauncher = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia()) { uri ->
             uri?.let { 
                 activeImageTarget?.setImageURI(it)
+                activeImageTarget?.tag = it
                 activeTextTarget?.visibility = android.view.View.GONE
             }
         }
@@ -866,5 +1015,16 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         val schAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, schemeTypes)
         schAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spSchemeType.adapter = schAdapter
+    }
+
+    private fun getBytesFromImageView(imageView: android.widget.ImageView): ByteArray {
+        val drawable = imageView.drawable ?: return ByteArray(0)
+        if (drawable is android.graphics.drawable.BitmapDrawable) {
+            val bitmap = drawable.bitmap
+            val stream = java.io.ByteArrayOutputStream()
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
+            return stream.toByteArray()
+        }
+        return ByteArray(0)
     }
 }
