@@ -369,7 +369,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
             try {
                 val appRefNo = intent.getStringExtra("app_ref_no") ?: ""
                 val selected = binding.spSchemeType.selectedItem?.toString() ?: ""
-                val isDeposit = selected == "FIXED DEPOSIT"
+                // IMPORTANT: spinner option is "DEPOSIT ACCOUNT" (not "FIXED DEPOSIT")
+                val isDeposit = selected == "DEPOSIT ACCOUNT"
                 val schemetype = if (isDeposit) "TD" else "LA"
 
                 fun formatDateForBackend(s: String): String {
@@ -379,44 +380,64 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     } catch (e: Exception) { s }
                 }
 
+                fun String?.takeIfNotEmpty(): String? = if (this.isNullOrBlank()) null else this
+
                 val formData = mutableMapOf<String, Any>(
-                    "schemetype"  to schemetype,
-                    "schemecode"  to (binding.etSchemeCode.text?.toString() ?: ""),
-                    "currency"    to "SCR",
-                    "prisolid"    to (binding.etAccountBranchId.text?.toString() ?: ""),
-                    "branch_desc" to (binding.etAccountBranchName.text?.toString() ?: ""),
-                    "nationalid"  to (binding.etNationalIdAO.text?.toString() ?: ""),
-                    "passno"      to (binding.etPassportNoAO.text?.toString() ?: ""),
-                    "issuedate"   to formatDateForBackend(binding.etIssueDate.text?.toString() ?: ""),
-                    "expdate"     to formatDateForBackend(binding.etExpiryDate.text?.toString() ?: "")
+                    "schemetype" to schemetype,
+                    "schemecode" to (binding.etSchemeCode.text?.toString() ?: ""),
+                    "currency"   to "SCR",
+                    "prisolid"   to (binding.etAccountBranchId.text?.toString() ?: ""),
+                    "nationalid" to (intent.getStringExtra("nationalid") ?: ""),
+                    "issuedate"  to (intent.getStringExtra("issuedate") ?: ""),
+                    "passno"     to (intent.getStringExtra("passno") ?: ""),
+                    "expdate"    to (intent.getStringExtra("expdate") ?: "")
                 )
 
                 if (isDeposit) {
+                    formData["account_no"] = binding.etDepositAccountNo.text?.toString() ?: ""
+                    formData["deposit_account_no"] = binding.etDepositAccountNo.text?.toString() ?: ""
+
                     formData["gl_code"]           = binding.etGlCode.text?.toString() ?: ""
                     formData["gl_desc"]           = binding.etGlDesc.text?.toString() ?: ""
                     formData["glsh_code"]         = binding.etGlshCode.text?.toString() ?: ""
                     formData["glsh_desc"]         = binding.etGlshDesc.text?.toString() ?: ""
-                    formData["deposit_account_no"]= binding.etDepositAccountNo.text?.toString() ?: ""
+
+                    // Web sends deposit_date in dd-MM-yyyy format to AccountDetailNxt
                     formData["deposit_date"]      = binding.etDateOfDeposit.text?.toString() ?: ""
-                    formData["deposit_amt"]       = binding.etDepositAmount.text?.toString() ?: ""
+                    formData["deposit_amt"]       = binding.etDepositAmount.text?.toString()?.replace(",", "") ?: ""
                     formData["deposit_period"]    = binding.etDepositPeriod.text?.toString() ?: ""
+                    // Web sends maturity_date in yyyy-MM-dd format
                     formData["maturity_date"]     = formatDateForBackend(binding.etMaturityDate.text?.toString() ?: "")
                     formData["rate_of_int"]       = binding.etRateOfInterest.text?.toString() ?: ""
                     formData["int_amt"]           = binding.etInterestAmount.text?.toString() ?: ""
-                    formData["compounding_factor"]= binding.etCompoundingFactor.text?.toString() ?: ""
                     formData["maturity_amt"]      = binding.etMaturityAmount.text?.toString() ?: ""
+
+                    // Match web: deposit_type and frequency come from spinners
+                    formData["deposit_type"]      = try { binding.spDepositType.selectedItem?.toString() ?: "" } catch (e: Exception) { "Fixed" }
+                    formData["frequency"]         = try { binding.spFrequency.selectedItem?.toString() ?: "" } catch (e: Exception) { "Monthly" }
+                    formData["compounding_factor"]= try { binding.etCompoundingFactor.text?.toString() ?: "" } catch (e: Exception) { "" }
                 } else {
+                    formData["account_no"] = binding.etLoanAccountNo.text?.toString() ?: ""
+                    formData["loan_accountno"]    = binding.etLoanAccountNo.text?.toString() ?: ""
+                    formData["la_loan_accountno"] = binding.etLoanAccountNo.text?.toString() ?: ""
+                    formData["date_of_loan"]      = formatDateForBackend(binding.etDateOfLoan.text?.toString() ?: "")
+
+
+                    formData["gl_code"]           = binding.etGlCode.text?.toString() ?: ""
+                    formData["gl_desc"]           = binding.etGlDesc.text?.toString() ?: ""
+                    formData["glsh_code"]         = binding.etGlshCode.text?.toString() ?: ""
+                    formData["glsh_desc"]         = binding.etGlshDesc.text?.toString() ?: ""
                     formData["gl_code_loan"]      = binding.etGlCode.text?.toString() ?: ""
                     formData["gl_desc_loan"]      = binding.etGlDesc.text?.toString() ?: ""
                     formData["glsh_code_loan"]    = binding.etGlshCode.text?.toString() ?: ""
                     formData["glsh_desc_loan"]    = binding.etGlshDesc.text?.toString() ?: ""
-                    formData["account_no"]        = binding.etLoanAccountNo.text?.toString() ?: ""
-                    formData["loan_sanctioned"]   = binding.etLoanSanctioned.text?.toString() ?: ""
-                    formData["margin_limit"]      = binding.etMargin.text?.toString() ?: ""
-                    formData["recovery_method"]   = binding.spRecoveryMethod.selectedItem?.toString() ?: ""
-                    formData["la_remarks"]        = binding.etLoanRemarks.text?.toString() ?: ""
-                    formData["loan_period"]       = binding.etLoanPeriod.text?.toString() ?: ""
+
+                    formData["loan_sanctioned"]   = binding.etLoanSanctioned.text?.toString()?.replace(",", "") ?: ""
+                    formData["effective_interest_rate"] = binding.etInterestRate.text?.toString() ?: ""
                     formData["effective_fees_rate"]= binding.etFeesRate.text?.toString() ?: ""
+                    formData["recovery_method"]   = binding.spRecoveryMethod.selectedItem?.toString() ?: ""
+                    formData["inst_start_dt"]     = ""
+                    formData["loan_period"]       = binding.etLoanPeriod.text?.toString() ?: ""
                     formData["customer_type"]     = binding.etCustomerType.text?.toString() ?: ""
                     formData["monthly_income"]    = binding.etMonthlyIncome.text?.toString() ?: ""
                     formData["annual_income"]     = binding.etAnnualIncome.text?.toString() ?: ""
@@ -436,6 +457,83 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
+                    fun String?.takeIfNotEmpty(): String? = if (this.isNullOrBlank()) null else this
+
+                    if (isDeposit) {
+                        val depositReq = com.example.bgls.Retrofit.DepositEntityRequest(
+                            depo_actno = binding.etDepositAccountNo.text?.toString()?.takeIfNotEmpty(),
+                            deposit_date = formatDateForBackend(binding.etDateOfDeposit.text?.toString() ?: "").takeIfNotEmpty(),
+                            deposit_amt = binding.etDepositAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            currency = "SCR",
+                            deposit_period = binding.etDepositPeriod.text?.toString()?.takeIfNotEmpty(),
+                            maturity_date = formatDateForBackend(binding.etMaturityDate.text?.toString() ?: "").takeIfNotEmpty(),
+                            rate_of_int = binding.etRateOfInterest.text?.toString()?.takeIfNotEmpty(),
+                            int_amt = binding.etInterestAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            maturity_amt = binding.etMaturityAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            deposit_type = null, // or from UI if available
+                            frequency = null, // or from UI
+                            gl_code = binding.etGlCode.text?.toString()?.takeIfNotEmpty(),
+                            gl_desc = binding.etGlDesc.text?.toString()?.takeIfNotEmpty(),
+                            glsh_code = binding.etGlshCode.text?.toString()?.takeIfNotEmpty(),
+                            glsh_desc = binding.etGlshDesc.text?.toString()?.takeIfNotEmpty(),
+                            cust_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                            cust_name = binding.etFullName.text?.toString()?.takeIfNotEmpty(),
+                            scheme_code = binding.etSchemeCode.text?.toString()?.takeIfNotEmpty(),
+                            branch_id = binding.etAccountBranchId.text?.toString()?.takeIfNotEmpty(),
+                            branch_desc = binding.etAccountBranchName.text?.toString()?.takeIfNotEmpty(),
+                            deposit_frequency = null,
+                            interest_type = null
+                        )
+                        withContext(Dispatchers.IO) {
+                            RetrofitClient.api.depositAddCust(depositReq)
+                        }
+                    } else {
+                        val leaseReq = com.example.bgls.Retrofit.LeaseDataRequest(
+                            loanDetails = com.example.bgls.Retrofit.LoanDetailsRequest(
+                                customer_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                                customer_name = binding.etFullName.text?.toString()?.takeIfNotEmpty(),
+                                branch_name = binding.etAccountBranchName.text?.toString()?.takeIfNotEmpty(),
+                                branch_id = binding.etAccountBranchId.text?.toString()?.takeIfNotEmpty(),
+                                loan_type = schemetype.takeIfNotEmpty(),
+                                loan_accountno = binding.etLoanAccountNo.text?.toString()?.takeIfNotEmpty(),
+                                date_of_loan = formatDateForBackend(binding.etDateOfLoan.text?.toString() ?: "").takeIfNotEmpty(),
+                                loan_sanctioned = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                margin_limit = binding.etMargin.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                drawing_limit = binding.etDrawingLimit.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_currency = "SCR",
+                                disbursement = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_outstanding = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_period = binding.etLoanPeriod.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                expiry_date = formatDateForBackend(binding.etExpiryDate.text?.toString() ?: "").takeIfNotEmpty(),
+                                repayment_terms = null, // or from UI
+                                recovery_method = binding.spRecoveryMethod.selectedItem?.toString()?.takeIfNotEmpty(),
+                                effective_interest_rate = binding.etInterestRate.text?.toString()?.takeIfNotEmpty(),
+                                effective_fees_rate = binding.etFeesRate.text?.toString()?.takeIfNotEmpty(),
+                                gl_code = binding.etGlCode.text?.toString()?.takeIfNotEmpty(),
+                                gl_desc = binding.etGlDesc.text?.toString()?.takeIfNotEmpty(),
+                                glsh_code = binding.etGlshCode.text?.toString()?.takeIfNotEmpty(),
+                                glsh_desc = binding.etGlshDesc.text?.toString()?.takeIfNotEmpty()
+                            ),
+                            repaymentDetails = com.example.bgls.Retrofit.RepaymentDetailsRequest(
+                                customer_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                                branch_id = binding.etAccountBranchId.text?.toString()?.takeIfNotEmpty(),
+                                account_no = binding.etLoanAccountNo.text?.toString()?.takeIfNotEmpty(),
+                                acid = binding.etLoanAccountNo.text?.toString()?.takeIfNotEmpty(),
+                                inst_id = "1",
+                                inst_start_dt = null, // or from UI
+                                inst_freq = null,
+                                inst_amount = binding.etInstallmentAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                no_of_inst = binding.etLoanPeriod.text?.toString()?.takeIfNotEmpty(),
+                                inst_pct = null, // Calculate dynamically
+                                interest_frequency = null,
+                                maturity_flg = "Y"
+                            )
+                        )
+                        withContext(Dispatchers.IO) {
+                            RetrofitClient.api.addLeaseAccount(leaseReq)
+                        }
+                    }
+
                     val msg = response.body()?.string()?.takeIf { it.isNotBlank() } ?: "Account Details Saved Successfully"
                     android.app.AlertDialog.Builder(this@CustomerAccountOpeningActivity)
                         .setMessage(msg)
@@ -1263,153 +1361,44 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
     }
     
     private fun showDtiValidationDialog() {
-        val layout = android.widget.LinearLayout(this).apply {
-            orientation = android.widget.LinearLayout.VERTICAL
-            setPadding(50, 40, 50, 40)
-        }
-
-        val etMonthlyIncome = android.widget.EditText(this).apply {
-            hint = "Monthly Income"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-            setText(binding.etMonthlyIncome.text.toString().replace(",", ""))
-        }
-
-        val etMonthlyRepayment = android.widget.EditText(this).apply {
-            hint = "Monthly Repayment"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
-            setText(binding.etInstallmentAmount.text.toString().replace(",", ""))
-        }
-
-        val tvStatus = android.widget.TextView(this).apply {
-            textSize = 16f
-            setPadding(0, 20, 0, 0)
-        }
-
-        layout.addView(etMonthlyIncome)
-        layout.addView(etMonthlyRepayment)
-        layout.addView(tvStatus)
-
-        val dialog = android.app.AlertDialog.Builder(this)
-            .setTitle("DTI Validation")
-            .setView(layout)
-            .setPositiveButton("Calculate", null)
-            .setNegativeButton("Close", null)
-            .create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val income = etMonthlyIncome.text.toString().toDoubleOrNull() ?: 0.0
-                val repayment = etMonthlyRepayment.text.toString().toDoubleOrNull() ?: 0.0
-
-                if (income > 0) {
-                    val dtiRatio = (repayment / income) * 100
-                    val status = when {
-                        dtiRatio <= 35 -> "Favorable"
-                        dtiRatio <= 49 -> "Adequate"
-                        else -> "Not Favorable"
-                    }
-                    tvStatus.text = "DTI Ratio: ${String.format("%.2f", dtiRatio)}%\nStatus: $status"
-                } else {
-                    tvStatus.text = "Please enter valid Monthly Income"
-                }
-            }
-        }
-        dialog.show()
+        val dialog = com.example.bgls.dialogs.DtiValidationDialog.newInstance(
+            name = binding.etFullName.text.toString(),
+            constitution = binding.etCustomerType.text.toString(),
+            income = binding.etMonthlyIncome.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0,
+            repayment = binding.etInstallmentAmount.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
+        )
+        dialog.show(supportFragmentManager, "DtiValidationDialog")
     }
 
     private fun showScheduleDialog() {
-        val creationDate = binding.etDateOfLoan.text.toString()
-        val interestRate = binding.etInterestRate.text.toString().replace(",", "")
-        val installID = "1"
-        val installStartDate = binding.etInstallmentStartDate.text.toString()
-        val pricipleFreq = binding.spPrincipalInstFreq.selectedItem?.toString() ?: ""
-        val noOfInstallment = binding.etNoOfInstallments.text.toString()
-        val installAmount = binding.etInstallmentAmount.text.toString().replace(",", "")
-        val interestFreq = binding.spInterestInstFreq.selectedItem?.toString() ?: ""
-        val feesRate = binding.etFeesRate.text.toString().replace(",", "")
-
-        val dialog = android.app.AlertDialog.Builder(this)
-            .setTitle("Demand Schedule Details")
-            .setMessage("Fetching Schedule...")
-            .setPositiveButton("Close", null)
-            .create()
-        dialog.show()
-
-        lifecycleScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.getInterestDetails(
-                        creationDate, interestRate, installID, installStartDate,
-                        pricipleFreq, noOfInstallment, installAmount, interestFreq, feesRate
-                    )
-                }
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null && data.isNotEmpty()) {
-                        val sb = StringBuilder()
-                        for (row in data) {
-                            sb.append("Inst No: ${row["no_of_instalment"]}, Date: ${row["installment_date"]}, Amt: ${row["installment_amount"]}\n")
-                        }
-                        dialog.setMessage(sb.toString())
-                    } else {
-                        dialog.setMessage("No Schedule Found")
-                    }
-                } else {
-                    dialog.setMessage("Error fetching schedule")
-                }
-            } catch (e: Exception) {
-                dialog.setMessage("Error: ${e.message}")
-            }
+        val args = android.os.Bundle().apply {
+            putString("creation_Date", binding.etDateOfLoan.text.toString())
+            putString("start_date", binding.etInstallmentStartDate.text.toString())
+            putString("Product_value", binding.etLoanSanctioned.text.toString().replace(",", ""))
+            putString("principle_frequency", binding.spPrincipalInstFreq.selectedItem?.toString() ?: "")
+            putString("int_rate", binding.etInterestRate.text.toString().replace(",", ""))
+            putString("no_of_inst", binding.etNoOfInstallments.text.toString())
+            putString("int_amt", binding.etInstallmentAmount.text.toString().replace(",", ""))
+            putString("interestFrequency", binding.spInterestInstFreq.selectedItem?.toString() ?: "")
+            putString("fees_percentage", binding.etFeesRate.text.toString().replace(",", ""))
         }
+        val dialog = com.example.bgls.dialogs.DemandScheduleDialog.newInstance(args)
+        dialog.show(supportFragmentManager, "DemandScheduleDialog")
     }
 
     private fun showDepositFlowDialog() {
-        val depositType = binding.spDepositType.selectedItem?.toString() ?: ""
-        val depoActNo = binding.etDepositAccountNo.text.toString()
-        val depositDate = binding.etDateOfDeposit.text.toString()
-        val depositAmt = binding.etDepositAmount.text.toString().replace(",", "")
-        val currency = binding.etDepositCurrency.text.toString()
-        val depositPeriod = binding.etDepositPeriod.text.toString()
-        val maturityDate = binding.etMaturityDate.text.toString()
-        val branchId = binding.etAccountBranchId.text.toString()
-        val branchName = binding.etAccountBranchName.text.toString()
-        val depositFrequency = binding.spDepositFrequency.selectedItem?.toString() ?: ""
-        val interestType = binding.spInterestType.selectedItem?.toString() ?: ""
-        val intAmt = binding.etInterestAmount.text.toString().replace(",", "")
-        val rateOfInt = binding.etRateOfInterest.text.toString().replace(",", "")
-
-        val dialog = android.app.AlertDialog.Builder(this)
-            .setTitle("Deposit Flow Details")
-            .setMessage("Fetching Flow...")
-            .setPositiveButton("Close", null)
-            .create()
-        dialog.show()
-
-        lifecycleScope.launch {
-            try {
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.getDepositFlow(
-                        depositType, depoActNo, depositDate, depositAmt, currency, depositPeriod, maturityDate, branchId, branchName, depositFrequency, interestType, intAmt, rateOfInt
-                    )
-                }
-                if (response.isSuccessful) {
-                    val data = response.body()
-                    if (data != null && data.isNotEmpty()) {
-                        val sb = StringBuilder()
-                        for (row in data) {
-                            sb.append("Date: ${row["deposit_date"]}, Amt: ${row["deposit_amt"]}, Mat Amt: ${row["maturity_amt"]}\n")
-                        }
-                        dialog.setMessage(sb.toString())
-                    } else {
-                        dialog.setMessage("No Flow Found")
-                    }
-                } else {
-                    dialog.setMessage("Error fetching flow")
-                }
-            } catch (e: Exception) {
-                dialog.setMessage("Error: ${e.message}")
-            }
+        val args = android.os.Bundle().apply {
+            putString("deposit_type", binding.spDepositType.selectedItem?.toString() ?: "")
+            putString("depo_actno", binding.etDepositAccountNo.text.toString())
+            putString("deposit_date", binding.etDateOfDeposit.text.toString())
+            putString("deposit_period", binding.etDepositPeriod.text.toString())
+            putString("deposit_amt", binding.etDepositAmount.text.toString().replace(",", ""))
+            putString("rate_of_int", binding.etRateOfInterest.text.toString().replace(",", ""))
+            putString("frequency", binding.spFrequency.selectedItem?.toString() ?: "")
+            putString("deposit_frequency", binding.spDepositFrequency.selectedItem?.toString() ?: "")
         }
+        val dialog = com.example.bgls.dialogs.DepositFlowDialog.newInstance(args)
+        dialog.show(supportFragmentManager, "DepositFlowDialog")
     }
 
         private fun formatDateForBackend(dateString: String): String {

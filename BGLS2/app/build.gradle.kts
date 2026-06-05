@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.example.bgls"
     compileSdk = 36
+    buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "com.example.bgls"

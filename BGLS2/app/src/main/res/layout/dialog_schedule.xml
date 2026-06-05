@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Demand Schedule"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Table Header -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E0E0E0"
+                android:padding="8dp">
+                <TextView android:layout_width="50dp" android:layout_height="wrap_content" android:text="Srl. No." android:textStyle="bold" />
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Date" android:textStyle="bold" />
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Description" android:textStyle="bold" />
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Inst. Amt" android:textStyle="bold" />
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Principal Amt" android:textStyle="bold" />
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Interest Amt" android:textStyle="bold" />
+                <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="Charges Amt" android:textStyle="bold" />
+                <TextView android:layout_width="120dp" android:layout_height="wrap_content" android:text="Principal Out." android:textStyle="bold" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>

@@ -63,6 +63,77 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+data class LeaseDataRequest(
+    val loanDetails: LoanDetailsRequest?,
+    val repaymentDetails: RepaymentDetailsRequest?
+)
+
+data class LoanDetailsRequest(
+    val customer_id: String?,
+    val customer_name: String?,
+    val branch_name: String?,
+    val branch_id: String?,
+    val loan_type: String?,
+    val loan_accountno: String?,
+    val date_of_loan: String?,
+    val loan_sanctioned: String?,
+    val margin_limit: String?,
+    val drawing_limit: String?,
+    val loan_currency: String?,
+    val disbursement: String?,
+    val loan_outstanding: String?,
+    val loan_period: String?,
+    val expiry_date: String?,
+    val repayment_terms: String?,
+    val recovery_method: String?,
+    val effective_interest_rate: String?,
+    val effective_fees_rate: String?,
+    val gl_code: String?,
+    val gl_desc: String?,
+    val glsh_code: String?,
+    val glsh_desc: String?
+)
+
+data class RepaymentDetailsRequest(
+    val customer_id: String?,
+    val branch_id: String?,
+    val account_no: String?,
+    val acid: String?,
+    val inst_id: String?,
+    val inst_start_dt: String?,
+    val inst_freq: String?,
+    val inst_amount: String?,
+    val no_of_inst: String?,
+    val inst_pct: String?,
+    val interest_frequency: String?,
+    val maturity_flg: String?
+)
+
+data class DepositEntityRequest(
+    val depo_actno: String?,
+    val deposit_date: String?,
+    val deposit_amt: String?,
+    val currency: String?,
+    val deposit_period: String?,
+    val maturity_date: String?,
+    val rate_of_int: String?,
+    val int_amt: String?,
+    val maturity_amt: String?,
+    val deposit_type: String?,
+    val frequency: String?,
+    val gl_code: String?,
+    val gl_desc: String?,
+    val glsh_code: String?,
+    val glsh_desc: String?,
+    val cust_id: String?,
+    val cust_name: String?,
+    val scheme_code: String?,
+    val branch_id: String?,
+    val branch_desc: String?,
+    val deposit_frequency: String?,
+    val interest_type: String?
+)
+
 interface ServiceApi {
     @POST("api/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
@@ -1305,31 +1376,31 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
     fun getApprovalList(@Query("formmode") formmode: String = "list"): Call<ApprovalListResponse>
 
     // --- Customer Onboarding (MinimalDataActivity) Endpoints ---
-//    @GET("CheckDuplicateIndiv")
+//    @GET("api/CheckDuplicateIndiv")
 //    suspend fun checkDuplicateIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckBlackListIndiv")
+//    @GET("api/CheckBlackListIndiv")
 //    suspend fun checkBlackListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckNegativeListIndiv")
+//    @GET("api/CheckNegativeListIndiv")
 //    suspend fun checkNegativeListIndiv(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckDuplicateJoint")
+//    @GET("api/CheckDuplicateJoint")
 //    suspend fun checkDuplicateJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckBlackListJoint")
+//    @GET("api/CheckBlackListJoint")
 //    suspend fun checkBlackListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckNegativeListJoint")
+//    @GET("api/CheckNegativeListJoint")
 //    suspend fun checkNegativeListJoint(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckDuplicateCor")
+//    @GET("api/CheckDuplicateCor")
 //    suspend fun checkDuplicateCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckBlackListCor")
+//    @GET("api/CheckBlackListCor")
 //    suspend fun checkBlackListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
-//    @GET("CheckNegativeListCor")
+//    @GET("api/CheckNegativeListCor")
 //    suspend fun checkNegativeListCor(@QueryMap params: Map<String, String>): Response<ResponseBody>
 //
 //    @GET("CustomerOnboarding")
@@ -1390,6 +1461,16 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Query("ApprefNO") appRefNo: String,
         @Query("rec_no") recNo: String = "1",
         @Query("hold_remarks") holdRemarks: String? = null
+    ): Response<ResponseBody>
+
+    @POST("api/addLeaseAccount")
+    suspend fun addLeaseAccount(
+        @Body request: LeaseDataRequest
+    ): Response<ResponseBody>
+
+    @POST("api/depositAddCust")
+    suspend fun depositAddCust(
+        @Body request: DepositEntityRequest
     ): Response<ResponseBody>
 
     // Deposit Add – Get data for opening screen (generated account number, customer list, etc.)

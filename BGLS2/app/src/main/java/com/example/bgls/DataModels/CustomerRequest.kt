@@ -39,9 +39,18 @@ data class CustomerRequest(
     var ca_phone_number: String? = null,
     
     // Corporate fields
+    var constitution: String? = null,
     var corporateName: String? = null,
     var tradeName: String? = null,
+    var certificate_incorporation: String? = null,
+    var business_registration: String? = null,
     var date_incorporation: String? = null,
+    var pbn: String? = null,
+    var lno: String? = null,
+    var fn: String? = null,
+    var website: String? = null,
+    var passno: String? = null,
+    var nationalid: String? = null,
     
     // Other common fields
     var annual_income: String? = null,
@@ -103,9 +112,18 @@ data class CustomerRequest(
         ca_mobile_number?.let { map["ca_mobile_number"] = it }
         ca_phone_number?.let { map["ca_phone_number"] = it }
         
-        corporateName?.let { map["corporateName"] = it }
-        tradeName?.let { map["tradeName"] = it }
-        date_incorporation?.let { map["date_incorporation"] = formatDate(it) ?: it }
+        constitution?.let { map["cons_name"] = it }
+        corporateName?.let { map["cor_name"] = it }
+        tradeName?.let { map["trade_name"] = it }
+        certificate_incorporation?.let { map["cer_od_incop"] = it }
+        business_registration?.let { map["buss_ref_no"] = it }
+        date_incorporation?.let { map["doi"] = formatDate(it) ?: it }
+        pbn?.let { map["pbn"] = it }
+        lno?.let { map["lno"] = it }
+        fn?.let { map["fn"] = it }
+        website?.let { map["website"] = it }
+        passno?.let { map["currency"] = it }
+        nationalid?.let { map["national_id2"] = it }
         
         annual_income?.let { map["annual_income"] = it }
         monthly_income?.let { map["monthly_income"] = it }

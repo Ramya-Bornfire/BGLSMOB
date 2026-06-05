@@ -311,6 +311,87 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Dynamic Account Scheme Fields -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginBottom="12dp">
+                    
+                    <!-- Deposit Fields -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Account No" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDepositAccountNo" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Deposit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDateOfDeposit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDepositAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Period (Months)" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDepositPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Rate of Interest" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRateOfInterest" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Date" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etMaturityDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etInterestAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etMaturityAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                    <!-- Loan Fields -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Loan" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDateOfLoan" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Sanctioned" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etLoanSanctioned" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Margin %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etMargin" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Drawing Limit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etDrawingLimit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Period (Months)" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etLoanPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Expiry Date" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etExpiryDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Recovery Method" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRecoveryMethod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Rate %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etInterestRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Fees Rate %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etFeesRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etInstallmentAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Other Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
