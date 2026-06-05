@@ -537,7 +537,7 @@
                     </LinearLayout>
                 </LinearLayout>
                 <!-- Row 7: Email * | Website * -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelEmailC" android:layout_width="140dp" android:layout_height="wrap_content" android:text="Email *" android:textSize="12sp" android:textColor="#333333"/>
                         <EditText android:id="@+id/etEmailC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="8dp" android:textSize="11sp" android:inputType="textEmailAddress"/>
@@ -546,6 +546,18 @@
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelWebsiteC" android:layout_width="140dp" android:layout_height="wrap_content" android:text="Website *" android:textSize="12sp" android:textColor="#333333"/>
                         <EditText android:id="@+id/etWebsiteC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="8dp" android:textSize="11sp" android:inputType="textUri"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- Row 8: Passport No * | National Id * -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="16dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:id="@+id/tvLabelPassportC" android:layout_width="140dp" android:layout_height="wrap_content" android:text="Passport No *" android:textSize="12sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etPassportC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="8dp" android:textSize="11sp"/>
+                    </LinearLayout>
+                    <View android:layout_width="40dp" android:layout_height="1dp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:id="@+id/tvLabelNationalIdC" android:layout_width="140dp" android:layout_height="wrap_content" android:text="National Id *" android:textSize="12sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etNationalIdC" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="8dp" android:textSize="11sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

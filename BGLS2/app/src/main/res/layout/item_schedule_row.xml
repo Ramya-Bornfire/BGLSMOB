@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView android:id="@+id/tvSrlNo" android:layout_width="50dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvDate" android:layout_width="100dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvDescription" android:layout_width="120dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvInstAmt" android:layout_width="100dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvPrincipalAmt" android:layout_width="100dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvInterestAmt" android:layout_width="100dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvChargesAmt" android:layout_width="100dp" android:layout_height="wrap_content" />
+    <TextView android:id="@+id/tvPrincipalOut" android:layout_width="120dp" android:layout_height="wrap_content" />
+</LinearLayout>

@@ -56,6 +56,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         setupPickers()
         setupTabs()
         setupSpinners()
+        setupCalculations()
+
         receiveData()
         setupDatePickers()
         setupMandatoryLabels()
@@ -166,6 +168,52 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
     }
 
     private fun savePersonalDetails() {
+        // Validations for mandatory fields
+        if (binding.etMonthlyIncome.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Monthly Income is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.spAddressType.selectedItem.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "Address Type is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etHouseNo.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "House No is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etStreetNo.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Street No is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etStreetName.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Street Name is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.spCity.selectedItem.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "City is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etAddressValidFrom.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Address Valid From is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.spNationality.selectedItem.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "Nationality is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.spCountryOfBirth.selectedItem.toString() == "SELECT") {
+            android.widget.Toast.makeText(this, "Country of Birth is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etEmailIdAO.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Email Id is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (binding.etMobileNoAO.text.isNullOrBlank()) {
+            android.widget.Toast.makeText(this, "Mobile No is required", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val progressDialog = android.app.ProgressDialog(this).apply {
             setMessage("Saving Corporate Details...")
             setCancelable(false)
@@ -174,32 +222,99 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         
         lifecycleScope.launch {
             try {
-                val customerType = binding.etCustomerType.text.toString()
-                val request = com.example.bgls.DataModels.CustomerRequest(
-                    ca_customer_type_1 = customerType,
-                    corporateName = binding.etCorporateName.text.toString(),
-                    tradeName = binding.etTradeName.text.toString(),
-                    date_incorporation = binding.etDateOfIncorp.text.toString(),
-                    ca_email_id = binding.etEmailIdAO.text.toString(),
-                    ca_mobile_number = binding.etMobileNoAO.text.toString(),
-                    monthly_income = binding.etMonthlyIncome.text.toString(),
-                    ca_address_type = binding.spAddressType.selectedItem.toString(),
-                    ca_house_no = binding.etHouseNo.text.toString(),
-                    ca_street_no = binding.etStreetNo.text.toString(),
-                    ca_street_name = binding.etStreetName.text.toString(),
-                    ca_city = binding.spCity.selectedItem.toString(),
-                    ca_address_validation_form = binding.etAddressValidFrom.text.toString(),
-                    ca_nationality = binding.spNationality.selectedItem.toString(),
-                    ca_country_of_birth = binding.spCountryOfBirth.selectedItem.toString(),
-                    branch_desc = intent.getStringExtra("branch_name") ?: "",
-                    ca_cif_id_1 = intent.getStringExtra("cif_id") ?: ""
-                )
+                fun formatDateForBackend(s: String): String {
+                    return try {
+                        val parts = s.split("-")
+                        if (parts.size == 3 && parts[2].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else s
+                    } catch (e: Exception) { s }
+                }
+
+                val params = mutableMapOf<String, String>()
                 
-                val params = request.toMap()
+                params["ca_customer_type_1"] = binding.etCustomerType.text.toString()
+                params["ca_cif_id_1"] = binding.etCifId.text.toString()
+                params["ca_primary_branch_1"] = binding.etPrimaryBranch.text.toString()
+                params["ca_branch_name_1"] = binding.etBranchDesc.text.toString()
                 
-                val appRefNo = intent.getStringExtra("app_ref_no") ?: ""
+                params["constitutionName"] = binding.etConstitutionName.text.toString()
+                params["corporateName"] = binding.etCorporateName.text.toString()
+                params["tradeName"] = binding.etTradeName.text.toString()
+                params["certificate_incorporation"] = binding.etCertIncorp.text.toString()
+                params["business_registration"] = binding.etBusRegNo.text.toString()
+                params["date_incorporation"] = formatDateForBackend(binding.etDateIncorp.text.toString())
+                
+                params["ca_postal_code"] = binding.etPostBoxNo.text.toString()
+                params["landlineNo"] = binding.etLandLineNo.text.toString()
+                params["ca_fax_no"] = binding.etFaxNo.text.toString()
+                params["ca_email_address"] = binding.etEmail.text.toString()
+                params["website"] = binding.etWebsite.text.toString()
+                
+                params["business"] = binding.etBusiness.text.toString()
+                params["annual_income"] = binding.etAnnualIncome.text.toString()
+                params["monthly_income"] = binding.etMonthlyIncome.text.toString()
+                params["loan_obligations"] = binding.etLoanObligations.text.toString()
+                params["family_maintenance"] = ""
+                
+                params["ca_address_type_1"] = binding.spAddressType.selectedItem.toString()
+                params["ca_house_no_1"] = binding.etHouseNo.text.toString()
+                params["ca_street_no_1"] = binding.etStreetNo.text.toString()
+                params["ca_street_name_1"] = binding.etStreetName.text.toString()
+                params["ca_country_1"] = binding.etCountry.text.toString()
+                params["ca_state_1"] = binding.etState.text.toString()
+                params["ca_city_1"] = binding.spCity.selectedItem.toString()
+                params["ca_postal_code_1"] = binding.etPostalCode.text.toString()
+                params["ca_address_valid_from_1"] = formatDateForBackend(binding.etAddressValidFrom.text.toString())
+                
+                params["ca_nationality_1"] = binding.spNationality.selectedItem.toString()
+                params["ca_country_of_birth_1"] = binding.spCountryOfBirth.selectedItem.toString()
+                params["ca_country_of_origin_1"] = binding.spCountryOfOrigin.selectedItem.toString()
+                params["ca_email_id_1"] = binding.etEmailIdAO.text.toString()
+                params["ca_countrycode_1"] = binding.tvMobilePrefix.text.toString()
+                params["ca_mobile_no_1"] = binding.etMobileNoAO.text.toString()
+                
+                // Add empty values for _2 to _10
+                for (i in 2..10) {
+                    params["ca_customer_type_$i"] = ""
+                    params["ca_cif_id_$i"] = ""
+                    params["ca_primary_branch_$i"] = ""
+                    params["ca_branch_name_$i"] = ""
+                    params["ca_salutation_$i"] = ""
+                    params["ca_first_name_$i"] = ""
+                    params["ca_middle_name_$i"] = ""
+                    params["ca_last_name_$i"] = ""
+                    params["ca_full_name_$i"] = ""
+                    params["ca_short_name_$i"] = ""
+                    params["ca_loan_obligations_$i"] = ""
+                    params["ca_family_maintenance_$i"] = ""
+                    params["ca_address_type_$i"] = "SELECT"
+                    params["ca_house_no_$i"] = ""
+                    params["ca_street_no_$i"] = ""
+                    params["ca_street_name_$i"] = ""
+                    params["ca_country_$i"] = ""
+                    params["ca_state_$i"] = ""
+                    params["ca_city_$i"] = "SELECT"
+                    params["ca_postal_code_$i"] = ""
+                    params["ca_address_valid_from_$i"] = ""
+                    params["ca_nationality_$i"] = "SELECT"
+                    params["ca_country_of_birth_$i"] = "SELECT"
+                    params["ca_country_of_origin_$i"] = "SELECT"
+                    params["ca_email_id_$i"] = ""
+                    params["ca_countrycode_$i"] = ""
+                    params["ca_mobile_no_$i"] = ""
+                    params["ca_annual_income_$i"] = ""
+                    params["ca_monthly_income_$i"] = ""
+                }
+                
+                val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN02602"
+                params["refnumber"] = appRefNo
+                params["rec_no"] = "9"
+                params["passno"] = intent.getStringExtra("passno") ?: ""
+                params["nationalid"] = intent.getStringExtra("nationalid") ?: ""
+                params["customer_group"] = intent.getStringExtra("customer_group") ?: "CORPORATE CUSTOMER"
+                params["account_type"] = "CORPORATE CUSTOMER"
+                
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.api.savePersonalDetail(appRefNo, "1", "", "", params)
+                    RetrofitClient.api.savePersonalDetail(appRefNo, "9", intent.getStringExtra("passno") ?: "", intent.getStringExtra("nationalid") ?: "", params)
                 }
                 
                 progressDialog.dismiss()
@@ -249,8 +364,10 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 
                 val formData = mutableMapOf<String, Any>()
                 val scheme = binding.spSchemeType.selectedItem.toString()
-                formData["schemetype"] = if (scheme == "FIXED DEPOSIT") "TD" else "LA"
-                formData["schemecode"] = if (scheme == "FIXED DEPOSIT") "TDFIXED" else "LSRET"
+                val isDeposit = scheme == "FIXED DEPOSIT" || scheme == "DEPOSIT ACCOUNT"
+                val schemetype = if (isDeposit) "TD" else "LA"
+                formData["schemetype"] = schemetype
+                formData["schemecode"] = if (isDeposit) "TDFIXED" else "LSRET"
                 formData["currency"] = "SCR"
                 formData["prisolid"] = binding.etPrimaryBranch.text.toString()
                 formData["branch_desc"] = binding.etBranchDesc.text.toString()
@@ -259,24 +376,57 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 formData["date_incorporation"] = binding.etDateIncorp.text.toString()
                 formData["countryOrigin"] = binding.spCountryOperation.selectedItem.toString()
                 
-                if (formData["schemetype"] == "LA") {
-                    formData["gl_code_loan"] = schemeGlCode
-                    formData["gl_desc_loan"] = schemeGlDesc
-                    formData["glsh_code_loan"] = schemeGlshCode
-                    formData["glsh_desc_loan"] = schemeGlshDesc
-                    formData["account_no"] = generatedAccountNo
-                } else {
+                fun formatDateForBackend(s: String): String {
+                    return try {
+                        val parts = s.split("-")
+                        if (parts.size == 3 && parts[2].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else s
+                    } catch (e: Exception) { s }
+                }
+                fun String?.takeIfNotEmpty(): String? = if (this.isNullOrBlank()) null else this
+                
+                if (isDeposit) {
+                    formData["account_no"] = binding.etDepositAccountNo.text?.toString() ?: ""
+                    formData["deposit_account_no"] = binding.etDepositAccountNo.text?.toString() ?: ""
+                    formData["td_deposit_accountno"] = binding.etDepositAccountNo.text?.toString() ?: ""
                     formData["gl_code"] = schemeGlCode
                     formData["gl_desc"] = schemeGlDesc
                     formData["glsh_code"] = schemeGlshCode
                     formData["glsh_desc"] = schemeGlshDesc
-                    formData["deposit_account_no"] = generatedAccountNo
+                    formData["deposit_date"]      = binding.etDateOfDeposit.text?.toString() ?: ""
+                    formData["deposit_amt"]       = binding.etDepositAmount.text?.toString()?.replace(",", "") ?: ""
+                    formData["deposit_period"]    = binding.etDepositPeriod.text?.toString() ?: ""
+                    formData["maturity_date"]     = formatDateForBackend(binding.etMaturityDate.text?.toString() ?: "")
+                    formData["rate_of_int"]       = binding.etRateOfInterest.text?.toString() ?: ""
+                    formData["int_amt"]           = binding.etInterestAmount.text?.toString() ?: ""
+                    formData["maturity_amt"]      = binding.etMaturityAmount.text?.toString() ?: ""
+                    formData["deposit_type"]      = "Fixed"
+                    formData["frequency"]         = "Monthly"
+                } else {
+                    formData["account_no"] = generatedAccountNo
+                    formData["loan_accountno"]    = generatedAccountNo
+                    formData["la_loan_accountno"] = generatedAccountNo
+                    formData["date_of_loan"]      = formatDateForBackend(binding.etDateOfLoan.text?.toString() ?: "")
+                    formData["gl_code"] = schemeGlCode
+                    formData["gl_desc"] = schemeGlDesc
+                    formData["glsh_code"] = schemeGlshCode
+                    formData["glsh_desc"] = schemeGlshDesc
+                    formData["gl_code_loan"] = schemeGlCode
+                    formData["gl_desc_loan"] = schemeGlDesc
+                    formData["glsh_code_loan"] = schemeGlshCode
+                    formData["glsh_desc_loan"] = schemeGlshDesc
+                    formData["loan_sanctioned"]   = binding.etLoanSanctioned.text?.toString()?.replace(",", "") ?: ""
+                    formData["effective_interest_rate"] = binding.etInterestRate.text?.toString() ?: ""
+                    formData["effective_fees_rate"]= binding.etFeesRate.text?.toString() ?: ""
+                    formData["recovery_method"]   = binding.spRecoveryMethod.selectedItem?.toString() ?: ""
+                    formData["inst_start_dt"]     = ""
+                    formData["loan_period"]       = binding.etLoanPeriod.text?.toString() ?: ""
                 }
                 
+                val finalAccountNo = if (isDeposit) binding.etDepositAccountNo.text?.toString() ?: "" else generatedAccountNo
                 val body = mapOf(
                     "formData" to formData,
-                    "loanAccountNo" to generatedAccountNo,
-                    "accountNo" to generatedAccountNo,
+                    "loanAccountNo" to finalAccountNo,
+                    "accountNo" to finalAccountNo,
                     "scheduleList" to emptyList<Any>()
                 )
                 
@@ -286,6 +436,81 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 
                 progressDialog.dismiss()
                 if (response.isSuccessful) {
+                    if (isDeposit) {
+                        val depositReq = com.example.bgls.Retrofit.DepositEntityRequest(
+                            depo_actno = binding.etDepositAccountNo.text?.toString()?.takeIfNotEmpty(),
+                            deposit_date = formatDateForBackend(binding.etDateOfDeposit.text?.toString() ?: "").takeIfNotEmpty(),
+                            deposit_amt = binding.etDepositAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            currency = "SCR",
+                            deposit_period = binding.etDepositPeriod.text?.toString()?.takeIfNotEmpty(),
+                            maturity_date = formatDateForBackend(binding.etMaturityDate.text?.toString() ?: "").takeIfNotEmpty(),
+                            rate_of_int = binding.etRateOfInterest.text?.toString()?.takeIfNotEmpty(),
+                            int_amt = binding.etInterestAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            maturity_amt = binding.etMaturityAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                            deposit_type = null,
+                            frequency = null,
+                            gl_code = schemeGlCode,
+                            gl_desc = schemeGlDesc,
+                            glsh_code = schemeGlshCode,
+                            glsh_desc = schemeGlshDesc,
+                            cust_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                            cust_name = binding.etCorporateName.text?.toString()?.takeIfNotEmpty(),
+                            scheme_code = if (isDeposit) "TDFIXED" else "LSRET",
+                            branch_id = binding.etPrimaryBranch.text?.toString()?.takeIfNotEmpty(),
+                            branch_desc = binding.etBranchDesc.text?.toString()?.takeIfNotEmpty(),
+                            deposit_frequency = null,
+                            interest_type = null
+                        )
+                        withContext(Dispatchers.IO) {
+                            RetrofitClient.api.depositAddCust(depositReq)
+                        }
+                    } else {
+                        val leaseReq = com.example.bgls.Retrofit.LeaseDataRequest(
+                            loanDetails = com.example.bgls.Retrofit.LoanDetailsRequest(
+                                customer_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                                customer_name = binding.etCorporateName.text?.toString()?.takeIfNotEmpty(),
+                                branch_name = binding.etBranchDesc.text?.toString()?.takeIfNotEmpty(),
+                                branch_id = binding.etPrimaryBranch.text?.toString()?.takeIfNotEmpty(),
+                                loan_type = schemetype.takeIfNotEmpty(),
+                                loan_accountno = generatedAccountNo.takeIfNotEmpty(),
+                                date_of_loan = formatDateForBackend(binding.etDateOfLoan.text?.toString() ?: "").takeIfNotEmpty(),
+                                loan_sanctioned = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                margin_limit = binding.etMargin.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                drawing_limit = binding.etDrawingLimit.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_currency = "SCR",
+                                disbursement = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_outstanding = binding.etLoanSanctioned.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                loan_period = binding.etLoanPeriod.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                expiry_date = formatDateForBackend(binding.etExpiryDate.text?.toString() ?: "").takeIfNotEmpty(),
+                                repayment_terms = null,
+                                recovery_method = binding.spRecoveryMethod.selectedItem?.toString()?.takeIfNotEmpty(),
+                                effective_interest_rate = binding.etInterestRate.text?.toString()?.takeIfNotEmpty(),
+                                effective_fees_rate = binding.etFeesRate.text?.toString()?.takeIfNotEmpty(),
+                                gl_code = schemeGlCode,
+                                gl_desc = schemeGlDesc,
+                                glsh_code = schemeGlshCode,
+                                glsh_desc = schemeGlshDesc
+                            ),
+                            repaymentDetails = com.example.bgls.Retrofit.RepaymentDetailsRequest(
+                                customer_id = intent.getStringExtra("cif_id")?.takeIfNotEmpty(),
+                                branch_id = binding.etPrimaryBranch.text?.toString()?.takeIfNotEmpty(),
+                                account_no = generatedAccountNo.takeIfNotEmpty(),
+                                acid = generatedAccountNo.takeIfNotEmpty(),
+                                inst_id = "1",
+                                inst_start_dt = "",
+                                inst_freq = "",
+                                inst_amount = binding.etInstallmentAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                no_of_inst = binding.etLoanPeriod.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
+                                inst_pct = "",
+                                interest_frequency = "",
+                                maturity_flg = "Y"
+                            )
+                        )
+                        withContext(Dispatchers.IO) {
+                            RetrofitClient.api.addLeaseAccount(leaseReq)
+                        }
+                    }
+                    
                     val msg = response.body()?.string()?.takeIf { it.isNotBlank() } ?: "Account Details Saved"
                     android.app.AlertDialog.Builder(this@CorporateCustomerAccountOpeningActivity)
                         .setMessage(msg)
@@ -296,8 +521,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                         .setCancelable(false)
                         .show()
                 } else {
-                    val errBody = response.errorBody()?.string() ?: "Failed to save details"
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, errBody.take(200), android.widget.Toast.LENGTH_LONG).show()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to save details: ${response.code()}", android.widget.Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
@@ -305,6 +529,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun uploadDocuments(onComplete: () -> Unit) {
         val progressDialog = android.app.ProgressDialog(this).apply {
@@ -950,15 +1175,26 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         val branchName    = intent.getStringExtra("branch_name") ?: "Al Salam Bank Seychelles Limited"
 
         binding.etCustomerType.setText(intent.getStringExtra("customer_type") ?: "CORPORATE")
+        binding.etCifId.setText(intent.getStringExtra("cif_id") ?: "")
         binding.etPrimaryBranch.setText(primaryBranch)
         binding.etBranchDesc.setText(branchName)
         
+        binding.etConstitutionName.setText(intent.getStringExtra("constitution") ?: "")
         binding.etCorporateName.setText(intent.getStringExtra("full_name") ?: "")
         binding.etTradeName.setText(intent.getStringExtra("short_name") ?: "")
+        
+        binding.etCertIncorp.setText(intent.getStringExtra("cert_incorp") ?: "")
+        binding.etBusRegNo.setText(intent.getStringExtra("bus_reg_no") ?: "")
         binding.etDateOfIncorp.setText(intent.getStringExtra("dob") ?: "")
         binding.etDateIncorp.setText(intent.getStringExtra("dob") ?: "")
+        
+        binding.etPostBoxNo.setText(intent.getStringExtra("post_box_no") ?: "")
+        binding.etLandLineNo.setText(intent.getStringExtra("land_line_no") ?: "")
+        binding.etFaxNo.setText(intent.getStringExtra("fax_no") ?: "")
+        
         binding.etEmail.setText(intent.getStringExtra("email_id") ?: "")
         binding.etEmailIdAO.setText(intent.getStringExtra("email_id") ?: "")
+        binding.etWebsite.setText(intent.getStringExtra("website") ?: "")
 
         // Also pre-fill Account Details tab branch fields immediately from intent
         binding.etAccountBranchId.setText(primaryBranch)
@@ -988,7 +1224,101 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         layout.visibility = View.VISIBLE
     }
 
+    private fun setupCalculations() {
+
+        fun formatCurrency(value: Double): String {
+            val formatter = java.text.DecimalFormat("#,##0.00")
+            return formatter.format(value)
+        }
+
+        fun calculateLoanMath() {
+            try {
+                val s = binding.etLoanSanctioned.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
+                val m = binding.etMargin.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
+                if (s > 0 && m >= 0) {
+                    val d = s - (s * m / 100)
+                    binding.etDrawingLimit.setText(formatCurrency(d))
+                } else {
+                    binding.etDrawingLimit.setText("")
+                }
+                val i = binding.etInterestRate.text.toString().toDoubleOrNull() ?: 0.0
+                val p = binding.etLoanPeriod.text.toString().toIntOrNull() ?: 0
+                if (s > 0 && i > 0 && p > 0) {
+                    val r = i / (12 * 100)
+                    val emi = (s * r * Math.pow(1 + r, p.toDouble())) / (Math.pow(1 + r, p.toDouble()) - 1)
+                    binding.etInstallmentAmount.setText(formatCurrency(emi))
+                } else {
+                    binding.etInstallmentAmount.setText("")
+                }
+            } catch (e: Exception) {}
+        }
+        binding.etLoanSanctioned.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
+        })
+        binding.etMargin.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
+        })
+        binding.etInterestRate.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
+        })
+        binding.etLoanPeriod.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
+        })
+        fun calculateDepositMath() {
+            try {
+                val p = binding.etDepositAmount.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
+                val r = binding.etRateOfInterest.text.toString().toDoubleOrNull() ?: 0.0
+                val t = binding.etDepositPeriod.text.toString().toIntOrNull() ?: 0
+                if (p > 0 && r > 0 && t > 0) {
+                    val interest = (p * r * t) / (12 * 100)
+                    val maturity = p + interest
+                    binding.etInterestAmount.setText(formatCurrency(interest))
+                    binding.etMaturityAmount.setText(formatCurrency(maturity))
+                } else {
+                    binding.etInterestAmount.setText("")
+                    binding.etMaturityAmount.setText("")
+                }
+            } catch (e: Exception) {}
+        }
+        binding.etDepositAmount.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateDepositMath() }
+        })
+        binding.etRateOfInterest.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateDepositMath() }
+        })
+        binding.etDepositPeriod.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateDepositMath() }
+        })
+        binding.etAnnualIncome.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                try {
+                    val annual = s?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
+                    val monthly = annual / 12
+                    binding.etMonthlyIncome.setText(formatCurrency(monthly))
+                } catch (e: Exception) {}
+            }
+        })
+    }
+
     private fun setupSpinners() {
+        setupCalculations()
+
         val addressTypes = listOf("SELECT", "PERMANENT", "REGISTERED", "OFFICE")
         val addrAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, addressTypes)
         addrAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

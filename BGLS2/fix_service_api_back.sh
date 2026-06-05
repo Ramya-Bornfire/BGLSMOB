@@ -1,0 +1,9 @@
+sed -i '' 's/@GET("CheckDuplicateIndiv")/@GET("api\/CheckDuplicateIndiv")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckBlackListIndiv")/@GET("api\/CheckBlackListIndiv")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckNegativeListIndiv")/@GET("api\/CheckNegativeListIndiv")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckDuplicateJoint")/@GET("api\/CheckDuplicateJoint")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckBlackListJoint")/@GET("api\/CheckBlackListJoint")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckNegativeListJoint")/@GET("api\/CheckNegativeListJoint")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckDuplicateCor")/@GET("api\/CheckDuplicateCor")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckBlackListCor")/@GET("api\/CheckBlackListCor")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
+sed -i '' 's/@GET("CheckNegativeListCor")/@GET("api\/CheckNegativeListCor")/g' app/src/main/java/com/example/bgls/Retrofit/ServiceApi.kt
