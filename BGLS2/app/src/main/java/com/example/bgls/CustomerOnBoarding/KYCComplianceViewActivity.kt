@@ -171,7 +171,8 @@ class KYCComplianceViewActivity : AppCompatActivity() {
         setText(R.id.tvMiddleName, req.mid_name)
         setText(R.id.tvLastName, req.ca_last_name)
         setText(R.id.tvShortName, req.ca_preferred_name)
-        setText(R.id.tvFullName, req.ca_first_name)
+        // Full Name: use ca_full_name_1 (DB full name), fallback to preferred name or first name
+        setText(R.id.tvFullName, req.ca_full_name_1 ?: req.ca_preferred_name ?: req.ca_first_name)
         setText(R.id.tvDateOfBirth, formatDate(req.ca_date_of_birth))
         setText(R.id.tvMobileCode, req.ca_countrycode_1)
         setText(R.id.tvMobileNumber, req.ca_mobile_number)
@@ -187,7 +188,8 @@ class KYCComplianceViewActivity : AppCompatActivity() {
         setText(R.id.tvFirstNameP, req.ca_first_name)
         setText(R.id.tvMiddleNameP, req.mid_name)
         setText(R.id.tvLastNameP, req.ca_last_name)
-        setText(R.id.tvFullNameP, req.ca_preferred_name ?: req.ca_first_name)
+        // Full Name in Personal section
+        setText(R.id.tvFullNameP, req.ca_full_name_1 ?: req.ca_preferred_name ?: req.ca_first_name)
         setText(R.id.tvShortNameP, req.ca_preferred_name)
         setText(R.id.tvOccupation, req.ca_occupation1)
         setText(R.id.tvGender, req.ca_gender)
@@ -227,11 +229,11 @@ class KYCComplianceViewActivity : AppCompatActivity() {
         setText(R.id.tvGlshCode, req.la_glshcode ?: req.td_glshcode)
         setText(R.id.tvGlshDesc, req.la_glshdesc ?: req.td_glshdesc)
 
-        when (schemeType) {
+        when (req.ca_schemetype) {
             "LA" -> {
-                // Loan specific
                 val loan = data.loanDetails
                 if (loan != null) {
+                    // Populate from separate loanDetails object (approved/processed records)
                     setText(R.id.tvLoanAccNo, loan.loan_accountno)
                     setText(R.id.tvDateOfLoan, formatDate(loan.date_of_loan))
                     setText(R.id.tvAccCurrency, loan.loan_currency)
@@ -255,12 +257,24 @@ class KYCComplianceViewActivity : AppCompatActivity() {
                         setText(R.id.tvInstAmount, formatAmount(pay.inst_amount))
                         setText(R.id.tvInstPercent, pay.inst_pct?.toString())
                     }
+                } else {
+                    // Fallback: populate from CustomerRequest fields directly (pending/new records)
+                    setText(R.id.tvLoanAccNo, req.la_loan_accountno)
+                    setText(R.id.tvDateOfLoan, formatDate(req.la_date_loan))
+                    setText(R.id.tvLoanSanctioned, req.la_loan_sanctioned)
+                    setText(R.id.tvMarginPercent, req.la_margin)
+                    setText(R.id.tvDrawingLimit, req.la_drawing_limit)
+                    setText(R.id.tvOutstanding, req.la_outstanding)
+                    setText(R.id.tvDisbursement, req.la_disbursement)
+                    setText(R.id.tvRecoveryMethod, req.la_recovery_method)
+                    setText(R.id.tvExpiryDate, formatDate(req.la_expiry_date))
+                    setText(R.id.tvRemarksAcc, req.la_remarks)
                 }
             }
             "TD" -> {
-                // Deposit specific: map deposit fields to the same generic views
                 val dep = data.depositData
                 if (dep != null) {
+                    // Populate from separate depositData object (approved/processed records)
                     setText(R.id.tvLoanAccNo, dep.depo_actno)          // Deposit account number
                     setText(R.id.tvDateOfLoan, formatDate(dep.deposit_date))
                     setText(R.id.tvAccCurrency, dep.currency)
@@ -268,9 +282,17 @@ class KYCComplianceViewActivity : AppCompatActivity() {
                     setText(R.id.tvDisbursement, dep.int_amt)          // Interest amount
                     setText(R.id.tvExpiryDate, formatDate(dep.maturity_date))
                     setText(R.id.tvInterestRate, dep.rate_of_int)
-                    // Deposit period – show in a single field (we use tvMarginPercent)
                     setText(R.id.tvMarginPercent, dep.deposit_period)
-                    // Other fields not available in generic layout are omitted
+                } else {
+                    // Fallback: populate from CustomerRequest fields directly (pending/new records)
+                    setText(R.id.tvLoanAccNo, req.td_deposit_accountno)
+                    setText(R.id.tvDateOfLoan, formatDate(req.td_date_deposit))
+                    setText(R.id.tvAccCurrency, req.td_currency)
+                    setText(R.id.tvLoanSanctioned, req.td_deposit_amt)
+                    setText(R.id.tvDisbursement, req.td_interest_amt)
+                    setText(R.id.tvExpiryDate, formatDate(req.td_maturity))
+                    setText(R.id.tvInterestRate, req.td_rate_interest)
+                    setText(R.id.tvMarginPercent, req.td_period)
                 }
             }
         }
@@ -325,17 +347,21 @@ class KYCComplianceViewActivity : AppCompatActivity() {
 
     // ---------- API Actions ----------
     private fun approveRecord() {
-        if (recNo.isEmpty() || schemeType.isEmpty() || accountNo.isEmpty()) {
-            Toast.makeText(this, "Missing data for approval", Toast.LENGTH_SHORT).show()
+        if (recNo.isEmpty()) {
+            Toast.makeText(this, "Missing record number for approval", Toast.LENGTH_SHORT).show()
             return
         }
+        // Use a fallback: if accountNo is still empty, try to use appRefNo or a blank string
+        val effectiveAccountNo = if (accountNo.isNotEmpty()) accountNo else appRefNo
+        val effectiveSchemeType = if (schemeType.isNotEmpty()) schemeType else "LA"
+
         progressDialog.setMessage("Approving...")
         progressDialog.show()
         RetrofitClient.api.approveRecord(
             recNo = recNo,
             appRefNo = appRefNo,
-            schemeType = schemeType,
-            accountNo = accountNo,
+            schemeType = effectiveSchemeType,
+            accountNo = effectiveAccountNo,
             schemeCode = schemeCode
         ).enqueue(object : Callback<Map<String, String>> {
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
@@ -344,7 +370,8 @@ class KYCComplianceViewActivity : AppCompatActivity() {
                     Toast.makeText(this@KYCComplianceViewActivity, "Approved successfully", Toast.LENGTH_LONG).show()
                     finish()
                 } else {
-                    Toast.makeText(this@KYCComplianceViewActivity, "Approval failed", Toast.LENGTH_SHORT).show()
+                    val errMsg = response.errorBody()?.string() ?: "Approval failed"
+                    Toast.makeText(this@KYCComplianceViewActivity, errMsg, Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {

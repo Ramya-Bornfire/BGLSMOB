@@ -64,10 +64,12 @@ data class CustomerRequestDetailFull(
     val ca_solid: String?,
     val branch_desc: String?,
     val ca_customer_type: String?,
+    val ca_acct_type: String?,           // Account type (LA/TD/etc)
     val ca_first_name: String?,
     val mid_name: String?,
     val ca_last_name: String?,
     val ca_preferred_name: String?,
+    val ca_full_name_1: String?,          // Full name field from DB
     val ca_date_of_birth: String?,
     val ca_mobile_number: String?,
     val ca_countrycode_1: String?,
@@ -104,22 +106,28 @@ data class CustomerRequestDetailFull(
     val la_gldesc: String?,
     val la_glshcode: String?,
     val la_glshdesc: String?,
-    val la_date_loan: String?,
+    val la_date_loan: String?,            // Date of loan (was missing)
     val la_loan_sanctioned: String?,
     val la_margin: String?,
+    val la_drawing_limit: String?,        // Drawing limit (was missing)
+    val la_disbursement: String?,         // Disbursement amount (was missing)
+    val la_outstanding: String?,          // Loan outstanding (was missing)
     val la_recovery_method: String?,
     val la_remarks: String?,
     val la_loan_period: String?,
+    val la_expiry_date: String?,          // Loan expiry date (was missing)
     val td_glcode: String?,
     val td_gldesc: String?,
     val td_glshcode: String?,
     val td_glshdesc: String?,
-    val td_date_deposit: String?,
+    val td_date_deposit: String?,         // Deposit date (was missing)
     val td_deposit_amt: String?,
     val td_period: String?,
+    val td_currency: String?,             // Deposit currency (was missing)
     val td_rate_interest: String?,
     val td_interest_amt: String?,
     val td_maturity_amt: String?,
+    val td_maturity: String?,             // Maturity date from CustomerRequest (was missing)
     val td_compounding_factor: String?,
     val ca_issue_date: String?,
     val ca_expiry_date: String?,
