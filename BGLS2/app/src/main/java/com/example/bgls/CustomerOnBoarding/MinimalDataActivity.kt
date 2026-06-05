@@ -88,6 +88,9 @@ class MinimalDataActivity : AppCompatActivity() {
                                 if (cifId.isEmpty()) {
                                     cifId = json.optString("cif_id", "")
                                 }
+                                if (cifId.isEmpty()) {
+                                    cifId = json.optString("cifid_1", "")
+                                }
                                 val apiAppRefNo = json.optString("appreNO", json.optString("ApplRefNO", ""))
                                 if (apiAppRefNo.isNotEmpty()) {
                                     appRefNo = apiAppRefNo

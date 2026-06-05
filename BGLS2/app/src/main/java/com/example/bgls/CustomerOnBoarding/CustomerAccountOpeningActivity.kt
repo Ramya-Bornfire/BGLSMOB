@@ -470,8 +470,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                             rate_of_int = binding.etRateOfInterest.text?.toString()?.takeIfNotEmpty(),
                             int_amt = binding.etInterestAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
                             maturity_amt = binding.etMaturityAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
-                            deposit_type = null, // or from UI if available
-                            frequency = null, // or from UI
+                            deposit_type = binding.spDepositType.selectedItem?.toString()?.takeIfNotEmpty(),
+                            frequency = binding.spFrequency.selectedItem?.toString()?.takeIfNotEmpty(),
                             gl_code = binding.etGlCode.text?.toString()?.takeIfNotEmpty(),
                             gl_desc = binding.etGlDesc.text?.toString()?.takeIfNotEmpty(),
                             glsh_code = binding.etGlshCode.text?.toString()?.takeIfNotEmpty(),
@@ -481,8 +481,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                             scheme_code = binding.etSchemeCode.text?.toString()?.takeIfNotEmpty(),
                             branch_id = binding.etAccountBranchId.text?.toString()?.takeIfNotEmpty(),
                             branch_desc = binding.etAccountBranchName.text?.toString()?.takeIfNotEmpty(),
-                            deposit_frequency = null,
-                            interest_type = null
+                            deposit_frequency = binding.spDepositFrequency.selectedItem?.toString()?.takeIfNotEmpty(),
+                            interest_type = binding.spInterestType.selectedItem?.toString()?.takeIfNotEmpty()
                         )
                         withContext(Dispatchers.IO) {
                             RetrofitClient.api.depositAddCust(depositReq)

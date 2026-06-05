@@ -239,8 +239,175 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+
+                <!-- RELATED PARTY DETAILS 1 -->
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Related Party Details 1" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Customer Type *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1CustomerType" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Cif Id" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1CifId" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Primary Branch *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1PrimaryBranch" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Branch Desc *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1BranchDesc" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Salutation *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1Salutation" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="First Name *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1FirstName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Middle Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1MiddleName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Last Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1LastName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Full Name *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1FullName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Short Name" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1ShortName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Annual Income" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1AnnualIncome" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Monthly Income" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1MonthlyIncome" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Loan Obligations" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1LoanObligations" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Family Maintenance" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1FamilyMaintenance" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Address Details (Related Party 1)" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Address Type *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1AddressType" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="House no *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1HouseNo" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Street No *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1StreetNo" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Street Name *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1StreetName" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Country *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1Country" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/readonly_background" android:enabled="false" android:text="SEYCHELLES" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="State" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1State" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="City *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1City" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Postal Code" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1PostalCode" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Address Valid From *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1AddressValidFrom" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-mm-yyyy"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Nationality *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1Nationality" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Country of Birth *" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1CountryOfBirth" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Country of Origin" android:textSize="11sp" android:textColor="#333333"/>
+                        <Spinner android:id="@+id/spRP1CountryOfOrigin" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/spinner_with_arrow"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contact Details (Related Party 1)" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Email Id *" android:textSize="11sp" android:textColor="#333333"/>
+                        <EditText android:id="@+id/etRP1EmailId" android:layout_width="160dp" android:layout_height="30dp" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView android:layout_width="170dp" android:layout_height="wrap_content" android:text="Mobile No *" android:textSize="11sp" android:textColor="#333333"/>
+                        <LinearLayout android:layout_width="160dp" android:layout_height="30dp" android:orientation="horizontal">
+                            <TextView android:layout_width="wrap_content" android:layout_height="30dp" android:background="#EDF1F5" android:gravity="center" android:text="+248" android:paddingHorizontal="8dp" android:textSize="10sp" android:textColor="#333333"/>
+                            <EditText android:id="@+id/etRP1MobileNo" android:layout_width="0dp" android:layout_height="30dp" android:layout_weight="1" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:inputType="phone"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-            
+
             <LinearLayout android:id="@+id/layoutAccountDetails" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Account Details" android:textColor="#283593" android:textSize="13sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
@@ -291,23 +458,23 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelCertReg" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Certification of Registration *" android:textSize="11sp" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etCertReg" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                        <EditText android:id="@+id/etCertReg" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp"/>
                     </LinearLayout>
                     <View android:layout_width="16dp" android:layout_height="1dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelBusReg" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Business Registration *" android:textSize="11sp" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etBusReg" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp"/>
+                        <EditText android:id="@+id/etBusReg" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelDateIncorp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Incorporation *" android:textSize="11sp" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDateIncorp" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-Mmm-yyyy"/>
+                        <EditText android:id="@+id/etDateIncorp" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:hint="dd-Mmm-yyyy"/>
                     </LinearLayout>
                     <View android:layout_width="16dp" android:layout_height="1dp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
                         <TextView android:id="@+id/tvLabelCountryOperation" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Country of Operation *" android:textSize="11sp" android:textColor="#333333"/>
-                        <Spinner android:id="@+id/spCountryOperation" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                        <Spinner android:id="@+id/spCountryOperation" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -315,79 +482,262 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginBottom="12dp">
                     
                     <!-- Deposit Fields -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Account No" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDepositAccountNo" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Deposit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDateOfDeposit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDepositAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Period (Months)" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDepositPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Rate of Interest" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etRateOfInterest" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Date" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etMaturityDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etInterestAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etMaturityAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <LinearLayout android:id="@+id/layoutDepositFields" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="visible">
+                        <!-- Row 1: Deposit Account No & Date of Deposit -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Account No *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDepositAccountNo" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Deposit *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDateOfDeposit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:hint="dd-Mmm-yyyy"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 2: Deposit Amount & Account Currency -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Amount *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDepositAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Account Currency" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDepositAccountCurrency" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:text="SCR" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 3: Deposit Period & Maturity Date -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Period *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDepositPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Date" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etMaturityDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:hint="dd-Mmm-yyyy"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 4: Rate of Interest & Interest Amount -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Rate of Interest *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etRateOfInterest" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Amount" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInterestAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 5: Compounding Factor & Maturity Amount -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Compounding Factor" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spDepositCompoundingFactor" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Maturity Amount" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etMaturityAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 6: Interest Type & Frequency -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Type *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spDepositInterestType" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Frequency *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spDepositFrequency" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 7: Deposit Type -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Deposit Type *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spDepositType" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Frequency *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spDepositFrequency2" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <!-- Loan Fields -->
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Loan" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDateOfLoan" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Sanctioned" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etLoanSanctioned" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Margin %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etMargin" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Drawing Limit" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etDrawingLimit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Period (Months)" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etLoanPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Expiry Date" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etExpiryDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Recovery Method" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <Spinner android:id="@+id/spRecoveryMethod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Rate %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etInterestRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Fees Rate %" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etFeesRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
-                    </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="6dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment Amount" android:textSize="10sp" android:textStyle="bold" android:textColor="#333333"/>
-                        <EditText android:id="@+id/etInstallmentAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                    <LinearLayout android:id="@+id/layoutLoanFields" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
+                        
+                        <!-- Row 1: Account No & Date of Loan -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Account No *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etLoanAccountNo" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Date of Loan *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDateOfLoan" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:hint="dd-Mmm-yyyy"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 2: Account Currency & Home Currency -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Account Currency" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etLoanAccountCurrency" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:text="SCR" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Home Currency" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etHomeCurrencyLoan" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:text="SCR" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 3: Loan Sanctioned & Loan Period -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Sanctioned *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etLoanSanctioned" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Loan Period *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etLoanPeriod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 4: Margin % & Drawing Limit -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Margin % *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etMargin" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Drawing Limit *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDrawingLimit" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 5: Outstanding & Disbursement -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Outstanding *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etOutstanding" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Disbursement" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etDisbursement" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 6: Repayment Terms & Recovery Method -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Repayment Terms" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etRepaymentTerms" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Recovery Method *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spRecoveryMethod" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 6.5: Interest Rate & Fees Rate -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Rate *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInterestRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Fees Rate *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etFeesRate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 7: Expiry Date & Remarks -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Expiry Date *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etExpiryDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:hint="dd/mm/yyyy"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Remarks" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etRemarks" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Repayment Details -->
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repayment Details" android:textColor="#283593" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="12dp" android:layout_marginBottom="6dp"/>
+                        
+                        <!-- Row 8: Installment ID & Installment Start Date -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment ID" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInstallmentId" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment Start Date *" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInstallmentStartDate" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:focusable="false" android:cursorVisible="false" android:longClickable="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:hint="dd/mm/yyyy"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 9: No of Installment & Cap At Maturity -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="No of Installment" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etNoOfInstallment" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="number"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Cap At Maturity ? *" android:textSize="11sp" android:textColor="#333333"/>
+                                <RadioGroup android:id="@+id/rgCapAtMaturity" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.55" android:orientation="horizontal">
+                                    <RadioButton android:id="@+id/rbCapYes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:textSize="10sp"/>
+                                    <RadioButton android:id="@+id/rbCapNo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:textSize="10sp" android:checked="true"/>
+                                </RadioGroup>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 10: Principal Installment Freq & Interest Installment Freq -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Principal Installment Freq *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spPrincipalInstallmentFreq" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Interest Installment Freq *" android:textSize="11sp" android:textColor="#333333"/>
+                                <Spinner android:id="@+id/spInterestInstallmentFreq" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/spinner_with_arrow"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Row 11: Installment Amount & Installment (%) -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="6dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment Amount" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInstallmentAmount" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/readonly_background" android:enabled="false" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333"/>
+                            </LinearLayout>
+                            <View android:layout_width="16dp" android:layout_height="1dp"/>
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical">
+                                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.45" android:text="Installment (%)" android:textSize="11sp" android:textColor="#333333"/>
+                                <EditText android:id="@+id/etInstallmentPercentage" android:layout_width="0dp" android:layout_height="36dp" android:layout_weight="0.55" android:background="@drawable/edittext_background" android:paddingHorizontal="6dp" android:textSize="10sp" android:textColor="#333333" android:inputType="numberDecimal"/>
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
