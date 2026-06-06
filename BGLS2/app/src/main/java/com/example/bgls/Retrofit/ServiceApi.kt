@@ -1624,4 +1624,11 @@ fun addChartOfAccount(@FieldMap fields: Map<String, String>): Call<ResponseBody>
         @Query("int_amt") intAmt: String,
         @Query("rate_of_int") rateOfInt: String
     ): Response<List<Map<String, Any>>>
+
+    // Fetch document image bytes from BACP_DOC_MAN by appl_ref_no + unique_id
+    @GET("api/getDocumentImage")
+    fun getDocumentImage(
+        @Query("appl_ref_no") applRefNo: String,
+        @Query("unique_id") uniqueId: String
+    ): okhttp3.Call
 }
