@@ -56,7 +56,9 @@ data class CustomerRequest(
     var annual_income: String? = null,
     var monthly_income: String? = null,
     var branch_desc: String? = null,
-    var ca_cif_id_1: String? = null
+    var ca_cif_id_1: String? = null,
+    var customer_group: String? = null,
+    var account_type: String? = null
 ) {
     fun toMap(): Map<String, String> {
         val map = mutableMapOf<String, String>()
@@ -129,6 +131,8 @@ data class CustomerRequest(
         monthly_income?.let { map["monthly_income"] = it }
         branch_desc?.let { map["branch_desc"] = it }
         ca_cif_id_1?.let { map["ca_cif_id_1"] = it }
+        customer_group?.let { map["customer_group"] = it }
+        account_type?.let { map["account_type"] = it }
         
         return map
     }

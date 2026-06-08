@@ -309,7 +309,9 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     ca_country_of_birth = binding.spCountryOfBirth.selectedItem?.toString() ?: "",
                     countryOrigin = binding.spCountryOfOrigin.selectedItem?.toString() ?: "",
                     branch_desc = intent.getStringExtra("branch_name") ?: "",
-                    ca_cif_id_1 = intent.getStringExtra("cif_id") ?: ""
+                    ca_cif_id_1 = intent.getStringExtra("cif_id") ?: "",
+                    customer_group = intent.getStringExtra("customer_group") ?: "RETAIL CUSTOMER",
+                    account_type = "RETAIL CUSTOMER"
                 )
                 
                 val params = request.toMap()
@@ -615,9 +617,9 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     val photoImageView = photoBox?.getChildAt(0) as? android.widget.ImageView
                     val sigImageView = sigBox?.getChildAt(0) as? android.widget.ImageView
                     
-                    val groupValue = spinner?.selectedItem?.toString() ?: "IND"
-                    val accessCode = etGroup?.text?.toString()?.ifEmpty { "GRP" } ?: "GRP"
-                    val keyword = etKeyword?.text?.toString()?.ifEmpty { "SIG" } ?: "SIG"
+                    val accessCode = spinner?.selectedItem?.toString()?.takeIf { it != "Select" } ?: ""
+                    val groupValue = etGroup?.text?.toString() ?: ""
+                    val keyword = etKeyword?.text?.toString() ?: ""
                     
                     val obj = org.json.JSONObject().apply {
                         put("appl_ref_no", appRefNo)
@@ -701,8 +703,15 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                 val uploadLayout = row.getChildAt(7) as android.widget.LinearLayout
                 val tvStatus = uploadLayout.getChildAt(1) as android.widget.TextView
 
-                val docType = spinner.selectedItem?.toString() ?: ""
+                val docType = spinner.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: ""
                 val fileName = tvStatus.text.toString().takeIf { it != "No file" } ?: ""
+
+                fun formatDateForBackend(s: String): String {
+                    return try {
+                        val parts = s.split("-")
+                        if (parts.size == 3 && parts[2].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else s
+                    } catch (e: Exception) { s }
+                }
 
                 val map = mapOf(
                     "filename" to fileName,
@@ -711,8 +720,8 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
                     "doctypesesc" to etDesc.text.toString(),
                     "uniqueid" to etId.text.toString(),
                     "placeofissue" to etPlace.text.toString(),
-                    "issuedate" to etIssueDate.text.toString(),
-                    "exprydate" to etExpiryDate.text.toString()
+                    "issuedate" to formatDateForBackend(etIssueDate.text.toString()),
+                    "exprydate" to formatDateForBackend(etExpiryDate.text.toString())
                 )
                 dynamicValues.add(map)
             }
@@ -976,7 +985,7 @@ class CustomerAccountOpeningActivity : AppCompatActivity() {
         val spinner = android.widget.Spinner(context).apply {
             layoutParams = android.widget.LinearLayout.LayoutParams(0, dpToPx(30), 1.5f).apply { setMargins(dpToPx(2), dpToPx(2), dpToPx(2), dpToPx(2)) }
             background = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.spinner_with_arrow)
-            val groups = listOf("Select", "Individual", "Joint", "Authorized Signatory")
+            val groups = listOf("Select", "Customer", "Account")
             adapter = android.widget.ArrayAdapter(context, android.R.layout.simple_spinner_item, groups).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }

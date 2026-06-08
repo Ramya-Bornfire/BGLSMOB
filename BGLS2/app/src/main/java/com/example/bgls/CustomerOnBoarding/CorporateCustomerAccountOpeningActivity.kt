@@ -130,6 +130,14 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         binding.etAccountBranchId.setText(branchId)
         binding.etAccountBranchName.setText(branchName)
         
+        val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.ENGLISH)
+        val todayStr = sdf.format(java.util.Date())
+        if (isDeposit) {
+            binding.etDateOfDeposit.setText(todayStr)
+        } else {
+            binding.etDateOfLoan.setText(todayStr)
+        }
+        
         // --- Toggle field visibility based on scheme type ---
         if (isDeposit) {
             binding.layoutDepositFields.visibility = android.view.View.VISIBLE
@@ -428,38 +436,39 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 params["ca_countrycode_1"] = binding.tvMobilePrefix.text.toString()
                 params["ca_mobile_no_1"] = binding.etMobileNoAO.text.toString()
                 
-                params["ca_customer_type_2"] = binding.spRP1CustomerType.selectedItem.toString().takeIf { it != "SELECT" } ?: ""
-                params["ca_cif_id_2"] = binding.etRP1CifId.text.toString()
-                params["ca_primary_branch_2"] = binding.etRP1PrimaryBranch.text.toString()
-                params["ca_branch_name_2"] = binding.etRP1BranchDesc.text.toString()
-                params["ca_salutation_2"] = binding.spRP1Salutation.selectedItem.toString().takeIf { it != "SELECT" } ?: ""
-                params["ca_first_name_2"] = binding.etRP1FirstName.text.toString()
-                params["ca_middle_name_2"] = binding.etRP1MiddleName.text.toString()
-                params["ca_last_name_2"] = binding.etRP1LastName.text.toString()
-                params["ca_full_name_2"] = binding.etRP1FullName.text.toString()
-                params["ca_short_name_2"] = binding.etRP1ShortName.text.toString()
-                params["ca_annual_income_2"] = binding.etRP1AnnualIncome.text.toString().replace(",", "")
-                params["ca_monthly_income_2"] = binding.etRP1MonthlyIncome.text.toString().replace(",", "")
-                params["ca_loan_obligations_2"] = binding.etRP1LoanObligations.text.toString().replace(",", "")
-                params["ca_family_maintenance_2"] = binding.etRP1FamilyMaintenance.text.toString().replace(",", "")
-                params["ca_address_type_2"] = binding.spRP1AddressType.selectedItem.toString()
-                params["ca_house_no_2"] = binding.etRP1HouseNo.text.toString()
-                params["ca_street_no_2"] = binding.etRP1StreetNo.text.toString()
-                params["ca_street_name_2"] = binding.etRP1StreetName.text.toString()
-                params["ca_country_2"] = binding.etRP1Country.text.toString()
-                params["ca_state_2"] = binding.etRP1State.text.toString()
-                params["ca_city_2"] = binding.spRP1City.selectedItem.toString()
-                params["ca_postal_code_2"] = binding.etRP1PostalCode.text.toString()
-                params["ca_address_valid_from_2"] = formatDateForBackend(binding.etRP1AddressValidFrom.text.toString())
-                params["ca_nationality_2"] = binding.spRP1Nationality.selectedItem.toString()
-                params["ca_country_of_birth_2"] = binding.spRP1CountryOfBirth.selectedItem.toString()
-                params["ca_country_of_origin_2"] = binding.spRP1CountryOfOrigin.selectedItem.toString()
-                params["ca_email_id_2"] = binding.etRP1EmailId.text.toString()
-                params["ca_countrycode_2"] = "+248"
-                params["ca_mobile_no_2"] = binding.etRP1MobileNo.text.toString()
+                params["ca_customer_type_9"] = binding.spRP1CustomerType.selectedItem.toString().takeIf { it != "SELECT" } ?: ""
+                params["ca_cif_id_9"] = binding.etRP1CifId.text.toString()
+                params["ca_primary_branch_9"] = binding.etRP1PrimaryBranch.text.toString()
+                params["ca_branch_name_9"] = binding.etRP1BranchDesc.text.toString()
+                params["ca_salutation_9"] = binding.spRP1Salutation.selectedItem.toString().takeIf { it != "SELECT" } ?: ""
+                params["ca_first_name_9"] = binding.etRP1FirstName.text.toString()
+                params["ca_middle_name_9"] = binding.etRP1MiddleName.text.toString()
+                params["ca_last_name_9"] = binding.etRP1LastName.text.toString()
+                params["ca_full_name_9"] = binding.etRP1FullName.text.toString()
+                params["ca_short_name_9"] = binding.etRP1ShortName.text.toString()
+                params["ca_annual_income_9"] = binding.etRP1AnnualIncome.text.toString().replace(",", "")
+                params["ca_monthly_income_9"] = binding.etRP1MonthlyIncome.text.toString().replace(",", "")
+                params["ca_loan_obligations_9"] = binding.etRP1LoanObligations.text.toString().replace(",", "")
+                params["ca_family_maintenance_9"] = binding.etRP1FamilyMaintenance.text.toString().replace(",", "")
+                params["ca_address_type_9"] = binding.spRP1AddressType.selectedItem.toString()
+                params["ca_house_no_9"] = binding.etRP1HouseNo.text.toString()
+                params["ca_street_no_9"] = binding.etRP1StreetNo.text.toString()
+                params["ca_street_name_9"] = binding.etRP1StreetName.text.toString()
+                params["ca_country_9"] = binding.etRP1Country.text.toString()
+                params["ca_state_9"] = binding.etRP1State.text.toString()
+                params["ca_city_9"] = binding.spRP1City.selectedItem.toString()
+                params["ca_postal_code_9"] = binding.etRP1PostalCode.text.toString()
+                params["ca_address_valid_from_9"] = formatDateForBackend(binding.etRP1AddressValidFrom.text.toString())
+                params["ca_nationality_9"] = binding.spRP1Nationality.selectedItem.toString()
+                params["ca_country_of_birth_9"] = binding.spRP1CountryOfBirth.selectedItem.toString()
+                params["ca_country_of_origin_9"] = binding.spRP1CountryOfOrigin.selectedItem.toString()
+                params["ca_email_id_9"] = binding.etRP1EmailId.text.toString()
+                params["ca_countrycode_9"] = "+248" // matching web UI logic or keeping default
+                params["ca_mobile_no_9"] = binding.etRP1MobileNo.text.toString()
 
-                // Add empty values for _3 to _10
-                for (i in 3..10) {
+                // Add empty values for unused slots
+                val unusedSlots = listOf(2, 3, 4, 5, 6, 7, 8, 10)
+                for (i in unusedSlots) {
                     params["ca_customer_type_$i"] = ""
                     params["ca_cif_id_$i"] = ""
                     params["ca_primary_branch_$i"] = ""
@@ -557,6 +566,19 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 formData["business_registration"] = binding.etBusReg.text.toString()
                 formData["date_incorporation"] = binding.etDateIncorp.text.toString()
                 formData["countryOrigin"] = binding.spCountryOperation.selectedItem.toString()
+
+                // Add missing corporate static fields
+                formData["constitutionName"] = binding.etConstitutionName.text.toString()
+                formData["corporateName"] = binding.etCorporateName.text.toString()
+                formData["tradeName"] = binding.etTradeName.text.toString()
+                formData["certificateIncorporation"] = binding.etCertIncorp.text.toString()
+                formData["businessRegistrationNo"] = binding.etBusRegNo.text.toString()
+                formData["dateOfIncorporation"] = binding.etDateOfIncorp.text.toString()
+                formData["postBoxNo"] = binding.etPostBoxNo.text.toString()
+                formData["landLineNo"] = binding.etLandLineNo.text.toString()
+                formData["faxNo"] = binding.etFaxNo.text.toString()
+                formData["emailId"] = binding.etEmail.text.toString()
+                formData["website"] = binding.etWebsite.text.toString()
                 
                 // Common fields mapped exactly as web expects them (nationalid maps to CertReg for Corporate)
                 formData["nationalid"] = binding.etCertReg.text.toString()
@@ -590,11 +612,11 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                     formData["rate_of_int"]       = binding.etRateOfInterest.text?.toString() ?: ""
                     formData["int_amt"]           = binding.etInterestAmount.text?.toString()?.replace(",", "") ?: ""
                     formData["maturity_amt"]      = binding.etMaturityAmount.text?.toString()?.replace(",", "") ?: ""
-                    formData["compounding_factor"]= try { binding.spDepositCompoundingFactor.selectedItem?.toString() ?: "" } catch (e: Exception) { "" }
-                    formData["deposit_type"]      = try { binding.spDepositType.selectedItem?.toString() ?: "" } catch (e: Exception) { "Fixed" }
-                    formData["frequency"]         = try { binding.spDepositFrequency.selectedItem?.toString() ?: "" } catch (e: Exception) { "Monthly" }
-                    formData["deposit_frequency"] = try { binding.spDepositFrequency2.selectedItem?.toString() ?: "" } catch (e: Exception) { "Monthly" }
-                    formData["interest_type"]     = try { binding.spDepositInterestType.selectedItem?.toString() ?: "" } catch (e: Exception) { "SIMPLE" }
+                    formData["compounding_factor"]= try { binding.spDepositCompoundingFactor.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: "" } catch (e: Exception) { "" }
+                    formData["deposit_type"]      = try { binding.spDepositType.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: "Fixed" } catch (e: Exception) { "Fixed" }
+                    formData["frequency"]         = try { binding.spDepositFrequency.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: "Monthly" } catch (e: Exception) { "Monthly" }
+                    formData["deposit_frequency"] = try { binding.spDepositFrequency2.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: "Monthly" } catch (e: Exception) { "Monthly" }
+                    formData["interest_type"]     = try { binding.spDepositInterestType.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: "SIMPLE" } catch (e: Exception) { "SIMPLE" }
                 } else {
                     formData["account_no"]        = binding.etLoanAccountNo.text?.toString() ?: ""
                     formData["loan_accountno"]    = binding.etLoanAccountNo.text?.toString() ?: ""
@@ -646,8 +668,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                             rate_of_int = binding.etRateOfInterest.text?.toString()?.takeIfNotEmpty(),
                             int_amt = binding.etInterestAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
                             maturity_amt = binding.etMaturityAmount.text?.toString()?.replace(",", "")?.takeIfNotEmpty(),
-                            deposit_type = binding.spDepositType.selectedItem?.toString()?.takeIfNotEmpty(),
-                            frequency = binding.spDepositFrequency.selectedItem?.toString()?.takeIfNotEmpty(),
+                            deposit_type = binding.spDepositType.selectedItem?.toString()?.takeIf { it != "SELECT" }?.takeIfNotEmpty(),
+                            frequency = binding.spDepositFrequency.selectedItem?.toString()?.takeIf { it != "SELECT" }?.takeIfNotEmpty(),
                             gl_code = binding.etGlCode.text?.toString()?.takeIfNotEmpty(),
                             gl_desc = binding.etGlDesc.text?.toString()?.takeIfNotEmpty(),
                             glsh_code = binding.etGlshCode.text?.toString()?.takeIfNotEmpty(),
@@ -657,8 +679,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                             scheme_code = binding.etSchemeCode.text?.toString()?.takeIfNotEmpty(),
                             branch_id = binding.etPrimaryBranch.text?.toString()?.takeIfNotEmpty(),
                             branch_desc = binding.etBranchDesc.text?.toString()?.takeIfNotEmpty(),
-                            deposit_frequency = binding.spDepositFrequency2.selectedItem?.toString()?.takeIfNotEmpty(),
-                            interest_type = binding.spDepositInterestType.selectedItem?.toString()?.takeIfNotEmpty()
+                            deposit_frequency = binding.spDepositFrequency2.selectedItem?.toString()?.takeIf { it != "SELECT" }?.takeIfNotEmpty(),
+                            interest_type = binding.spDepositInterestType.selectedItem?.toString()?.takeIf { it != "SELECT" }?.takeIfNotEmpty()
                         )
                         withContext(Dispatchers.IO) {
                             RetrofitClient.api.depositAddCust(depositReq)
@@ -732,7 +754,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
 
     private fun uploadDocuments(onComplete: () -> Unit) {
         val progressDialog = android.app.ProgressDialog(this).apply {
-            setMessage("Uploading Documents...")
+            setMessage("Uploading Document Data & Images...")
             setCancelable(false)
             show()
         }
@@ -740,22 +762,112 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
+                val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
+                val recNo = "1"
+                
+                // 1. Gather dynamic values and URIs
+                val dynamicValues = mutableListOf<Map<String, String>>()
+                val urisToUpload = mutableListOf<android.net.Uri>()
+                
+                for (i in 0 until binding.containerDocumentRows.childCount) {
+                    val row = binding.containerDocumentRows.getChildAt(i) as android.widget.LinearLayout
+                    val spinner = row.getChildAt(0) as android.widget.Spinner
+                    val etCode = row.getChildAt(1) as android.widget.EditText
+                    val etDesc = row.getChildAt(2) as android.widget.EditText
+                    val etId = row.getChildAt(3) as android.widget.EditText
+                    val etPlace = row.getChildAt(4) as android.widget.EditText
+                    val etIssueDate = row.getChildAt(5) as android.widget.EditText
+                    val etExpiryDate = row.getChildAt(6) as android.widget.EditText
+                    val uploadLayout = row.getChildAt(7) as android.widget.LinearLayout
+                    val tvStatus = uploadLayout.getChildAt(1) as android.widget.TextView
+
+                    val docType = spinner.selectedItem?.toString()?.takeIf { it != "SELECT" } ?: ""
+                    val fileName = tvStatus.text.toString().takeIf { it != "No file" } ?: ""
+
+                    fun formatDateForBackend(s: String): String {
+                        return try {
+                            val parts = s.split("-")
+                            if (parts.size == 3 && parts[2].length == 4) "${parts[2]}-${parts[1]}-${parts[0]}" else s
+                        } catch (e: Exception) { s }
+                    }
+
+                    val map = mapOf(
+                        "filename" to fileName,
+                        "doctype" to docType,
+                        "doccode" to etCode.text.toString(),
+                        "doctypesesc" to etDesc.text.toString(),
+                        "uniqueid" to etId.text.toString(),
+                        "placeofissue" to etPlace.text.toString(),
+                        "issuedate" to formatDateForBackend(etIssueDate.text.toString()),
+                        "exprydate" to formatDateForBackend(etExpiryDate.text.toString())
+                    )
+                    dynamicValues.add(map)
+                    
+                    val uri = tvStatus.tag as? android.net.Uri
+                    if (uri != null) {
+                        urisToUpload.add(uri)
+                    }
+                }
+                
+                // 2. Submit Document Master Data
+                val masterResponse = withContext(Dispatchers.IO) {
+                    RetrofitClient.api.uploadDocumentMaster(
+                        applRefNo = appRefNo,
+                        recNo = recNo,
+                        cifId = cifId,
+                        dynamicValues = dynamicValues
+                    )
+                }
+                
+                if (!masterResponse.isSuccessful) {
+                    progressDialog.dismiss()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to submit document data", android.widget.Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                
+                // 3. Upload Images
+                val masterResponseBody = masterResponse.body()?.string() ?: "[]"
+                val uniqueArray = try { org.json.JSONArray(masterResponseBody) } catch(e: Exception) { org.json.JSONArray() }
+                
                 val parts = mutableListOf<MultipartBody.Part>()
+                if (urisToUpload.isEmpty()) {
+                    val dummyBody = "dummy".toRequestBody("text/plain".toMediaTypeOrNull())
+                    parts.add(MultipartBody.Part.createFormData("files", "dummy.txt", dummyBody))
+                    parts.add(MultipartBody.Part.createFormData("dataURL", ""))
+                    if (uniqueArray.length() > 0) {
+                        parts.add(MultipartBody.Part.createFormData("unique", uniqueArray.getString(0)))
+                    } else {
+                        parts.add(MultipartBody.Part.createFormData("unique", ""))
+                    }
+                } else {
+                    for (uri in urisToUpload) {
+                        val fileStream = contentResolver.openInputStream(uri)
+                        val bytes = fileStream?.readBytes()
+                        fileStream?.close()
+                        if (bytes != null) {
+                            val requestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
+                            parts.add(MultipartBody.Part.createFormData("files", "document_${System.currentTimeMillis()}.jpg", requestBody))
+                        } else {
+                            val dummyBody = "dummy".toRequestBody("text/plain".toMediaTypeOrNull())
+                            parts.add(MultipartBody.Part.createFormData("files", "dummy.txt", dummyBody))
+                        }
+                        parts.add(MultipartBody.Part.createFormData("dataURL", ""))
+                    }
+                    for (i in 0 until uniqueArray.length()) {
+                        parts.add(MultipartBody.Part.createFormData("unique", uniqueArray.getString(i)))
+                    }
+                }
                 
-                val dummyBody = "dummy".toRequestBody("text/plain".toMediaTypeOrNull())
-                parts.add(MultipartBody.Part.createFormData("files", "dummy.txt", dummyBody))
-                
-                val response = withContext(Dispatchers.IO) {
+                val imageResponse = withContext(Dispatchers.IO) {
                     RetrofitClient.api.uploadImage(parts, appRefNo)
                 }
                 
                 progressDialog.dismiss()
-                if (response.isSuccessful) {
-                    val msg = response.body()?.string() ?: "Documents Uploaded"
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, msg, android.widget.Toast.LENGTH_SHORT).show()
+                if (imageResponse.isSuccessful) {
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Documents Uploaded Successfully", android.widget.Toast.LENGTH_SHORT).show()
                     onComplete()
                 } else {
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to upload documents", android.widget.Toast.LENGTH_SHORT).show()
+                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to upload document images", android.widget.Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
@@ -791,9 +903,9 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                     val photoImageView = photoBox?.getChildAt(0) as? android.widget.ImageView
                     val sigImageView = sigBox?.getChildAt(0) as? android.widget.ImageView
                     
-                    val groupValue = spinner?.selectedItem?.toString() ?: "COR"
-                    val accessCode = etGroup?.text?.toString()?.ifEmpty { "GRP" } ?: "GRP"
-                    val keyword = etKeyword?.text?.toString()?.ifEmpty { "SIG" } ?: "SIG"
+                    val accessCode = spinner?.selectedItem?.toString()?.takeIf { it != "Select" } ?: ""
+                    val groupValue = etGroup?.text?.toString() ?: ""
+                    val keyword = etKeyword?.text?.toString() ?: ""
                     
                     val obj = org.json.JSONObject().apply {
                         put("appl_ref_no", appRefNo)
@@ -864,70 +976,9 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             }
         }
         binding.btnSubmitDoc.setOnClickListener {
-            val dynamicValues = mutableListOf<Map<String, String>>()
-            for (i in 0 until binding.containerDocumentRows.childCount) {
-                val row = binding.containerDocumentRows.getChildAt(i) as android.widget.LinearLayout
-                val spinner = row.getChildAt(0) as android.widget.Spinner
-                val etCode = row.getChildAt(1) as android.widget.EditText
-                val etDesc = row.getChildAt(2) as android.widget.EditText
-                val etId = row.getChildAt(3) as android.widget.EditText
-                val etPlace = row.getChildAt(4) as android.widget.EditText
-                val etIssueDate = row.getChildAt(5) as android.widget.EditText
-                val etExpiryDate = row.getChildAt(6) as android.widget.EditText
-                val uploadLayout = row.getChildAt(7) as android.widget.LinearLayout
-                val tvStatus = uploadLayout.getChildAt(1) as android.widget.TextView
-
-                val docType = spinner.selectedItem?.toString() ?: ""
-                val fileName = tvStatus.text.toString().takeIf { it != "No file" } ?: ""
-
-                val map = mapOf(
-                    "filename" to fileName,
-                    "doctype" to docType,
-                    "doccode" to etCode.text.toString(),
-                    "doctypesesc" to etDesc.text.toString(),
-                    "uniqueid" to etId.text.toString(),
-                    "placeofissue" to etPlace.text.toString(),
-                    "issuedate" to etIssueDate.text.toString(),
-                    "exprydate" to etExpiryDate.text.toString()
-                )
-                dynamicValues.add(map)
-            }
-
-            val appRefNo = intent.getStringExtra("app_ref_no") ?: "ARN0936"
-            val cifId = intent.getStringExtra("cif_id") ?: "CUST001"
-            val recNo = "1"
-
-            val progressDialog = android.app.ProgressDialog(this).apply {
-                setMessage("Submitting Documents...")
-                setCancelable(false)
-                show()
-            }
-
-            lifecycleScope.launch {
-                try {
-                    val response = withContext(Dispatchers.IO) {
-                        RetrofitClient.api.uploadDocumentMaster(
-                            applRefNo = appRefNo,
-                            recNo = recNo,
-                            cifId = cifId,
-                            dynamicValues = dynamicValues
-                        )
-                    }
-
-                    progressDialog.dismiss()
-                    if (response.isSuccessful) {
-                        android.app.AlertDialog.Builder(this@CorporateCustomerAccountOpeningActivity)
-                            .setMessage("Document Master Submitted Successfully")
-                            .setPositiveButton("Okay") { dialog, _ -> dialog.dismiss() }
-                            .setCancelable(false)
-                            .show()
-                    } else {
-                        android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Failed to submit documents", android.widget.Toast.LENGTH_SHORT).show()
-                    }
-                } catch (e: Exception) {
-                    progressDialog.dismiss()
-                    android.widget.Toast.makeText(this@CorporateCustomerAccountOpeningActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
-                }
+            uploadDocuments {
+                // Documents uploaded, maybe move to next tab manually if user wants
+                android.widget.Toast.makeText(this, "Documents Saved & Uploaded", android.widget.Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -1151,7 +1202,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         val spinner = android.widget.Spinner(context).apply {
             layoutParams = android.widget.LinearLayout.LayoutParams(0, dpToPx(30), 1.5f).apply { setMargins(dpToPx(2), dpToPx(2), dpToPx(2), dpToPx(2)) }
             background = androidx.core.content.ContextCompat.getDrawable(context, R.drawable.spinner_with_arrow)
-            val groups = listOf("Select", "Director", "Authorized Signatory", "Other")
+            val groups = listOf("Select", "Customer", "Account")
             adapter = android.widget.ArrayAdapter(context, android.R.layout.simple_spinner_item, groups).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
@@ -1330,6 +1381,8 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         binding.etMaturityDate.setOnClickListener { showDatePicker(binding.etMaturityDate) }
         binding.etRP1AddressValidFrom.setOnClickListener { showDatePicker(binding.etRP1AddressValidFrom) }
         binding.etInstallmentStartDate.setOnClickListener { showDatePicker(binding.etInstallmentStartDate) }
+        binding.etDateOfLoan.setOnClickListener { showDatePicker(binding.etDateOfLoan) }
+        binding.etExpiryDate.setOnClickListener { showDatePicker(binding.etExpiryDate) }
     }
 
     private fun showDatePicker(editText: android.widget.EditText) {
@@ -1364,6 +1417,7 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             uri?.let { 
                 activeTextTarget?.text = "File selected"
                 activeTextTarget?.setTextColor(android.graphics.Color.parseColor("#4CAF50"))
+                activeTextTarget?.tag = it
             }
         }
     }
@@ -1441,17 +1495,15 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
                 val s = binding.etLoanSanctioned.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
                 val m = binding.etMargin.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
                 if (s > 0 && m >= 0) {
-                    val d = s - (s * m / 100)
+                    val d = (s * m / 100)
                     binding.etDrawingLimit.setText(formatCurrency(d))
                 } else {
                     binding.etDrawingLimit.setText("")
                 }
-                val i = binding.etInterestRate.text.toString().toDoubleOrNull() ?: 0.0
                 val p = binding.etLoanPeriod.text.toString().toIntOrNull() ?: 0
-                if (s > 0 && i > 0 && p > 0) {
-                    val r = i / (12 * 100)
-                    val emi = (s * r * Math.pow(1 + r, p.toDouble())) / (Math.pow(1 + r, p.toDouble()) - 1)
-                    binding.etInstallmentAmount.setText(formatCurrency(emi))
+                if (s > 0 && p > 0) {
+                    val instAmt = s / p
+                    binding.etInstallmentAmount.setText(formatCurrency(instAmt))
                 } else {
                     binding.etInstallmentAmount.setText("")
                 }
@@ -1463,6 +1515,11 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
             override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
         })
         binding.etMargin.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
+        })
+        binding.etLoanPeriod.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: android.text.Editable?) { calculateLoanMath() }
@@ -1604,12 +1661,15 @@ class CorporateCustomerAccountOpeningActivity : AppCompatActivity() {
         val schemeTypes = listOf("SELECT", "LOAN ACCOUNT", "DEPOSIT ACCOUNT")
         binding.spSchemeType.adapter = makeAdapter(schemeTypes)
         
-        val frequencies = listOf("MONTHLY", "QUARTERLY", "HALFYEARLY", "YEARLY")
+        val frequencies = listOf("SELECT", "Monthly")
         binding.spDepositCompoundingFactor.adapter = makeAdapter(frequencies)
         binding.spDepositFrequency.adapter = makeAdapter(frequencies)
         binding.spDepositFrequency2.adapter = makeAdapter(frequencies)
         binding.spPrincipalInstallmentFreq.adapter = makeAdapter(frequencies)
         binding.spInterestInstallmentFreq.adapter = makeAdapter(frequencies)
+
+        val recoveryMethods = listOf("SELECT", "Cash", "Office Routing Account", "Standing Instructions")
+        binding.spRecoveryMethod.adapter = makeAdapter(recoveryMethods)
 
         val interestTypes = listOf("SIMPLE", "COMPOUND")
         binding.spDepositInterestType.adapter = makeAdapter(interestTypes)
