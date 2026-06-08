@@ -1,16 +1,25 @@
 package com.example.bgls.CustomerOnBoarding
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.ProgressDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bgls.DataModels.ApprovalViewResponse
+import com.example.bgls.DataModels.DocumentItem
 import com.example.bgls.R
 import com.example.bgls.Retrofit.RetrofitClient
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -231,6 +240,9 @@ class KYCComplianceViewActivity : AppCompatActivity() {
 
         when (req.ca_schemetype) {
             "LA" -> {
+                // Show Repayment Details section for Loan Account
+                findViewById<android.widget.LinearLayout>(R.id.llRepaymentSection).visibility = android.view.View.VISIBLE
+
                 val loan = data.loanDetails
                 if (loan != null) {
                     // Populate from separate loanDetails object (approved/processed records)
@@ -272,6 +284,9 @@ class KYCComplianceViewActivity : AppCompatActivity() {
                 }
             }
             "TD" -> {
+                // Hide Repayment Details section for Term Deposit
+                findViewById<android.widget.LinearLayout>(R.id.llRepaymentSection).visibility = android.view.View.GONE
+
                 val dep = data.depositData
                 if (dep != null) {
                     // Populate from separate depositData object (approved/processed records)
@@ -294,6 +309,10 @@ class KYCComplianceViewActivity : AppCompatActivity() {
                     setText(R.id.tvInterestRate, req.td_rate_interest)
                     setText(R.id.tvMarginPercent, req.td_period)
                 }
+            }
+            else -> {
+                // Unknown scheme type — hide repayment section
+                findViewById<android.widget.LinearLayout>(R.id.llRepaymentSection).visibility = android.view.View.GONE
             }
         }
 
@@ -319,6 +338,9 @@ class KYCComplianceViewActivity : AppCompatActivity() {
         if ("Y".equals(req.ca_minor_indicator, ignoreCase = true))
             findViewById<RadioButton>(R.id.rbMinorIndicatorYes).isChecked = true
         else findViewById<RadioButton>(R.id.rbMinorIndicatorNo).isChecked = true
+
+        // Populate document table dynamically from backend data
+        populateDocumentTable(data.documentList)
     }
 
     private fun setText(viewId: Int, value: String?) {
@@ -343,6 +365,177 @@ class KYCComplianceViewActivity : AppCompatActivity() {
     private fun formatAmount(amount: Double?): String {
         if (amount == null) return ""
         return String.format("%,.2f", amount)
+    }
+
+    // ---------- Document Table (dynamic from backend) ----------
+
+    /**
+     * Clears [llDocumentTableBody] and inflates one row per [DocumentItem] received from the API.
+     * If the list is null or empty, shows a single placeholder row.
+     */
+    private fun populateDocumentTable(documents: List<DocumentItem>?) {
+        val container = findViewById<LinearLayout>(R.id.llDocumentTableBody)
+        container.removeAllViews()
+
+        if (documents.isNullOrEmpty()) {
+            // Show an empty-state row
+            val emptyView = TextView(this).apply {
+                text = "No documents available"
+                textSize = 11f
+                setTextColor(android.graphics.Color.parseColor("#888888"))
+                setPadding(16, 16, 16, 16)
+            }
+            container.addView(emptyView)
+            return
+        }
+
+        documents.forEachIndexed { index, doc ->
+            val row = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(8, 8, 8, 8)
+                // Alternate row background
+                setBackgroundResource(
+                    if (index % 2 == 0) R.drawable.table_cell_bg
+                    else android.R.color.white
+                )
+            }
+
+            fun makeCell(text: String?, weight: Float): TextView = TextView(this).apply {
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, weight)
+                this.text = text ?: "-"
+                textSize = 10f
+                setTextColor(android.graphics.Color.parseColor("#333333"))
+            }
+
+            row.addView(makeCell(doc.document_type, 1.2f))
+            row.addView(makeCell(doc.document_code, 1f))
+            row.addView(makeCell(doc.document_type_desc, 1.5f))
+            row.addView(makeCell(doc.place_of_issue, 1f))
+            row.addView(makeCell(doc.unique_id, 1f))
+            row.addView(makeCell(doc.issue_date, 1f))
+            row.addView(makeCell(doc.expiry_date, 1f))
+
+            // Eye button for Document View
+            val eyeParams = LinearLayout.LayoutParams(0, 40, 1f)
+            val eyeBtn = ImageView(this).apply {
+                layoutParams = eyeParams
+                setImageResource(R.drawable.ic_eye)
+                setColorFilter(android.graphics.Color.parseColor("#007BFF"))
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
+                contentDescription = "View document"
+                isClickable = true
+                isFocusable = true
+                background = android.util.TypedValue().let {
+                    context.theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, it, true)
+                    android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT)
+                }
+            }
+
+            val uniqueId = doc.unique_id
+
+            if (!uniqueId.isNullOrBlank() && appRefNo.isNotBlank()) {
+                eyeBtn.setOnClickListener {
+                    showDocumentViewer(doc.document_type_desc ?: "Document", appRefNo, uniqueId)
+                }
+            } else {
+                // No unique ID — dim the icon
+                eyeBtn.alpha = 0.3f
+                eyeBtn.setOnClickListener {
+                    Toast.makeText(this, "No document file available", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            row.addView(eyeBtn)
+            container.addView(row)
+        }
+    }
+
+    /**
+     * Opens a full-screen dialog and downloads the document via the new
+     * GET /api/getDocumentImage?appl_ref_no=X&unique_id=Y endpoint.
+     * The backend decodes the dataURL bytes and returns raw image bytes.
+     */
+    private fun showDocumentViewer(title: String, applRefNo: String, uniqueId: String) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_document_viewer, null)
+
+        val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setContentView(dialogView)
+        dialog.setCancelable(true)
+
+        val tvTitle    = dialogView.findViewById<TextView>(R.id.tvDocViewTitle)
+        val btnClose   = dialogView.findViewById<ImageView>(R.id.btnCloseDocViewer)
+        val ivDoc      = dialogView.findViewById<ImageView>(R.id.ivDocViewer)
+        val pbLoading  = dialogView.findViewById<ProgressBar>(R.id.pbDocViewer)
+        val llError    = dialogView.findViewById<LinearLayout>(R.id.llDocViewerError)
+        val tvError    = dialogView.findViewById<TextView>(R.id.tvDocViewerError)
+
+        tvTitle.text = title
+        btnClose.setOnClickListener { dialog.dismiss() }
+
+        // Build URL: api/getDocumentImage?appl_ref_no=X&unique_id=Y
+        val imageUrl = "${RetrofitClient.BASE_URL}api/getDocumentImage" +
+                "?appl_ref_no=${android.net.Uri.encode(applRefNo)}" +
+                "&unique_id=${android.net.Uri.encode(uniqueId)}"
+
+        Log.d("DOC_VIEWER", "Fetching: $imageUrl  (appl_ref_no=$applRefNo, unique_id=$uniqueId)")
+
+        pbLoading.visibility = View.VISIBLE
+        ivDoc.visibility     = View.GONE
+        llError.visibility   = View.GONE
+
+        dialog.show()
+
+        val mainHandler = Handler(Looper.getMainLooper())
+
+        Thread {
+            try {
+                val request = Request.Builder().url(imageUrl).build()
+                val response = RetrofitClient.httpClient.newCall(request).execute()
+
+                Log.d("DOC_VIEWER", "Response: ${response.code} for $imageUrl")
+
+                if (!response.isSuccessful) {
+                    throw Exception("HTTP ${response.code}: ${response.message}\nURL: $imageUrl")
+                }
+
+                val bytes = response.body?.bytes()
+                    ?: throw Exception("Empty response body from: $imageUrl")
+
+                Log.d("DOC_VIEWER", "Received ${bytes.size} bytes")
+
+                // Decode with downsampling to avoid OOM
+                val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size, opts)
+
+                var sampleSize = 1
+                while (opts.outWidth / sampleSize > 1080 || opts.outHeight / sampleSize > 1920) {
+                    sampleSize *= 2
+                }
+
+                val decodeOpts = BitmapFactory.Options().apply { inSampleSize = sampleSize }
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, decodeOpts)
+
+                if (bitmap != null) {
+                    mainHandler.post {
+                        pbLoading.visibility = View.GONE
+                        ivDoc.visibility     = View.VISIBLE
+                        llError.visibility   = View.GONE
+                        ivDoc.setImageBitmap(bitmap)
+                    }
+                } else {
+                    throw Exception("Cannot decode image bytes (size=${bytes.size}) from: $imageUrl")
+                }
+
+            } catch (e: Exception) {
+                Log.e("DOC_VIEWER", "Load failed: ${e.message}", e)
+                mainHandler.post {
+                    pbLoading.visibility = View.GONE
+                    ivDoc.visibility     = View.GONE
+                    llError.visibility   = View.VISIBLE
+                    tvError.text = "Unable to load document\n\n${e.message}"
+                }
+            }
+        }.start()
     }
 
     // ---------- API Actions ----------
